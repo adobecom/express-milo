@@ -1,11 +1,17 @@
 import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate test 8
+// nate test 9
 
 let createTag;
 
-async function syncMinHeights(groups) {
+async function syncMinHeights(groups, block) {
+  block.style.backgroundImage = `
+        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
+      `;
+
   const maxHeights = groups.map((els) => els
     .filter((e) => !!e)
     .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
@@ -220,11 +226,9 @@ export default async function decorate(block) {
   await buildGallery(cards, cardsWrapper);
   new IntersectionObserver((entries, obs) => {
     obs.unobserve(block);
-    syncMinHeights(cardParagraphs);
+    syncMinHeights(cardParagraphs, block);
   }).observe(block);
   window.addEventListener('resize', debounce(() => {
-    syncMinHeights(cardParagraphs);
+    syncMinHeights(cardParagraphs, block);
   }, 100));
-
-  block.style.backgroundImage = 'url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)';
 }
