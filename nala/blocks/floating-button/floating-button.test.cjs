@@ -12,13 +12,8 @@ test.describe('Express Floating Button Block test suite', () => {
     floatingButton = new FloatingButton(page);
   });
 
-  // NOTE: Floating button tests are currently skipped because:
-  // 1. The test page `/drafts/nala/blocks/floating-button-page` does not exist
-  // 2. Floating buttons are typically created dynamically via metadata or as auto-blocks
-  // 3. This requires investigation into proper test page setup
-
-  // Test 0 : Floating Button - SKIPPED: Test page missing
-  test.skip(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
+  // Test 0 : Floating Button Block
+  test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
     console.info(`[Test Page]: ${testUrl}`);
@@ -34,6 +29,7 @@ test.describe('Express Floating Button Block test suite', () => {
       await expect(floatingButton.floatingButton).toBeAttached();
 
       // Wait for the floating button to be properly positioned and visible
+      await page.locator('.discover-cards').scrollIntoViewIfNeeded();
       await expect(floatingButton.floatingButton).toBeVisible({ timeout: 15000 });
 
       // Wait for the floating button to be in a clickable state
