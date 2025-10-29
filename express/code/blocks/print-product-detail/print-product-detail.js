@@ -25,7 +25,6 @@ import {
   formatPriceZazzle,
   buildRealViewImageUrl,
 } from './utilities/utility-functions.js';
-import { initResizeDebug } from './utilities/debug-resize.js';
 
 let createTag;
 
@@ -471,11 +470,6 @@ function updatePageWithUIStrings(productDetails) {
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addPrefetchLinks();
-
-  // Initialize resize debugging (TEMPORARY - REMOVE IN PRODUCTION)
-  // eslint-disable-next-line no-console
-  console.log('🔧 [PDP] Initializing resize debug monitoring...');
-  initResizeDebug();
 
   // Get template ID from block content
   const templateId = block.children[0].children[1].textContent.trim();
