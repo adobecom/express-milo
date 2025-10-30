@@ -61,7 +61,6 @@
 .template-x-carousel-toolbar.search-bar .toolbar.search-bar {
   grid-column: 2;
   grid-row: 1;
-  padding-bottom: 0;
   justify-self: end;
   z-index: 1;
 }
