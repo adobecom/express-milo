@@ -237,7 +237,7 @@ const eagerLoad = (img) => {
   if (!firstSection) return;
 
   // Get all images in the first section
-  const images = firstSection.querySelectorAll('.background-image');
+  const images = document.querySelectorAll('.background-image');
   if (images.length > 0) {
     images.forEach(eagerLoad);
 
