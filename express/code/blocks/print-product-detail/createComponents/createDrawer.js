@@ -68,7 +68,7 @@ function updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, foote
         cachedElements.specsRow.innerHTML = '';
         specs.forEach((spec) => {
           const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
-          specPill.append(getIconElementDeprecated('checkmark'), spec);
+          specPill.append(getIconElementDeprecated('frame'), spec);
           cachedElements.specsRow.append(specPill);
         });
       } catch (error) {
@@ -377,30 +377,55 @@ function createDrawerBodyPaperSelection(data) {
     const specsRow = createTag('div', { class: 'paper-selection-specs' });
     data.selectedPaper.specs.forEach((spec) => {
       const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
-      specPill.append(getIconElementDeprecated('checkmark'), spec);
+      specPill.append(getIconElementDeprecated('frame'), spec);
       specsRow.append(specPill);
     });
     drawerBody.append(specsRow);
   }
 
+  // Paper selection container (holds type label and carousel)
+  const paperSelectionContainer = createTag('div', { class: 'paper-selection-container' });
+
   // Paper type label
   const paperTypeLabel = createTag('div', { class: 'paper-selection-type-label' });
   paperTypeLabel.innerHTML = `Paper type: <span class="paper-selection-type-name">${data.selectedPaper.typeName}</span>`;
-  drawerBody.append(paperTypeLabel);
+  paperSelectionContainer.append(paperTypeLabel);
 
   // Paper thumbnails carousel with simple scroll arrows
   const carouselContainer = createTag('div', { class: 'paper-selection-carousel-container' });
   
-  // Left arrow
+  // Left arrow with fader
+  const leftFader = createTag('div', { class: 'paper-carousel-fader-left' });
   const leftArrow = createTag('button', {
     class: 'paper-carousel-arrow paper-carousel-arrow-left',
     type: 'button',
     'aria-label': 'Scroll left',
   });
-  leftArrow.innerHTML = '&lt;';
+  leftArrow.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  leftFader.append(leftArrow);
   
   // Scrollable wrapper
   const carouselWrapper = createTag('div', { class: 'paper-selection-carousel' });
+  
+  // Add trigger elements for arrow visibility
+  const leftTrigger = createTag('div', { class: 'paper-carousel-left-trigger' });
+  const rightTrigger = createTag('div', { class: 'paper-carousel-right-trigger' });
+  carouselWrapper.append(leftTrigger);
+  
+  // Detect currency from first paper with a price adjustment
+  const getCurrencyFormat = () => {
+    const paperWithPrice = data.papers.find((p) => p.priceAdjustment && p.priceAdjustment.trim());
+    if (paperWithPrice) {
+      // Extract currency symbol from formatted price (e.g., "+$4.50" -> "$")
+      const match = paperWithPrice.priceAdjustment.match(/[+\-]?([^\d.]+)/);
+      return match ? match[1] : '$';
+    }
+    return '$'; // Default fallback
+  };
+  
+  const currencySymbol = getCurrencyFormat();
+  const zeroPriceFormat = `+${currencySymbol}0.00`;
+  
   data.papers.forEach((paper, index) => {
     const isSelected = index === 0; // First paper is selected by default
     const paperThumb = createTag('button', {
@@ -418,18 +443,57 @@ function createDrawerBodyPaperSelection(data) {
       src: paper.thumbnail,
       alt: paper.title || paper.name,
     });
-    const thumbPrice = createTag('span', { class: 'paper-selection-thumb-price' }, paper.priceAdjustment);
+    const priceText = paper.priceAdjustment || zeroPriceFormat;
+    const thumbPrice = createTag('span', { class: 'paper-selection-thumb-price' }, priceText);
     paperThumb.append(thumbImage, thumbPrice);
     carouselWrapper.append(paperThumb);
   });
   
-  // Right arrow
+  carouselWrapper.append(rightTrigger);
+  
+  // Right arrow with fader
+  const rightFader = createTag('div', { class: 'paper-carousel-fader-right' });
   const rightArrow = createTag('button', {
     class: 'paper-carousel-arrow paper-carousel-arrow-right',
     type: 'button',
     'aria-label': 'Scroll right',
   });
-  rightArrow.innerHTML = '&gt;';
+  rightArrow.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  rightFader.append(rightArrow);
+  
+  // Simple scroll-based arrow visibility
+  const updateArrowVisibility = () => {
+    const { scrollLeft, scrollWidth, clientWidth } = carouselWrapper;
+    const isAtStart = scrollLeft <= 1;
+    const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1;
+    
+    // Hide left arrow at start
+    if (isAtStart) {
+      leftFader.classList.add('arrow-hidden');
+    } else {
+      leftFader.classList.remove('arrow-hidden');
+    }
+    
+    // Hide right arrow at end
+    if (isAtEnd) {
+      rightFader.classList.add('arrow-hidden');
+    } else {
+      rightFader.classList.remove('arrow-hidden');
+    }
+    
+    // Hide both if no overflow
+    if (scrollWidth <= clientWidth) {
+      leftFader.classList.add('arrow-hidden');
+      rightFader.classList.add('arrow-hidden');
+    }
+  };
+  
+  carouselWrapper.addEventListener('scroll', updateArrowVisibility);
+  
+  // Initial check - call immediately and after render
+  updateArrowVisibility();
+  setTimeout(updateArrowVisibility, 0);
+  setTimeout(updateArrowVisibility, 100);
   
   // Add scroll handlers
   leftArrow.addEventListener('click', () => {
@@ -440,8 +504,9 @@ function createDrawerBodyPaperSelection(data) {
     carouselWrapper.scrollBy({ left: 200, behavior: 'smooth' });
   });
   
-  carouselContainer.append(leftArrow, carouselWrapper, rightArrow);
-  drawerBody.append(carouselContainer);
+  carouselContainer.append(carouselWrapper, leftFader, rightFader);
+  paperSelectionContainer.append(carouselContainer);
+  drawerBody.append(paperSelectionContainer);
 
   // Description
   const description = createTag('div', { class: 'paper-selection-description' });

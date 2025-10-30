@@ -92,11 +92,36 @@ const SIZE_CHART_DATA = {
   },
 };
 
-// Helper function to extract specs from descriptionBrief
-function extractSpecs(descriptionBrief) {
-  if (!descriptionBrief) return [];
-  const text = descriptionBrief.replace(/<[^>]*>/g, ' ').trim();
-  return text.split(/\n|<br>|\//).map((s) => s.trim()).filter((s) => s.length > 0);
+// Helper function to extract specs from properties
+function extractSpecs(properties) {
+  if (!properties) return [];
+  const specs = [];
+  
+  // Extract thickness (e.g., "17_5" -> "17.5pt thickness")
+  if (properties.thickness) {
+    const thickness = properties.thickness.replace('_', '.');
+    specs.push(`${thickness}pt thickness`);
+  }
+  
+  // Extract weight
+  if (properties.weight) {
+    const lbMatch = properties.weight.match(/^(\d+lb)/);
+    const gsmMatch = properties.weight.match(/(\d+)gsm/i);
+    
+    // If has lb component (e.g., "120lb" or "150lb400gsm")
+    if (lbMatch) {
+      specs.push(`${lbMatch[1]} weight`);
+      // If also has GSM, add it as third pill
+      if (gsmMatch) {
+        specs.push(`${gsmMatch[1]} GSM`);
+      }
+    } else if (gsmMatch) {
+      // If only GSM (no lb), show GSM as the weight pill
+      specs.push(`${gsmMatch[1]} GSM`);
+    }
+  }
+  
+  return specs;
 }
 
 async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
@@ -124,7 +149,7 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
       name: selectedPaper.name,
       heroImage: heroImageUrl,
       recommended: selectedRawPaper.isBestValue || false,
-      specs: extractSpecs(selectedRawPaper.descriptionBrief),
+      specs: extractSpecs(selectedRawPaper.properties),
       typeName: selectedPaper.title,
       description: selectedRawPaper.description || '',
       imgSrc: selectedPaper.thumbnail,
@@ -140,7 +165,7 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
         heroImage: heroUrl,
         priceAdjustment: paper.priceAdjustment,
         description: rawPaper.description || '',
-        specs: extractSpecs(rawPaper.descriptionBrief),
+        specs: extractSpecs(rawPaper.properties),
         recommended: rawPaper.isBestValue || false,
       };
     }),
