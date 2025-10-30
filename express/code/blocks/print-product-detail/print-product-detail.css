@@ -420,7 +420,6 @@
   cursor: pointer;
 }
 .pdpx-product-details-section-title-container {
-  border-bottom: 1px solid #686868;
   padding-bottom: var(--figma-spacing-300);
 }
 .pdpx-product-details-section-title {
