@@ -83,6 +83,7 @@ const CONFIG = {
     it: { ietf: 'it-IT', tk: 'bbf5pok.css' },
     jp: { ietf: 'ja-JP', tk: 'dvg6awq' },
     kr: { ietf: 'ko-KR', tk: 'qjs5sfm' },
+    ng: { ietf: 'en-NG', tk: 'cya6bri.css' },
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
