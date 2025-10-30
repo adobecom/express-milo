@@ -224,14 +224,14 @@ export default async function decorate(block) {
     syncMinHeights(cardParagraphs);
   }, 100));
 
-  // const backgroundImg = createTag('img', {
-  //   class: 'background-image',
-  //   src: '/express/code/blocks/discover-cards/img/cards-bg-large.webp',
-  //   alt: '',
-  //   fetchpriority: 'high',
-  //   loading: 'eager',
-  // });
-  // block.appendChild(backgroundImg);
+  const backgroundImg = createTag('img', {
+    class: 'background-image',
+    src: '/express/code/blocks/discover-cards/img/cards-bg-large.webp',
+    alt: '',
+    fetchpriority: 'high',
+    loading: 'eager',
+  });
+  block.appendChild(backgroundImg);
   // const link = document.createElement('link');
   // link.rel = 'preload';
   // link.as = 'image';
