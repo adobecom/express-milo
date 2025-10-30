@@ -190,6 +190,10 @@
   --ax-body-weight-bold: 700;
   --ax-detail-weight: 700;
   --ax-detail-transform: uppercase;
+
+  --color-dark-gray: #505050;
+  --color-default-font: #131313;
+  --color-light-gray-2: #e1e1e1;
 }
 
 @media (min-width: 600px) {
