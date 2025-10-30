@@ -226,6 +226,14 @@ if (new URLSearchParams(window.location.search).get('lingo')) {
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
 preDecorateSections(document);
+
+const link = document.createElement('link');
+link.rel = 'preload';
+link.as = 'image';
+link.href = '/express/code/blocks/discover-cards/img/cards-bg-large.webp';
+link.fetchpriority = 'high';
+document.head.appendChild(link);
+
 // LCP image decoration
 const eagerLoad = (img) => {
   img?.setAttribute('loading', 'eager');
