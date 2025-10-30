@@ -68,7 +68,7 @@ function updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, foote
         cachedElements.specsRow.innerHTML = '';
         specs.forEach((spec) => {
           const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
-          specPill.append(getIconElementDeprecated('frame'), spec);
+          specPill.append(getIconElementDeprecated('checkmark-outline'), spec);
           cachedElements.specsRow.append(specPill);
         });
       } catch (error) {
@@ -377,7 +377,7 @@ function createDrawerBodyPaperSelection(data) {
     const specsRow = createTag('div', { class: 'paper-selection-specs' });
     data.selectedPaper.specs.forEach((spec) => {
       const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
-      specPill.append(getIconElementDeprecated('frame'), spec);
+      specPill.append(getIconElementDeprecated('checkmark-outline'), spec);
       specsRow.append(specPill);
     });
     drawerBody.append(specsRow);
