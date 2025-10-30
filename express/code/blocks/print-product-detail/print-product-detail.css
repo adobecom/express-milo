@@ -370,6 +370,24 @@
   color: #505050;
 }
 
+/* DRAWER */
+.pdpx-drawer-hero-image-container {
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  overflow: hidden;
+}
+.pdpx-drawer-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  border-radius: 8px;
+}
+.pdpx-drawer-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
 /* MINI PILL SELECTOR */
 .pdpx-pill-selector-label-compare-link {
   background: transparent;

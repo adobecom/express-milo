@@ -21,10 +21,10 @@ Risus risus neque sollicitudin sapien. Neque egestas in quam a. Nec mauris conse
   },
 ];
 
-function createDrawerHead(drawerLabel, toggle) {
+function createDrawerHead(drawerLabel, toggleDrawerFunction) {
   const drawerHead = createTag('div', { class: 'drawer-head' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black')); // TODO: analytics
-  closeButton.addEventListener('click', toggle);
+  closeButton.addEventListener('click', toggleDrawerFunction);
   drawerHead.append(createTag('div', { class: 'drawer-head-label' }, drawerLabel), closeButton);
   return drawerHead;
 }

@@ -24,13 +24,16 @@ async function convertAttributeToOptionsObject(productType, attribute) {
       option.firstProductRealviewParams.max_dim = '100';
       imageUrl = buildImageUrl(option.firstProductRealviewParams);
     }
-    console.log(option.properties.tags);
+    debugger;
     optionsArray.push({
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
       priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
     });
+    if (productType === 'zazzle_businesscard' && attribute.name === 'media') {
+      optionsArray[i].thickness = option.properties.thickness;
+    }
     if (productType === 'zazzle_shirt' && attribute.name === 'color') {
       optionsArray[i].printingProcess = option.properties.tags?.includes('showswhite') ? 'vivid' : 'classic';
     }

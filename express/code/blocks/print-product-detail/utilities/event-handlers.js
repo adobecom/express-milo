@@ -2,19 +2,50 @@ import fetchAPIData from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
-import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
+import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
-import createDrawerContentSizeChart, { createDrawerContentPrintingProcess } from '../createComponents/createDrawerContent.js';
+import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/createDrawerContent.js';
 
-export async function toggleDrawer(drawerType) {
+export async function closeDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
   const drawer = document.querySelector('.drawer');
+  curtain.classList.add('hidden');
+  drawer.classList.add('hidden');
+  document.body.classList.remove('disable-scroll');
+}
+
+export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
+  const curtain = document.querySelector('.pdp-curtain');
+  const drawer = document.querySelector('.drawer');
+  drawer.innerHTML = '';
   if (drawerType === 'sizeChart') {
-    const sizeChartContent = await createDrawerContentSizeChart();
+    const sizeChartContent = await createDrawerContentSizeChart('placeholder');
     drawer.appendChild(sizeChartContent);
   } else if (drawerType === 'printingProcess') {
-    const printingProcessContent = await createDrawerContentPrintingProcess();
+    const printingProcessContent = await createDrawerContentPrintingProcess('placeholder');
     drawer.appendChild(printingProcessContent);
+  } else if (drawerType === 'paperType') {
+    const paperTypeContent = await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
+    drawer.appendChild(paperTypeContent);
+  }
+  curtain.classList.remove('hidden');
+  drawer.classList.remove('hidden');
+  document.body.classList.add('disable-scroll');
+}
+
+export async function toggleDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
+  const curtain = document.querySelector('.pdp-curtain');
+  const drawer = document.querySelector('.drawer');
+  drawer.innerHTML = '';
+  if (drawerType === 'sizeChart') {
+    const sizeChartContent = await createDrawerContentSizeChart('placeholder');
+    drawer.appendChild(sizeChartContent);
+  } else if (drawerType === 'printingProcess') {
+    const printingProcessContent = await createDrawerContentPrintingProcess('placeholder');
+    drawer.appendChild(printingProcessContent);
+  } else if (drawerType === 'paperType') {
+    const paperTypeContent = await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
+    drawer.appendChild(paperTypeContent);
   }
   document.body.classList.toggle('disable-scroll');
   curtain.classList.toggle('hidden');
