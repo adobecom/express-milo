@@ -33,23 +33,27 @@ async function createGlobalContainer(productDetails) {
   return globalContainer;
 }
 
-function createCheckoutButtonParameters(formDataObject) {
-  const parameters = {};
-  const productSettingsString = Object.entries(formDataObject).map(([key, value]) => `${key}=${value}`).join('&');
-  // productSettingsString = encodeURIComponent(productSettingsString);
-  parameters.productSettings = productSettingsString;
-  parameters.action = 'print-null-now';
-  parameters.loadPrintAddon = 'true';
-  parameters.mv = '1';
-  parameters.referrer = 'a.com-print-and-deliver-seo';
-  parameters.sdid = 'MH16S6M4';
-  return parameters;
-}
-
-function createCheckoutButtonHref(templateId, parameters) {
-  const parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
-  const encodedParametersString = encodeURIComponent(parametersString);
-  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${encodedParametersString}`;
+function createCheckoutButtonHref(templateId, parameters, productType) {
+  const productSettingsString = JSON.stringify(parameters);
+  const encodedParametersString = encodeURIComponent(productSettingsString);
+  const taskIdMap = {
+    zazzle_shirt: 'tshirt',
+    zazzle_businesscard: 'businesscard',
+  };
+  const taskId = taskIdMap[productType];
+  const urlParams = new URLSearchParams({
+    category: 'templates',
+    taskId,
+    loadPrintAddon: 'true',
+    print: 'true',
+    action: 'pdp-cta',
+    source: 'a.com-print-and-deliver-seo',
+    mv: 'other',
+    url: 'express/print',
+  });
+  const urlParamsString = urlParams.toString();
+  const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
   return checkoutButtonHref;
 }
 
@@ -69,11 +73,8 @@ async function updatePageWithProductDetails(productDetails) {
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const checkoutButtonParameters = createCheckoutButtonParameters(formDataObject);
-  const checkoutButtonHref = createCheckoutButtonHref(productDetails.templateId, checkoutButtonParameters);
+  const checkoutButtonHref = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
   checkoutButton.href = checkoutButtonHref;
-  const returnObject = { checkoutButtonParameters };
-  return returnObject;
 }
 
 function updatePageWithProductImages(productDetails) {
