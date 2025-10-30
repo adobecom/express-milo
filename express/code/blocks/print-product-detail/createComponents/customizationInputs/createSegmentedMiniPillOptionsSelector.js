@@ -6,7 +6,11 @@ let createTag;
 export default async function createSegmentedMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productId = productDetails.id;
-  let selectedValueExists = false;
+  let selectedValue = false;
+  // TODO: Only render the containers if there are options for that printing process
+  // const classicOptions = customizationOptions.filter((option) => option.printingProcess === 'classic');
+  // const vividOptions = customizationOptions.filter((option) => option.printingProcess === 'vivid');
+
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const miniPillSelectorLabelNameContainer = createTag('div', { class: 'pdpx-pill-selector-label-name-container' });
@@ -38,7 +42,7 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
     const miniPillSelectorOptionsContainer = customizationOptions[i].printingProcess === 'classic' ? miniPillSelectorOptionsContainerClassic : miniPillSelectorOptionsContainerVivid;
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     if (customizationOptions[i].name === defaultValue) {
-      selectedValueExists = customizationOptions[i].name;
+      selectedValue = customizationOptions[i].name;
     }
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
@@ -60,16 +64,14 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
       updateAllDynamicElements(productId);
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
-    miniPillOption.appendChild(miniPillOptionImageContainer);
-    miniPillOption.appendChild(miniPillOptionTextContainer);
+    miniPillOption.append(miniPillOptionImageContainer, miniPillOptionTextContainer);
     miniPillSelectorOptionsContainer.appendChild(miniPillOption);
   }
-  hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
+  hiddenSelectInput.value = selectedValue || customizationOptions[0].name;
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedMiniPillOptionImageContainer.classList.add('selected');
   const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
-  miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainerWrapper);
-  miniPillSelectorContainer.appendChild(hiddenSelectInput);
+  miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }

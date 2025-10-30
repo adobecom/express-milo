@@ -93,14 +93,6 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productTitle = productDetails.product.title;
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
-  if (productDetails.product.productType === 'zazzle_shirt') {
-    dataObject.classicPrintingTitle = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=light'];
-    dataObject.classicPrintingDescription = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=light[description]'];
-    dataObject.classicPrintingSummary = '4 color process';
-    dataObject.vividPrintingTitle = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=dark'];
-    dataObject.vividPrintingDescription = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=dark[description]'];
-    dataObject.vividPrintingSummary = '5 color process';
-  }
   for (const attribute of Object.values(attributeOptions)) {
     dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
   }
@@ -144,6 +136,12 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
   dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
   dataObject.compareValueInfoIconLabel = UIStrings.zi_product_Price_CompValue;
+  dataObject.classicPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Title;
+  dataObject.classicPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Description;
+  dataObject.classicPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Summary;
+  dataObject.vividPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Title;
+  dataObject.vividPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Description;
+  dataObject.vividPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Summary;
   return dataObject;
 }
 
