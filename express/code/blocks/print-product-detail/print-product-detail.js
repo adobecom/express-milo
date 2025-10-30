@@ -495,6 +495,12 @@ export default async function decorate(block) {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
     await updatePageWithProductDetails(dataObject, rawProductDetails);
     productId = productDetailsResponse.product.id;
+    
+    // Store productId on globalContainer for drawer access
+    const globalContainer = document.querySelector('.pdpx-global-container');
+    if (globalContainer) {
+      globalContainer.dataset.productId = productId;
+    }
 
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
     productRenditions.then((productRenditionsResponse) => {
