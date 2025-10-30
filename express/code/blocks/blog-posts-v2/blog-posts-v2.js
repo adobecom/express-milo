@@ -430,6 +430,7 @@ async function handelSpreadsheetVariant(block) {
     }
     const blogIndexLocal = await fetchBlogIndex(Array.from(locales));
     const posts = filterBlogPosts(spreadsheetConfig, blogIndexLocal);
+    addRightChevronToViewAll(block);
     await decorateBlogPosts(block, spreadsheetConfig, 0, posts);
   }
 }
