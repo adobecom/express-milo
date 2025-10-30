@@ -51,6 +51,7 @@
   grid-column: 1 / -1;
   grid-row: 1;
   margin-bottom: 0;
+  padding-bottom: 0;
   color: var(--color-gray-950);
   font-weight: 700;
   font-size: var(--body-font-size-l);
@@ -63,6 +64,8 @@
   grid-row: 1;
   justify-self: end;
   z-index: 1;
+  padding-bottom: 0;
+  gap: 0;
 }
 
 .template-x-carousel-toolbar.search-bar .templates-container {
@@ -477,6 +480,9 @@
 @media (min-width: 600px) {
   .template-x-carousel-toolbar .heading {
     font-size: var(--heading-font-size-s);
+  }
+  .template-x-carousel-toolbar.search-bar .centered-heading {
+    width: unset;
   }
   .template-x-carousel-toolbar .toolbar {
     padding-top: 0;

@@ -11,14 +11,14 @@
   margin: 0 auto;
 }
 
-/* Mobile: allow text link to be visible outside carousel */
-@media (max-width: 599px) {
-  main .section .link-list-wrapper:has(.link-list.link-text),
+main .section .link-list-wrapper:has(.link-list.link-text),
   main .section.modular-search .link-list-wrapper:has(.link-list.link-text) {
     padding: 0;
     margin: 0;
   }
 
+/* Mobile: allow text link to be visible outside carousel */
+@media (max-width: 599px) {
   .section .link-list.link-text {
     overflow: visible;
   }
