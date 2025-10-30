@@ -204,33 +204,20 @@ export function updateDataObjectProductPrice(dataObject, productPrice) {
 }
 
 export function updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates) {
-  const updatedDataObject = { ...dataObject };
-  if (productShippingEstimates?.shippingEstimates?.[0]) {
-    const estimate = productShippingEstimates.shippingEstimates[0];
-    updatedDataObject.deliveryEstimateMinDate = estimate.minDate;
-    updatedDataObject.deliveryEstimateMaxDate = estimate.maxDate;
-  }
-  return updatedDataObject;
+  dataObject.deliveryEstimateMinDate = productShippingEstimates.estimates[0].minDeliveryDate;
+  dataObject.deliveryEstimateMaxDate = productShippingEstimates.estimates[0].maxDeliveryDate;
+  return dataObject;
 }
 
 export function updateDataObjectProductReviews(dataObject, productReviews) {
-  const updatedDataObject = { ...dataObject };
-  updatedDataObject.averageRating = productReviews?.averageRating || 0;
-  updatedDataObject.totalReviews = productReviews?.totalReviews || 0;
-  return updatedDataObject;
+  dataObject.averageRating = productReviews.reviews.stats.averageRating;
+  dataObject.totalReviews = productReviews.reviews.stats.totalReviews;
+  return dataObject;
 }
 
 export function updateDataObjectProductRenditions(dataObject, productRenditions) {
-  const updatedDataObject = { ...dataObject };
-  // API returns realviewUrls object, not renditions array
-  if (productRenditions?.realviewUrls) {
-    const realViews = productRenditions.realviewUrls;
-    updatedDataObject.realViews = realViews;
-    
-    // Set heroImage to Front view, or first available view
-    updatedDataObject.heroImage = realViews.Front || Object.values(realViews)[0] || '';
-  }
-  return updatedDataObject;
+  dataObject.realViews = productRenditions.realviewUrls;
+  return dataObject;
 }
 
 export function updateDataObjectUIStrings(dataObject, UIStrings) {
