@@ -13,7 +13,10 @@ export function formatPaperWeight(weight) {
 }
 
 export function extractTemplateId(block) {
-  const templateId = block.children[0].children[1].textContent;
+  const templateIdBlock = block.children[0].children[1].textContent;
+  const urlParams = new URLSearchParams(window.location.search);
+  const templateIdURL = urlParams.get('templateId');
+  const templateId = templateIdURL || templateIdBlock;
   return templateId;
 }
 
@@ -22,17 +25,6 @@ export function formatDeliveryEstimateDateRange(minDate, maxDate) {
   const minFormatted = new Date(minDate).toLocaleDateString('en-US', options);
   const maxFormatted = new Date(maxDate).toLocaleDateString('en-US', options);
   return `${minFormatted} - ${maxFormatted}`;
-}
-
-export function buildRealViewImageUrl(realviewParams, maxDim = 644) {
-  const params = new URLSearchParams();
-  Object.entries(realviewParams).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      params.set(key, value);
-    }
-  });
-  params.set('max_dim', maxDim);
-  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
 export function formatLargeNumberToK(totalReviews) {
@@ -47,21 +39,37 @@ export function formatLargeNumberToK(totalReviews) {
 }
 
 export function exchangeRegionForTopLevelDomain(region) {
-  if (region === 'en-GB') {
-    return 'co.uk';
-  }
-  return 'com';
+  const urlParams = new URLSearchParams(window.location.search);
+  const regionURL = urlParams.get('region');
+  const regionFinal = regionURL || region;
+  const regionToTopLevelDomainMap = {
+    'en-GB': 'co.uk',
+    'en-US': 'com',
+    'en-CA': 'ca',
+    'en-AU': 'au',
+    'en-NZ': 'nz',
+  };
+  const topLevelDomain = regionToTopLevelDomainMap[regionFinal];
+  return topLevelDomain;
 }
 
 export async function formatPriceZazzle(price, differential = false) {
-  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-  const { ietf } = getConfig().locale;
   const { getCountry } = await import('../../../scripts/utils/location-utils.js');
   const country = await getCountry();
   const { getCurrency, formatPrice } = await import('../../../scripts/utils/pricing.js');
   const currency = await getCurrency(country);
+  const urlParams = new URLSearchParams(window.location.search);
+  const region = urlParams.get('region');
+  const currencyMap = {
+    'en-GB': 'GBP',
+    'en-US': 'USD',
+    'en-CA': 'CAD',
+    'en-AU': 'AUD',
+    'en-NZ': 'NZD',
+  };
+  const currencyFinal = currencyMap[region] || currency;
   let priceDifferentialOperator;
-  const localizedPrice = await formatPrice(price, currency);
+  const localizedPrice = await formatPrice(price, currencyFinal);
   if (differential) {
     priceDifferentialOperator = price >= 0 ? '+' : '';
   } else {

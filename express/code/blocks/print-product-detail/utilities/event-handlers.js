@@ -4,15 +4,7 @@ import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
-import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/createDrawerContent.js';
-
-export async function closeDrawer() {
-  const curtain = document.querySelector('.pdp-curtain');
-  const drawer = document.getElementById('pdp-x-drawer');
-  curtain.classList.add('hidden');
-  drawer.classList.add('hidden');
-  document.body.classList.remove('disable-scroll');
-}
+import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/drawerContent/createDrawerContent.js';
 
 export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
@@ -22,8 +14,7 @@ export async function openDrawer(customizationOptions, labelText, hiddenSelectIn
     const sizeChartContent = await createDrawerContentSizeChart('placeholder');
     drawer.appendChild(sizeChartContent);
   } else if (drawerType === 'printingProcess') {
-    const printingProcessContent = await createDrawerContentPrintingProcess('placeholder');
-    drawer.appendChild(printingProcessContent);
+    await createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer);
   } else if (drawerType === 'paperType') {
     await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer);
   }

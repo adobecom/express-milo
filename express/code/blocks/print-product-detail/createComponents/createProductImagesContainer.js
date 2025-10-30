@@ -1,5 +1,4 @@
 import { getLibs } from '../../../scripts/utils.js';
-// import { buildRealViewImageUrl } from '../utilities/utility-functions.js';
 
 let createTag;
 

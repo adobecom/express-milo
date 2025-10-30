@@ -1,5 +1,5 @@
-import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
-import createMiniPillOptionsSelector from './customizationInputs/createMiniPillOptionsSelector.js';
+import { getLibs, getIconElementDeprecated } from '../../../../scripts/utils.js';
+import createMiniPillOptionsSelector from '../customizationInputs/createMiniPillOptionsSelector.js';
 
 let createTag;
 
@@ -19,18 +19,6 @@ export function createDrawerHead(drawerLabel) {
   return drawerHead;
 }
 
-function createDrawerFoot({ imgSrc, name, price }) {
-  const drawerFoot = createTag('div', { class: 'drawer-foot' });
-  const selectButton = createTag('button', { class: 'select' }, 'Select');
-  const infoContainer = createTag('div', { class: 'info-container' });
-  const infoText = createTag('div', { class: 'info-text' });
-  infoText.append(createTag('div', { class: 'info-name' }, name));
-  infoText.append(createTag('div', { class: 'info-price' }, price));
-  infoContainer.append(createTag('img', { src: imgSrc, alt: name }), infoText);
-  drawerFoot.append(infoContainer, selectButton);
-  return drawerFoot;
-}
-
 export default async function createDrawerContentSizeChart(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const sizeChartContainer = createTag('div', { class: 'pdpx-size-chart-container' });
@@ -39,18 +27,17 @@ export default async function createDrawerContentSizeChart(productDetails) {
   return sizeChartContainer;
 }
 
-export async function createDrawerContentPrintingProcess(productDetails) {
+export async function createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const printingProcessContainer = createTag('div', { class: 'pdpx-printing-process-container' });
-  const printingProcessTitle = createTag('h2', { class: 'pdpx-printing-process-title' }, 'Printing Process');
-  printingProcessContainer.appendChild(printingProcessTitle);
-  return printingProcessContainer;
+  const drawerHead = createDrawerHead('Printing Process');
+  const drawerBody = createTag('div', { class: 'drawer-body' });
+  drawerContainer.appendChild(drawerHead);
+  drawerContainer.appendChild(drawerBody);
 }
 
-export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer) {
+export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const paperTypeContainer = drawer;
-  const drawerHead = createDrawerHead('Paper Type');
+  const drawerHead = createDrawerHead('Select Paper Type');
   const drawerBody = createTag('div', { class: 'drawer-body' });
   const defaultValueSafe = defaultValue || customizationOptions[0].name;
   const defaultValueOption = customizationOptions.find((option) => option.name === defaultValueSafe);
@@ -92,14 +79,12 @@ export async function createDrawerContentPaperType(customizationOptions, labelTe
   drawerFoot.appendChild(infoContainer);
   const selectButton = createTag('button', { class: 'pdpx-drawer-foot-select-button' }, 'Select');
   drawerFoot.appendChild(selectButton);
-
-  paperTypeContainer.appendChild(drawerHead);
+  drawerContainer.appendChild(drawerHead);
   drawerBody.appendChild(heroImageContainer);
   drawerBody.appendChild(titleRow);
   drawerBody.appendChild(pillsContainer);
   drawerBody.appendChild(paperTypeSelectorContainer);
   drawerBody.appendChild(description);
-  paperTypeContainer.appendChild(drawerBody);
-  paperTypeContainer.appendChild(drawerFoot);
-  return paperTypeContainer;
+  drawerContainer.appendChild(drawerBody);
+  drawerContainer.appendChild(drawerFoot);
 }

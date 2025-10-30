@@ -1,5 +1,5 @@
 import { getLibs } from '../../../../scripts/utils.js';
-import updateAllDynamicElements, { toggleDrawer } from '../../utilities/event-handlers.js';
+import updateAllDynamicElements, { openDrawer } from '../../utilities/event-handlers.js';
 
 let createTag;
 
@@ -15,7 +15,7 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   if (CTALinkText) {
     const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
     miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
-      await toggleDrawer(drawerType);
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
     });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
@@ -52,7 +52,6 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
         pill.classList.remove('selected');
       });
       element.currentTarget.classList.toggle('selected');
-      miniPillSelectorLabelName.innerHTML = element.currentTarget.getAttribute('data-title');
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
