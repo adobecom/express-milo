@@ -483,6 +483,8 @@
   }
   .template-x-carousel-toolbar.search-bar .centered-heading {
     width: unset;
+    text-align: center;
+    font-size: var(--heading-font-size-xs)
   }
   .template-x-carousel-toolbar .toolbar {
     padding-top: 0;
