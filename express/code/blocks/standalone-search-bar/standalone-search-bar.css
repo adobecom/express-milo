@@ -27,7 +27,7 @@
     color: var(--color-gray-800-variant);
     margin: 0;
     line-height: 1.4;
-    max-width: 600px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -151,7 +151,7 @@
 
 .standalone-search-bar .search-bar-wrapper {
     width: 100%;
-    max-width: 560px;
+    max-width: 750px;
     margin: 0 28px;
     display: flex;
     flex-direction: column;
