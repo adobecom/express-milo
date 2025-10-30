@@ -249,6 +249,7 @@ export async function normalizeProductDetailObject({
   productShippingEstimates,
   changeOptions = {},
   templateId,
+  quantity = 1,
 }) {
   const productTitle = productDetails.product.title;
   const { productType } = productDetails.product;
@@ -269,13 +270,13 @@ export async function normalizeProductDetailObject({
     // Use discounted price and original price
     const adjustedPrice = discountItem.priceAdjusted || discountItem.price || basePrice;
     const originalPrice = discountItem.price || basePrice;
-    productPriceFormatted = await formatPriceZazzle(adjustedPrice);
-    strikethroughPrice = await formatPriceZazzle(originalPrice);
+    productPriceFormatted = await formatPriceZazzle(adjustedPrice * quantity);
+    strikethroughPrice = await formatPriceZazzle(originalPrice * quantity);
     discountString = discountItem.discountString || '';
   } else if (basePrice > 0) {
     // No discount available
-    productPriceFormatted = await formatPriceZazzle(basePrice);
-    strikethroughPrice = await formatPriceZazzle(basePrice);
+    productPriceFormatted = await formatPriceZazzle(basePrice * quantity);
+    strikethroughPrice = await formatPriceZazzle(basePrice * quantity);
   }
   const { averageRating = 0 } = productReviews || {};
   const { totalReviews = 0 } = productReviews || {};
