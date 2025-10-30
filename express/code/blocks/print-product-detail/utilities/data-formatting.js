@@ -128,8 +128,10 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   if (productDetails.product.productType === 'zazzle_shirt') {
     dataObject.classicPrintingTitle = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=light'];
     dataObject.classicPrintingDescription = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=light[description]'];
+    dataObject.classicPrintingSummary = '4 color process';
     dataObject.vividPrintingTitle = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=dark'];
     dataObject.vividPrintingDescription = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=dark[description]'];
+    dataObject.vividPrintingSummary = '5 color process';
   }
   for (const attribute of Object.values(attributeOptions)) {
     dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
