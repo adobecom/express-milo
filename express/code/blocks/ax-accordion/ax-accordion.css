@@ -3,6 +3,7 @@
  */
 
 .ax-accordion {
+  --accordion-font-family: 'Adobe Clean Spectrum VF', adobe-clean, 'Adobe Clean', 'Trebuchet MS', sans-serif;
   width: 100%;
   max-width: 100%;
   display: flex;
@@ -24,7 +25,7 @@
   text-align: left;
   flex: 1 0 0;
   color: #131313;
-  font-family: 'Adobe Clean Spectrum VF', adobe-clean, 'Adobe Clean', 'Trebuchet MS', sans-serif;
+  font-family: var(--accordion-font-family);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -48,7 +49,7 @@
 /* When button is expanded, remove border-bottom and add extra padding */
 .ax-accordion-item-title-container[aria-expanded="true"] {
   border-bottom: none;
-  padding-bottom: 14px;
+  padding-bottom: 2px;
 }
 
 /* Hover state for entire expanded item */
@@ -76,21 +77,15 @@
   padding: var(--spacing-100);
   justify-content: center;
   align-items: center;
-  -webkit-mask-size: var(--spacing-200) var(--spacing-200);
-  mask-size: var(--spacing-200) var(--spacing-200);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-image: url('/express/code/icons/plus-heavy.svg');
-  mask-image: url('/express/code/icons/plus-heavy.svg');
-  background-color: #505050;
+  background-size: var(--spacing-200) var(--spacing-200);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('/express/code/icons/plus-heavy-light-gray.svg');
 }
 
 /* Icon states based on button aria-expanded */
 .ax-accordion-item-title-container[aria-expanded="true"] .ax-accordion-item-icon {
-  -webkit-mask-image: url('/express/code/icons/minus-heavy.svg');
-  mask-image: url('/express/code/icons/minus-heavy.svg');
+  background-image: url('/express/code/icons/minus-heavy-light-gray.svg');
 }
 
 /* Content */
@@ -99,7 +94,7 @@
   grid-template-rows: 0fr;
   overflow: hidden;
   color: #505050;
-  font-family: 'Adobe Clean Spectrum VF', adobe-clean, 'Adobe Clean', 'Trebuchet MS', sans-serif;
+  font-family: var(--accordion-font-family);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
