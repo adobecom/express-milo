@@ -1,4 +1,4 @@
-import fetchAPIData from '../fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
@@ -120,12 +120,13 @@ export default async function updateAllDynamicElements(productId) {
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
   const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity);
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
-  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates] = await Promise.all([
+  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, UIStrings] = await Promise.all([
     fetchAPIData(productId, updatedParameters, 'getproduct'),
     fetchAPIData(productId, updatedParameters, 'getproductpricing'),
     fetchAPIData(productId, null, 'getreviews'),
     fetchAPIData(productId, updatedParameters, 'getproductrenditions'),
     fetchAPIData(productId, updatedParameters, 'getshippingestimates'),
+    fetchUIStrings(),
   ]);
   const normalizeProductDetailsParametersObject = {
     productDetails: updatedConfigurationOptions,
@@ -135,6 +136,7 @@ export default async function updateAllDynamicElements(productId) {
     productShippingEstimates,
     quantity,
     templateId,
+    UIStrings,
   };
   const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
   await updateCheckoutButton(normalizedProductDetails, formDataObject);

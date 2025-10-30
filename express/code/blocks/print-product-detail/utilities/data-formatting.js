@@ -56,38 +56,6 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId }) {
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
-  const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
-  const normalizedProductDetails = {
-    id: productDetails.product.id,
-    templateId,
-    heroImage: productDetails.product.initialPrettyPreferredViewUrl,
-    productTitle: productDetails.product.title,
-    unitPrice: productPrice?.unitPrice,
-    productPrice: calculatedProductPrice,
-    strikethroughPrice: productPrice?.unitPrice * quantity,
-    discountAvailable,
-    discountString: applicableDiscount?.discountString,
-    deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
-    deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    realViews: productRenditions.realviewUrls,
-    productType: productDetails.product.productType,
-    pluralUnitLabel: productDetails.product.pluralUnitLabel,
-    averageRating: productReviews.reviews.stats.averageRating,
-    totalReviews: productReviews.reviews.stats.totalReviews,
-    productDescriptions: [],
-    attributes: { quantities: productDetails.product.quantities },
-  };
-  for (const attribute of Object.values(productDetails.product.attributes)) {
-    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
-  }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  normalizedProductDetails.attributes.quantities = quantitiesOptions;
-  return normalizedProductDetails;
-}
-
 export function createEmptyDataObject(templateId) {
   const emptyDataObject = {
     id: '',
@@ -126,11 +94,11 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   if (productDetails.product.productType === 'zazzle_shirt') {
-    dataObject.classicPrintingTitle = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=light'];
-    dataObject.classicPrintingDescription = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=light[description]'];
+    dataObject.classicPrintingTitle = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=light'];
+    dataObject.classicPrintingDescription = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=light[description]'];
     dataObject.classicPrintingSummary = '4 color process';
-    dataObject.vividPrintingTitle = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=dark'];
-    dataObject.vividPrintingDescription = productDetails.entities.dbStrings['product.option.zazzle_shirt.design.shade=dark[description]'];
+    dataObject.vividPrintingTitle = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=dark'];
+    dataObject.vividPrintingDescription = productDetails.entities?.dbStrings?.['product.option.zazzle_shirt.design.shade=dark[description]'];
     dataObject.vividPrintingSummary = '5 color process';
   }
   for (const attribute of Object.values(attributeOptions)) {
@@ -176,5 +144,16 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
   dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
   dataObject.compareValueInfoIconLabel = UIStrings.zi_product_Price_CompValue;
+  return dataObject;
+}
+
+export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId, UIStrings }) {
+  let dataObject = createEmptyDataObject(templateId);
+  dataObject = await updateDataObjectProductDetails(dataObject, productDetails);
+  dataObject = await updateDataObjectProductPrice(dataObject, productPrice, quantity);
+  dataObject = await updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates);
+  dataObject = await updateDataObjectProductReviews(dataObject, productReviews);
+  dataObject = await updateDataObjectProductRenditions(dataObject, productRenditions);
+  dataObject = await updateDataObjectUIStrings(dataObject, UIStrings);
   return dataObject;
 }
