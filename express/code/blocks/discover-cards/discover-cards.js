@@ -1,8 +1,6 @@
 import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate test 12
-
 let createTag;
 
 async function syncMinHeights(groups) {
@@ -225,4 +223,13 @@ export default async function decorate(block) {
   window.addEventListener('resize', debounce(() => {
     syncMinHeights(cardParagraphs);
   }, 100));
+
+  const backgroundImg = createTag('img', {
+    class: 'background-image',
+    src: '/express/code/blocks/discover-cards/img/cards-bg-large.webp',
+    alt: '',
+    fetchpriority: 'low',
+    loading: 'lazy',
+  });
+  block.appendChild(backgroundImg);
 }

@@ -12,11 +12,20 @@ main .section .discover-cards {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: image-set(
-        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
-    );
+    background-image:
+      linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+      linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%);
+}
+
+.discover-cards .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .discover-cards .sub-header {
