@@ -1,15 +1,10 @@
-:root {
-  --pdp-drawer-z-index: 102;
-  --pdp-drawer-curtain-z-index: 101;
-}
-
 .pdpx-global-container .drawer {
   --drawer-padding: var(--spacing-300);
   --drawer-body-gap: var(--spacing-200);
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: var(--pdp-drawer-z-index);
+  z-index: 102;
   border-radius: 16px 16px 0 0;
   background-color: var(--color-white);
   height: 600px;
@@ -49,7 +44,6 @@
   padding: var(--spacing-300) var(--drawer-padding) 0 var(--drawer-padding);
   display: flex;
   flex-direction: column;
-  gap: var(--drawer-body-gap);
   flex: 1;
   overflow: auto;
   scrollbar-width: thin;
@@ -63,17 +57,17 @@
   border-radius: 8px;
 }
 
-.pdpx-global-container .drawer-body .title-row {
+.pdpx-global-container .drawer-body .pdpx-drawer-title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.pdpx-global-container .drawer-body .title-row .name {
+.pdpx-global-container .drawer-body .pdpx-drawer-title-row .pdpx-drawer-title {
   font-weight: 700;
 }
 
-.pdpx-global-container .drawer-body .title-row .recommended {
+.pdpx-global-container .drawer-body .pdpx-drawer-title-row .recommended {
   font-size: var(--body-font-size-xs);
   color: white;
   padding: 4px 9px;
@@ -121,41 +115,9 @@
   flex-shrink: 0;
 }
 
-.pdpx-global-container .drawer-foot button {
-  color: var(--color-white);
-  background-color: #5258E4;
-  padding: var(--spacing-200) var(--spacing-400);
-  border-radius: 24px;
-  border: none;
-  font-family: var(--body-font-family);
-  font-weight: 700;
-  font-size: var(--body-font-size-l);
-}
-
-.pdpx-global-container .drawer-foot .info-container {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-200);
-}
-
-.pdpx-global-container .drawer-foot .info-container img {
-  width: 48px;
-  border-radius: 4px;
-}
-
-.pdpx-global-container .drawer-foot .info-name {
-  font-weight: 700;
-  line-height: 1.3;
-  padding-bottom: 2px;
-}
-
-.pdpx-global-container .drawer-foot .info-price {
-  font-size: var(--body-font-size-s);
-  line-height: 1.3;
-}
 
 .pdp-curtain {
-  z-index: var(--pdp-drawer-curtain-z-index);
+  z-index: 101;
   position: fixed;
   top: 0;
   right: 0;
@@ -179,13 +141,12 @@
     width: 50%;
     height: 100%;
     border-radius: initial;
-
     transform: translateX(0);
   }
   .pdpx-global-container .drawer.hidden {
     transform: translateX(100%);
   }
-  .pdpx-global-container .drawer-body .title-row .name {
+  .pdpx-global-container .drawer-body .pdpx-drawer-title-row .pdpx-drawer-title {
     font-size: var(--body-font-size-xl);
   }
 }

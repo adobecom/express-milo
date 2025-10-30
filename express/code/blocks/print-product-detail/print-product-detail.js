@@ -3,56 +3,57 @@ import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/f
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
-import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
+import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
-import createDrawer from './createComponents/createDrawer.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from './utilities/utility-functions.js';
+import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
 
 let createTag;
 
 async function createProductInfoContainer(productDetails, drawer) {
-  const productInfoSectionWrapperContainer = createTag('div', { class: 'pdpx-product-info-section-wrapper-container' });
-  const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
-  const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container', id: 'pdpx-product-info-container' });
+  const productInfoSectionContainer = createTag('div', { class: 'pdpx-product-info-section-container' });
+  const productInfoSection = createTag('div', { class: 'pdpx-product-info-section', id: 'pdpx-product-info-section' });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
-  productInfoContainer.appendChild(productInfoHeadingSection);
-  productInfoSectionWrapper.appendChild(productInfoContainer);
   const checkoutButton = await createCheckoutButton(productDetails);
-  productInfoSectionWrapper.appendChild(checkoutButton);
-  productInfoSectionWrapper.appendChild(drawer);
-  productInfoSectionWrapperContainer.appendChild(productInfoHeadingSection);
-  productInfoSectionWrapperContainer.appendChild(productInfoSectionWrapper);
-  return productInfoSectionWrapperContainer;
+  productInfoSectionContainer.appendChild(drawer);
+  productInfoSectionContainer.appendChild(productInfoHeadingSection);
+  productInfoSectionContainer.appendChild(productInfoSection);
+  productInfoSectionContainer.appendChild(checkoutButton);
+  return productInfoSectionContainer;
 }
 
 async function createGlobalContainer(productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
   const { curtain, drawer } = await createDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
-  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, drawer);
+  const productInfoSection = await createProductInfoContainer(productDetails, drawer);
   globalContainer.appendChild(productImagesContainer);
-  globalContainer.appendChild(productInfoSectionWrapper);
+  globalContainer.appendChild(productInfoSection);
   document.body.append(curtain);
   return globalContainer;
 }
 
-function createCheckoutButtonParameters(formDataObject) {
-  const parameters = {};
-  const productSettingsString = Object.entries(formDataObject).map(([key, value]) => `${key}=${value}`).join('&');
-  // productSettingsString = encodeURIComponent(productSettingsString);
-  parameters.productSettings = productSettingsString;
-  parameters.action = 'print-null-now';
-  parameters.loadPrintAddon = 'true';
-  parameters.mv = '1';
-  parameters.referrer = 'a.com-print-and-deliver-seo';
-  parameters.sdid = 'MH16S6M4';
-  return parameters;
-}
-
-function createCheckoutButtonHref(templateId, parameters) {
-  const parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
-  const encodedParametersString = encodeURIComponent(parametersString);
-  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${encodedParametersString}`;
+export function createCheckoutButtonHref(templateId, parameters, productType) {
+  const productSettingsString = JSON.stringify(parameters);
+  const encodedParametersString = encodeURIComponent(productSettingsString);
+  const taskIdMap = {
+    zazzle_shirt: 'tshirt',
+    zazzle_businesscard: 'businesscard',
+  };
+  const taskId = taskIdMap[productType];
+  const urlParams = new URLSearchParams({
+    category: 'templates',
+    taskId,
+    loadPrintAddon: 'true',
+    print: 'true',
+    action: 'pdp-cta',
+    source: 'a.com-print-and-deliver-seo',
+    mv: 'other',
+    url: 'express/print',
+  });
+  const urlParamsString = urlParams.toString();
+  const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
   return checkoutButtonHref;
 }
 
@@ -63,20 +64,17 @@ async function updatePageWithProductDetails(productDetails) {
   const productHeroImage = document.getElementById('pdpx-product-hero-image');
   productHeroImage.src = productDetails.heroImage;
   productHeroImage.removeAttribute('data-skeleton');
-  const productInfoContainer = document.getElementById('pdpx-product-info-container');
+  const productInfoSection = document.getElementById('pdpx-product-info-section');
   const customizationInputs = await createCustomizationInputs(productDetails);
-  productInfoContainer.appendChild(customizationInputs);
+  productInfoSection.appendChild(customizationInputs);
   const productDetailsSection = await createProductDetailsSection(productDetails.productDescriptions);
-  productInfoContainer.appendChild(productDetailsSection);
+  productInfoSection.appendChild(productDetailsSection);
   const form = document.getElementById('pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const checkoutButtonParameters = createCheckoutButtonParameters(formDataObject);
-  const checkoutButtonHref = createCheckoutButtonHref(productDetails.templateId, checkoutButtonParameters);
+  const checkoutButtonHref = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
   checkoutButton.href = checkoutButtonHref;
-  const returnObject = { checkoutButtonParameters };
-  return returnObject;
 }
 
 function updatePageWithProductImages(productDetails) {
@@ -120,12 +118,13 @@ function updatePageWithUIStrings(productDetails) {
   compareValueTooltipDescription1.textContent = productDetails.compareValueTooltipDescription1;
   const compareValueTooltipDescription2 = document.getElementById('pdpx-info-tooltip-content-description-2');
   compareValueTooltipDescription2.textContent = productDetails.compareValueTooltipDescription2;
+  document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
 }
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addPrefetchLinks();
-  const templateId = block.children[0].children[1].textContent;
+  const templateId = extractTemplateId(block);
   let productId;
   let dataObject = createEmptyDataObject(templateId);
   block.innerHTML = '';
