@@ -3,8 +3,9 @@ import updateAllDynamicElements, { openDrawer } from '../../utilities/event-hand
 
 let createTag;
 
-export default async function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
+export default async function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const productId = productDetails.id;
   let selectedValueExists = false;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -15,7 +16,7 @@ export default async function createMiniPillOptionsSelector(customizationOptions
   if (CTALinkText) {
     const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
     miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
-      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType);
     });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
@@ -41,7 +42,10 @@ export default async function createMiniPillOptionsSelector(customizationOptions
       });
       element.currentTarget.classList.toggle('selected');
       miniPillSelectorLabelName.innerHTML = element.currentTarget.getAttribute('data-title');
-      document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
+      const allInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
+      allInputs.forEach((input) => {
+        input.value = element.currentTarget.getAttribute('data-name');
+      });
       updateAllDynamicElements(productId);
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);

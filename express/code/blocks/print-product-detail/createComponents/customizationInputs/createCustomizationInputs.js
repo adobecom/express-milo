@@ -63,25 +63,19 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
 }
 
 export async function createBusinessCardInputs(container, productDetails, formDataObject = {}) {
-  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type', 'media', 'Compare Paper Types', productDetails.id, formDataObject?.media, 'paperType');
+  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type', 'media', 'Compare Paper Types', productDetails, formDataObject?.media, 'paperType');
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
-  container.appendChild(paperTypeSelectorContainer);
-  container.appendChild(cornerStyleSelectorContainer);
-  container.appendChild(sizeSelectorContainer);
-  container.appendChild(quantitySelectorContainer);
+  container.append(paperTypeSelectorContainer, cornerStyleSelectorContainer, sizeSelectorContainer, quantitySelectorContainer);
 }
 
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
-  const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails.id, formDataObject?.color, 'printingProcess');
+  const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails.id, formDataObject?.size);
-  container.appendChild(styleSelectorContainer);
-  container.appendChild(colorSelectorContainer);
-  container.appendChild(quantitySelectorContainer);
-  container.appendChild(sizeSelectorContainer);
+  container.append(styleSelectorContainer, colorSelectorContainer, quantitySelectorContainer, sizeSelectorContainer);
 }
 function createDefaultInputs(container, productDetails, formDataObject = {}) {
   return container;

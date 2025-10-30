@@ -7,7 +7,7 @@ import BlockMediator from '../../../scripts/block-mediator.min.js';
 import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/drawerContent/createDrawerContent.js';
 import { createCheckoutButtonHref } from '../print-product-detail.js';
 
-export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
+export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
   const drawer = document.querySelector('.drawer');
   drawer.innerHTML = '';
@@ -15,32 +15,13 @@ export async function openDrawer(customizationOptions, labelText, hiddenSelectIn
     const sizeChartContent = await createDrawerContentSizeChart('placeholder');
     drawer.appendChild(sizeChartContent);
   } else if (drawerType === 'printingProcess') {
-    await createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer);
+    await createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
   } else if (drawerType === 'paperType') {
-    await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer);
+    await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
   }
   curtain.classList.remove('hidden');
   drawer.classList.remove('hidden');
   document.body.classList.add('disable-scroll');
-}
-
-export async function toggleDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
-  const curtain = document.querySelector('.pdp-curtain');
-  const drawer = document.querySelector('.drawer');
-  drawer.innerHTML = '';
-  if (drawerType === 'sizeChart') {
-    const sizeChartContent = await createDrawerContentSizeChart('placeholder');
-    drawer.appendChild(sizeChartContent);
-  } else if (drawerType === 'printingProcess') {
-    const printingProcessContent = await createDrawerContentPrintingProcess('placeholder');
-    drawer.appendChild(printingProcessContent);
-  } else if (drawerType === 'paperType') {
-    const paperTypeContent = await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
-    drawer.appendChild(paperTypeContent);
-  }
-  document.body.classList.toggle('disable-scroll');
-  curtain.classList.toggle('hidden');
-  drawer.classList.toggle('hidden');
 }
 
 function formatProductOptionsToAPIParameters(formDataObject) {
@@ -103,6 +84,18 @@ async function updateCheckoutButton(productDetails, formDataObject) {
   checkoutButton.href = url;
 }
 
+async function updateDrawerContent(productDetails, formDataObject) {
+  const drawer = document.querySelector('.drawer');
+  if (drawer.classList.contains('hidden')) {
+    return;
+  }
+  if (productDetails.productType === 'zazzle_businesscard') {
+    const mediaValue = productDetails.attributes.media.find((v) => v.name === formDataObject.media);
+    drawer.innerHTML = '';
+    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', null, productDetails, mediaValue.name, 'paperType', drawer);
+  }
+}
+
 function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
   const selectedValuesObject = {};
   for (const [key, value] of Object.entries(updatedConfigurationOptions.product.attributes)) {
@@ -149,6 +142,7 @@ export default async function updateAllDynamicElements(productId) {
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   await updateProductPrice(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
+  await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
     productDetails,

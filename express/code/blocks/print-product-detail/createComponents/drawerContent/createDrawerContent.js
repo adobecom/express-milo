@@ -11,6 +11,15 @@ export async function closeDrawer() {
   document.body.classList.remove('disable-scroll');
 }
 
+export async function createDrawer() {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const curtain = createTag('div', { class: 'pdp-curtain hidden' });
+  curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
+  const drawer = createTag('div', { class: 'drawer hidden', id: 'pdp-x-drawer' });
+  curtain.addEventListener('click', closeDrawer);
+  return { curtain, drawer };
+}
+
 export function createDrawerHead(drawerLabel) {
   const drawerHead = createTag('div', { class: 'drawer-head' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black')); // TODO: analytics
@@ -27,15 +36,24 @@ export default async function createDrawerContentSizeChart(productDetails) {
   return sizeChartContainer;
 }
 
-export async function createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawerContainer) {
+export async function createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Printing Process');
   const drawerBody = createTag('div', { class: 'drawer-body' });
+  const printingProcessOptionsContainer = createTag('div', { class: 'pdpx-printing-process-options-container' });
+  const classicPrintingOptionsContainer = createTag('div', { class: 'pdpx-printing-process-option-container' });
+  const vividPrintingOptionsContainer = createTag('div', { class: 'pdpx-printing-process-option-container' });
+  const classicPrintingImageContainer = createTag('div', { class: 'pdpx-printing-process-option-image-container' });
+  const vividPrintingImageContainer = createTag('div', { class: 'pdpx-printing-process-option-image-container' });
+  printingProcessOptionsContainer.appendChild(classicPrintingOptionsContainer);
+  printingProcessOptionsContainer.appendChild(vividPrintingOptionsContainer);
+  drawerBody.appendChild(printingProcessOptionsContainer);
   drawerContainer.appendChild(drawerHead);
   drawerContainer.appendChild(drawerBody);
+  debugger;
 }
 
-export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawerContainer) {
+export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Select Paper Type');
   const drawerBody = createTag('div', { class: 'drawer-body' });
@@ -68,7 +86,7 @@ export async function createDrawerContentPaperType(customizationOptions, labelTe
     pill.append(pillIcon, pillText);
     pillsContainer.appendChild(pill);
   });
-  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, null, productId, defaultValue, drawerType);
+  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, null, productDetails, defaultValue, drawerType);
   const description = createTag('div', { class: 'pdpx-drawer-description' }, defaultValueOption.description);
   const drawerFoot = createTag('div', { class: 'drawer-foot' });
   const infoContainer = createTag('div', { class: 'pdpx-drawer-foot-info-container' });
@@ -78,6 +96,9 @@ export async function createDrawerContentPaperType(customizationOptions, labelTe
   infoContainer.append(createTag('img', { src: defaultValueOption.thumbnail, alt: heroImageAlt }), infoText);
   drawerFoot.appendChild(infoContainer);
   const selectButton = createTag('button', { class: 'pdpx-drawer-foot-select-button' }, 'Select');
+  selectButton.addEventListener('click', async () => {
+    closeDrawer();
+  });
   drawerFoot.appendChild(selectButton);
   drawerContainer.appendChild(drawerHead);
   drawerBody.appendChild(heroImageContainer);

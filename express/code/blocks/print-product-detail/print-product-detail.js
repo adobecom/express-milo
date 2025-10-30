@@ -5,7 +5,7 @@ import createProductInfoHeadingSection from './createComponents/createProductInf
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
-import createDrawer from './createComponents/createDrawer.js';
+import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
 import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
 
 let createTag;
