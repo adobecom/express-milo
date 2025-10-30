@@ -47,6 +47,8 @@ function buildSearchConfig(block) {
     }
   });
 
+  console.log(searchConfig);
+
   return searchConfig;
 }
 
@@ -268,7 +270,7 @@ async function decorateSearchFunctions(block) {
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: blockConfig['search-placeholder'] || 'Search for over 50,000 templates',
+    placeholder: blockConfig['search-bar-text'] || 'Search for over 50,000 templates',
     enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
   });
 
