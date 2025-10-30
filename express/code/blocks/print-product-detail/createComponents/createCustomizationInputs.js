@@ -398,7 +398,8 @@ async function createTShirtInputs(
   }
 
   let colorSelectorContainer;
-  if (colorInlineSelection?.groups && productDetails.dbStrings) {
+  const hasSegmentedColors = productDetails.attributes.color?.some((c) => c.printingProcess);
+  if (hasSegmentedColors) {
     colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(
       productDetails.attributes.color,
       'Shirt color',
@@ -406,7 +407,7 @@ async function createTShirtInputs(
       '',
       productDetails.id,
       formDataObject?.color,
-      colorInlineSelection,
+      null,
     );
   } else {
     colorSelectorContainer = createMiniPillOptionsSelector(
