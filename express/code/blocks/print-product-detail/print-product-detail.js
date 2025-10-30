@@ -230,7 +230,7 @@ async function updatePageWithSizeChartDrawer(productDetails) {
     globalContainer.appendChild(sizeChartDrawer.curtain);
     globalContainer.appendChild(sizeChartDrawer.drawer);
   }
-  
+
   return sizeChartDrawer;
 }
 
@@ -252,7 +252,10 @@ async function createGlobalContainer(productDetails) {
     'data-template-id': productDetails.templateId,
   });
   const { curtain, drawer } = await createDrawer(productDetails);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
+  const productImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    productDetails.heroImage,
+  );
   const productInfoSection = await createProductInfoContainer(productDetails, drawer);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSection);
@@ -295,11 +298,11 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
 
   const globalContainer = document.querySelector('.pdpx-global-container');
   if (globalContainer) {
-    globalContainer._comparisonDrawer = comparisonDrawerResult;
-    globalContainer._sizeChartDrawer = sizeChartDrawerResult;
-    globalContainer._paperDrawer = paperDrawerResult;
-    globalContainer._pbjOverrides = productDetails.pbjOverrides;
-    globalContainer._dbStrings = productDetails.dbStrings;
+    globalContainer.comparisonDrawer = comparisonDrawerResult;
+    globalContainer.sizeChartDrawer = sizeChartDrawerResult;
+    globalContainer.paperDrawer = paperDrawerResult;
+    globalContainer.pbjOverrides = productDetails.pbjOverrides;
+    globalContainer.dbStrings = productDetails.dbStrings;
   }
 
   const productInfoSection = document.getElementById('pdpx-product-info-section');
@@ -311,7 +314,9 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
     paperDrawerResult,
   );
   productInfoSection.appendChild(customizationInputs);
-  const productDetailsSection = await createProductDetailsSection(productDetails.productDescriptions);
+  const productDetailsSection = await createProductDetailsSection(
+    productDetails.productDescriptions,
+  );
   productInfoSection.appendChild(productDetailsSection);
   const form = document.getElementById('pdpx-customization-inputs-form');
   const formData = new FormData(form);
@@ -396,7 +401,7 @@ export default async function decorate(block) {
   block.appendChild(globalContainer);
 
   const productDetails = fetchProductDetails(templateId);
-    
+
   productDetails.then(async (productDetailsResponse) => {
     if (!productDetailsResponse || !productDetailsResponse.product) {
       console.error('[PDP] Failed to fetch product details. Response:', productDetailsResponse);

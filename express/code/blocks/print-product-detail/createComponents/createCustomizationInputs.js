@@ -1,5 +1,5 @@
 import { getLibs } from '../../../scripts/utils.js';
-import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handlers.js';
+import updateAllDynamicElements from '../utilities/event-handlers.js';
 import { updatePaperSelectionUI } from './createDrawer.js';
 import { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
@@ -326,7 +326,9 @@ async function createTShirtInputs(
 
     colorInlineSelection.groups.forEach((group, index) => {
       const filterValue = group.filter?.['design.shade'];
-      const matchingColor = productDetails.attributes.color?.find((color) => color.design?.shade === filterValue);
+      const matchingColor = productDetails.attributes.color?.find(
+        (color) => color.design?.shade === filterValue,
+      );
 
       const button = createTag('button', {
         class: `pdpx-pill-container${index === 0 ? ' selected' : ''}`,

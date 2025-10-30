@@ -49,10 +49,20 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId }) {
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+export async function normalizeProductDetailObject({
+  productDetails,
+  productPrice,
+  productReviews,
+  productRenditions,
+  productShippingEstimates,
+  quantity,
+  templateId,
+}) {
+  const applicableDiscount = productPrice?.discountProductItems[1]
+    || productPrice?.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  const calculatedProductPrice = (applicableDiscount?.priceAdjusted ?? 0) * quantity
+    || (productPrice?.unitPrice ?? 0) * quantity;
   const normalizedProductDetails = {
     id: productDetails.product.id,
     templateId,
@@ -60,7 +70,7 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     productTitle: productDetails.product.title,
     unitPrice: productPrice?.unitPrice,
     productPrice: calculatedProductPrice,
-    strikethroughPrice: productPrice?.unitPrice * quantity,
+    strikethroughPrice: (productPrice?.unitPrice ?? 0) * quantity,
     discountAvailable,
     discountString: applicableDiscount?.discountString,
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
@@ -76,9 +86,15 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     dbStrings: productDetails.product.dbStrings,
   };
   for (const attribute of Object.values(productDetails.product.attributes)) {
-    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
+    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(
+      productDetails.product.productType,
+      attribute,
+    );
   }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  const quantitiesOptions = formatQuantityOptionsObject(
+    productDetails.product.quantities,
+    productDetails.product.pluralUnitLabel,
+  );
   normalizedProductDetails.attributes.quantities = quantitiesOptions;
   return normalizedProductDetails;
 }
@@ -123,9 +139,15 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
-    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(
+      productDetails.product.productType,
+      attribute,
+    );
   }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  const quantitiesOptions = formatQuantityOptionsObject(
+    productDetails.product.quantities,
+    productDetails.product.pluralUnitLabel,
+  );
   dataObject.attributes.quantities = quantitiesOptions;
   dataObject.productDescriptions = formatProductDescriptions(productDetails);
   dataObject.pbjOverrides = productDetails.product.pbjOverrides;
@@ -134,11 +156,13 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 }
 
 export function updateDataObjectProductPrice(dataObject, productPrice, quantity) {
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const applicableDiscount = productPrice?.discountProductItems[1]
+    || productPrice?.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  const calculatedProductPrice = (applicableDiscount?.priceAdjusted ?? 0) * quantity
+    || (productPrice?.unitPrice ?? 0) * quantity;
   dataObject.productPrice = calculatedProductPrice;
-  dataObject.strikethroughPrice = productPrice?.unitPrice * quantity;
+  dataObject.strikethroughPrice = (productPrice?.unitPrice ?? 0) * quantity;
   dataObject.discountAvailable = discountAvailable;
   dataObject.discountString = applicableDiscount?.discountString;
   return dataObject;
