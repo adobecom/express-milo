@@ -101,11 +101,11 @@ function extractSpecs(descriptionBrief) {
 
 async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
   if (productDetails.productType !== 'zazzle_businesscard') {
-    return;
+    return null;
   }
 
   if (!productDetails.attributes?.media || productDetails.attributes.media.length === 0) {
-    return;
+    return null;
   }
 
   const rawMediaAttribute = rawProductDetails.product.attributes.media;
@@ -164,13 +164,13 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
   if (compareLink) {
     compareLink.drawerRef = paperDrawer;
   }
-  
+
   return paperDrawer;
 }
 
 async function updatePageWithComparisonDrawer(productDetails) {
   if (productDetails.productType !== 'zazzle_shirt') {
-    return;
+    return null;
   }
 
   // Create comparison drawer if either:
@@ -330,12 +330,12 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
   // Store drawer references and product config on global container for use during re-renders
   const globalContainer = document.querySelector('.pdpx-global-container');
   if (globalContainer) {
-    globalContainer._comparisonDrawer = comparisonDrawerResult;
-    globalContainer._sizeChartDrawer = sizeChartDrawerResult;
-    globalContainer._paperDrawer = paperDrawerResult;
+    globalContainer.comparisonDrawer = comparisonDrawerResult;
+    globalContainer.sizeChartDrawer = sizeChartDrawerResult;
+    globalContainer.paperDrawer = paperDrawerResult;
     // Store pbjOverrides and dbStrings for printing process selector
-    globalContainer._pbjOverrides = productDetails.pbjOverrides;
-    globalContainer._dbStrings = productDetails.dbStrings;
+    globalContainer.pbjOverrides = productDetails.pbjOverrides;
+    globalContainer.dbStrings = productDetails.dbStrings;
   }
   
   const productInfoContainer = document.getElementById('pdpx-product-info-container');

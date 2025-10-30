@@ -41,13 +41,14 @@ export function createEmptyDataObject(templateId) {
 
 export async function updateDataObjectProductDetails(dataObject, productDetails) {
   const updatedDataObject = { ...dataObject };
-  
+
   // Null check for productDetails
   if (!productDetails || !productDetails.product) {
+    // eslint-disable-next-line no-console
     console.error('[updateDataObjectProductDetails] Invalid productDetails:', productDetails);
     return updatedDataObject;
   }
-  
+
   const productTitle = productDetails.product.title;
   const { productType } = productDetails.product;
   const productId = productDetails.product.id;
@@ -74,7 +75,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
           } else if (value.properties?.price !== undefined) {
             // Check properties.price as fallback
             const priceValue = parseFloat(value.properties.price);
-            if (!isNaN(priceValue) && priceValue !== 0) {
+            if (!Number.isNaN(priceValue) && priceValue !== 0) {
               priceAdjustment = priceValue > 0 ? `+$${priceValue.toFixed(2)}` : `$${priceValue.toFixed(2)}`;
             }
           }
@@ -278,10 +279,10 @@ export async function normalizeProductDetailObject({
     productPriceFormatted = await formatPriceZazzle(basePrice * quantity);
     strikethroughPrice = await formatPriceZazzle(basePrice * quantity);
   }
-  const { averageRating = 0 } = productReviews || {};
-  const { totalReviews = 0 } = productReviews || {};
-  const deliveryEstimateMinDate = productShippingEstimates?.shippingEstimates?.[0]?.minDate || '';
-  const deliveryEstimateMaxDate = productShippingEstimates?.shippingEstimates?.[0]?.maxDate || '';
+  const averageRating = productReviews?.reviews?.stats?.averageRating || 0;
+  const totalReviews = productReviews?.reviews?.stats?.totalReviews || 0;
+  const deliveryEstimateMinDate = productShippingEstimates?.estimates?.[0]?.minDeliveryDate || '';
+  const deliveryEstimateMaxDate = productShippingEstimates?.estimates?.[0]?.maxDeliveryDate || '';
   const productDescriptions = formatProductDescriptions(productDetails, changeOptions);
 
   // Extract attributes in the same format as formatInitialProductDetailObject

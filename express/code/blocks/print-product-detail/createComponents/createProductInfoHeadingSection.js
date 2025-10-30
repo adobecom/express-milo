@@ -72,8 +72,8 @@ async function createPriceLockup(productDetails) {
   const priceInfoContainer = createTag('div', { class: 'pdpx-price-info-container' });
   const priceInfoRow = createTag('div', { class: 'pdpx-price-info-row' });
   // Use placeholder directly if price is a string, otherwise format it
-  const priceText = typeof productDetails.productPrice === 'string' 
-    ? productDetails.productPrice 
+  const priceText = typeof productDetails.productPrice === 'string'
+    ? productDetails.productPrice
     : await formatPriceZazzle(productDetails.productPrice);
   const comparePriceText = typeof productDetails.strikethroughPrice === 'string'
     ? productDetails.strikethroughPrice
