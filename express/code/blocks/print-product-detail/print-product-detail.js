@@ -93,56 +93,76 @@ const SIZE_CHART_DATA = {
   },
 };
 
-// Helper function to extract specs from descriptionBrief
 function extractSpecs(descriptionBrief) {
-  const specs = {};
-  if (!descriptionBrief) return specs;
-  
-  const lines = descriptionBrief.split('\n');
-  lines.forEach((line) => {
-    const match = line.match(/^([^:]+):\s*(.+)$/);
-    if (match) {
-      const key = match[1].trim();
-      const value = match[2].trim();
-      specs[key] = value;
-    }
-  });
-  return specs;
+  if (!descriptionBrief) return [];
+  const text = descriptionBrief.replace(/<[^>]*>/g, ' ').trim();
+  return text.split(/\n|<br>|\//).map((s) => s.trim()).filter((s) => s.length > 0);
 }
 
 async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
-  if (!productDetails.attributes.media || productDetails.attributes.media.length === 0) {
+  if (productDetails.productType !== 'zazzle_businesscard') {
     return null;
   }
 
-  const paperOptions = productDetails.attributes.media.map((media) => {
-    const specs = extractSpecs(media.descriptionBrief);
-    return {
-      name: media.name,
-      title: media.title,
-      thumbnail: media.thumbnail,
-      description: media.descriptionDetailed,
-      specs: {
-        thickness: specs.Thickness || '',
-        weight: specs.Weight || '',
-        gsm: specs.GSM || '',
-      },
-      priceAdjustment: media.priceAdjustment,
-      isRecommended: media.name === rawProductDetails.product?.attributes?.find((attr) => attr.name === 'media')?.value,
-    };
-  });
+  if (!productDetails.attributes?.media || productDetails.attributes.media.length === 0) {
+    return null;
+  }
+
+  const rawMediaAttribute = rawProductDetails.product.attributes.media;
+  const rawMediaValues = rawMediaAttribute.values;
+
+  const selectedPaper = productDetails.attributes.media[0];
+  const selectedRawPaper = rawMediaValues[0];
+
+  const heroImageUrl = buildRealViewImageUrl(
+    selectedRawPaper.firstProductRealviewParams,
+    644,
+  );
+
+  const paperData = {
+    selectedPaper: {
+      name: selectedPaper.name,
+      heroImage: heroImageUrl,
+      recommended: selectedRawPaper.isBestValue || false,
+      specs: extractSpecs(selectedRawPaper.descriptionBrief),
+      typeName: selectedPaper.title,
+      description: selectedRawPaper.description || '',
+      imgSrc: selectedPaper.thumbnail,
+      price: selectedPaper.priceAdjustment,
+    },
+    papers: productDetails.attributes.media.map((paper, index) => {
+      const rawPaper = rawMediaValues[index];
+      const heroUrl = buildRealViewImageUrl(rawPaper.firstProductRealviewParams, 644);
+      return {
+        name: paper.name,
+        title: paper.title,
+        thumbnail: paper.thumbnail,
+        heroImage: heroUrl,
+        priceAdjustment: paper.priceAdjustment,
+        description: rawPaper.description || '',
+        specs: extractSpecs(rawPaper.descriptionBrief),
+        recommended: rawPaper.isBestValue || false,
+      };
+    }),
+  };
 
   const paperDrawer = await createDrawer({
-    template: 'paper-selection',
     drawerLabel: 'Select paper type',
-    productId: productDetails.id,
-    data: { paperOptions, selectedPaper: paperOptions.find((p) => p.isRecommended) || paperOptions[0] },
+    template: 'paper-selection',
+    data: paperData,
   });
 
   const globalContainer = document.querySelector('.pdpx-global-container');
   if (globalContainer && paperDrawer) {
     globalContainer.appendChild(paperDrawer.curtain);
     globalContainer.appendChild(paperDrawer.drawer);
+  }
+
+  const compareLink = document.querySelector(
+    '.pdpx-pill-selector-label-compare-link[data-drawer-type="paper"]',
+  );
+  if (compareLink && paperDrawer) {
+    compareLink.drawerRef = paperDrawer;
   }
 
   return paperDrawer;
