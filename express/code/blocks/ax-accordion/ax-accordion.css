@@ -7,7 +7,7 @@
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #505050;
+  border-top: 1px solid #D5D5D5;
 }
 
 /* Accordion trigger/header button */
@@ -19,7 +19,7 @@
   padding: 12px 12px;
   background: none;
   border: none;
-  border-bottom: 1px solid #505050;
+  border-bottom: 1px solid #D5D5D5;
   cursor: pointer;
   text-align: left;
   flex: 1 0 0;
@@ -59,7 +59,7 @@
 
 /* Next sibling container after expanded item gets border-top on its button */
 .ax-accordion-item-container:has(.ax-accordion-item-title-container[aria-expanded="true"]) + .ax-accordion-item-container .ax-accordion-item-title-container {
-  border-top: 1px solid #505050;
+  border-top: 1px solid #D5D5D5;
 }
 
 .ax-accordion-item-title {
