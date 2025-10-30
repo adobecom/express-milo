@@ -682,80 +682,10 @@ export default async function decorate(block) {
   });
   dropzone.append(freePlanTags);
 
-  class EasyUpload {
-    constructor() {
-      this.enabledQuickActions = ['remove-background', 'resize-image', 'crop-image', 'convert-to-jpg', 'convert-to-png'];
-    }
-
-    isExperimentEnabled(quickAction) {
-      return this.enabledQuickActions.includes(quickAction);
-    }
-
-    loadQRCodeLibrary() {
-      return new Promise((resolve, reject) => {
-        if (window.QRCodeStyling) {
-          resolve(window.QRCodeStyling);
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
-        script.onload = () => resolve(window.QRCodeStyling);
-        script.onerror = () => reject(new Error('Failed to load QR code library'));
-        document.head.appendChild(script);
-      })
-    }
-
-    async generateQRCode() {
-      const QRCodeStyling = await this.loadQRCodeLibrary();
-
-      const qrCode = new QRCodeStyling({
-        width: 200,
-        height: 200,
-        data: 'https://test.com',
-        dotsOptions: {
-          color: '#000000',
-          type: 'rounded',
-        },
-        backgroundOptions: {
-          color: '#ffffff',
-        },
-        imageOptions: {
-          crossOrigin: 'anonymous',
-          margin: 10,
-        },
-      });
-
-      // Create a container for the QR code and append it to the button container
-      const buttonContainer = dropzone.querySelector('.button-container');
-      if (buttonContainer) {
-        const qrCodeContainer = createTag('div', { class: 'qr-code-container' });
-        qrCode.append(qrCodeContainer);
-
-        // Add Confirm Import button
-        const confirmButton = createTag('a', {
-          href: '#',
-          class: 'button accent xlarge',
-          title: 'Confirm Import'
-        }, 'Confirm Import');
-
-        confirmButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation(); // Prevent file browser from opening
-
-          // Add your custom import logic here
-          // Example: Process QR code data, trigger API call, etc.
-        });
-
-        buttonContainer.appendChild(qrCodeContainer);
-        buttonContainer.appendChild(confirmButton);
-      }
-    }
-  }
-
   // Load Easy Upload Experiment for enabled quick actions if experiment is on.
-  const easyUpload = new EasyUpload();
-  if (easyUpload.isExperimentEnabled(quickAction)) {
+  let easyUpload = null;
+  if (new EasyUpload().isExperimentEnabled(quickAction)) {
+    easyUpload = new EasyUpload();
     try {
       // Load QR code styling library
       await easyUpload.generateQRCode();
@@ -776,6 +706,11 @@ export default async function decorate(block) {
       inputElement.value = '';
       fadeIn(uploadContainer);
       document.body.dataset.suppressfloatingcta = 'false';
+
+      // Cleanup easy upload resources
+      if (easyUpload) {
+        easyUpload.cleanup();
+      }
     }
   }, { passive: true });
 
@@ -796,4 +731,767 @@ export default async function decorate(block) {
   }
 
   sendFrictionlessEventToAdobeAnaltics(block);
+}
+
+
+/**
+   * Generate URL Shortener configuration based on environment
+   * @returns {object} Configuration object with serviceUrl, apiKey, and enabled flag
+   */
+function getUrlShortenerConfig() {
+  const { env } = getConfig();
+  const envName = env.name;
+
+  // URL shortener service endpoint
+  const serviceUrlMap = {
+    prod: 'https://go.adobe.io',
+    stage: 'https://go-stage.adobe.io',
+    local: 'https://go-stage.adobe.io',
+  };
+
+  // API key for URL shortener service
+  const apiKeyMap = {
+    prod: 'quickactions_hz_webapp',
+    stage: 'hz-dynamic-url-service',
+    local: 'hz-dynamic-url-service',
+  };
+
+  const serviceUrl = serviceUrlMap[envName] || serviceUrlMap.stage;
+  const apiKey = apiKeyMap[envName] || apiKeyMap.stage;
+
+  return {
+    serviceUrl,
+    apiKey // Enable URL shortening
+  };
+}
+
+/**
+ * Generate UUID v4
+ * @returns {string} UUID
+ */
+function generateUUID() {
+  return crypto.randomUUID();
+}
+
+/**
+ * ACP Storage Helper - Manages file upload and download operations with Adobe Content Platform
+ */
+class AcpStorageHelper {
+  constructor() {
+    this.uploadService = null;
+    this.asset = null;
+    this.uploadAsset = null;
+    this.pollingInterval = null;
+    this.versionReadyPromise = null;
+
+    // Constants
+    this.MAX_FILE_SIZE = 60000000; // 60 MB
+    this.TRANSFER_DOCUMENT = 'application/vnd.adobecloud.bulk-transfer+json';
+    this.CONTENT_TYPE = 'application/octet-stream';
+    this.SECOND_IN_MS = 1000;
+    this.MAX_POLLING_ATTEMPTS = 100;
+    this.POLLING_TIMEOUT_MS = 100000;
+
+    // Link relation constants
+    this.LINK_REL = {
+      BLOCK_UPLOAD_INIT: 'http://ns.adobe.com/adobecloud/rel/block/upload/init',
+      BLOCK_TRANSFER: 'http://ns.adobe.com/adobecloud/rel/block/transfer',
+      BLOCK_FINALIZE: 'http://ns.adobe.com/adobecloud/rel/block/finalize',
+      SELF: 'self',
+      RENDITION: 'http://ns.adobe.com/adobecloud/rel/rendition',
+    };
+
+    console.log('AcpStorageHelper initialized');
+  }
+
+  /**
+   * Get authentication token from Adobe IMS
+   */
+  async getAuthToken() {
+    if (!window?.adobeIMS?.isSignedInUser()) {
+      throw new Error('User not signed in');
+    }
+    const token = window.adobeIMS.getAccessToken()?.token;
+    if (!token) {
+      throw new Error('Failed to retrieve authentication token');
+    }
+    return token;
+  }
+
+  /**
+   * Extract link href from asset links
+   */
+  getLinkHref(links, relation) {
+    if (!links || !links[relation]) {
+      return null;
+    }
+    return links[relation].href;
+  }
+
+
+  /**
+   * Initialize block upload for the asset
+   */
+  async initializeBlockUpload(asset) {
+    console.log('Initializing block upload', {
+      assetId: asset.assetId,
+      repositoryId: asset.repositoryId,
+    });
+
+    try {
+      const authToken = await this.getAuthToken();
+      const apiKey = this.getApiKey();
+
+      // Extract block upload URL from asset links
+      const blockUploadUrl = this.getLinkHref(asset._links, this.LINK_REL.BLOCK_UPLOAD_INIT);
+      if (!blockUploadUrl) {
+        throw new Error('Block upload URL not found in asset links');
+      }
+
+      const blockUploadData = {
+        'repo:size': this.MAX_FILE_SIZE,
+        'repo:blocksize': this.MAX_FILE_SIZE,
+        'repo:reltype': 'primary',
+        'dc:format': this.CONTENT_TYPE,
+      };
+
+      const response = await fetch(`${blockUploadUrl}?includes=all`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': this.TRANSFER_DOCUMENT,
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify(blockUploadData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => 'Unknown error');
+        throw new Error(`Block upload initialization failed: ${response.status} ${response.statusText}. ${errorText}`);
+      }
+
+      const uploadAsset = await response.json();
+      this.uploadAsset = uploadAsset;
+
+      console.log('Block upload initialized successfully', {
+        hasLinks: !!uploadAsset._links,
+      });
+
+      return uploadAsset;
+    } catch (error) {
+      console.error('Failed to initialize block upload:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Extract upload URL from transfer document
+   */
+  extractUploadUrl(uploadAsset) {
+    const uploadUrl = this.getLinkHref(uploadAsset._links, this.LINK_REL.BLOCK_TRANSFER);
+    if (!uploadUrl) {
+      throw new Error('Block transfer URL not found in upload asset links');
+    }
+    return uploadUrl;
+  }
+
+  /**
+   * Generate presigned upload URL
+   */
+  async generateUploadUrl() {
+    console.log('Generating upload URL for mobile client');
+
+    try {
+      this.uploadService = await initializeUploadService();
+      this.asset = await this.uploadService.createTemporaryAsset(this.CONTENT_TYPE);
+      this.uploadAsset = await this.initializeBlockUpload(this.asset);
+
+      const uploadUrl = this.extractUploadUrl(this.uploadAsset);
+
+      console.log('Upload URL generated successfully', {
+        assetId: this.asset.assetId,
+        hasUploadUrl: !!uploadUrl,
+      });
+
+      return uploadUrl;
+    } catch (error) {
+      console.error('Failed to generate upload URL:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Finalize the upload
+   */
+  async finalizeUpload() {
+    if (!this.uploadAsset) {
+      throw new Error('No upload asset available for finalization');
+    }
+
+    console.log('Finalizing upload');
+
+    try {
+      const authToken = await this.getAuthToken();
+      const apiKey = this.getApiKey();
+
+      const finalizeUrl = this.getLinkHref(this.uploadAsset._links, this.LINK_REL.BLOCK_FINALIZE);
+      if (!finalizeUrl) {
+        throw new Error('Block finalize URL not found in upload asset links');
+      }
+
+      const response = await fetch(finalizeUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': this.TRANSFER_DOCUMENT,
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify(this.uploadAsset),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => 'Unknown error');
+        throw new Error(`Block upload finalization failed: ${response.status} ${response.statusText}. ${errorText}`);
+      }
+
+      console.log('Upload finalized successfully');
+    } catch (error) {
+      console.error('Failed to finalize upload:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Wait for asset version to be ready
+   */
+  async waitForAssetVersionReady() {
+    return new Promise((resolve, reject) => {
+      this.versionReadyPromise = { resolve, reject };
+      let pollAttempts = 0;
+
+      const timeoutId = setTimeout(() => {
+        if (this.pollingInterval) {
+          clearInterval(this.pollingInterval);
+        }
+        reject(new Error(`Polling timeout: Asset version not ready after ${this.POLLING_TIMEOUT_MS}ms`));
+      }, this.POLLING_TIMEOUT_MS);
+
+      this.pollingInterval = setInterval(async () => {
+        try {
+          pollAttempts++;
+          console.log('Polling for asset version', {
+            assetId: this.asset?.assetId,
+            attempt: pollAttempts,
+          });
+
+          const version = await this.uploadService.getAssetVersion(this.asset);
+          const success = version === '1';
+
+          if (success) {
+            clearInterval(this.pollingInterval);
+            clearTimeout(timeoutId);
+            console.log('Asset version ready', {
+              assetId: this.asset?.assetId,
+              attempts: pollAttempts,
+            });
+            resolve();
+          } else if (pollAttempts >= this.MAX_POLLING_ATTEMPTS) {
+            clearInterval(this.pollingInterval);
+            clearTimeout(timeoutId);
+            reject(new Error(`Max polling attempts reached (${this.MAX_POLLING_ATTEMPTS}). Asset version: ${version}`));
+          }
+        } catch (error) {
+          clearInterval(this.pollingInterval);
+          clearTimeout(timeoutId);
+          console.error('Error during version polling:', error);
+          reject(error);
+        }
+      }, this.SECOND_IN_MS);
+    });
+  }
+
+  /**
+   * Detect file type from content string
+   */
+  detectFileType(typeString) {
+    const lowerTypeString = typeString.toLowerCase();
+
+    // Image types
+    if (lowerTypeString.includes('png')) return 'image/png';
+    if (lowerTypeString.includes('jpg') || lowerTypeString.includes('jpeg') || lowerTypeString.includes('jfif') || lowerTypeString.includes('exif')) return 'image/jpeg';
+    if (lowerTypeString.includes('gif')) return 'image/gif';
+    if (lowerTypeString.includes('webp')) return 'image/webp';
+    if (lowerTypeString.includes('svg')) return 'image/svg+xml';
+    if (lowerTypeString.includes('bmp')) return 'image/bmp';
+    if (lowerTypeString.includes('heic')) return 'image/heic';
+
+    // Video types
+    if (lowerTypeString.includes('mp4')) return 'video/mp4';
+    if (lowerTypeString.includes('mov')) return 'video/quicktime';
+    if (lowerTypeString.includes('avi')) return 'video/x-msvideo';
+    if (lowerTypeString.includes('webm')) return 'video/webm';
+
+    // Default to JPEG for images
+    return 'image/jpeg';
+  }
+
+  /**
+   * Retrieve uploaded file
+   */
+  async retrieveUploadedFile() {
+    console.log('Retrieving uploaded file', { assetId: this.asset?.assetId });
+
+    try {
+      await this.waitForAssetVersionReady();
+
+      if (this.versionReadyPromise?.isRejected) {
+        throw new Error("Asset version not ready");
+      }
+
+      const blob = await this.uploadService.downloadAssetContent(this.asset);
+      const typeString = await blob.slice(0, 50).text();
+      const detectedType = this.detectFileType(typeString);
+      const fileName = `upload_${Date.now()}_${generateUUID().substring(0, 8)}`;
+
+      const file = new File([blob], fileName, { type: detectedType });
+
+      console.log('File retrieved successfully', {
+        assetId: this.asset?.assetId,
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type,
+      });
+
+      return file;
+    } catch (error) {
+      console.error('Failed to retrieve uploaded file:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Dispose and cleanup resources
+   */
+  async dispose() {
+    console.log('Disposing AcpStorageHelper resources', {
+      assetId: this.asset?.assetId,
+      hasPollingInterval: !!this.pollingInterval,
+    });
+
+    try {
+      await this.uploadService.deleteAsset(this.asset);
+      if (this.pollingInterval) {
+        clearInterval(this.pollingInterval);
+        this.pollingInterval = null;
+      }
+
+      this.asset = null;
+      this.uploadAsset = null;
+      this.versionReadyPromise = null;
+
+      console.log('AcpStorageHelper disposal completed');
+    } catch (error) {
+      console.error('Error during disposal:', error);
+    }
+  }
+}
+
+/**
+ * Service for shortening URLs using Adobe's dynamic URL service
+ */
+class UrlShortenerService {
+  constructor(config) {
+    this.config = config;
+    this.logger = console; // Using console for logging in browser
+    this.logger.info('UrlShortenerService initialized');
+  }
+
+  /**
+   * Get the shortener URL from the config
+   */
+  get shortenerUrl() {
+    return this.config.serviceUrl;
+  }
+
+  /**
+   * Get the API key from the config
+   */
+  get apiKey() {
+    return this.config.apiKey;
+  }
+
+  /**
+   * Get IMS access token
+   */
+  async getAccessToken() {
+    if (window?.adobeIMS?.isSignedInUser()) {
+      return window.adobeIMS.getAccessToken()?.token;
+    }
+    throw new Error('User not signed in');
+  }
+
+  /**
+   * Fetch a request to the shortener service
+   * @param {string} endpoint - The endpoint to fetch
+   * @param {string} method - The HTTP method to use
+   * @param {object} payload - The payload to send
+   * @returns {Promise<{success: boolean, data?: string, error?: string}>}
+   */
+  async fetchRequest(endpoint, method, payload) {
+    try {
+      const accessToken = await this.getAccessToken();
+      const url = new URL(`${this.shortenerUrl}${endpoint}`);
+
+      const response = await fetch(url.toString(), {
+        method,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'x-api-key': this.apiKey,
+        },
+        body: payload ? JSON.stringify(payload) : undefined,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.status === 'success'
+        ? { success: true, data: data.data }
+        : { success: false, error: 'Unexpected response format' };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      };
+    }
+  }
+
+  /**
+   * Generate a short URL
+   * @param {string} url - The URL to shorten
+   * @param {string} timeZone - The time zone to use
+   * @param {string} metaData - The metadata to send
+   * @returns {Promise<{success: boolean, data?: string, error?: string}>}
+   */
+  generateShortUrl(url, timeZone, metaData) {
+    return this.fetchRequest('/v1/short-links/', 'POST', {
+      url,
+      timeZone,
+      metaData,
+    });
+  }
+}
+
+class EasyUpload {
+  constructor() {
+    this.enabledQuickActions = ['remove-background', 'resize-image', 'crop-image', 'convert-to-jpg', 'convert-to-png'];
+    this.qrCode = null;
+    this.qrCodeContainer = null;
+    this.confirmButton = null;
+    this.acpStorageHelper = null;
+    this.qrRefreshInterval = null;
+    this.isUploadFinalizing = false;
+
+    // Initialize URL Shortener Service
+    const urlShortenerConfig = getUrlShortenerConfig();
+    this.urlShortenerService = new UrlShortenerService(urlShortenerConfig);
+
+    // Constants
+    this.QR_REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
+    this.QR_CODE_CONFIG = {
+      width: 200,
+      height: 200,
+      type: 'canvas',
+      data: '',
+      dotsOptions: {
+        color: '#000000',
+        type: 'rounded',
+      },
+      backgroundOptions: {
+        color: '#ffffff',
+      },
+      imageOptions: {
+        crossOrigin: 'anonymous',
+        margin: 10,
+      },
+    };
+
+    // Bind cleanup to window unload
+    window.addEventListener('beforeunload', () => this.cleanup());
+  }
+
+  isExperimentEnabled(quickAction) {
+    return this.enabledQuickActions.includes(quickAction);
+  }
+
+  loadQRCodeLibrary() {
+    return new Promise((resolve, reject) => {
+      if (window.QRCodeStyling) {
+        resolve(window.QRCodeStyling);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
+      script.onload = () => resolve(window.QRCodeStyling);
+      script.onerror = () => reject(new Error('Failed to load QR code library'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async generateUploadUrl() {
+    try {
+      // Initialize ACP Storage Helper
+      if (!this.acpStorageHelper) {
+        this.acpStorageHelper = new AcpStorageHelper();
+      }
+
+      // Generate presigned upload URL
+      const presignedUrl = await this.acpStorageHelper.generateUploadUrl();
+
+      // Build mobile upload URL
+      return this.buildMobileUploadUrl(presignedUrl);
+    } catch (error) {
+      console.error('Failed to generate upload URL:', error);
+      throw error;
+    }
+  }
+
+  buildMobileUploadUrl(presignedUrl) {
+    const { env } = getConfig();
+    const host = env.name === 'prod'
+      ? 'express.adobe.com'
+      : 'express-stage.adobe.com';
+
+    const url = new URL(`https://${host}/uploadFromOtherDevice`);
+    url.searchParams.set('upload_url', presignedUrl);
+
+    return url.toString();
+  }
+
+  async shortenUrl(longUrl) {
+    if (!this.urlShortenerService) {
+      console.log('URL Shortener Service not enabled, using original URL');
+      return longUrl;
+    }
+
+    try {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const metaData = 'easy-upload-qr-code';
+
+      console.log('Attempting to shorten URL', {
+        originalUrlLength: longUrl.length,
+        timeZone,
+        metaData,
+      });
+
+      const response = await this.urlShortenerService.generateShortUrl(
+        longUrl,
+        timeZone,
+        metaData,
+      );
+
+      if (response.success && response.data) {
+        console.log('URL shortened successfully', {
+          shortUrl: response.data,
+          originalLength: longUrl.length,
+          shortLength: response.data.length,
+        });
+        return response.data;
+      }
+
+      console.warn('Failed to shorten URL, using original', {
+        error: response.error,
+      });
+      return longUrl;
+    } catch (error) {
+      console.error('Error shortening URL, using original', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return longUrl;
+    }
+  }
+
+  async displayQRCode(uploadUrl) {
+    const QRCodeStyling = await this.loadQRCodeLibrary();
+
+    if (!this.qrCode) {
+      this.qrCode = new QRCodeStyling({
+        ...this.QR_CODE_CONFIG,
+        data: uploadUrl,
+      });
+    } else {
+      this.qrCode.update({
+        ...this.QR_CODE_CONFIG,
+        data: uploadUrl,
+      });
+    }
+
+    // Create a container for the QR code
+    const buttonContainer = dropzone.querySelector('.button-container');
+    if (buttonContainer && !this.qrCodeContainer) {
+      this.qrCodeContainer = createTag('div', { class: 'qr-code-container' });
+      buttonContainer.appendChild(this.qrCodeContainer);
+    }
+
+    if (this.qrCodeContainer) {
+      this.qrCodeContainer.innerHTML = '';
+      this.qrCode.append(this.qrCodeContainer);
+    }
+  }
+
+  async initializeQRCode() {
+    try {
+      const uploadUrl = await this.generateUploadUrl();
+      const finalUrl = await this.shortenUrl(uploadUrl);
+      await this.displayQRCode(finalUrl);
+
+      // Set up refresh interval
+      this.scheduleQRRefresh();
+    } catch (error) {
+      console.error('Failed to initialize QR code:', error);
+      throw error;
+    }
+  }
+
+  scheduleQRRefresh() {
+    // Clear existing interval
+    if (this.qrRefreshInterval) {
+      clearTimeout(this.qrRefreshInterval);
+    }
+
+    // Schedule next refresh
+    this.qrRefreshInterval = setTimeout(() => {
+      this.refreshQRCode();
+    }, this.QR_REFRESH_INTERVAL);
+  }
+
+  async refreshQRCode() {
+    try {
+      console.log('Refreshing QR code...');
+      await this.initializeQRCode();
+    } catch (error) {
+      console.error('Failed to refresh QR code:', error);
+    }
+  }
+
+  async handleConfirmImport() {
+    if (this.isUploadFinalizing) return;
+
+    this.isUploadFinalizing = true;
+    this.updateConfirmButtonState(true);
+
+    try {
+      if (!this.acpStorageHelper) {
+        throw new Error('ACP Storage Helper not initialized');
+      }
+
+      // Finalize the upload first
+      await this.acpStorageHelper.finalizeUpload();
+
+      // Retrieve the uploaded file
+      const file = await this.retrieveUploadedFile();
+
+      if (file) {
+        // Process the file (trigger the standard upload flow)
+        await startSDKWithUnconvertedFiles([file], quickAction, block);
+
+        // // Refresh QR code for next upload
+        // await this.refreshQRCode();
+      } else {
+        console.warn('No file was uploaded');
+        showErrorToast(block, 'No file detected. Please upload a file from your mobile device.');
+      }
+    } catch (error) {
+      console.error('Failed to confirm import:', error);
+      showErrorToast(block, 'Failed to import file. Please try again.');
+    } finally {
+      this.isUploadFinalizing = false;
+      this.updateConfirmButtonState(false);
+    }
+  }
+
+  async retrieveUploadedFile() {
+    try {
+      if (!this.acpStorageHelper) {
+        throw new Error('ACP Storage Helper not available');
+      }
+
+      // Retrieve uploaded file using ACP Storage Helper
+      const file = await this.acpStorageHelper.retrieveUploadedFile();
+
+      return file;
+    } catch (error) {
+      console.error('Failed to retrieve uploaded file:', error);
+      throw error;
+    }
+  }
+
+  updateConfirmButtonState(disabled) {
+    if (this.confirmButton) {
+      if (disabled) {
+        this.confirmButton.classList.add('disabled');
+        this.confirmButton.setAttribute('aria-disabled', 'true');
+      } else {
+        this.confirmButton.classList.remove('disabled');
+        this.confirmButton.removeAttribute('aria-disabled');
+      }
+    }
+  }
+
+  createConfirmButton() {
+    const confirmButton = createTag('a', {
+      href: '#',
+      class: 'button accent xlarge confirm-import-button',
+      title: 'Confirm Import'
+    }, 'Confirm Import');
+
+    confirmButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.handleConfirmImport();
+    });
+
+    this.confirmButton = confirmButton;
+    return confirmButton;
+  }
+
+  async generateQRCode() {
+    try {
+      await this.initializeQRCode();
+
+      // Add Confirm Import button
+      const buttonContainer = dropzone.querySelector('.button-container');
+      if (buttonContainer) {
+        const confirmButton = this.createConfirmButton();
+        buttonContainer.appendChild(confirmButton);
+      }
+    } catch (error) {
+      console.error('Failed to generate QR code:', error);
+      throw error;
+    }
+  }
+
+  async cleanup() {
+    // Clear refresh interval
+    if (this.qrRefreshInterval) {
+      clearTimeout(this.qrRefreshInterval);
+      this.qrRefreshInterval = null;
+    }
+
+    // Dispose ACP Storage Helper
+    if (this.acpStorageHelper) {
+      await this.acpStorageHelper.dispose();
+      this.acpStorageHelper = null;
+    }
+
+    // Clear references
+    this.qrCode = null;
+    this.qrCodeContainer = null;
+    this.confirmButton = null;
+
+    console.log('EasyUpload resources cleaned up');
+  }
 }

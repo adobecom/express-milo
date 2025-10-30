@@ -529,4 +529,174 @@ export class UploadService {
   getConfig(): UploadServiceConfig {
     return { ...this.config };
   }
-} 
+
+  /**
+   * Generate a unique file name for the uploaded file
+   * @param fileName - The original file name
+   * @returns The unique file name
+   */
+  private generateUUID(): string {
+    return crypto.randomUUID();
+  }
+
+
+  /**
+   * Validates asset creation response
+   * @private
+   */
+  private _validateAssetCreationResponse(createAssetResult: any, documentPath: string): void {
+    if (createAssetResult.response.statusCode < 200 || createAssetResult.response.statusCode >= 300) {
+      const error = new Error(`Asset creation failed: ${createAssetResult.response.statusCode} ${createAssetResult.response.message}`);
+      this.logService?.log("Asset creation failed", {
+        documentPath,
+        statusCode: createAssetResult.response.statusCode,
+        error: error.message
+      });
+      throw error;
+    }
+  }
+  /**
+   * Create a temporary asset in ACP storage using guest token
+   */
+  async createTemporaryAsset(contentType: string) {
+    // const config = this._generateAssetCreationConfig();
+
+    const path = `temp/${this.generateUUID()}/${this.generateUUID()}`;
+    this.logService?.log("Creating temporary asset", { documentPath: path });
+    try {
+      const createAssetResult = await this.session.createAsset(
+        { repositoryId: this.config.repository?.repositoryId, path: this.config.directory?.path },
+        path,
+        true,
+        contentType
+      );
+      this._validateAssetCreationResponse(createAssetResult, path);
+
+      this.logService?.log("Temporary asset created successfully", {
+        documentPath: path,
+        assetId: createAssetResult.result.assetId,
+        repositoryId: createAssetResult.result.repositoryId
+      });
+
+      return createAssetResult.result;
+    } catch (error) {
+      this.logService?.log("Failed to create temporary asset", {
+        documentPath: path,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Get assets version
+   * @param asset
+   * **/
+  async getAssetVersion(asset: AdobeAsset): Promise<string> {
+    try {
+      const versions = await this.session.getAssetVersion(asset);
+      if (versions.response.statusCode < 200 || versions.response.statusCode >= 300) {
+        const error = new Error(
+          `Get Versions failed: ${versions.response.statusCode} ${versions.response.message}`
+        );
+        this.logService?.log("Failed to get asset versions", {
+          assetId: asset.assetId,
+          statusCode: versions.response.statusCode,
+          message: versions.response.message
+        });
+        throw error;
+      }
+
+      if (!versions.result.versions || versions.result.versions.length === 0) {
+        throw new Error("No versions found for asset");
+      }
+
+      const latestVersion = versions.result.versions[versions.result.versions.length - 1]["version"];
+      this.logService?.log("Retrieved asset version", {
+        assetId: asset.assetId,
+        version: latestVersion,
+        totalVersions: versions.result.versions.length
+      });
+
+      return latestVersion;
+    } catch (error) {
+      this.logService?.log("Error getting asset versions", {
+        assetId: asset.assetId,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Download asset content
+   * @param asset
+   * @returns Promise resolving to the asset content
+   */
+  async downloadAssetContent(asset: AdobeAsset): Promise<Blob> {
+    this.logService?.log("Downloading asset content", { assetId: asset.assetId });
+
+    try {
+      const downloadResponse = await this.session.blockDownloadAsset(asset);
+
+      this._validateDownloadResponse(downloadResponse);
+
+      const blob = new Blob([downloadResponse.response]);
+      this._validateDownloadedContent(blob);
+
+
+      this.logService?.log("Asset content downloaded successfully", {
+        assetId: asset.assetId,
+        blobSize: blob.size
+      });
+
+      return blob;
+    } catch (error) {
+      this.logService?.log("Failed to download asset content", {
+        assetId: asset.assetId,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw error;
+    }
+  }
+
+  /**
+ * Validates downloaded content
+ * @private
+ */
+  private _validateDownloadedContent(blob: Blob): void {
+    if (blob.size === 0) {
+      throw new Error("Downloaded file is empty");
+    }
+  }
+
+  /**
+ * Validates download response
+ * @private
+ */
+  private _validateDownloadResponse(downloadResponse: any): void {
+    if (downloadResponse.statusCode < 200 || downloadResponse.statusCode >= 300) {
+      throw new Error(`Block download failed: ${downloadResponse.statusCode} ${downloadResponse.message}`);
+    }
+
+    if (downloadResponse.responseType !== "defaultbuffer") {
+      throw new Error(`Unexpected response type: ${downloadResponse.responseType}. Expected: defaultbuffer`);
+    }
+  }
+
+  /**
+   * Deletes the asset
+   * @private
+   */
+  async deleteAsset(asset: AdobeAsset): Promise<void> {
+    const { repositoryId, assetId } = asset;
+    try {
+      await this.session.deleteAsset({ repositoryId, assetId });
+    } catch (error) {
+      this.logService?.log("Failed to delete asset", {
+        assetId: assetId,
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  }
+}
