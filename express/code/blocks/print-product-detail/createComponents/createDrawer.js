@@ -74,7 +74,7 @@ export default async function createDrawer({
   });
   const curtain = createTag('div', { class: 'pdp-curtain hidden' });
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
-  const drawer = createTag('div', { class: 'drawer hidden' });
+  const drawer = createTag('div', { class: 'drawer hidden', id: 'pdp-x-drawer' });
   curtain.addEventListener('click', toggleDrawer);
   drawer.append(
     createDrawerHead(drawerLabel, toggleDrawer),

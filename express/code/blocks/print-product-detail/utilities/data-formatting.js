@@ -1,5 +1,5 @@
 import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle } from './utility-functions.js';
+import { formatPriceZazzle, formatPaperThickness, formatPaperWeight } from './utility-functions.js';
 
 function buildImageUrl(realviewParams) {
   const params = new URLSearchParams();
@@ -24,15 +24,18 @@ async function convertAttributeToOptionsObject(productType, attribute) {
       option.firstProductRealviewParams.max_dim = '100';
       imageUrl = buildImageUrl(option.firstProductRealviewParams);
     }
-    debugger;
     optionsArray.push({
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
       priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
+      description: option.description,
     });
     if (productType === 'zazzle_businesscard' && attribute.name === 'media') {
-      optionsArray[i].thickness = option.properties.thickness;
+      optionsArray[i].thickness = formatPaperThickness(option.properties.thickness);
+      const { weight, gsm } = formatPaperWeight(option.properties.weight);
+      optionsArray[i].weight = weight;
+      optionsArray[i].gsm = gsm;
     }
     if (productType === 'zazzle_shirt' && attribute.name === 'color') {
       optionsArray[i].printingProcess = option.properties.tags?.includes('showswhite') ? 'vivid' : 'classic';

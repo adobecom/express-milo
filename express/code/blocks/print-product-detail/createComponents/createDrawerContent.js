@@ -19,23 +19,16 @@ export function createDrawerHead(drawerLabel) {
   return drawerHead;
 }
 
-function createDrawerBody({ name, recommended, labels, imgSrc, description }) {
-  const drawerBody = createTag('div', { class: 'drawer-body' });
-  drawerBody.append(createTag('img', { class: 'hero', src: imgSrc, alt: name }));
-  const titleRow = createTag('div', { class: 'title-row' });
-  const recommendTag = createTag('span', { class: ['recommended', recommended ? null : 'hidden'].filter(Boolean).join() }, 'Recommended'); // TODO: localize
-  titleRow.append(createTag('span', { class: 'name' }, name), recommendTag);
-  drawerBody.append(titleRow);
-  const labelRow = createTag('div', { class: 'label-row' });
-  labels.forEach((label) => {
-    const pill = createTag('div', { class: 'label-pill' });
-    pill.append(getIconElementDeprecated('checkmark'), label);
-    labelRow.append(pill);
-  });
-  drawerBody.append(labelRow);
-  drawerBody.append(createTag('p', { class: 'description' }, description));
-  // const onChange = () => {};
-  return drawerBody;
+function createDrawerFoot({ imgSrc, name, price }) {
+  const drawerFoot = createTag('div', { class: 'drawer-foot' });
+  const selectButton = createTag('button', { class: 'select' }, 'Select');
+  const infoContainer = createTag('div', { class: 'info-container' });
+  const infoText = createTag('div', { class: 'info-text' });
+  infoText.append(createTag('div', { class: 'info-name' }, name));
+  infoText.append(createTag('div', { class: 'info-price' }, price));
+  infoContainer.append(createTag('img', { src: imgSrc, alt: name }), infoText);
+  drawerFoot.append(infoContainer, selectButton);
+  return drawerFoot;
 }
 
 export default async function createDrawerContentSizeChart(productDetails) {
@@ -54,9 +47,9 @@ export async function createDrawerContentPrintingProcess(productDetails) {
   return printingProcessContainer;
 }
 
-export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
+export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const paperTypeContainer = createTag('div', { class: 'pdpx-paper-type-container' });
+  const paperTypeContainer = drawer;
   const drawerHead = createDrawerHead('Paper Type');
   const drawerBody = createTag('div', { class: 'drawer-body' });
   const defaultValueSafe = defaultValue || customizationOptions[0].name;
@@ -71,11 +64,42 @@ export async function createDrawerContentPaperType(customizationOptions, labelTe
   const titleRow = createTag('div', { class: 'pdpx-drawer-title-row' });
   const drawerTitle = createTag('span', { class: 'pdpx-drawer-title' }, defaultValueOption.title);
   titleRow.appendChild(drawerTitle);
+  if (defaultValueSafe === '175ptmatte') {
+    const recommendedBadge = createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended');
+    titleRow.appendChild(recommendedBadge);
+  }
+  const pillsContainer = createTag('div', { class: 'pdpx-drawer-pills-container' });
+  const specs = [
+    defaultValueOption.thickness,
+    defaultValueOption.weight,
+    defaultValueOption.gsm,
+  ].filter(Boolean);
+  specs.forEach((spec) => {
+    const pill = createTag('div', { class: 'pdpx-drawer-pill' });
+    const pillIcon = getIconElementDeprecated('circle-check-mark');
+    const pillText = createTag('span', { class: 'pdpx-drawer-pill-text' }, spec);
+    pill.append(pillIcon, pillText);
+    pillsContainer.appendChild(pill);
+  });
   const paperTypeSelectorContainer = await createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, null, productId, defaultValue, drawerType);
+  const description = createTag('div', { class: 'pdpx-drawer-description' }, defaultValueOption.description);
+  const drawerFoot = createTag('div', { class: 'drawer-foot' });
+  const infoContainer = createTag('div', { class: 'pdpx-drawer-foot-info-container' });
+  const infoText = createTag('div', { class: 'pdpx-drawer-foot-info-text' });
+  infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-name' }, defaultValueOption.title));
+  infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-price' }, defaultValueOption.priceAdjustment));
+  infoContainer.append(createTag('img', { src: defaultValueOption.thumbnail, alt: heroImageAlt }), infoText);
+  drawerFoot.appendChild(infoContainer);
+  const selectButton = createTag('button', { class: 'pdpx-drawer-foot-select-button' }, 'Select');
+  drawerFoot.appendChild(selectButton);
+
   paperTypeContainer.appendChild(drawerHead);
   drawerBody.appendChild(heroImageContainer);
   drawerBody.appendChild(titleRow);
+  drawerBody.appendChild(pillsContainer);
   drawerBody.appendChild(paperTypeSelectorContainer);
+  drawerBody.appendChild(description);
   paperTypeContainer.appendChild(drawerBody);
+  paperTypeContainer.appendChild(drawerFoot);
   return paperTypeContainer;
 }

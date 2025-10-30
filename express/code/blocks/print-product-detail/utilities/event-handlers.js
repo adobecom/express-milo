@@ -8,7 +8,7 @@ import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, creat
 
 export async function closeDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
-  const drawer = document.querySelector('.drawer');
+  const drawer = document.getElementById('pdp-x-drawer');
   curtain.classList.add('hidden');
   drawer.classList.add('hidden');
   document.body.classList.remove('disable-scroll');
@@ -25,8 +25,7 @@ export async function openDrawer(customizationOptions, labelText, hiddenSelectIn
     const printingProcessContent = await createDrawerContentPrintingProcess('placeholder');
     drawer.appendChild(printingProcessContent);
   } else if (drawerType === 'paperType') {
-    const paperTypeContent = await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType);
-    drawer.appendChild(paperTypeContent);
+    await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType, drawer);
   }
   curtain.classList.remove('hidden');
   drawer.classList.remove('hidden');

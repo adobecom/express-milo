@@ -1,5 +1,17 @@
 import { getLibs, createTag } from '../../../scripts/utils.js';
 
+export function formatPaperThickness(thickness) {
+  const thicknessFormatted = `${thickness.replace('_', '.')}pt thickness`;
+  return thicknessFormatted;
+}
+
+export function formatPaperWeight(weight) {
+  const [weightValue, gsmValue] = weight.split('lb');
+  const weightFormatted = `${weightValue}lb weight`;
+  const gsmFormatted = gsmValue?.replace('gsm', ' GSM');
+  return { weight: weightFormatted, gsm: gsmFormatted };
+}
+
 export function extractTemplateId(block) {
   const templateId = block.children[0].children[1].textContent;
   return templateId;
