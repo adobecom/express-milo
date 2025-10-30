@@ -233,11 +233,11 @@ const eagerLoad = (img) => {
 };
 
 (function decorateLCPImage() {
-  const firstSection = document.querySelector('body > main > div:nth-child(2)'); // just for test
+  const firstSection = document.querySelector('body > main > div:nth-child(1)');
   if (!firstSection) return;
 
   // Get all images in the first section
-  const images = document.querySelectorAll('.background-image');
+  const images = firstSection.querySelectorAll('img');
   if (images.length > 0) {
     images.forEach(eagerLoad);
 

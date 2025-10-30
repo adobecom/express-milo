@@ -228,6 +228,14 @@ export default async function decorate(block) {
     class: 'background-image',
     src: '/express/code/blocks/discover-cards/img/cards-bg-large.webp',
     alt: '',
+    fetchpriority: 'high',
+    loading: 'eager',
   });
   block.appendChild(backgroundImg);
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = '/express/code/blocks/discover-cards/img/cards-bg-large.webp';
+  link.fetchpriority = 'high';
+  document.head.appendChild(link);
 }
