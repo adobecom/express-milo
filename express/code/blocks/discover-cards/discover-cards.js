@@ -224,9 +224,12 @@ export default async function decorate(block) {
     syncMinHeights(cardParagraphs);
   }, 100));
 
-  block.style.backgroundImage = `
-        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
-      `;
+  const backgroundImg = createTag('img', {
+    class: 'background-image',
+    src: '/express/code/blocks/discover-cards/img/cards-bg-large.webp',
+    alt: '',
+    fetchpriority: 'low',
+    loading: 'lazy',
+  });
+  block.appendChild(backgroundImg);
 }
