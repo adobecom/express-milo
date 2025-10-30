@@ -33,7 +33,7 @@ async function createGlobalContainer(productDetails) {
   return globalContainer;
 }
 
-function createCheckoutButtonHref(templateId, parameters, productType) {
+export function createCheckoutButtonHref(templateId, parameters, productType) {
   const productSettingsString = JSON.stringify(parameters);
   const encodedParametersString = encodeURIComponent(productSettingsString);
   const taskIdMap = {

@@ -5,6 +5,7 @@ import createProductImagesContainer from '../createComponents/createProductImage
 import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/drawerContent/createDrawerContent.js';
+import { createCheckoutButtonHref } from '../print-product-detail.js';
 
 export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
@@ -96,10 +97,10 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
-async function updateCheckoutButton(productDetails) {
+async function updateCheckoutButton(productDetails, formDataObject) {
   const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const urlbase = 'https://new.express.adobe.com/design/template/';
-  checkoutButton.href = `${urlbase}${productDetails.templateId}`;
+  const url = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
+  checkoutButton.href = url;
 }
 
 function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
@@ -143,7 +144,7 @@ export default async function updateAllDynamicElements(productId) {
     templateId,
   };
   const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
-  await updateCheckoutButton(normalizedProductDetails);
+  await updateCheckoutButton(normalizedProductDetails, formDataObject);
   await updateProductImages(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   await updateProductPrice(normalizedProductDetails);
