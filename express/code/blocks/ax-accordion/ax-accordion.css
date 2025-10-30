@@ -20,6 +20,7 @@
   text-align: left;
   flex: 1 0 0;
   color: var(--color-gray-950);
+  font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   font-style: normal;
   font-weight: var(--heading-font-weight-medium);
@@ -85,6 +86,7 @@
   grid-template-rows: 0fr;
   overflow: hidden;
   color: #505050;
+  font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   font-style: normal;
   font-weight: var(--body-font-weight);
