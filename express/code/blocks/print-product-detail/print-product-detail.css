@@ -275,9 +275,8 @@
     background-color: #5258e4;
     color: #fff;
     border: none;
-    border-radius: 8px;
-    padding: 13px;
     border-radius: 24px;
+    padding: 13px;
     cursor: pointer;
   }
 }
@@ -634,7 +633,6 @@ main .section .pdpx-drawer-description {
   cursor: pointer;
 }
 .pdpx-product-details-section-title-container {
-  border-bottom: 1px solid #686868;
   padding-bottom: var(--figma-spacing-300);
 }
 .pdpx-product-details-section-title {
@@ -705,7 +703,6 @@ main .section .pdpx-drawer-description {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  -webkit-appearance: none;
 }
 
 /*TABLET*/
