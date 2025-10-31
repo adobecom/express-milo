@@ -80,10 +80,15 @@ async function updatePageWithProductDetails(productDetails) {
 function updatePageWithProductImages(productDetails) {
   const imageThumbnailCarouselContainer = document.getElementById('pdpx-image-thumbnail-carousel-container');
   const heroProductImage = document.getElementById('pdpx-product-hero-image');
-  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(productDetails.realViews, 'Front', heroProductImage);
+  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
+    productDetails.realViews,
+    'Front',
+    heroProductImage,
+  );
   imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
   imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
-  newImageThumbnailCarouselContainer.removeAttribute('data-skeleton');
+  newImageThumbnailCarouselContainer
+    .removeAttribute('data-skeleton');
   return imageThumbnailCarouselContainer;
 }
 
@@ -104,7 +109,10 @@ function updatePageWithProductReviews(productDetails) {
 }
 
 function updatePageWithProductShippingEstimates(productDetails) {
-  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(
+    productDetails.deliveryEstimateMinDate,
+    productDetails.deliveryEstimateMaxDate,
+  );
   const deliveryEstimatePillDate = document.getElementById('pdpx-delivery-estimate-pill-date');
   deliveryEstimatePillDate.textContent = deliveryEstimateDateRange;
 }
@@ -134,6 +142,15 @@ export default async function decorate(block) {
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
     updatePageWithProductDetails(dataObject);
+    // SEO: title/description (respect authored), initial Product JSON-LD
+    // (updated later when price arrives)
+    const canonicalUrl = getCanonicalUrl();
+    upsertTitleAndDescriptionRespectingAuthored(dataObject);
+    const overrides = getAuthoredOverrides(document);
+    const initialJsonLd = await buildProductJsonLd(dataObject, overrides, canonicalUrl);
+    upsertLdJson('pdp-product-jsonld', initialJsonLd);
+    const breadcrumbsLd = buildBreadcrumbsJsonLdFromDom();
+    if (breadcrumbsLd) upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbsLd);
     productId = productDetailsResponse.product.id;
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
     productRenditions.then((productRenditionsResponse) => {
@@ -145,6 +162,15 @@ export default async function decorate(block) {
     productPrice.then(async (productPriceResponse) => {
       dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse, quantity);
       await updatePageWithProductPrice(dataObject);
+      // SEO: Update Product JSON-LD with pricing/offer once available
+      const canonicalUrlUpdated = getCanonicalUrl();
+      const overridesUpdated = getAuthoredOverrides(document);
+      const updatedJsonLd = await buildProductJsonLd(
+        dataObject,
+        overridesUpdated,
+        canonicalUrlUpdated,
+      );
+      upsertLdJson('pdp-product-jsonld', updatedJsonLd);
     });
     const productReviews = fetchAPIData(productId, null, 'getreviews');
     productReviews.then((productReviewsResponse) => {
@@ -153,9 +179,16 @@ export default async function decorate(block) {
     });
 
     const sampleShippingParameters = { qty: quantity };
-    const productShippingEstimates = fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
+    const productShippingEstimates = fetchAPIData(
+      productId,
+      sampleShippingParameters,
+      'getshippingestimates',
+    );
     productShippingEstimates.then((productShippingEstimatesResponse) => {
-      dataObject = updateDataObjectProductShippingEstimates(dataObject, productShippingEstimatesResponse);
+      dataObject = updateDataObjectProductShippingEstimates(
+        dataObject,
+        productShippingEstimatesResponse,
+      );
       updatePageWithProductShippingEstimates(dataObject);
     });
 
