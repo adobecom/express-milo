@@ -101,7 +101,7 @@ function createFixTemplateElements(currentHoveredElementRef) {
 }
 
 /* c8 ignore next 359 */
-async function createDirectCarousel(block, templates, createTagFn) {
+function createDirectCarousel(block, templates, createTagFn) {
   const templateCount = templates.length;
   let currentIndex = 0;
   let isAnimating = false;
@@ -122,7 +122,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
     'aria-label': 'Template carousel',
   });
 
-  const carouselId = `carousel-status-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const carouselId = `carousel-status-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
   const status = createTagFn('div', {
     id: carouselId,
     class: 'sr-only',
@@ -751,7 +751,7 @@ export async function createCustomCarousel(block, templates) {
 
     templateElements.forEach((template) => fixTemplateElements(template, addTrackedListener));
 
-    const carousel = await createDirectCarousel(block, templateElements, createTag);
+    const carousel = createDirectCarousel(block, templateElements, createTag);
 
     block._carousel = carousel;
 
