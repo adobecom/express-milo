@@ -1,19 +1,23 @@
-import fetchAPIData, { formatUrlForEnvironment } from '../fetchData/fetchProductDetails.js';
+import { getLibs, createTag } from '../../../scripts/utils.js';
 
-export async function extractProductId(block) {
-  const templateId = block.children[0].children[1].textContent;
+export function formatPaperThickness(thickness) {
+  const thicknessFormatted = `${thickness.replace('_', '.')}pt thickness`;
+  return thicknessFormatted;
+}
 
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductfromtemplate?templateID=${templateId}`;
-  const productIdAPICall = await fetch(formatUrlForEnvironment(url));
-  const productIdAPICallJSON = await productIdAPICall.json();
+export function formatPaperWeight(weight) {
+  const [weightValue, gsmValue] = weight.split('lb');
+  const weightFormatted = `${weightValue}lb weight`;
+  const gsmFormatted = gsmValue?.replace('gsm', ' GSM');
+  return { weight: weightFormatted, gsm: gsmFormatted };
+}
 
-  const productId = productIdAPICallJSON.data.product.id;
-
-  // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
+export function extractTemplateId(block) {
+  const templateIdBlock = block.children[0].children[1].textContent;
   const urlParams = new URLSearchParams(window.location.search);
-  const productIdURL = urlParams.get('productId');
-  const productIdFinal = productIdURL || productId;
-  return productIdFinal;
+  const templateIdURL = urlParams.get('templateId');
+  const templateId = templateIdURL || templateIdBlock;
+  return templateId;
 }
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
@@ -21,17 +25,6 @@ export function formatDeliveryEstimateDateRange(minDate, maxDate) {
   const minFormatted = new Date(minDate).toLocaleDateString('en-US', options);
   const maxFormatted = new Date(maxDate).toLocaleDateString('en-US', options);
   return `${minFormatted} - ${maxFormatted}`;
-}
-
-export function buildRealViewImageUrl(realviewParams, maxDim = 644) {
-  const params = new URLSearchParams();
-  Object.entries(realviewParams).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      params.set(key, value);
-    }
-  });
-  params.set('max_dim', maxDim);
-  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
 export function formatLargeNumberToK(totalReviews) {
@@ -45,20 +38,38 @@ export function formatLargeNumberToK(totalReviews) {
   return totalReviews;
 }
 
-export function formatPriceZazzle(price, differential = false, short = false) {
-  let countryCode;
-  let currencyCode;
-  let priceDifferentialOperator;
+export function exchangeRegionForTopLevelDomain(region) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const regionURL = urlParams.get('region');
+  const regionFinal = regionURL || region;
+  const regionToTopLevelDomainMap = {
+    'en-GB': 'co.uk',
+    'en-US': 'com',
+    'en-CA': 'ca',
+    'en-AU': 'au',
+    'en-NZ': 'nz',
+  };
+  const topLevelDomain = regionToTopLevelDomainMap[regionFinal];
+  return topLevelDomain;
+}
+
+export async function formatPriceZazzle(price, differential = false) {
+  const { getCountry } = await import('../../../scripts/utils/location-utils.js');
+  const country = await getCountry();
+  const { getCurrency, formatPrice } = await import('../../../scripts/utils/pricing.js');
+  const currency = await getCurrency(country);
   const urlParams = new URLSearchParams(window.location.search);
   const region = urlParams.get('region');
-  if (region === 'uk') {
-    countryCode = 'en-GB';
-    currencyCode = 'GBP';
-  } else {
-    countryCode = 'en-US';
-    currencyCode = 'USD';
-  }
-  const localizedPrice = new Intl.NumberFormat(countryCode, { style: 'currency', currency: currencyCode }).format(price);
+  const currencyMap = {
+    'en-GB': 'GBP',
+    'en-US': 'USD',
+    'en-CA': 'CAD',
+    'en-AU': 'AUD',
+    'en-NZ': 'NZD',
+  };
+  const currencyFinal = currencyMap[region] || currency;
+  let priceDifferentialOperator;
+  const localizedPrice = await formatPrice(price, currencyFinal);
   if (differential) {
     priceDifferentialOperator = price >= 0 ? '+' : '';
   } else {
@@ -72,4 +83,31 @@ export function formatStringSnakeCase(string) {
   const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '_');
   const formattedString = normalizedString.trim().toLowerCase().replace(/ /g, '_');
   return formattedString;
+}
+
+export async function addPrefetchLinks() {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
+  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  const prefetchLink1 = createTag('link', {
+    rel: 'dns-prefetch',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  const prefetchLink2 = createTag('link', {
+    rel: 'dns-prefetch',
+    href: `https://rlv.zcache.${topLevelDomain}`,
+  });
+
+  const preconnectLink1 = createTag('link', {
+    rel: 'preconnect',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  const preconnectLink2 = createTag('link', {
+    rel: 'preconnect',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  document.head.appendChild(prefetchLink1);
+  document.head.appendChild(prefetchLink2);
+  document.head.appendChild(preconnectLink1);
+  document.head.appendChild(preconnectLink2);
 }

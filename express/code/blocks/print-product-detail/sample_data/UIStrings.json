@@ -190,5 +190,12 @@
     "zi_search_SearchPage_Search_Placeholder": "Find a product",
     "zi_search_SearchPage_Title": "What do you want to print?",
     "zi_create_bulk_reviewBulkOrderDialog_okButtonLabel": "Add to cart",
-    "adobe_comp_value_tooltip_title": "Comparative Value Price"
+    "adobe_deliveryEstimateStringText": "Order today and get it by ",
+    "adobe_compareValueTooltipTitle": "Comparative Value Price",
+    "zi_product_PDP_PrintingProcess_ClassicPrinting_Title": "Classic Printing: No Underbase",
+    "zi_product_PDP_PrintingProcess_ClassicPrinting_Description": "No white base layer is printed on the fabric, any white used in the design will come across as transparent allowing the color of the fabric to show through.",
+    "zi_product_PDP_PrintingProcess_ClassicPrinting_Summary": "4 color process",
+    "zi_product_PDP_PrintingProcess_VividPrinting_Title": "Vivid Printing: White Underbase",
+    "zi_product_PDP_PrintingProcess_VividPrinting_Description": "Fabric is treated with a white base layer under the design, allowing the design to be more vibrant. Extra production step may require a surcharge.",
+    "zi_product_PDP_PrintingProcess_VividPrinting_Summary": "5 color process"
 }
