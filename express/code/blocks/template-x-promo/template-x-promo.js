@@ -459,7 +459,6 @@ function createDirectCarousel(block, templates, createTagFn) {
   };
 }
 
-/* istanbul ignore next */
 /* c8 ignore next 55 */
 async function handleOneUpFromApiData(block, templateData) {
   const parent = block.parentElement;
@@ -524,7 +523,6 @@ async function handleOneUpFromApiData(block, templateData) {
   parent.append(buttonContainer);
 }
 
-/* istanbul ignore next */
 /* c8 ignore next 41 */
 async function createTemplateElementForCarousel(templateData) {
   const { default: renderTemplate } = await import('../template-x/template-rendering.js');
@@ -804,7 +802,6 @@ const initializeUtilities = async () => {
   }
 };
 
-/* istanbul ignore next */
 const routeTemplates = async (block, templates) => {
   const routingDecision = determineTemplateRouting(templates);
 
@@ -828,7 +825,6 @@ const routeTemplates = async (block, templates) => {
   }
 };
 
-/* istanbul ignore next */
 /* c8 ignore next 45 */
 const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) => {
   try {
@@ -855,7 +851,6 @@ const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) =
   }
 };
 
-/* istanbul ignore next */
 export default async function decorate(block) {
   if (block.hasAttribute('data-decorated')) {
     return;
