@@ -1,13 +1,9 @@
-/* AX Accordion - Accessible Accordion Component
- * Animation timing: 300ms ease-out (keep in sync with ANIMATION_DURATION in ax-accordion.js)
- */
-
 .ax-accordion {
   width: 100%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-gray-600);
+  border-top: 1px solid var(--color-gray-325);
 }
 
 /* Accordion trigger/header button */
@@ -16,19 +12,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-300) var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-200);
   background: none;
   border: none;
-  border-bottom: 1px solid var(--color-gray-600);
+  border-bottom: 1px solid var(--color-gray-325);
   cursor: pointer;
   text-align: left;
   flex: 1 0 0;
   color: var(--color-gray-950);
-  font-size: var(--body-font-size-s);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
   font-style: normal;
-  font-weight: var(--subheading-font-weight);
-  line-height: 20px;
-  font-family: inherit;
+  font-weight: var(--heading-font-weight-medium);
+  line-height: var(--heading-line-height);
 }
 
 .ax-accordion-item-title-container:hover {
@@ -45,21 +41,27 @@
   outline-offset: -2px;
 }
 
-/* When button is expanded, remove border-bottom */
+/* When button is expanded, remove border-bottom and add extra padding */
 .ax-accordion-item-title-container[aria-expanded="true"] {
   border-bottom: none;
+  padding-bottom: 2px;
+}
+
+/* Hover state for entire expanded item */
+.ax-accordion-item-container:has(.ax-accordion-item-title-container[aria-expanded="true"]):hover .ax-accordion-item-title-container,
+.ax-accordion-item-container:has(.ax-accordion-item-title-container[aria-expanded="true"]):hover .ax-accordion-item-description {
+  background-color: var(--color-gray-100);
 }
 
 /* Next sibling container after expanded item gets border-top on its button */
 .ax-accordion-item-container:has(.ax-accordion-item-title-container[aria-expanded="true"]) + .ax-accordion-item-container .ax-accordion-item-title-container {
-  border-top: 1px solid var(--color-gray-600);
+  border-top: 1px solid var(--color-gray-325);
 }
 
 .ax-accordion-item-title {
   flex: 1;
 }
 
-/* Icon */
 .ax-accordion-item-icon {
   width: var(--spacing-200);
   height: var(--spacing-200);
@@ -72,21 +74,20 @@
   background-size: var(--spacing-200) var(--spacing-200);
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url('/express/code/icons/plus-heavy.svg');
+  background-image: url('/express/code/icons/plus-heavy-light-gray.svg');
 }
 
-/* Icon states based on button aria-expanded */
 .ax-accordion-item-title-container[aria-expanded="true"] .ax-accordion-item-icon {
-  background-image: url('/express/code/icons/minus-heavy.svg');
+  background-image: url('/express/code/icons/minus-heavy-light-gray.svg');
 }
 
-/* Content */
 .ax-accordion-item-description {
   display: grid;
   grid-template-rows: 0fr;
   overflow: hidden;
-  color: var(--color-gray-600);
-  font-size: var(--body-font-size-s);
+  color: #505050;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
   font-style: normal;
   font-weight: var(--body-font-weight);
   line-height: var(--heading-line-height);
@@ -96,7 +97,7 @@
 
 .ax-accordion-item-description > * {
   min-height: 0;
-  padding: 0 var(--spacing-300);
+  padding: 0 var(--spacing-200);
   opacity: 0;
   transition: opacity 50ms linear, padding 300ms ease-out;
   overflow-wrap: break-word;
@@ -105,18 +106,16 @@
   max-width: 100%;
 }
 
-/* When button is expanded, show content */
 .ax-accordion-item-title-container[aria-expanded="true"] + .ax-accordion-item-description {
   grid-template-rows: 1fr;
 }
 
 .ax-accordion-item-title-container[aria-expanded="true"] + .ax-accordion-item-description > * {
-  padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
+  padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-200);
   opacity: 1;
   transition: opacity 300ms ease-out, padding 300ms ease-out;
 }
 
-/* Lists in content */
 .ax-accordion-item-description ul,
 .ax-accordion-item-description ol {
   padding-top: 0;
@@ -129,7 +128,6 @@
   list-style-type: disc;
 }
 
-/* Paragraphs in content */
 .ax-accordion-item-description p:first-child {
   margin-top: 0;
 }

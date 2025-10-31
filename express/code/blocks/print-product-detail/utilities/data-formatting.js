@@ -1,5 +1,5 @@
-import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle } from './utility-functions.js';
+import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { formatPriceZazzle, formatPaperThickness, formatPaperWeight } from './utility-functions.js';
 
 function buildImageUrl(realviewParams) {
   const params = new URLSearchParams();
@@ -11,18 +11,35 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-async function convertAttributeToOptionsObject(attribute) {
+async function convertAttributeToOptionsObject(productType, attribute) {
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
+    let imageUrl;
     const option = options[i];
-    const imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    if (productType === 'zazzle_businesscard' && attribute.name === 'media') {
+      option.swatchParams.max_dim = '100';
+      imageUrl = buildImageUrl(option.swatchParams);
+    } else {
+      option.firstProductRealviewParams.max_dim = '100';
+      imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    }
     optionsArray.push({
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
       priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
+      description: option.description,
     });
+    if (productType === 'zazzle_businesscard' && attribute.name === 'media') {
+      optionsArray[i].thickness = formatPaperThickness(option.properties.thickness);
+      const { weight, gsm } = formatPaperWeight(option.properties.weight);
+      optionsArray[i].weight = weight;
+      optionsArray[i].gsm = gsm;
+    }
+    if (productType === 'zazzle_shirt' && attribute.name === 'color') {
+      optionsArray[i].printingProcess = option.properties.tags?.includes('showswhite') ? 'vivid' : 'classic';
+    }
   }
   return optionsArray;
 }
@@ -37,47 +54,6 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
     });
   }
   return optionsArray;
-}
-
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId }) {
-  const UIStrings = await fetchUIStrings();
-  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
-  const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
-  const normalizedProductDetails = {
-    id: productDetails.product.id,
-    templateId,
-    heroImage: productDetails.product.initialPrettyPreferredViewUrl,
-    productTitle: productDetails.product.title,
-    unitPrice: productPrice?.unitPrice,
-    productPrice: calculatedProductPrice,
-    strikethroughPrice: productPrice?.unitPrice * quantity,
-    discountAvailable,
-    discountString: applicableDiscount?.discountString,
-    deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
-    deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    realViews: productRenditions.realviewUrls,
-    productType: productDetails.product.productType,
-    pluralUnitLabel: productDetails.product.pluralUnitLabel,
-    averageRating: productReviews.reviews.stats.averageRating,
-    totalReviews: productReviews.reviews.stats.totalReviews,
-    tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
-    tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
-    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
-    productDescriptions: [],
-    attributes: { quantities: productDetails.product.quantities },
-  };
-  for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
-  }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  normalizedProductDetails.attributes.quantities = quantitiesOptions;
-  return normalizedProductDetails;
 }
 
 export function createEmptyDataObject(templateId) {
@@ -118,7 +94,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
-    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;
@@ -159,5 +135,23 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   dataObject.compareValueTooltipDescription1 = UIStrings.zi_product_Price_CompValueTooltip1Adobe;
   dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
   dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
+  dataObject.compareValueInfoIconLabel = UIStrings.zi_product_Price_CompValue;
+  dataObject.classicPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Title;
+  dataObject.classicPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Description;
+  dataObject.classicPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Summary;
+  dataObject.vividPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Title;
+  dataObject.vividPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Description;
+  dataObject.vividPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Summary;
+  return dataObject;
+}
+
+export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId, UIStrings }) {
+  let dataObject = createEmptyDataObject(templateId);
+  dataObject = await updateDataObjectProductDetails(dataObject, productDetails);
+  dataObject = await updateDataObjectProductPrice(dataObject, productPrice, quantity);
+  dataObject = await updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates);
+  dataObject = await updateDataObjectProductReviews(dataObject, productReviews);
+  dataObject = await updateDataObjectProductRenditions(dataObject, productRenditions);
+  dataObject = await updateDataObjectUIStrings(dataObject, UIStrings);
   return dataObject;
 }

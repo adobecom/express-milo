@@ -1,16 +1,27 @@
-import fetchAPIData from '../fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
-import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
+import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
+import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/drawerContent/createDrawerContent.js';
+import { createCheckoutButtonHref } from '../print-product-detail.js';
 
-export function toggleDrawer() {
+export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
   const drawer = document.querySelector('.drawer');
-  document.body.classList.toggle('disable-scroll');
-  curtain.classList.toggle('hidden');
-  drawer.classList.toggle('hidden');
+  drawer.innerHTML = '';
+  if (drawerType === 'sizeChart') {
+    const sizeChartContent = await createDrawerContentSizeChart('placeholder');
+    drawer.appendChild(sizeChartContent);
+  } else if (drawerType === 'printingProcess') {
+    await createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
+  } else if (drawerType === 'paperType') {
+    await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
+  }
+  curtain.classList.remove('hidden');
+  drawer.classList.remove('hidden');
+  document.body.classList.add('disable-scroll');
 }
 
 function formatProductOptionsToAPIParameters(formDataObject) {
@@ -55,6 +66,7 @@ async function updateProductImages(productDetails) {
     imageType,
   );
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
@@ -66,10 +78,22 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
-async function updateCheckoutButton(productDetails) {
+async function updateCheckoutButton(productDetails, formDataObject) {
   const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const urlbase = 'https://new.express.adobe.com/design/template/';
-  checkoutButton.href = `${urlbase}${productDetails.templateId}`;
+  const url = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
+  checkoutButton.href = url;
+}
+
+async function updateDrawerContent(productDetails, formDataObject) {
+  const drawer = document.querySelector('.drawer');
+  if (drawer.classList.contains('hidden')) {
+    return;
+  }
+  if (productDetails.productType === 'zazzle_businesscard') {
+    const mediaValue = productDetails.attributes.media.find((v) => v.name === formDataObject.media);
+    drawer.innerHTML = '';
+    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', null, productDetails, mediaValue.name, 'paperType', drawer);
+  }
 }
 
 function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
@@ -96,28 +120,31 @@ export default async function updateAllDynamicElements(productId) {
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
   const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity);
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
-  const productDetails = await fetchAPIData(productId, updatedParameters, 'getproduct');
-  const productPrice = await fetchAPIData(productId, updatedParameters, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const productRenditions = await fetchAPIData(productId, updatedParameters, 'getproductrenditions');
-  const productShippingEstimates = await fetchAPIData(productId, updatedParameters, 'getshippingestimates');
+  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, UIStrings] = await Promise.all([
+    fetchAPIData(productId, updatedParameters, 'getproduct'),
+    fetchAPIData(productId, updatedParameters, 'getproductpricing'),
+    fetchAPIData(productId, null, 'getreviews'),
+    fetchAPIData(productId, updatedParameters, 'getproductrenditions'),
+    fetchAPIData(productId, updatedParameters, 'getshippingestimates'),
+    fetchUIStrings(),
+  ]);
   const normalizeProductDetailsParametersObject = {
-    productDetails,
+    productDetails: updatedConfigurationOptions,
     productPrice,
     productReviews,
     productRenditions,
     productShippingEstimates,
     quantity,
-    updatedConfigurationOptions,
     templateId,
+    UIStrings,
   };
   const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
-  await updateProductPrice(normalizedProductDetails);
+  await updateCheckoutButton(normalizedProductDetails, formDataObject);
   await updateProductImages(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
-  await updateCheckoutButton(normalizedProductDetails);
-
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
+  await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
     productDetails,
