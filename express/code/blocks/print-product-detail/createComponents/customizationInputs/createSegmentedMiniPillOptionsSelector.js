@@ -8,8 +8,8 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   const productId = productDetails.id;
   let selectedValue = false;
   // TODO: Only render the containers if there are options for that printing process
-  // const classicOptions = customizationOptions.filter((option) => option.printingProcess === 'classic');
-  // const vividOptions = customizationOptions.filter((option) => option.printingProcess === 'vivid');
+  const classicOptions = customizationOptions.filter((option) => option.printingProcess === 'classic');
+  const vividOptions = customizationOptions.filter((option) => option.printingProcess === 'vivid');
 
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -17,13 +17,7 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   const miniPillSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, `${labelText}: `);
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabel);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
-  if (CTALinkText) {
-    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
-    miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
-      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType);
-    });
-    miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
-  }
+
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
   const miniPillSelectorOptionsContainerWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-container-wrapper' });
   const miniPillOptionsSectionContainerClassic = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
@@ -71,6 +65,13 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedMiniPillOptionImageContainer.classList.add('selected');
   const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  if (CTALinkText) {
+    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
+    miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType);
+    });
+    miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
+  }
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
