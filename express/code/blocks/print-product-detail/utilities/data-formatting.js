@@ -142,6 +142,7 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   dataObject.vividPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Title;
   dataObject.vividPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Description;
   dataObject.vividPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Summary;
+  dataObject.sizeChart = UIStrings.adobe_sizeChartExample;
   return dataObject;
 }
 

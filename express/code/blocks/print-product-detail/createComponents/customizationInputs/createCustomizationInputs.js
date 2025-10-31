@@ -5,12 +5,14 @@ import createMiniPillOptionsSelector from './createMiniPillOptionsSelector.js';
 
 let createTag;
 
-function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId, defaultValue) {
+function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, CTAText) {
   const selectedOption = defaultValue || customizationOptions[0].name;
+  const productId = productDetails.id;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
-  const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
+  const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label', for: `pdpx-standard-selector-${hiddenSelectInputName}` }, labelText);
   standardSelectorContainer.appendChild(standardSelectorLabel);
-  const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName });
+  const standardSelectorInputContainer = createTag('div', { class: 'pdpx-standard-selector-input-container' });
+  const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName, id: `pdpx-standard-selector-${hiddenSelectInputName}` });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const optionLabel = customizationOptions[i].title;
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
@@ -20,7 +22,15 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
     updateAllDynamicElements(productId);
   });
   standardSelectorInput.value = selectedOption;
-  standardSelectorContainer.appendChild(standardSelectorInput);
+  standardSelectorInputContainer.appendChild(standardSelectorInput);
+  standardSelectorContainer.appendChild(standardSelectorInputContainer);
+  if (CTAText) {
+    const standardSelectorCTA = createTag('button', { class: 'pdpx-standard-selector-cta', type: 'button' }, CTAText);
+    standardSelectorCTA.addEventListener('click', async () => {
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTAText, productDetails, defaultValue, 'sizeChart');
+    });
+    standardSelectorInputContainer.appendChild(standardSelectorCTA);
+  }
   return standardSelectorContainer;
 }
 
@@ -66,15 +76,15 @@ export async function createBusinessCardInputs(container, productDetails, formDa
   const paperTypeSelectorContainer = await createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type', 'media', 'Compare Paper Types', productDetails, formDataObject?.media, 'paperType');
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
+  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails, formDataObject?.qty, null);
   container.append(paperTypeSelectorContainer, cornerStyleSelectorContainer, sizeSelectorContainer, quantitySelectorContainer);
 }
 
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
-  const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails.id, formDataObject?.size);
+  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails, formDataObject?.qty, null);
+  const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject?.size, 'Size chart');
   container.append(styleSelectorContainer, colorSelectorContainer, quantitySelectorContainer, sizeSelectorContainer);
 }
 function createDefaultInputs(container, productDetails, formDataObject = {}) {

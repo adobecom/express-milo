@@ -12,10 +12,9 @@ export async function openDrawer(customizationOptions, labelText, hiddenSelectIn
   const drawer = document.querySelector('.drawer');
   drawer.innerHTML = '';
   if (drawerType === 'sizeChart') {
-    const sizeChartContent = await createDrawerContentSizeChart('placeholder');
-    drawer.appendChild(sizeChartContent);
+    const sizeChartContent = await createDrawerContentSizeChart(productDetails, drawer);
   } else if (drawerType === 'printingProcess') {
-    await createDrawerContentPrintingProcess(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
+    await createDrawerContentPrintingProcess(productDetails, drawer);
   } else if (drawerType === 'paperType') {
     await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
   }
