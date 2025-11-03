@@ -12,7 +12,7 @@
 }
 
 main .section .link-list-wrapper:has(.link-list.link-text),
-  main .section.modular-search .link-list-wrapper:has(.link-list.link-text) {
+  main .section.panel .link-list-wrapper:has(.link-list.link-text) {
     padding: 0;
     margin: 0;
   }
@@ -104,7 +104,7 @@ main .section .link-list-wrapper:has(.link-list.link-text),
 }
 
 .section .link-list .carousel-platform {
-  scroll-padding: 32px;
+  scroll-padding: var(--spacing-500);
 }
 
 .section .link-list .carousel-platform p.button-container:first-child {
