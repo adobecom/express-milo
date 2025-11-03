@@ -1,7 +1,6 @@
 .blog-article-marquee {
   margin: 0 auto;
   padding:  var(--spacing-600) 0;
-  box-sizing: border-box;
   max-width: var(--ax-grid-container-width);
   --regular-font-size: var(--ax-body-s-size);
 }
