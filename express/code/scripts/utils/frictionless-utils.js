@@ -97,6 +97,7 @@ export const QA_CONFIGS = {
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-easy-upload': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
@@ -113,7 +114,7 @@ export const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-variant1',
   'qa-in-product-variant2',
   'qa-nba',
-  'qa-in-product-control',
+  'qa-in-product-control'
 ];
 
 export const EXPERIMENTAL_VARIANTS_PROMOID_MAP = {
@@ -121,6 +122,7 @@ export const EXPERIMENTAL_VARIANTS_PROMOID_MAP = {
   'qa-in-product-variant2': '9DJJ47N3',
   'qa-nba': '9J8K43X2',
   'qa-in-product-control': '91BF4LV6',
+  'qa-easy-upload': '<To be added>',
 };
 
 // Quick actions allowed in frictionless upload feature
@@ -128,8 +130,11 @@ export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
   videoEditor: 'edit-video',
   imageEditor: 'edit-image',
   removeBackgroundVariant1: 'qa-in-product-variant1',
-  removeBackgroundVariant2: 'qa-in-product-variant2',
+  removeBackgroundVariant2: 'qa-in-product-variant2'
 };
+
+export const EasyUploadVariant = 'qa-easy-upload';
+export const EasyUploadPromoid = '<To be added>';
 
 // Route paths map corresponding to the express routes
 export const EXPRESS_ROUTE_PATHS = {

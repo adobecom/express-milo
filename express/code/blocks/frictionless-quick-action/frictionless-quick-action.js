@@ -683,11 +683,12 @@ export default async function decorate(block) {
   dropzone.append(freePlanTags);
 
   // Load Easy Upload Experiment for enabled quick actions if experiment is on.
-  let easyUpload = null;
-  if (new EasyUpload().isExperimentEnabled(quickAction)) {
-    easyUpload = new EasyUpload();
+  let easyUpload = new EasyUpload();
+  if (easyUpload.isExperimentEnabled(quickAction)) {
     try {
       // Load QR code styling library
+      easyUpload.quickAction = quickAction;
+      easyUpload.block = block;
       await easyUpload.generateQRCode();
     } catch (error) {
       console.error('Failed to load QR code library:', error);
@@ -805,20 +806,6 @@ class AcpStorageHelper {
   }
 
   /**
-   * Get authentication token from Adobe IMS
-   */
-  async getAuthToken() {
-    if (!window?.adobeIMS?.isSignedInUser()) {
-      throw new Error('User not signed in');
-    }
-    const token = window.adobeIMS.getAccessToken()?.token;
-    if (!token) {
-      throw new Error('Failed to retrieve authentication token');
-    }
-    return token;
-  }
-
-  /**
    * Extract link href from asset links
    */
   getLinkHref(links, relation) {
@@ -826,62 +813,6 @@ class AcpStorageHelper {
       return null;
     }
     return links[relation].href;
-  }
-
-
-  /**
-   * Initialize block upload for the asset
-   */
-  async initializeBlockUpload(asset) {
-    console.log('Initializing block upload', {
-      assetId: asset.assetId,
-      repositoryId: asset.repositoryId,
-    });
-
-    try {
-      const authToken = await this.getAuthToken();
-      const apiKey = this.getApiKey();
-
-      // Extract block upload URL from asset links
-      const blockUploadUrl = this.getLinkHref(asset._links, this.LINK_REL.BLOCK_UPLOAD_INIT);
-      if (!blockUploadUrl) {
-        throw new Error('Block upload URL not found in asset links');
-      }
-
-      const blockUploadData = {
-        'repo:size': this.MAX_FILE_SIZE,
-        'repo:blocksize': this.MAX_FILE_SIZE,
-        'repo:reltype': 'primary',
-        'dc:format': this.CONTENT_TYPE,
-      };
-
-      const response = await fetch(`${blockUploadUrl}?includes=all`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': this.TRANSFER_DOCUMENT,
-          'x-api-key': apiKey,
-        },
-        body: JSON.stringify(blockUploadData),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error');
-        throw new Error(`Block upload initialization failed: ${response.status} ${response.statusText}. ${errorText}`);
-      }
-
-      const uploadAsset = await response.json();
-      this.uploadAsset = uploadAsset;
-
-      console.log('Block upload initialized successfully', {
-        hasLinks: !!uploadAsset._links,
-      });
-
-      return uploadAsset;
-    } catch (error) {
-      console.error('Failed to initialize block upload:', error);
-      throw error;
-    }
   }
 
   /**
@@ -903,10 +834,10 @@ class AcpStorageHelper {
 
     try {
       this.uploadService = await initializeUploadService();
-      this.asset = await this.uploadService.createTemporaryAsset(this.CONTENT_TYPE);
-      this.uploadAsset = await this.initializeBlockUpload(this.asset);
+      this.asset = await this.uploadService.createAsset(this.CONTENT_TYPE);
+      this.uploadAsset = await this.uploadService.initializeBlockUpload(this.asset, this.MAX_FILE_SIZE, this.MAX_FILE_SIZE, this.CONTENT_TYPE);
 
-      const uploadUrl = this.extractUploadUrl(this.uploadAsset);
+      const uploadUrl = this.uploadAsset._links["http://ns.adobe.com/adobecloud/rel/block/transfer"][0].href;
 
       console.log('Upload URL generated successfully', {
         assetId: this.asset.assetId,
@@ -916,47 +847,6 @@ class AcpStorageHelper {
       return uploadUrl;
     } catch (error) {
       console.error('Failed to generate upload URL:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Finalize the upload
-   */
-  async finalizeUpload() {
-    if (!this.uploadAsset) {
-      throw new Error('No upload asset available for finalization');
-    }
-
-    console.log('Finalizing upload');
-
-    try {
-      const authToken = await this.getAuthToken();
-      const apiKey = this.getApiKey();
-
-      const finalizeUrl = this.getLinkHref(this.uploadAsset._links, this.LINK_REL.BLOCK_FINALIZE);
-      if (!finalizeUrl) {
-        throw new Error('Block finalize URL not found in upload asset links');
-      }
-
-      const response = await fetch(finalizeUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': this.TRANSFER_DOCUMENT,
-          'x-api-key': apiKey,
-        },
-        body: JSON.stringify(this.uploadAsset),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error');
-        throw new Error(`Block upload finalization failed: ${response.status} ${response.statusText}. ${errorText}`);
-      }
-
-      console.log('Upload finalized successfully');
-    } catch (error) {
-      console.error('Failed to finalize upload:', error);
       throw error;
     }
   }
@@ -1008,6 +898,10 @@ class AcpStorageHelper {
         }
       }, this.SECOND_IN_MS);
     });
+  }
+
+  async finalizeUpload() {
+    this.uploadService.finalizeUpload(this.uploadAsset);
   }
 
   /**
@@ -1261,9 +1155,12 @@ class EasyUpload {
 
   buildMobileUploadUrl(presignedUrl) {
     const { env } = getConfig();
+    const urlParams = new URLSearchParams(window.location.search);
+    const qrHost = urlParams.get('qr_host');
     const host = env.name === 'prod'
       ? 'express.adobe.com'
-      : 'express-stage.adobe.com';
+      : qrHost ? qrHost : 'express-stage.adobe.com';
+
 
     const url = new URL(`https://${host}/uploadFromOtherDevice`);
     url.searchParams.set('upload_url', presignedUrl);
@@ -1330,6 +1227,7 @@ class EasyUpload {
     }
 
     // Create a container for the QR code
+    const dropzone = document.querySelector('.dropzone');
     const buttonContainer = dropzone.querySelector('.button-container');
     if (buttonContainer && !this.qrCodeContainer) {
       this.qrCodeContainer = createTag('div', { class: 'qr-code-container' });
@@ -1345,6 +1243,7 @@ class EasyUpload {
   async initializeQRCode() {
     try {
       const uploadUrl = await this.generateUploadUrl();
+      console.log('Upload URL:', uploadUrl);
       const finalUrl = await this.shortenUrl(uploadUrl);
       await this.displayQRCode(finalUrl);
 
@@ -1396,7 +1295,7 @@ class EasyUpload {
 
       if (file) {
         // Process the file (trigger the standard upload flow)
-        await startSDKWithUnconvertedFiles([file], quickAction, block);
+        await startSDKWithUnconvertedFiles([file], this.quickAction, this.block);
 
         // // Refresh QR code for next upload
         // await this.refreshQRCode();
@@ -1463,6 +1362,7 @@ class EasyUpload {
       await this.initializeQRCode();
 
       // Add Confirm Import button
+      const dropzone = document.querySelector('.dropzone');
       const buttonContainer = dropzone.querySelector('.button-container');
       if (buttonContainer) {
         const confirmButton = this.createConfirmButton();
