@@ -38,47 +38,32 @@ async function createFromScratch() {
   return fromScratchContainer;
 }
 
-async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
-  const templatesContainer = createTag('div', { class: 'templates-container' });
-
-  if (includesSearchBar) {
-    templatesContainer.classList.add('search-bar-gallery');
-  }
+async function createTemplatesContainer(recipe, el) {
+  const templatesContainer = createTag('div', { class: 'templates-container search-bar-gallery' });
 
   // Create custom properties for search bar variant
-  const customProperties = includesSearchBar ? {
+  const customProperties = {
     customUrlConfig: {
       baseUrl: 'https://adobesparkpost.app.link/8JaoEy0DrSb',
       queryParams: 'source=seo-template',
     },
-  } : null;
+  };
 
-  // Conditionally create from-scratch element
-  const promises = [createTemplates(recipe, customProperties)];
-  if (!includesSearchBar) {
-    promises.unshift(createFromScratch());
-  }
-
-  const results = await Promise.all(promises);
-  const scratch = includesSearchBar ? null : results[0];
-  const templates = includesSearchBar ? results[0] : results[1];
-
-  // Append elements conditionally
-  const galleryItems = scratch ? [scratch, ...templates] : templates;
-  templatesContainer.append(...galleryItems);
+  // Create templates (no from-scratch element in search bar mode)
+  const templates = await createTemplates(recipe, customProperties);
+  templatesContainer.append(...templates);
 
   const { control: initialControl } = await buildGallery(
-    galleryItems,
+    templates,
     templatesContainer,
   );
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
       const newTemplates = await createTemplates(newRecipe, customProperties);
-      const newGalleryItems = scratch ? [scratch, ...newTemplates] : newTemplates;
-      templatesContainer.replaceChildren(...newGalleryItems);
+      templatesContainer.replaceChildren(...newTemplates);
       const { control: newControl } = await buildGallery(
-        newGalleryItems,
+        newTemplates,
         templatesContainer,
       );
       const oldControl = el.querySelector('.gallery-control');
@@ -243,7 +228,7 @@ export default async function init(el) {
       { templatesContainer, updateTemplates, control: galleryControl },
       sortSetup,
     ] = await Promise.all([
-      createTemplatesContainer(recipe, el, includesSearchBar),
+      createTemplatesContainer(recipe, el),
       extractSort(recipe),
     ]);
     const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
