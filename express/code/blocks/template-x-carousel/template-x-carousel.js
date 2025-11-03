@@ -88,7 +88,6 @@ export default async function init(el) {
   const heading = toolbar.querySelector('h1,h2,h3');
   if (heading) {
     heading.classList.add('heading');
-    heading.classList.add('centered-heading');
     el.prepend(heading);
   }
   toolbar.classList.add('toolbar');
