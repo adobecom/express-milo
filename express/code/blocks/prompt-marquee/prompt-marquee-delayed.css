@@ -16,7 +16,7 @@
   content: attr(data-placeholder);
   position: absolute;
   left: var(--spacing-300);
-  color: var(--text-color-secondary, #6e6e6e);
+  color: var(--text-color-secondary);
   pointer-events: none;
   transition: all 150ms ease-out;
   right: 14px;
