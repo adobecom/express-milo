@@ -125,11 +125,11 @@ main .prompt-marquee  .column .cta-with-input  .con-button {
   height: 48px;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 2px solid #dadada;
+  border: 2px solid var(--color-gray-300-variant);
   font-size: var(--body-font-size-m);
   font-family: var(--body-font-family, 'Adobe Clean', 'Helvetica Neue', Helvetica, Arial, sans-serif);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
-  background-color: #fff;
+  background-color: var(--color-white);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
