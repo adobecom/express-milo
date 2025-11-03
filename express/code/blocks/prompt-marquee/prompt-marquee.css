@@ -5,9 +5,9 @@
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
   padding-top: var(--spacing-600);
+  padding-bottom: var(--spacing-600);
   margin: auto;
   max-width: 900px;
-  padding-bottom: var(--spacing-600);
 }
 
 .prompt-marquee .icon.express-logo {
@@ -125,11 +125,11 @@ main .prompt-marquee  .column .cta-with-input  .con-button {
   height: 48px;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 2px solid var(--Palette-gray-300, #DADADA);
+  border: 2px solid #dadada;
   font-size: var(--body-font-size-m);
   font-family: var(--body-font-family, 'Adobe Clean', 'Helvetica Neue', Helvetica, Arial, sans-serif);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
-  background-color: var(--Palette-gray-25, #FFF);
+  background-color: #fff;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
