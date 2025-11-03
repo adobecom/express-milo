@@ -10,26 +10,6 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig(conf);
 });
 
-// Mock BlockMediator and IntersectionObserver
-window.BlockMediator = { set: sinon.stub(), get: sinon.stub() };
-window.IntersectionObserver = class {
-  constructor() {
-    // Mock constructor
-  }
-
-  observe() {
-    // Mock observe
-  }
-
-  unobserve() {
-    // Mock unobserve
-  }
-
-  disconnect() {
-    // Mock disconnect
-  }
-};
-
 const [{ default: decorate }] = await Promise.all([import('../../../express/code/blocks/standalone-search-bar/standalone-search-bar.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
