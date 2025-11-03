@@ -68,7 +68,7 @@
   align-items: stretch;
   flex-direction: column;
   box-sizing: border-box;
-  padding: var(--spacing-200) var(--spacing-400);
+  padding: var(--spacing-200) 0;
   border: none;
 }
 
@@ -88,8 +88,8 @@ main .prompt-marquee .cta-with-input .prompt-marquee-input {
   width: 100%;
 }
 
-main .prompt-marquee .cta-with-input a.button:any-link,
-main .prompt-marquee .cta-with-input .con-button {
+main .prompt-marquee .column .cta-with-input   a.button:any-link,
+main .prompt-marquee  .column .cta-with-input  .con-button {
   order: 1;
   white-space: nowrap;
   box-sizing: border-box;
