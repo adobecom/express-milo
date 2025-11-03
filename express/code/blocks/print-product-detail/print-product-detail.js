@@ -1,202 +1,28 @@
-import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
-import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
-import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
-import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
-import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
-import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
-import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
-import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
-
-let createTag;
-
-async function createProductInfoContainer(productDetails, drawer) {
-  const productInfoSectionContainer = createTag('div', { class: 'pdpx-product-info-section-container' });
-  const productInfoSection = createTag('div', { class: 'pdpx-product-info-section', id: 'pdpx-product-info-section' });
-  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
-  const checkoutButton = await createCheckoutButton(productDetails);
-  productInfoSectionContainer.appendChild(drawer);
-  productInfoSectionContainer.appendChild(productInfoHeadingSection);
-  productInfoSectionContainer.appendChild(productInfoSection);
-  productInfoSectionContainer.appendChild(checkoutButton);
-  return productInfoSectionContainer;
-}
-
-async function createGlobalContainer(productDetails) {
-  const globalContainer = createTag('div', { class: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
-  const { curtain, drawer } = await createDrawer(productDetails);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
-  const productInfoSection = await createProductInfoContainer(productDetails, drawer);
-  globalContainer.appendChild(productImagesContainer);
-  globalContainer.appendChild(productInfoSection);
-  document.body.append(curtain);
-  return globalContainer;
-}
-
-export function createCheckoutButtonHref(templateId, parameters, productType) {
-  const productSettingsString = JSON.stringify(parameters);
-  const encodedParametersString = encodeURIComponent(productSettingsString);
-  const taskIdMap = {
-    zazzle_shirt: 'tshirt',
-    zazzle_businesscard: 'businesscard',
-  };
-  const taskId = taskIdMap[productType];
-  const urlParams = new URLSearchParams({
-    category: 'templates',
-    taskId,
-    loadPrintAddon: 'true',
-    print: 'true',
-    action: 'pdp-cta',
-    source: 'a.com-print-and-deliver-seo',
-    mv: 'other',
-    url: 'express/print',
-  });
-  const urlParamsString = urlParams.toString();
-  const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
-  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
-  return checkoutButtonHref;
-}
-
-async function updatePageWithProductDetails(productDetails) {
-  const productTitle = document.getElementById('pdpx-product-title');
-  productTitle.textContent = productDetails.productTitle;
-  productTitle.removeAttribute('data-skeleton');
-  const productHeroImage = document.getElementById('pdpx-product-hero-image');
-  productHeroImage.src = productDetails.heroImage;
-  productHeroImage.removeAttribute('data-skeleton');
-  const productInfoSection = document.getElementById('pdpx-product-info-section');
-  const customizationInputs = await createCustomizationInputs(productDetails);
-  productInfoSection.appendChild(customizationInputs);
-  const productDetailsSection = await createProductDetailsSection(productDetails.productDescriptions);
-  productInfoSection.appendChild(productDetailsSection);
-  const form = document.getElementById('pdpx-customization-inputs-form');
-  const formData = new FormData(form);
-  const formDataObject = Object.fromEntries(formData.entries());
-  const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const checkoutButtonHref = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
-  checkoutButton.href = checkoutButtonHref;
-}
-
-function updatePageWithProductImages(productDetails) {
-  const imageThumbnailCarouselContainer = document.getElementById('pdpx-image-thumbnail-carousel-container');
-  const heroProductImage = document.getElementById('pdpx-product-hero-image');
-  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
-    productDetails.realViews,
-    'Front',
-    heroProductImage,
-  );
-  imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
-  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
-  newImageThumbnailCarouselContainer
-    .removeAttribute('data-skeleton');
-  return imageThumbnailCarouselContainer;
-}
-
-async function updatePageWithProductPrice(productDetails) {
-  const priceLabel = document.getElementById('pdpx-price-label');
-  const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
-  const savingsText = document.getElementById('pdpx-savings-text');
-  priceLabel.textContent = await formatPriceZazzle(productDetails.productPrice);
-  comparePriceLabel.textContent = await formatPriceZazzle(productDetails.strikethroughPrice);
-  savingsText.textContent = productDetails.discountString;
-}
-
-function updatePageWithProductReviews(productDetails) {
-  const ratingsNumber = document.getElementById('pdpx-ratings-number');
-  ratingsNumber.textContent = Math.round(productDetails.averageRating * 10) / 10;
-  const ratingsAmount = document.getElementById('pdpx-ratings-amount');
-  ratingsAmount.textContent = formatLargeNumberToK(productDetails.totalReviews);
-}
-
-function updatePageWithProductShippingEstimates(productDetails) {
-  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(
-    productDetails.deliveryEstimateMinDate,
-    productDetails.deliveryEstimateMaxDate,
-  );
-  const deliveryEstimatePillDate = document.getElementById('pdpx-delivery-estimate-pill-date');
-  deliveryEstimatePillDate.textContent = deliveryEstimateDateRange;
-}
-
-function updatePageWithUIStrings(productDetails) {
-  const deliveryEstimatePillText = document.getElementById('pdpx-delivery-estimate-pill-text');
-  deliveryEstimatePillText.textContent = productDetails.deliveryEstimateStringText;
-  const compareValueTooltipTitle = document.getElementById('pdpx-info-tooltip-content-title');
-  compareValueTooltipTitle.textContent = productDetails.compareValueTooltipTitle;
-  const compareValueTooltipDescription1 = document.getElementById('pdpx-info-tooltip-content-description-1');
-  compareValueTooltipDescription1.textContent = productDetails.compareValueTooltipDescription1;
-  const compareValueTooltipDescription2 = document.getElementById('pdpx-info-tooltip-content-description-2');
-  compareValueTooltipDescription2.textContent = productDetails.compareValueTooltipDescription2;
-  document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
-}
+import { addPrefetchLinks, extractTemplateId } from './utilities/utility-functions.js';
+import { loadPreactBundle } from './lib/preact-deps.js';
+import { getZazzleSignalStore } from './store/zazzle-store.js';
 
 export default async function decorate(block) {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  addPrefetchLinks();
+  await addPrefetchLinks();
+
   const templateId = extractTemplateId(block);
-  let productId;
-  let dataObject = createEmptyDataObject(templateId);
+
+  if (!templateId) {
+    // eslint-disable-next-line no-console
+    console.error('print-product-detail: No template ID found in block');
+    return;
+  }
+
   block.innerHTML = '';
-  const globalContainer = await createGlobalContainer(dataObject);
-  block.appendChild(globalContainer);
-  const productDetails = fetchProductDetails(templateId);
-  productDetails.then(async (productDetailsResponse) => {
-    dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    updatePageWithProductDetails(dataObject);
-    // SEO: title/description (respect authored), initial Product JSON-LD
-    // (updated later when price arrives)
-    const canonicalUrl = getCanonicalUrl();
-    upsertTitleAndDescriptionRespectingAuthored(dataObject);
-    const overrides = getAuthoredOverrides(document);
-    const initialJsonLd = await buildProductJsonLd(dataObject, overrides, canonicalUrl);
-    upsertLdJson('pdp-product-jsonld', initialJsonLd);
-    const breadcrumbsLd = buildBreadcrumbsJsonLdFromDom();
-    if (breadcrumbsLd) upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbsLd);
-    productId = productDetailsResponse.product.id;
-    const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
-    productRenditions.then((productRenditionsResponse) => {
-      dataObject = updateDataObjectProductRenditions(dataObject, productRenditionsResponse);
-      updatePageWithProductImages(dataObject);
-    });
-    const quantity = 1;
-    const productPrice = fetchAPIData(productId, null, 'getproductpricing');
-    productPrice.then(async (productPriceResponse) => {
-      dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse, quantity);
-      await updatePageWithProductPrice(dataObject);
-      // SEO: Update Product JSON-LD with pricing/offer once available
-      const canonicalUrlUpdated = getCanonicalUrl();
-      const overridesUpdated = getAuthoredOverrides(document);
-      const updatedJsonLd = await buildProductJsonLd(
-        dataObject,
-        overridesUpdated,
-        canonicalUrlUpdated,
-      );
-      upsertLdJson('pdp-product-jsonld', updatedJsonLd);
-    });
-    const productReviews = fetchAPIData(productId, null, 'getreviews');
-    productReviews.then((productReviewsResponse) => {
-      dataObject = updateDataObjectProductReviews(dataObject, productReviewsResponse);
-      updatePageWithProductReviews(dataObject);
-    });
 
-    const sampleShippingParameters = { qty: quantity };
-    const productShippingEstimates = fetchAPIData(
-      productId,
-      sampleShippingParameters,
-      'getshippingestimates',
-    );
-    productShippingEstimates.then((productShippingEstimatesResponse) => {
-      dataObject = updateDataObjectProductShippingEstimates(
-        dataObject,
-        productShippingEstimatesResponse,
-      );
-      updatePageWithProductShippingEstimates(dataObject);
-    });
+  const mountPoint = document.createElement('div');
+  block.appendChild(mountPoint);
 
-    const UIStrings = fetchUIStrings();
-    UIStrings.then((UIStringsResponse) => {
-      dataObject = updateDataObjectUIStrings(dataObject, UIStringsResponse);
-      updatePageWithUIStrings(dataObject);
-    });
-  });
+  const [{ html, render }, { PDPApp }, store] = await Promise.all([
+    loadPreactBundle(),
+    import('./components/PDPApp.js'),
+    getZazzleSignalStore(),
+  ]);
+
+  render(html`<${PDPApp} store=${store} templateId=${templateId} />`, mountPoint);
 }

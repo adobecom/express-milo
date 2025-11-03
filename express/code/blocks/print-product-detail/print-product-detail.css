@@ -743,7 +743,7 @@ main .section .pdpx-drawer-description {
     flex-direction: row;
   }
   .pdpx-product-images-container {
-    order: 1;
+    order: 0;
   }
   .pdpx-product-info-section-container {
     display: flex;
