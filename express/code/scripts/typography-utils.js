@@ -65,8 +65,8 @@ export function processBlockTypography(
  * Enhanced version of splitAndAddVariantsWithDash that handles typography options
  * This should be used instead of the original function for blocks that support typography
  * @param {HTMLElement} block - The block element to process
- * @param {string} selector - CSS selector for elements to apply
- * typography to (default: 'h1, h2, h3, h4, h5, h6')
+ * @param {string} selector - CSS selector for elements to apply typography to
+ * (default: 'h1, h2, h3, h4, h5, h6')
  */
 export function splitAndAddVariantsWithTypography(
   block,
@@ -108,3 +108,6 @@ export function getTypographySystem(className) {
   if (isExpressTypographyClass(className)) return 'express';
   return null;
 }
+
+// Note: Conversion functions removed - they were confusing and not needed
+// for the core authoring workflow
