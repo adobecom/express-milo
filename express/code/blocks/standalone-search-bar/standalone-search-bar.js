@@ -10,7 +10,7 @@ function cycleThroughSuggestions(block, targetIndex = 0) {
   if (targetIndex >= suggestions.length || targetIndex < 0) return;
 
   // Make all suggestions non-focusable first
-  suggestions.forEach((li) => li.tabIndex = -1);
+  suggestions.forEach((li) => { li.tabIndex = -1; });
 
   // Make only the target suggestion focusable and focus it
   if (suggestions.length > 0 && suggestions[targetIndex]) {
@@ -46,8 +46,6 @@ function buildSearchConfig(block) {
       }
     }
   });
-
-  console.log(searchConfig);
 
   return searchConfig;
 }
@@ -142,7 +140,7 @@ function initSearchFunction(block, searchBarWrapper) {
     await redirectSearch();
   };
 
-  async function handleSubmitInteraction(item, index) {
+  async function handleSubmitInteraction(item) {
     if (item.query !== searchBar.value) {
       searchBar.value = item.query;
       searchBar.dispatchEvent(new Event('input'));
@@ -341,7 +339,7 @@ async function buildSearchDropdown(searchBarWrapper) {
     const trendsWrapper = createTag('ul', { class: 'trends-wrapper' });
     for (const [key, value] of Object.entries(trends)) {
       const trendLinkWrapper = createTag('li');
-      const trendLink = createTag('a', { class: 'trend-link', href: `${value}?searchId=${generateSearchId()}` });
+      const trendLink = createTag('a', { class: 'trend-link', href: `${value}&searchId=${generateSearchId()}` });
       trendLink.textContent = key;
       trendLinkWrapper.append(trendLink);
       trendsWrapper.append(trendLinkWrapper);
