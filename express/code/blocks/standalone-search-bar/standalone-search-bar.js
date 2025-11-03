@@ -300,7 +300,30 @@ async function buildSearchDropdown(searchBarWrapper) {
   // Use centralized system for trends and titles
   const [trendsTitle, searchTrends, searchSuggestionsTitle] = await replaceKeyArray(['search-trends-title', 'search-trends', 'search-suggestions-title'], getConfig());
   let trends;
-  if (searchTrends && searchTrends !== 'search trends') {
+  // Check for authored trending search terms first, then fall back to centralized config
+  if (blockConfig['trending-search-terms']) {
+    const authoredTrendingTerms = blockConfig['trending-search-terms'];
+
+    // Parse plain text list (each line is a search term)
+    const termsList = authoredTrendingTerms
+      .split(/\r?\n/)
+      .map((term) => term.trim())
+      .filter((term) => term.length > 0);
+
+    // Convert to trends object format
+    trends = {};
+    termsList.forEach((term) => {
+      // Use the search destination with query parameter for each term
+      const searchDestination = blockConfig['search-destination'];
+      if (searchDestination) {
+        const separator = searchDestination.includes('?') ? '&' : '?';
+        trends[term] = `${searchDestination}${separator}q=${encodeURIComponent(term)}`;
+      } else {
+        // Fallback to generic search URL
+        trends[term] = `/express/templates?q=${encodeURIComponent(term)}`;
+      }
+    });
+  } else if (searchTrends && searchTrends !== 'search trends') {
     try {
       trends = JSON.parse(searchTrends);
     } catch (e) {
