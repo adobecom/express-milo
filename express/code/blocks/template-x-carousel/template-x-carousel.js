@@ -4,7 +4,6 @@ import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 let createTag; let getConfig;
-let replaceKey;
 
 async function createTemplates(recipe, customProperties = null) {
   const res = await fetchResults(recipe);
@@ -17,10 +16,15 @@ async function createTemplates(recipe, customProperties = null) {
   return templates;
 }
 
+/**
+ * Creates a templates container configured for search bar functionality
+ * Always includes custom URL config for template redirection
+ */
 async function createTemplatesContainer(recipe, el) {
   const templatesContainer = createTag('div', { class: 'templates-container search-bar-gallery' });
 
   // Create custom properties for search bar variant
+  // TODO: Make baseUrl configurable via block config or environment
   const customProperties = {
     customUrlConfig: {
       baseUrl: 'https://adobesparkpost.app.link/8JaoEy0DrSb',
@@ -54,35 +58,8 @@ async function createTemplatesContainer(recipe, el) {
   };
 }
 
-const sortConfig = {
-  popular: '-remixCount',
-  'new-templates': '-createDate',
-};
-
-export async function extractSort(recipe) {
-  const recipeParams = new URLSearchParams(recipe);
-  const sortKeys = Object.keys(sortConfig);
-  const sortValues = Object.values(sortConfig);
-  const [sortPlaceholderText, ...sortOptionTexts] = await Promise.all([
-    replaceKey('sort', getConfig()),
-    ...(sortKeys.map((key) => replaceKey(key, getConfig()))),
-  ]);
-  const sortOptions = sortKeys.map((key, i) => {
-    const sortedRecipe = new URLSearchParams(recipeParams);
-    sortedRecipe.set('orderBy', sortConfig[key]);
-    return {
-      text: sortOptionTexts[i],
-      recipe: sortedRecipe.toString(),
-    };
-  });
-  const defaultIndex = Math.max(0, sortValues.indexOf(
-    recipeParams.get('orderBy'),
-  ));
-  return { sortOptions, defaultIndex, sortPlaceholderText };
-}
-
 export default async function init(el) {
-  [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+  [{ createTag, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
   const [toolbar, recipeRow] = el.children;
 
   const heading = toolbar.querySelector('h1,h2,h3');
@@ -106,7 +83,7 @@ export default async function init(el) {
 
     el.append(templatesContainer);
   } catch (err) {
-    window.lana?.log(`Error in template-x-carousel-toolbar: ${err}`);
+    window.lana?.log(`Error in template-x-carousel: ${err}`);
     if (getConfig().env.name === 'prod') {
       el.remove();
     } else {
