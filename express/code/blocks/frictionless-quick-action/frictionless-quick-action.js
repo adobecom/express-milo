@@ -693,10 +693,7 @@ export default async function decorate(block) {
         throw new Error('Upload service not initialized');
       }
       let easyUpload = new EasyUpload(uploadService, env.name, quickAction, block, startSDKWithUnconvertedFiles, createTag);
-      // Load QR code styling library
-      easyUpload.quickAction = quickAction;
-      easyUpload.block = block;
-      await easyUpload.generateQRCode();
+      await easyUpload.setupQRCodeInterface();
     } catch (error) {
       console.error('Failed to load QR code library:', error);
     }

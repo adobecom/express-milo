@@ -1,30 +1,78 @@
-/**
-   * Generate URL Shortener configuration based on environment
-   * @returns {object} Configuration object with serviceUrl, apiKey, and enabled flag
-   */
-function getUrlShortenerConfig(envName) {
-    // URL shortener service endpoint
-    const serviceUrlMap = {
-        prod: 'https://go.adobe.io',
-        stage: 'https://go-stage.adobe.io',
-        local: 'https://go-stage.adobe.io',
-    };
+// Constants
+const QR_CODE_CDN_URL = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
 
-    // API key for URL shortener service
-    const apiKeyMap = {
-        prod: 'quickactions_hz_webapp',
-        stage: 'hz-dynamic-url-service',
-        local: 'hz-dynamic-url-service',
-    };
+// URL Shortener Service Configuration
+const URL_SHORTENER_CONFIGS = {
+    prod: {
+        serviceUrl: 'https://go.adobe.io',
+        apiKey: 'quickactions_hz_webapp',
+    },
+    stage: {
+        serviceUrl: 'https://go-stage.adobe.io',
+        apiKey: 'hz-dynamic-url-service',
+    },
+    local: {
+        serviceUrl: 'https://go-stage.adobe.io',
+        apiKey: 'hz-dynamic-url-service',
+    },
+};
 
-    const serviceUrl = serviceUrlMap[envName] || serviceUrlMap.stage;
-    const apiKey = apiKeyMap[envName] || apiKeyMap.stage;
+// ACP Storage Constants
+const ACP_STORAGE_CONFIG = {
+    MAX_FILE_SIZE: 60000000, // 60 MB
+    TRANSFER_DOCUMENT: 'application/vnd.adobecloud.bulk-transfer+json',
+    CONTENT_TYPE: 'application/octet-stream',
+    SECOND_IN_MS: 1000,
+    MAX_POLLING_ATTEMPTS: 100,
+    POLLING_TIMEOUT_MS: 100000,
+};
 
-    return {
-        serviceUrl,
-        apiKey // Enable URL shortening
-    };
-}
+// Link Relation Constants
+const LINK_REL = {
+    BLOCK_UPLOAD_INIT: 'http://ns.adobe.com/adobecloud/rel/block/upload/init',
+    BLOCK_TRANSFER: 'http://ns.adobe.com/adobecloud/rel/block/transfer',
+    BLOCK_FINALIZE: 'http://ns.adobe.com/adobecloud/rel/block/finalize',
+    SELF: 'self',
+    RENDITION: 'http://ns.adobe.com/adobecloud/rel/rendition',
+};
+
+// QR Code Configuration Constants
+const QR_CODE_CONFIG = {
+    REFRESH_INTERVAL: 30 * 60 * 1000, // 30 minutes
+    DISPLAY_CONFIG: {
+        width: 200,
+        height: 200,
+        type: 'canvas',
+        dotsOptions: {
+            color: '#000000',
+            type: 'rounded',
+        },
+        backgroundOptions: {
+            color: '#ffffff',
+        },
+        imageOptions: {
+            crossOrigin: 'anonymous',
+            margin: 10,
+        },
+    },
+};
+
+// File Type Detection Patterns
+const FILE_TYPE_PATTERNS = {
+    // Image types
+    'image/png': ['png'],
+    'image/jpeg': ['jpg', 'jpeg', 'jfif', 'exif'],
+    'image/gif': ['gif'],
+    'image/webp': ['webp'],
+    'image/svg+xml': ['svg'],
+    'image/bmp': ['bmp'],
+    'image/heic': ['heic'],
+    // Video types
+    'video/mp4': ['mp4'],
+    'video/quicktime': ['mov'],
+    'video/x-msvideo': ['avi'],
+    'video/webm': ['webm'],
+};
 
 /**
  * Generate UUID v4
@@ -34,71 +82,64 @@ function generateUUID() {
     return crypto.randomUUID();
 }
 
+/**
+ * Get URL Shortener configuration based on environment
+ * @param {string} envName - Environment name (prod, stage, local)
+ * @returns {object} Configuration object with serviceUrl and apiKey
+ */
+function getUrlShortenerConfig(envName) {
+    return URL_SHORTENER_CONFIGS[envName] || URL_SHORTENER_CONFIGS.stage;
+}
+
+/**
+ * EasyUpload class for handling file uploads via QR code
+ * Manages QR code generation, ACP storage, and file upload flow
+ */
 export class EasyUpload {
+    /**
+     * Creates an EasyUpload instance
+     * @param {object} uploadService - Service for handling ACP storage operations
+     * @param {string} envName - Environment name (prod, stage, local)
+     * @param {string} quickAction - Quick action identifier
+     * @param {HTMLElement} block - Block element reference
+     * @param {Function} startSDKWithUnconvertedFiles - Function to start SDK with files
+     * @param {Function} createTag - Function to create DOM elements
+     */
     constructor(uploadService, envName, quickAction, block, startSDKWithUnconvertedFiles, createTag) {
-        this.qrCode = null;
-        this.qrCodeContainer = null;
-        this.confirmButton = null;
-        this.qrRefreshInterval = null;
-        this.isUploadFinalizing = false;
+        // Core dependencies
+        this.uploadService = uploadService;
         this.envName = envName;
         this.quickAction = quickAction;
         this.block = block;
         this.startSDKWithUnconvertedFiles = startSDKWithUnconvertedFiles;
         this.createTag = createTag;
 
-        // ACP Storage properties
-        this.uploadService = uploadService;
+        // QR Code state
+        this.qrCode = null;
+        this.qrCodeContainer = null;
+        this.qrRefreshInterval = null;
+        // Start loading QR Code library immediately (non-blocking)
+        this.qrCodeLibraryPromise = this.loadQRCodeLibrary();
+
+        // Upload state
+        this.confirmButton = null;
+        this.isUploadFinalizing = false;
+
+        // ACP Storage state
         this.asset = null;
         this.uploadAsset = null;
         this.pollingInterval = null;
         this.versionReadyPromise = null;
 
-        // ACP Storage constants
-        this.MAX_FILE_SIZE = 60000000; // 60 MB
-        this.TRANSFER_DOCUMENT = 'application/vnd.adobecloud.bulk-transfer+json';
-        this.CONTENT_TYPE = 'application/octet-stream';
-        this.SECOND_IN_MS = 1000;
-        this.MAX_POLLING_ATTEMPTS = 100;
-        this.POLLING_TIMEOUT_MS = 100000;
-
-        // Link relation constants
-        this.LINK_REL = {
-            BLOCK_UPLOAD_INIT: 'http://ns.adobe.com/adobecloud/rel/block/upload/init',
-            BLOCK_TRANSFER: 'http://ns.adobe.com/adobecloud/rel/block/transfer',
-            BLOCK_FINALIZE: 'http://ns.adobe.com/adobecloud/rel/block/finalize',
-            SELF: 'self',
-            RENDITION: 'http://ns.adobe.com/adobecloud/rel/rendition',
-        };
-
-        // QR Code constants
-        this.QR_REFRESH_INTERVAL = 30 * 60 * 1000; // 30 minutes
-        this.QR_CODE_CONFIG = {
-            width: 200,
-            height: 200,
-            type: 'canvas',
-            data: '',
-            dotsOptions: {
-                color: '#000000',
-                type: 'rounded',
-            },
-            backgroundOptions: {
-                color: '#ffffff',
-            },
-            imageOptions: {
-                crossOrigin: 'anonymous',
-                margin: 10,
-            },
-        };
-
         // Bind cleanup to window unload
-        window.addEventListener('beforeunload', () => this.cleanup());
+        this.handleBeforeUnload = () => this.cleanup();
+        window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
 
-    isExperimentEnabled(quickAction) {
-        return this.enabledQuickActions.includes(quickAction);
-    }
-
+/**
+ * Load QR Code styling library from CDN
+ * @returns {Promise<object>} QRCodeStyling library
+ */
     loadQRCodeLibrary() {
         return new Promise((resolve, reject) => {
             if (window.QRCodeStyling) {
@@ -107,45 +148,58 @@ export class EasyUpload {
             }
 
             const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
+            script.src = QR_CODE_CDN_URL;
             script.onload = () => resolve(window.QRCodeStyling);
             script.onerror = () => reject(new Error('Failed to load QR code library'));
             document.head.appendChild(script);
         });
     }
 
-    /**
-     * Extract link href from asset links
-     */
-    getLinkHref(links, relation) {
+  /**
+   * Extract link href from asset links by relation type
+   * @param {object} links - Asset links object
+   * @param {string} relation - Link relation type
+   * @returns {string|null} Link href or null if not found
+   */
+    extractLinkHref(links, relation) {
         if (!links || !links[relation]) {
             return null;
         }
         return links[relation].href;
     }
 
-    /**
-     * Extract upload URL from transfer document
-     */
+  /**
+   * Extract upload URL from transfer document
+   * @param {object} uploadAsset - Upload asset with links
+   * @returns {string} Upload URL
+   * @throws {Error} If block transfer URL not found
+   */
     extractUploadUrl(uploadAsset) {
-        const uploadUrl = this.getLinkHref(uploadAsset._links, this.LINK_REL.BLOCK_TRANSFER);
+        const uploadUrl = this.extractLinkHref(uploadAsset._links, LINK_REL.BLOCK_TRANSFER);
         if (!uploadUrl) {
             throw new Error('Block transfer URL not found in upload asset links');
         }
         return uploadUrl;
     }
 
-    /**
-     * Generate presigned upload URL from ACP Storage
-     */
+  /**
+   * Generate presigned upload URL from ACP Storage
+   * @returns {Promise<string>} Upload URL
+   * @throws {Error} If upload URL generation fails
+   */
     async generatePresignedUploadUrl() {
         console.log('Generating upload URL for mobile client');
 
         try {
-            this.asset = await this.uploadService.createAsset(this.CONTENT_TYPE);
-            this.uploadAsset = await this.uploadService.initializeBlockUpload(this.asset, this.MAX_FILE_SIZE, this.MAX_FILE_SIZE, this.CONTENT_TYPE);
+            this.asset = await this.uploadService.createAsset(ACP_STORAGE_CONFIG.CONTENT_TYPE);
+            this.uploadAsset = await this.uploadService.initializeBlockUpload(
+                this.asset,
+                ACP_STORAGE_CONFIG.MAX_FILE_SIZE,
+                ACP_STORAGE_CONFIG.MAX_FILE_SIZE,
+                ACP_STORAGE_CONFIG.CONTENT_TYPE,
+            );
 
-            const uploadUrl = this.uploadAsset._links["http://ns.adobe.com/adobecloud/rel/block/transfer"][0].href;
+            const uploadUrl = this.uploadAsset._links[LINK_REL.BLOCK_TRANSFER][0].href;
 
             console.log('Upload URL generated successfully', {
                 assetId: this.asset.assetId,
@@ -159,9 +213,11 @@ export class EasyUpload {
         }
     }
 
-    /**
-     * Wait for asset version to be ready
-     */
+  /**
+   * Wait for asset version to be ready by polling
+   * @returns {Promise<void>} Resolves when asset is ready
+   * @throws {Error} If polling times out or max attempts reached
+   */
     async waitForAssetVersionReady() {
         return new Promise((resolve, reject) => {
             this.versionReadyPromise = { resolve, reject };
@@ -171,12 +227,12 @@ export class EasyUpload {
                 if (this.pollingInterval) {
                     clearInterval(this.pollingInterval);
                 }
-                reject(new Error(`Polling timeout: Asset version not ready after ${this.POLLING_TIMEOUT_MS}ms`));
-            }, this.POLLING_TIMEOUT_MS);
+                reject(new Error(`Polling timeout: Asset version not ready after ${ACP_STORAGE_CONFIG.POLLING_TIMEOUT_MS}ms`));
+            }, ACP_STORAGE_CONFIG.POLLING_TIMEOUT_MS);
 
             this.pollingInterval = setInterval(async () => {
                 try {
-                    pollAttempts++;
+                    pollAttempts += 1;
                     console.log('Polling for asset version', {
                         assetId: this.asset?.assetId,
                         attempt: pollAttempts,
@@ -193,10 +249,10 @@ export class EasyUpload {
                             attempts: pollAttempts,
                         });
                         resolve();
-                    } else if (pollAttempts >= this.MAX_POLLING_ATTEMPTS) {
+                    } else if (pollAttempts >= ACP_STORAGE_CONFIG.MAX_POLLING_ATTEMPTS) {
                         clearInterval(this.pollingInterval);
                         clearTimeout(timeoutId);
-                        reject(new Error(`Max polling attempts reached (${this.MAX_POLLING_ATTEMPTS}). Asset version: ${version}`));
+                        reject(new Error(`Max polling attempts reached (${ACP_STORAGE_CONFIG.MAX_POLLING_ATTEMPTS}). Asset version: ${version}`));
                     }
                 } catch (error) {
                     clearInterval(this.pollingInterval);
@@ -204,42 +260,42 @@ export class EasyUpload {
                     console.error('Error during version polling:', error);
                     reject(error);
                 }
-            }, this.SECOND_IN_MS);
+            }, ACP_STORAGE_CONFIG.SECOND_IN_MS);
         });
     }
 
+    /**
+     * Finalize the upload process
+     * @returns {Promise<void>}
+     */
     async finalizeUpload() {
-        this.uploadService.finalizeUpload(this.uploadAsset);
+        return this.uploadService.finalizeUpload(this.uploadAsset);
     }
 
-    /**
-     * Detect file type from content string
-     */
+  /**
+   * Detect file type from content string by pattern matching
+   * @param {string} typeString - Content string to analyze
+   * @returns {string} Detected MIME type
+   */
     detectFileType(typeString) {
         const lowerTypeString = typeString.toLowerCase();
 
-        // Image types
-        if (lowerTypeString.includes('png')) return 'image/png';
-        if (lowerTypeString.includes('jpg') || lowerTypeString.includes('jpeg') || lowerTypeString.includes('jfif') || lowerTypeString.includes('exif')) return 'image/jpeg';
-        if (lowerTypeString.includes('gif')) return 'image/gif';
-        if (lowerTypeString.includes('webp')) return 'image/webp';
-        if (lowerTypeString.includes('svg')) return 'image/svg+xml';
-        if (lowerTypeString.includes('bmp')) return 'image/bmp';
-        if (lowerTypeString.includes('heic')) return 'image/heic';
-
-        // Video types
-        if (lowerTypeString.includes('mp4')) return 'video/mp4';
-        if (lowerTypeString.includes('mov')) return 'video/quicktime';
-        if (lowerTypeString.includes('avi')) return 'video/x-msvideo';
-        if (lowerTypeString.includes('webm')) return 'video/webm';
+        // Check against known patterns
+        for (const [mimeType, patterns] of Object.entries(FILE_TYPE_PATTERNS)) {
+            if (patterns.some((pattern) => lowerTypeString.includes(pattern))) {
+                return mimeType;
+            }
+        }
 
         // Default to JPEG for images
         return 'image/jpeg';
     }
 
-    /**
-     * Retrieve uploaded file from ACP Storage
-     */
+  /**
+   * Retrieve uploaded file from ACP Storage
+   * @returns {Promise<File>} Retrieved file with detected type
+   * @throws {Error} If file retrieval fails
+   */
     async retrieveUploadedFile() {
         console.log('Retrieving uploaded file', { assetId: this.asset?.assetId });
 
@@ -247,7 +303,7 @@ export class EasyUpload {
             await this.waitForAssetVersionReady();
 
             if (this.versionReadyPromise?.isRejected) {
-                throw new Error("Asset version not ready");
+                throw new Error('Asset version not ready');
             }
 
             const blob = await this.uploadService.downloadAssetContent(this.asset);
@@ -271,11 +327,12 @@ export class EasyUpload {
         }
     }
 
-    /**
-     * Dispose and cleanup ACP Storage resources
-     */
-    async disposeAcpStorage() {
-        console.log('Disposing ACP Storage resources', {
+  /**
+   * Cleanup ACP Storage resources and state
+   * @returns {Promise<void>}
+   */
+    async cleanupAcpStorage() {
+        console.log('Cleaning up ACP Storage resources', {
             assetId: this.asset?.assetId,
             hasPollingInterval: !!this.pollingInterval,
         });
@@ -284,21 +341,21 @@ export class EasyUpload {
             if (this.uploadService && this.asset) {
                 await this.uploadService.deleteAsset(this.asset);
             }
-            if (this.pollingInterval) {
-                clearInterval(this.pollingInterval);
-                this.pollingInterval = null;
-            }
 
             this.asset = null;
             this.uploadAsset = null;
-            this.versionReadyPromise = null;
 
-            console.log('ACP Storage disposal completed');
+            console.log('ACP Storage cleanup completed');
         } catch (error) {
-            console.error('Error during disposal:', error);
+            console.error('Error during ACP Storage cleanup:', error);
         }
     }
 
+    /**
+     * Generate complete upload URL with presigned URL embedded
+     * @returns {Promise<string>} Mobile upload URL
+     * @throws {Error} If URL generation fails
+     */
     async generateUploadUrl() {
         try {
             // Generate presigned upload URL
@@ -312,13 +369,17 @@ export class EasyUpload {
         }
     }
 
+    /**
+     * Build mobile upload URL with presigned URL as parameter
+     * @param {string} presignedUrl - Presigned ACP storage URL
+     * @returns {string} Complete mobile upload URL
+     */
     buildMobileUploadUrl(presignedUrl) {
         const urlParams = new URLSearchParams(window.location.search);
         const qrHost = urlParams.get('qr_host');
         const host = this.envName === 'prod'
             ? 'express.adobe.com'
-            : qrHost ? qrHost : 'express-stage.adobe.com';
-
+            : qrHost || 'express-stage.adobe.com';
 
         const url = new URL(`https://${host}/uploadFromOtherDevice`);
         url.searchParams.set('upload_url', presignedUrl);
@@ -326,6 +387,12 @@ export class EasyUpload {
         return url.toString();
     }
 
+    /**
+     * Shorten URL using Adobe URL shortener service
+     * Falls back to original URL if shortening fails or user not logged in
+     * @param {string} longUrl - URL to shorten
+     * @returns {Promise<string>} Shortened URL or original if shortening fails
+     */
     async shortenUrl(longUrl) {
         // Return long URL for logged-out users
         if (!window?.adobeIMS?.isSignedInUser()) {
@@ -395,24 +462,30 @@ export class EasyUpload {
         }
     }
 
+    /**
+     * Display QR code in the UI
+     * @param {string} uploadUrl - URL to encode in QR code
+     * @returns {Promise<void>}
+     */
     async displayQRCode(uploadUrl) {
-        const QRCodeStyling = await this.loadQRCodeLibrary();
+        // Await the library promise that started loading in constructor
+        const QRCodeStyling = await this.qrCodeLibraryPromise;
 
         if (!this.qrCode) {
             this.qrCode = new QRCodeStyling({
-                ...this.QR_CODE_CONFIG,
+                ...QR_CODE_CONFIG.DISPLAY_CONFIG,
                 data: uploadUrl,
             });
         } else {
             this.qrCode.update({
-                ...this.QR_CODE_CONFIG,
+                ...QR_CODE_CONFIG.DISPLAY_CONFIG,
                 data: uploadUrl,
             });
         }
 
         // Create a container for the QR code
         const dropzone = document.querySelector('.dropzone');
-        const buttonContainer = dropzone.querySelector('.button-container');
+        const buttonContainer = dropzone?.querySelector('.button-container');
         if (buttonContainer && !this.qrCodeContainer) {
             this.qrCodeContainer = this.createTag('div', { class: 'qr-code-container' });
             buttonContainer.appendChild(this.qrCodeContainer);
@@ -424,6 +497,11 @@ export class EasyUpload {
         }
     }
 
+    /**
+     * Initialize QR code with upload URL
+     * @returns {Promise<void>}
+     * @throws {Error} If initialization fails
+     */
     async initializeQRCode() {
         try {
             const uploadUrl = await this.generateUploadUrl();
@@ -439,6 +517,9 @@ export class EasyUpload {
         }
     }
 
+    /**
+     * Schedule QR code refresh after configured interval
+     */
     scheduleQRRefresh() {
         // Clear existing interval
         if (this.qrRefreshInterval) {
@@ -448,18 +529,28 @@ export class EasyUpload {
         // Schedule next refresh
         this.qrRefreshInterval = setTimeout(() => {
             this.refreshQRCode();
-        }, this.QR_REFRESH_INTERVAL);
+        }, QR_CODE_CONFIG.REFRESH_INTERVAL);
     }
 
+    /**
+     * Refresh QR code with new upload URL
+     * @returns {Promise<void>}
+     */
     async refreshQRCode() {
         try {
             console.log('Refreshing QR code...');
+            this.cleanup();
             await this.initializeQRCode();
         } catch (error) {
             console.error('Failed to refresh QR code:', error);
         }
     }
 
+    /**
+     * Handle confirm import button click
+     * Finalizes upload and starts SDK with the uploaded file
+     * @returns {Promise<void>}
+     */
     async handleConfirmImport() {
         if (this.isUploadFinalizing) return;
 
@@ -480,22 +571,25 @@ export class EasyUpload {
             if (file) {
                 // Process the file (trigger the standard upload flow)
                 await this.startSDKWithUnconvertedFiles([file], this.quickAction, this.block);
-
-                // // Refresh QR code for next upload
-                // await this.refreshQRCode();
             } else {
                 console.warn('No file was uploaded');
-                showErrorToast(block, 'No file detected. Please upload a file from your mobile device.');
+                // Note: showErrorToast is not imported, would need to be added
+                // showErrorToast(this.block, 'No file detected. Please upload a file from your mobile device.');
             }
         } catch (error) {
             console.error('Failed to confirm import:', error);
-            showErrorToast(block, 'Failed to import file. Please try again.');
+            // Note: showErrorToast is not imported, would need to be added
+            // showErrorToast(this.block, 'Failed to import file. Please try again.');
         } finally {
             this.isUploadFinalizing = false;
             this.updateConfirmButtonState(false);
         }
     }
 
+    /**
+     * Update confirm button state (disabled/enabled)
+     * @param {boolean} disabled - Whether button should be disabled
+     */
     updateConfirmButtonState(disabled) {
         if (this.confirmButton) {
             if (disabled) {
@@ -508,11 +602,15 @@ export class EasyUpload {
         }
     }
 
+    /**
+     * Create confirm import button
+     * @returns {HTMLElement} Confirm button element
+     */
     createConfirmButton() {
         const confirmButton = this.createTag('a', {
             href: '#',
             class: 'button accent xlarge confirm-import-button',
-            title: 'Confirm Import'
+            title: 'Confirm Import',
         }, 'Confirm Import');
 
         confirmButton.addEventListener('click', (e) => {
@@ -525,23 +623,33 @@ export class EasyUpload {
         return confirmButton;
     }
 
-    async generateQRCode() {
+    /**
+     * Setup complete QR code interface with QR code display and confirm button
+     * This is the main entry point for initializing the QR code upload feature
+     * @returns {Promise<void>}
+     * @throws {Error} If QR code interface setup fails
+     */
+    async setupQRCodeInterface() {
         try {
             await this.initializeQRCode();
 
             // Add Confirm Import button
             const dropzone = document.querySelector('.dropzone');
-            const buttonContainer = dropzone.querySelector('.button-container');
+            const buttonContainer = dropzone?.querySelector('.button-container');
             if (buttonContainer) {
                 const confirmButton = this.createConfirmButton();
                 buttonContainer.appendChild(confirmButton);
             }
         } catch (error) {
-            console.error('Failed to generate QR code:', error);
+            console.error('Failed to setup QR code interface:', error);
             throw error;
         }
     }
 
+    /**
+     * Cleanup all resources and event listeners
+     * @returns {Promise<void>}
+     */
     async cleanup() {
         // Clear refresh interval
         if (this.qrRefreshInterval) {
@@ -549,13 +657,18 @@ export class EasyUpload {
             this.qrRefreshInterval = null;
         }
 
-        // Dispose ACP Storage resources
-        await this.disposeAcpStorage();
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
 
-        // Clear references
-        this.qrCode = null;
-        this.qrCodeContainer = null;
-        this.confirmButton = null;
+        if (this.versionReadyPromise) {
+            this.versionReadyPromise.reject(new Error('EasyUpload cleanup'));
+            this.versionReadyPromise = null;
+        }
+
+        // Cleanup ACP Storage resources
+        await this.cleanupAcpStorage();
 
         console.log('EasyUpload resources cleaned up');
     }
