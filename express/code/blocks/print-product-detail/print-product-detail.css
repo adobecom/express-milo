@@ -565,6 +565,11 @@ main .section .pdpx-drawer-description {
 /* END DRAWER*/
 
 /* MINI PILL SELECTOR */
+.pdpx-mini-pill-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
 .pdpx-pill-selector-label-compare-link {
   background: transparent;
   font-size: 14px;
@@ -579,7 +584,7 @@ main .section .pdpx-drawer-description {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--figma-spacing-80);
+  gap: var(--figma-spacing-75);
 }
 .pdpx-mini-pill-image-container {
   border-radius: 4px;
@@ -602,6 +607,11 @@ main .section .pdpx-drawer-description {
     object-position: center;
     display: block;
   }
+}
+.pdpx-mini-pill-price {
+  font-size: 12px;
+  font-weight: 400;
+  color: #131313;
 }
 .pdpx-mini-pill-image-container:hover:not(.selected),
 .pdpx-image-thumbnail-carousel-item:hover:not(.selected) {
@@ -657,10 +667,6 @@ main .section .pdpx-drawer-description {
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
 }
-
-.pdpx-mini-pill-price {
-  font-size: 14px;
-}
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
   border: 1px solid #5258e4;
@@ -689,9 +695,8 @@ main .section .pdpx-drawer-description {
 }
 .pdpx-standard-selector-label {
   display: inline-block;
-  min-width: 104px;
   color: #505050;
-  margin-right: var(--figma-spacing-600);
+  margin-right: 12px;
 }
 .pdpx-standard-selector {
   padding: var(--figma-spacing-100);

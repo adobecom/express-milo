@@ -40,12 +40,12 @@ async function createGlobalContainer(productDetails) {
 
 async function updatePageWithProductDetails(productDetails) {
   const globalContainer = document.getElementById('pdpx-global-container');
-  const productTitle = globalContainer.querySelector('#pdpx-product-title');
-  productTitle.textContent = productDetails.productTitle;
-  productTitle.removeAttribute('data-skeleton');
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
   productHeroImage.src = productDetails.heroImage;
   productHeroImage.removeAttribute('data-skeleton');
+  const productTitle = globalContainer.querySelector('#pdpx-product-title');
+  productTitle.textContent = productDetails.productTitle;
+  productTitle.removeAttribute('data-skeleton');
   const productInfoSection = globalContainer.querySelector('#pdpx-product-info-section');
   const customizationInputs = await createCustomizationInputs(productDetails);
   const productDetailsSection = await createProductDetailsSection(
