@@ -3,6 +3,7 @@
   padding-right: var(--spacing-300);
   padding-top: var(--spacing-600);
   padding-bottom: var(--spacing-600);
+  --prompt-marquee-desktop-media-max-width: 571px;
   margin: auto;
   max-width: 900px;
 }
