@@ -16,11 +16,9 @@ document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('standalone-search-bar', () => {
   let block;
   let oldFetch;
-  let consoleLogStub;
 
   before(async () => {
     oldFetch = window.fetch;
-    consoleLogStub = sinon.stub(console, 'log');
     sinon.stub(window, 'fetch').callsFake(async () => mockRes({ payload: {} }));
 
     block = document.querySelector('.standalone-search-bar');
@@ -29,7 +27,7 @@ describe('standalone-search-bar', () => {
 
   after(() => {
     window.fetch = oldFetch;
-    consoleLogStub.restore();
+    sinon.restore();
   });
 
   it('creates correct block structure', () => {
@@ -42,11 +40,18 @@ describe('standalone-search-bar', () => {
   });
 
   it('parses Word document configuration', () => {
-    expect(consoleLogStub.calledOnce).to.be.true;
-    const config = consoleLogStub.getCall(0).args[0];
-    expect(config).to.have.property('search-destination');
-    expect(config).to.have.property('search-bar-text');
-    expect(config).to.have.property('show-free-plan');
+    // Test configuration by checking if configured elements exist and work correctly
+    const searchInput = block.querySelector('input.search-bar');
+    expect(searchInput.placeholder).to.equal('Search for card templates');
+    expect(searchInput.getAttribute('aria-label')).to.equal('Search for card templates');
+
+    // Check if title and subtitle from config are displayed
+    const title = block.querySelector('.search-title');
+    const subtitle = block.querySelector('.search-subtitle');
+    expect(title).to.exist;
+    expect(subtitle).to.exist;
+    expect(title.textContent).to.not.be.empty;
+    expect(subtitle.textContent).to.not.be.empty;
   });
 
   it('displays configured header and subtitle', () => {
