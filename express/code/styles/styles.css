@@ -107,7 +107,9 @@
   /* Spacing */
   --spacing-100: 8px;
   --spacing-200: 12px;
+  --spacing-250: 14px;
   --spacing-300: 16px;
+  --spacing-350: 20px;
   --spacing-400: 24px;
   --spacing-500: 32px;
   --spacing-600: 40px;
@@ -196,6 +198,10 @@
   --color-dark-gray: #505050;
   --color-default-font: #131313;
   --color-light-gray-2: #e1e1e1;
+
+  --border-radius-10: 10px;
+
+  --border-width-2: 2px;
 }
 
 @media (min-width: 600px) {
