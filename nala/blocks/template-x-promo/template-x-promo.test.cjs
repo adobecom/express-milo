@@ -382,11 +382,9 @@ test.describe('Template X Promo block tests', () => {
         await templateXPromo.page.mouse.click(50, 50);
         await templateXPromo.page.waitForTimeout(800);
 
-        // Wait for template to be visible again before checking state
-        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
-
-        // Verify overlay is hidden
-        const stillHasSingletonHover = await firstTemplate.evaluate((el) => el.classList.contains('singleton-hover'));
+        // Verify overlay is hidden (re-query template to avoid stale locator in Firefox)
+        const templateAfterClick = templateXPromo.page.locator('.template').first();
+        const stillHasSingletonHover = await templateAfterClick.evaluate((el) => el.classList.contains('singleton-hover'));
         expect(stillHasSingletonHover).toBe(false);
         console.log('✅ Overlay closes when clicking outside');
       }
