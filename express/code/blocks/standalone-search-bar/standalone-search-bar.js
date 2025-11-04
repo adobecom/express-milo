@@ -126,7 +126,7 @@ function initSearchFunction(block, searchBarWrapper) {
       const separator = searchDestination.includes('?') ? '&' : '?';
       const targetLocation = `${searchDestination}${separator}q=${encodeURIComponent(searchQuery)}`;
 
-      window.open(targetLocation, '_blank');
+      window.location.assign(targetLocation);
     }
   };
 
