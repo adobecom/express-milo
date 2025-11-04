@@ -136,11 +136,11 @@ export default async function updateAllDynamicElements(productId) {
   const normalizedProductDetails = await normalizeProductDetailObject(
     normalizeProductDetailsParametersObject,
   );
-  // go through each attribute in the formDataObject and check if the value is in the normalizedProductDetails.attributes
-  // if it is not, assign the first value of the attribute to the formDataObject
   for (const [key, value] of Object.entries(formDataObject)) {
-    console.log(key, value);
-    if (!normalizedProductDetails.attributes[key].some((v) => v.name.toString() === value.toString())) {
+    if (!normalizedProductDetails.attributes[key].some(
+      (v) => v.name.toString() === value.toString(),
+    )
+    ) {
       formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
     }
   }
