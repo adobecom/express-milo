@@ -686,7 +686,6 @@ export default async function decorate(block) {
         [...files].map((file) => startSDKWithUnconvertedFiles([file], quickAction, block)),
       );
     }
-
   }, false);
 
   const freePlanTags = await buildFreePlanWidget({
