@@ -2,15 +2,6 @@ import { getLibs } from '../../../scripts/utils.js';
 
 let createTag;
 
-export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
-  const { productHeroImage, productHeroImageContainer } = createproductHeroImage(heroImage, heroImageType);
-  const imageThumbnailCarouselContainer = createProductThumbnailCarousel(realViews, heroImageType, productHeroImage);
-  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
-  return productImagesContainer;
-}
-
 export function createproductHeroImage(heroImage, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
@@ -18,6 +9,7 @@ export function createproductHeroImage(heroImage, heroImageType) {
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }
+
 export function createProductThumbnailCarousel(realViews, heroImageType, productHeroImage) {
   const imageThumbnailCarouselContainer = createTag('div', { class: 'pdpx-image-thumbnail-carousel-container', id: 'pdpx-image-thumbnail-carousel-container', 'data-skeleton': 'true' });
   for (let i = 0; i < Object.keys(realViews).length; i += 1) {
@@ -42,4 +34,20 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
     imageThumbnailCarouselContainer.appendChild(imageThumbnailCarouselItem);
   }
   return imageThumbnailCarouselContainer;
+}
+
+export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
+  const {
+    productHeroImage,
+    productHeroImageContainer,
+  } = createproductHeroImage(heroImage, heroImageType);
+  const imageThumbnailCarouselContainer = createProductThumbnailCarousel(
+    realViews,
+    heroImageType,
+    productHeroImage,
+  );
+  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
+  return productImagesContainer;
 }

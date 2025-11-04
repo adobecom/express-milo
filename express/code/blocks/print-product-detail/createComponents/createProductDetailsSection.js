@@ -56,6 +56,30 @@ export default async function createProductDetailsSection(productDescriptions) {
   return productDetailsSectionContainer;
 }
 
+export function createCheckoutButtonHref(templateId, parameters, productType) {
+  const productSettingsString = JSON.stringify(parameters);
+  const encodedParametersString = encodeURIComponent(productSettingsString);
+  const taskIdMap = {
+    zazzle_shirt: 'tshirt',
+    zazzle_businesscard: 'businesscard',
+  };
+  const taskId = taskIdMap[productType];
+  const urlParams = new URLSearchParams({
+    category: 'templates',
+    taskId,
+    loadPrintAddon: 'true',
+    print: 'true',
+    action: 'pdp-cta',
+    source: 'a.com-print-and-deliver-seo',
+    mv: 'other',
+    url: 'express/print',
+  });
+  const urlParamsString = urlParams.toString();
+  const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
+  return checkoutButtonHref;
+}
+
 export async function createCheckoutButton(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });

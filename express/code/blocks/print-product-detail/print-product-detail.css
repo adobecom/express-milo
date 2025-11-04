@@ -70,6 +70,10 @@
   --standard-transition-hover-out-opacity: opacity 80ms ease-out 220ms;
 }
 
+.hidden {
+  display: none;
+}
+
 [data-skeleton='true'] {
   background: linear-gradient(90deg, #eee 25%, #f5f5f5 37%, #eee 63%);
   background-size: 400% 100%;
@@ -212,7 +216,7 @@
     padding: 0;
     margin: 0;
     text-decoration-line: underline;
-    cursor: pointer;
+    cursor: default;
   }
 }
 .pdpx-delivery-estimate-pill {

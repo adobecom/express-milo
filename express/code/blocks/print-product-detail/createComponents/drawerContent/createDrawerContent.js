@@ -147,7 +147,10 @@ export async function createDrawerContentPrintingProcess(productDetails, drawerC
   classicPrintingInfoContainer.appendChild(createTag('p', { class: 'pdpx-printing-process-option-info-description' }, productDetails.classicPrintingDescription));
   classicPrintingInfoContainer.appendChild(classicPrintingColorLockup);
   classicPrintingImageContainer.appendChild(createTag('img', { class: 'pdpx-printing-process-option-image', src: 'https://asset.zcache.com/assets/graphics/pd/productAttributeHelp/underbasePrintProcess/Classic.jpg', alt: 'Classic Printing' }));
-  classicPrintingOptionsContainer.append(classicPrintingImageContainer, classicPrintingInfoContainer);
+  classicPrintingOptionsContainer.append(
+    classicPrintingImageContainer,
+    classicPrintingInfoContainer,
+  );
 
   const vividPrintingOptionsContainer = createTag('div', { class: 'pdpx-printing-process-option-container' });
   const vividPrintingImageContainer = createTag('div', { class: 'pdpx-printing-process-option-image-container' });
@@ -160,17 +163,31 @@ export async function createDrawerContentPrintingProcess(productDetails, drawerC
   vividPrintingImageContainer.appendChild(createTag('img', { class: 'pdpx-printing-process-option-image', src: 'https://asset.zcache.com/assets/graphics/pd/productAttributeHelp/underbasePrintProcess/Vivid.jpg', alt: 'Vivid Printing' }));
   vividPrintingOptionsContainer.append(vividPrintingImageContainer, vividPrintingInfoContainer);
 
-  printingProcessOptionsContainer.append(classicPrintingOptionsContainer, vividPrintingOptionsContainer);
+  printingProcessOptionsContainer.append(
+    classicPrintingOptionsContainer,
+    vividPrintingOptionsContainer,
+  );
   drawerBody.appendChild(printingProcessOptionsContainer);
   drawerContainer.append(drawerHead, drawerBody);
 }
 
-export async function createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawerContainer) {
+export async function createDrawerContentPaperType(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  CTALinkText,
+  productDetails,
+  defaultValue,
+  drawerType,
+  drawerContainer,
+) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Select Paper Type');
   const drawerBody = createTag('div', { class: 'drawer-body' });
   const defaultValueSafe = defaultValue || customizationOptions[0].name;
-  const defaultValueOption = customizationOptions.find((option) => option.name === defaultValueSafe);
+  const defaultValueOption = customizationOptions.find(
+    (option) => option.name === defaultValueSafe,
+  );
   const defaultValueImageSrc = new URL(defaultValueOption.thumbnail);
   defaultValueImageSrc.searchParams.set('max_dim', '1000');
   const defaultValueImageSrcLarge = defaultValueImageSrc.toString();
@@ -198,7 +215,15 @@ export async function createDrawerContentPaperType(customizationOptions, labelTe
     pill.append(pillIcon, pillText);
     pillsContainer.appendChild(pill);
   });
-  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, null, productDetails, defaultValue, drawerType);
+  const paperTypeSelectorContainer = await createMiniPillOptionsSelector(
+    customizationOptions,
+    labelText,
+    hiddenSelectInputName,
+    null,
+    productDetails,
+    defaultValue,
+    drawerType,
+  );
   const description = createTag('div', { class: 'pdpx-drawer-description' }, defaultValueOption.description);
   const drawerFoot = createTag('div', { class: 'drawer-foot' });
   const infoContainer = createTag('div', { class: 'pdpx-drawer-foot-info-container' });
