@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import { debounce } from '../../scripts/utils/hofs.js';
 import {
   extractTemplateMetadata,
   extractApiParamsFromRecipe,
@@ -12,14 +13,6 @@ let createTag;
 let getConfig;
 let replaceKey;
 
-/**
- * Factory function to create a shared fixTemplateElements function.
- * This function is used by both createDesktopLayout and createCustomCarousel
- * to apply common accessibility and interaction fixes to template elements.
- *
- * @param {Object} currentHoveredElementRef - Reference object with .current property
- * @returns {Function} fixTemplateElements function
- */
 function createFixTemplateElements(currentHoveredElementRef) {
   return (template, addTrackedListenerFn) => {
     // Set proper tabindex for edit button and cta-link
@@ -319,7 +312,6 @@ function createDirectCarousel(block, templates, createTagFn) {
     }
   };
 
-  // Handle click outside to close button containers
   const handleClickOutside = (event) => {
     if (!event.target.closest('.template') && !event.target.closest('.promo-nav-btn')) {
       const templatesWithHover = track.querySelectorAll('.template.singleton-hover');
@@ -498,7 +490,6 @@ async function handleOneUpFromApiData(block, templateData) {
 
   const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
 
-  // Wrap image in clickable link
   const imageLink = createTag('a', {
     href: metadata.editUrl,
     class: 'one-up-image-link',
@@ -667,7 +658,6 @@ async function createDesktopLayout(block, templates) {
       }
     };
 
-    // Use shared fixTemplateElements function
     const fixTemplateElements = createFixTemplateElements(currentHoveredElementRef);
 
     templateElements.forEach((template) => {
@@ -684,7 +674,6 @@ async function createDesktopLayout(block, templates) {
       addTrackedListener(template, 'keydown', handleKeyboard);
     });
 
-    // Handle click outside to close button containers (desktop layout)
     const handleClickOutside = (event) => {
       if (!event.target.closest('.template')) {
         const templatesWithHover = parent.querySelectorAll('.template.singleton-hover');
@@ -744,7 +733,6 @@ export async function createCustomCarousel(block, templates) {
       eventListeners.get(element).push({ event, handler });
     };
 
-    // Use shared fixTemplateElements function
     const fixTemplateElements = createFixTemplateElements(currentHoveredElementRef);
 
     templateElements.forEach((template) => fixTemplateElements(template, addTrackedListener));
@@ -869,27 +857,6 @@ export default async function decorate(block) {
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
 
-    // Debounce utility for resize handlers with cancellation support
-    const debounce = (func, wait) => {
-      let timeout;
-      const executedFunction = function debounced(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          timeout = null;
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
-      executedFunction.cancel = () => {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-      };
-      return executedFunction;
-    };
-
     const selectors = {
       carousel: '.promo-carousel-wrapper',
       desktop: '.template:not(.prev-template):not(.next-template):not(.current-template)',
@@ -956,7 +923,6 @@ export default async function decorate(block) {
       }
     };
 
-    // Apply debounce to handlers (250ms for resize, 300ms for orientation)
     const debouncedResizeHandler = debounce(handleResponsiveChange, 250);
     const debouncedOrientationHandler = debounce(handleResponsiveOrientationChange, 300);
 
@@ -964,7 +930,6 @@ export default async function decorate(block) {
     window.addEventListener('orientationchange', debouncedOrientationHandler);
 
     block._cleanup = () => {
-      // Cancel any pending debounced calls before removing listeners
       if (debouncedResizeHandler && debouncedResizeHandler.cancel) {
         debouncedResizeHandler.cancel();
       }
