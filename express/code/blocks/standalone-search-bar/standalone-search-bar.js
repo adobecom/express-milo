@@ -174,21 +174,32 @@ function initSearchFunction(block, searchBarWrapper) {
 
       // Update existing items and add new ones as needed
       suggestions.forEach((item, index) => {
-        const valRegEx = new RegExp(searchBar.value, 'i');
-        const highlightedQuery = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
-
         let li = existingItems[index];
 
         if (li) {
           // Update existing item
-          li.innerHTML = highlightedQuery;
+          li.textContent = ''; // Clear existing content safely
           // Set tabindex: first item focusable, others not
           li.tabIndex = index === 0 ? 0 : -1;
         } else {
           // Create new item - first item focusable, others not
           li = createTag('li', { tabindex: index === 0 ? 0 : -1 });
-          li.innerHTML = highlightedQuery;
+        }
 
+        // Simple HTML escape function
+        const escapeHtml = (text) => text.replace(/[&<>"']/g, (match) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+        }[match]));
+
+        // Safe highlighting with escaped HTML
+        const escapedSearchValue = escapeHtml(searchBar.value);
+        const escapedQuery = escapeHtml(item.query);
+        const valRegEx = new RegExp(escapedSearchValue, 'i');
+        const highlightedQuery = escapedQuery.replace(valRegEx, '<b>$&</b>');
+        li.innerHTML = highlightedQuery;
+
+        // Add event listeners only for new elements
+        if (!existingItems[index]) {
           li.addEventListener('click', async () => {
             await handleSubmitInteraction(item, index);
           });
