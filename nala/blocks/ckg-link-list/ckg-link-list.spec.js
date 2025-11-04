@@ -7,5 +7,11 @@ module.exports = {
       path: '/express/colors/red',
       tags: '@ckg-link-list @smoke @regression',
     },
+    {
+      tcid: '1',
+      name: '@ckg-link-list-locale',
+      path: '/de/express/colors/pin',
+      tags: '@ckg-link-list @smoke @regression',
+    },
   ],
 };
