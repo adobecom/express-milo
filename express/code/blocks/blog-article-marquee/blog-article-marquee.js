@@ -13,7 +13,7 @@ const PRODUCT_ICON_SIZE = 48;
 const METADATA_KEYS = {
   eyebrow: 'category',
   headline: 'headline',
-  subcopy: 'subheading',
+  subcopy: 'sub-heading',
   title: 'og:title',
   productName: 'author',
   productIcon: 'blog-marquee-icon',
