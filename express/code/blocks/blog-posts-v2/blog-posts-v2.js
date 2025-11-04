@@ -357,7 +357,17 @@ function addRightChevronToViewAll(blockElement) {
 
 // Given a blog post element and a config, append all posts defined in the config to blogPosts
 async function decorateBlogPosts(blogPostsElements, config, offset = 0, precomputedPosts = null) {
-  const posts = precomputedPosts || await getFilteredResults(config);
+  let posts = precomputedPosts || blogPostsElements.__precomputedPosts;
+
+  if (!posts) {
+    posts = await getFilteredResults(config);
+  }
+
+  if (Array.isArray(posts)) {
+    blogPostsElements.__precomputedPosts = posts;
+  } else {
+    posts = [];
+  }
   // If a blog config has only one featured item, then build the item as a hero card.
   const isHero = config.featured && config.featured.length === 1;
 
@@ -401,7 +411,7 @@ async function decorateBlogPosts(blogPostsElements, config, offset = 0, precompu
     loadMore.addEventListener('click', (event) => {
       event.preventDefault();
       loadMore.remove();
-      decorateBlogPosts(blogPostsElements, config, pageEnd);
+      decorateBlogPosts(blogPostsElements, config, pageEnd, posts);
     });
   }
 }
@@ -414,7 +424,7 @@ function checkStructure(element, querySelectors) {
   return matched;
 }
 
-async function handelSpreadsheetVariant(block) { 
+async function handleSpreadsheetVariant(block) {
   const spreadsheetConfig = getSpreadsheetConfig(block);
   if (spreadsheetConfig) {
     const locales = new Set([getConfig().locale.prefix]);
@@ -431,6 +441,7 @@ async function handelSpreadsheetVariant(block) {
     const blogIndexLocal = await fetchBlogIndex(Array.from(locales));
     const posts = filterBlogPosts(spreadsheetConfig, blogIndexLocal);
     addRightChevronToViewAll(block);
+    delete spreadsheetConfig['load-more'];
     await decorateBlogPosts(block, spreadsheetConfig, 0, posts);
   }
 }
@@ -470,7 +481,7 @@ export default async function decorate(block) {
 
 
   if (block.classList.contains('spreadsheet-powered')) {
-    await handelSpreadsheetVariant(block);
+    await handleSpreadsheetVariant(block);
   } else {
     await handleRegularVariant(block);
   }
