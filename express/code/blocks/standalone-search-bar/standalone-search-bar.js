@@ -108,12 +108,14 @@ function initSearchFunction(block, searchBarWrapper) {
     }
   });
 
-  document.addEventListener('click', (e) => {
+  const handleDocumentClick = (e) => {
     const { target } = e;
     if (target !== searchBarWrapper && !searchBarWrapper.contains(target)) {
       searchDropdown.classList.add('hidden');
     }
-  }, { passive: true });
+  };
+
+  document.addEventListener('click', handleDocumentClick, { passive: true });
 
   const redirectSearch = async () => {
     const { 'search-destination': searchDestination } = blockConfig;
@@ -161,6 +163,11 @@ function initSearchFunction(block, searchBarWrapper) {
     clearBtn.style.display = 'none';
   }, { passive: true });
 
+  // Shared HTML escape function to avoid recreating in loop
+  const escapeHtml = (text) => text.replace(/[&<>"']/g, (match) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[match]));
+
   const suggestionsListUIUpdateCB = (suggestions) => {
     const searchBarVal = searchBar.value.toLowerCase();
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
@@ -187,10 +194,7 @@ function initSearchFunction(block, searchBarWrapper) {
           li = createTag('li', { tabindex: index === 0 ? 0 : -1 });
         }
 
-        // Simple HTML escape function
-        const escapeHtml = (text) => text.replace(/[&<>"']/g, (match) => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-        }[match]));
+        // Use shared escapeHtml function
 
         // Safe highlighting with escaped HTML
         const escapedSearchValue = escapeHtml(searchBar.value);
@@ -240,14 +244,18 @@ function initSearchFunction(block, searchBarWrapper) {
     }
   };
 
-  import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
-    const { inputHandler } = useInputAutocomplete(
-      suggestionsListUIUpdateCB,
-      getConfig,
-      { throttleDelay: 300, debounceDelay: 500, limit: 7 },
-    );
-    searchBar.addEventListener('input', inputHandler);
-  });
+  import('./utils/autocomplete-api-v3.js')
+    .then(({ default: useInputAutocomplete }) => {
+      const { inputHandler } = useInputAutocomplete(
+        suggestionsListUIUpdateCB,
+        getConfig,
+        { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+      );
+      searchBar.addEventListener('input', inputHandler);
+    })
+    .catch((error) => {
+      console.error('Failed to load autocomplete functionality:', error);
+    });
 }
 
 async function decorateSearchFunctions(block) {
@@ -377,6 +385,9 @@ async function buildSearchDropdown(searchBarWrapper) {
         const freePlanContainer = createTag('div', { class: 'free-plans-container' });
         freePlanContainer.append(freePlanTags);
         dropdownContainer.append(freePlanContainer);
+      })
+      .catch((error) => {
+        console.error('Failed to load free plan widget:', error);
       });
   }
 
