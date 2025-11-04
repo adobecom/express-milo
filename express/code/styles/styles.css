@@ -210,6 +210,10 @@
   --color-error-red: #d7373f;
   --color-default-font: #131313;
   --color-light-gray-2: #e1e1e1;
+
+  --border-radius-10: 10px;
+
+  --border-width-2: 2px;
 }
 
 @media (min-width: 600px) {
