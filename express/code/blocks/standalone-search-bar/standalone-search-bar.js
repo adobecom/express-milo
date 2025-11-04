@@ -126,7 +126,7 @@ function initSearchFunction(block, searchBarWrapper) {
       const separator = searchDestination.includes('?') ? '&' : '?';
       const targetLocation = `${searchDestination}${separator}q=${encodeURIComponent(searchQuery)}`;
 
-      window.location.assign(targetLocation);
+      window.open(targetLocation, '_blank');
     }
   };
 
@@ -144,6 +144,7 @@ function initSearchFunction(block, searchBarWrapper) {
       searchBar.value = item.query;
       searchBar.dispatchEvent(new Event('input'));
     }
+
     await onSearchSubmit();
   }
 
@@ -198,18 +199,26 @@ function initSearchFunction(block, searchBarWrapper) {
         const highlightedQuery = escapedQuery.replace(valRegEx, '<b>$&</b>');
         li.innerHTML = highlightedQuery;
 
+        // Store current suggestion data on the element to avoid closure issues
+        li.dataset.suggestionQuery = item.query;
+        li.dataset.suggestionIndex = index;
+
         // Add event listeners only for new elements
         if (!existingItems[index]) {
-          li.addEventListener('click', async () => {
-            await handleSubmitInteraction(item, index);
+          li.addEventListener('click', async (e) => {
+            const clickedQuery = e.currentTarget.dataset.suggestionQuery;
+            await handleSubmitInteraction({ query: clickedQuery });
           });
 
           li.addEventListener('keydown', async (e) => {
+            const currentQuery = e.currentTarget.dataset.suggestionQuery;
+            const currentIndex = parseInt(e.currentTarget.dataset.suggestionIndex, 10);
+
             if (e.key === 'Enter' || e.keyCode === 13) {
-              await handleSubmitInteraction(item, index);
+              await handleSubmitInteraction({ query: currentQuery });
             } else if (e.key === 'Tab') {
               e.preventDefault();
-              const nextIndex = e.shiftKey ? index - 1 : index + 1;
+              const nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
               if (nextIndex >= 0 && nextIndex < suggestions.length) {
                 cycleThroughSuggestions(block, nextIndex);
               } else if (!e.shiftKey && nextIndex >= suggestions.length) {
@@ -218,10 +227,10 @@ function initSearchFunction(block, searchBarWrapper) {
               }
             } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
               e.preventDefault();
-              cycleThroughSuggestions(block, index + 1);
+              cycleThroughSuggestions(block, currentIndex + 1);
             } else if (e.key === 'ArrowUp' || e.keyCode === 38) {
               e.preventDefault();
-              cycleThroughSuggestions(block, index - 1);
+              cycleThroughSuggestions(block, currentIndex - 1);
             }
           });
 
