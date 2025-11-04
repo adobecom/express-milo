@@ -70,6 +70,10 @@
   --standard-transition-hover-out-opacity: opacity 80ms ease-out 220ms;
 }
 
+.hidden {
+  display: none;
+}
+
 [data-skeleton='true'] {
   background: linear-gradient(90deg, #eee 25%, #f5f5f5 37%, #eee 63%);
   background-size: 400% 100%;
@@ -212,7 +216,7 @@
     padding: 0;
     margin: 0;
     text-decoration-line: underline;
-    cursor: pointer;
+    cursor: default;
   }
 }
 .pdpx-delivery-estimate-pill {
@@ -258,6 +262,7 @@
   border: 1px solid #5258e4;
 }
 
+/* CHECKOUT BUTTON */
 .pdpx-checkout-button-container {
   position: sticky;
   bottom: 0;
@@ -290,21 +295,64 @@
   pointer-events: none;
   background: linear-gradient(to top, white 20%, rgba(255, 255, 255, 0) 100%);
 }
-
 .pdpx-checkout-button-text {
   font-size: 18px;
   font-weight: 700;
 }
-
 .pdpx-checkout-button-subhead {
   display: none;
   flex-direction: row;
-  align-items: baseline;
+  align-items: end;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 2px;
+  gap: var(--figma-spacing-75);
+}
+.pdpx-checkout-button-subhead-image {
+  margin-bottom: 1px;
+
+}
+main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
+  white-space: nowrap;
+  color: #000;
+  font-weight: 400;
+  text-decoration: underline;
+}
+.pdpx-checkout-button-subhead-text {
+  text-align: right;
 }
 
-/* Pill Selector */
+.pdpx-checkout-button-disabled a.pdpx-checkout-button {
+  background-color: #505050;
+  border-radius: 10px;
+  cursor: not-allowed;
+  pointer-events: none;
+  font-weight: 400;
+  span.pdpx-checkout-button-text {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+.pdpx-assurance-lockup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--figma-spacing-300);
+  padding: var(--figma-spacing-100) 0;
+  background-color: #f8f8f8;
+  margin-bottom: var(--figma-spacing-400);
+  border-radius: 8px;
+  .pdpx-assurance-lockup-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--figma-spacing-100);
+    width: 50%;
+    justify-content: center;
+  }
+}
+/* END CHECKOUT BUTTON */
+
+/* PILL SELECTOR */
 .pdpx-pill-selector-container {
   margin-bottom: var(--figma-spacing-400);
   .pdpx-pill-selector-label-container {
@@ -317,13 +365,11 @@
     }
   }
 }
-
 .pdpx-pill-selector-label {
   display: block;
   font-weight: 700;
   margin-bottom: var(--figma-spacing-100);
 }
-
 .pdpx-pill-selector-options-container {
   display: flex;
   flex-direction: row;
@@ -514,12 +560,16 @@ main .section .pdpx-drawer-description {
         width: fit-content;
       }
     }
-    
   }
 }
 /* END DRAWER*/
 
 /* MINI PILL SELECTOR */
+.pdpx-mini-pill-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
 .pdpx-pill-selector-label-compare-link {
   background: transparent;
   font-size: 14px;
@@ -534,7 +584,7 @@ main .section .pdpx-drawer-description {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--figma-spacing-80);
+  gap: var(--figma-spacing-75);
 }
 .pdpx-mini-pill-image-container {
   border-radius: 4px;
@@ -558,12 +608,17 @@ main .section .pdpx-drawer-description {
     display: block;
   }
 }
+.pdpx-mini-pill-price {
+  font-size: 12px;
+  font-weight: 400;
+  color: #131313;
+}
 .pdpx-mini-pill-image-container:hover:not(.selected),
 .pdpx-image-thumbnail-carousel-item:hover:not(.selected) {
   border-color: #000;
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* Tooltip content */
+/* TOOLTIP CONTENT */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
   position: absolute;
@@ -590,7 +645,7 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--figma-spacing-100);
 }
 
-/* Tooltip arrow */
+/* TOOLTIP ARROW */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
@@ -611,10 +666,6 @@ main .section .pdpx-drawer-description {
   opacity: 1;
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
-}
-
-.pdpx-mini-pill-price {
-  font-size: 14px;
 }
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
@@ -644,13 +695,15 @@ main .section .pdpx-drawer-description {
 }
 .pdpx-standard-selector-label {
   display: inline-block;
-  min-width: 104px;
   color: #505050;
-  margin-right: var(--figma-spacing-600);
+  margin-right: 12px;
 }
 .pdpx-standard-selector {
   padding: var(--figma-spacing-100);
   cursor: pointer;
+}
+.pdpx-product-details-section {
+  margin-bottom: var(--figma-spacing-400);
 }
 .pdpx-product-details-section-title-container {
   padding-bottom: var(--figma-spacing-300);
@@ -831,6 +884,9 @@ main .section .pdpx-drawer-description {
     .pdpx-drawer-title {
     font-size: var(--body-font-size-xl);
   }
+  .pdpx-assurance-lockup-container {
+    flex-direction: row;
+  }
 }
 /*WIDE-SCREEN*/
 @media (min-width: 1680px) {
@@ -937,8 +993,6 @@ main .section .pdpx-drawer-description {
   }
 }
 
-
-
 /* SIZE CHART */
 .drawer-body--size-chart {
   display: flex;
@@ -958,7 +1012,7 @@ main .section .pdpx-drawer-description {
 
 .size-chart-table-container {
   border-radius: 16px;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #d5d5d5;
   padding: var(--spacing-300);
   color: var(--color-gray-900);
 }
@@ -1010,7 +1064,7 @@ main .section .pdpx-drawer-description {
 }
 
 .size-chart-table tbody tr:nth-child(odd) {
-  background: #EBEBEB;
+  background: #ebebeb;
 }
 
 .size-chart-table tbody tr:nth-child(odd) td:first-child {

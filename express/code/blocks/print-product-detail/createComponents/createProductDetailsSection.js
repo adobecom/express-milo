@@ -1,77 +1,124 @@
-import { getLibs } from '../../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
 import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
+import { detectMobile } from '../utilities/utility-functions.js';
 
 let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
-
   const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
   const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
-
   const accordionBlock = createTag('div', { class: 'ax-accordion pdpx-product-details-accordion' });
-
   const mapToAccordionFormat = (descriptions) => descriptions.map((item) => ({
     title: item.title,
     content: item.description,
   }));
-
   accordionBlock.accordionData = mapToAccordionFormat(productDescriptions);
-
   await axAccordionDecorate(accordionBlock);
-
   productDetailsSectionContainer.appendChild(accordionBlock);
-
   const formFieldToAccordionTitle = {
     media: 'Paper',
     cornerstyle: 'Corner Style',
     style: 'Size',
     qty: null,
   };
-
   BlockMediator.subscribe('product:updated', (e) => {
     const { productDetails, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
-
     let changedField = null;
     Object.keys(formData).forEach((key) => {
       if (formData[key] !== oldFormData[key]) {
         changedField = key;
       }
     });
-
     const updatedDescriptions = formatProductDescriptions(productDetails, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
-
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
-
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);
   });
   return productDetailsSectionContainer;
 }
 
+export function createAssuranceLockup() {
+  const assuranceLockupContainer = createTag('div', { class: 'pdpx-assurance-lockup-container' });
+  const assuranceLockupItem1 = createTag('div', { class: 'pdpx-assurance-lockup-item' });
+  const assuranceLockupItem1Icon = getIconElementDeprecated('shield_check_icon');
+  const assuranceLockupItem1Text = createTag('span', { class: 'pdpx-assurance-lockup-item-text' }, '100% satisfaction guarantee');
+  const assuranceLockupItem2 = createTag('div', { class: 'pdpx-assurance-lockup-item' });
+  const assuranceLockupItem2Icon = getIconElementDeprecated('print_icon');
+  const assuranceLockupItem2Text = createTag('span', { class: 'pdpx-assurance-lockup-item-text' }, 'Made and printed in the USA');
+  assuranceLockupItem1.append(assuranceLockupItem1Icon, assuranceLockupItem1Text);
+  assuranceLockupItem2.append(assuranceLockupItem2Icon, assuranceLockupItem2Text);
+  assuranceLockupContainer.append(assuranceLockupItem1, assuranceLockupItem2);
+  return assuranceLockupContainer;
+}
+
+export function createCheckoutButtonHref(templateId, parameters, productType) {
+  const productSettingsString = JSON.stringify(parameters);
+  const encodedParametersString = encodeURIComponent(productSettingsString);
+  const taskIdMap = {
+    zazzle_shirt: 'tshirt',
+    zazzle_businesscard: 'businesscard',
+  };
+  const taskId = taskIdMap[productType];
+  const urlParams = new URLSearchParams({
+    category: 'templates',
+    taskId,
+    loadPrintAddon: 'true',
+    print: 'true',
+    action: 'pdp-cta',
+    source: 'a.com-print-and-deliver-seo',
+    mv: 'other',
+    url: 'express/print',
+  });
+  const urlParamsString = urlParams.toString();
+  const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
+  return checkoutButtonHref;
+}
+
 export async function createCheckoutButton(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const validRegions = ['en-US', 'en-GB'];
+  const outOfRegion = !validRegions.includes(productDetails.region);
+  const isMobile = detectMobile();
+  let CTAText;
+  const CTATextMobile = 'Create in Adobe Express now, open on desktop to order print';
+  const CTATextDesktop = 'Customize and print it';
+  const CTATextOutOfRegion = 'Print with Adobe Express isn’t available yet in your region. Check back soon!';
+  if (outOfRegion) {
+    CTAText = CTATextOutOfRegion;
+  } else if (isMobile) {
+    CTAText = CTATextMobile;
+  } else {
+    CTAText = CTATextDesktop;
+  }
+  const buttonDisabled = outOfRegion || isMobile;
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
   const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
+  if (buttonDisabled) {
+    checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
+  }
   const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
-  const CTAText = createTag('span', { class: 'pdpx-checkout-button-text' }, 'Customize and print it');
-  checkoutButton.appendChild(CTAIcon);
-  checkoutButton.appendChild(CTAText);
+  const CTATextElement = createTag('span', { class: 'pdpx-checkout-button-text' }, CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
   const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
   const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadImage);
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadLink);
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadText);
-  checkoutButtonContainer.appendChild(checkoutButton);
-  checkoutButtonContainer.appendChild(checkoutButtonSubhead);
+  if (!buttonDisabled) {
+    checkoutButton.append(CTAIcon);
+  }
+  checkoutButton.append(CTATextElement);
+  checkoutButtonSubhead.append(
+    checkoutButtonSubheadImage,
+    checkoutButtonSubheadLink,
+    checkoutButtonSubheadText,
+  );
+  checkoutButtonContainer.append(checkoutButton, checkoutButtonSubhead);
   return checkoutButtonContainer;
 }

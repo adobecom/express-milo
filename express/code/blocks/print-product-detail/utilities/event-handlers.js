@@ -1,27 +1,12 @@
 import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
+import { formatDeliveryEstimateDateRange } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
-import createDrawerContentSizeChart, { createDrawerContentPrintingProcess, createDrawerContentPaperType } from '../createComponents/drawerContent/createDrawerContent.js';
-import { createCheckoutButtonHref } from '../print-product-detail.js';
-
-export async function openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType) {
-  const curtain = document.querySelector('.pdp-curtain');
-  const drawer = document.querySelector('.drawer');
-  drawer.innerHTML = '';
-  if (drawerType === 'sizeChart') {
-    const sizeChartContent = await createDrawerContentSizeChart(productDetails, drawer);
-  } else if (drawerType === 'printingProcess') {
-    await createDrawerContentPrintingProcess(productDetails, drawer);
-  } else if (drawerType === 'paperType') {
-    await createDrawerContentPaperType(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productDetails, defaultValue, drawerType, drawer);
-  }
-  curtain.classList.remove('hidden');
-  drawer.classList.remove('hidden');
-  document.body.classList.add('disable-scroll');
-}
+import createDrawerContentPaperType from '../createComponents/drawerContent/createDrawerContentPaperType.js';
+import { createCheckoutButtonHref } from '../createComponents/createProductDetailsSection.js';
+import { createPriceLockup } from '../createComponents/createProductInfoHeadingSection.js';
 
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
@@ -39,14 +24,9 @@ function formatProductOptionsToAPIParameters(formDataObject) {
 }
 
 async function updateProductPrice(productDetails) {
-  if (productDetails.discountAvailable) {
-    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productDetails.productPrice);
-    document.getElementById('pdpx-compare-price-label').innerHTML = await formatPriceZazzle(productDetails.strikethroughPrice);
-    document.getElementById('pdpx-savings-text').innerHTML = productDetails.discountString;
-  } else {
-    const productPrice = productDetails.unitPrice;
-    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productPrice);
-  }
+  const priceInfoContainer = document.getElementById('pdpx-price-info-container');
+  const newPriceLockup = await createPriceLockup(productDetails);
+  priceInfoContainer.replaceWith(newPriceLockup);
 }
 
 async function updateProductImages(productDetails) {
@@ -79,7 +59,11 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
 
 async function updateCheckoutButton(productDetails, formDataObject) {
   const checkoutButton = document.getElementById('pdpx-checkout-button');
-  const url = createCheckoutButtonHref(productDetails.templateId, formDataObject, productDetails.productType);
+  const url = createCheckoutButtonHref(
+    productDetails.templateId,
+    formDataObject,
+    productDetails.productType,
+  );
   checkoutButton.href = url;
 }
 
@@ -117,9 +101,20 @@ export default async function updateAllDynamicElements(productId) {
   const quantity = formDataObject.qty;
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity);
+  const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(
+    updatedConfigurationOptions,
+    formDataObject,
+    quantity,
+  );
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
-  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, UIStrings] = await Promise.all([
+  const [
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+    UIStrings,
+  ] = await Promise.all([
     fetchAPIData(productId, updatedParameters, 'getproduct'),
     fetchAPIData(productId, updatedParameters, 'getproductpricing'),
     fetchAPIData(productId, null, 'getreviews'),
@@ -137,7 +132,18 @@ export default async function updateAllDynamicElements(productId) {
     templateId,
     UIStrings,
   };
-  const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
+
+  const normalizedProductDetails = await normalizeProductDetailObject(
+    normalizeProductDetailsParametersObject,
+  );
+  // go through each attribute in the formDataObject and check if the value is in the normalizedProductDetails.attributes
+  // if it is not, assign the first value of the attribute to the formDataObject
+  for (const [key, value] of Object.entries(formDataObject)) {
+    console.log(key, value);
+    if (!normalizedProductDetails.attributes[key].some((v) => v.name.toString() === value.toString())) {
+      formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
+    }
+  }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
   await updateProductImages(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);

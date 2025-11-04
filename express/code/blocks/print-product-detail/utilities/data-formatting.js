@@ -44,27 +44,28 @@ async function convertAttributeToOptionsObject(productType, attribute) {
   return optionsArray;
 }
 
-function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
+function formatQuantityOptionsObject(quantities, pluralUnitLabel, singularUnitLabel) {
   const optionsArray = [];
   for (let i = 0; i < quantities.length; i += 1) {
     const option = quantities[i];
+    const label = (i === 0) ? `${option} ${singularUnitLabel}` : `${option} ${pluralUnitLabel}`;
     optionsArray.push({
-      title: `${option} ${pluralUnitLabel}`,
+      title: label,
       name: option,
     });
   }
   return optionsArray;
 }
 
-export function createEmptyDataObject(templateId) {
+export function createEmptyDataObject(templateId, region) {
   const emptyDataObject = {
     id: '',
     templateId,
     heroImage: '',
     productTitle: '',
-    unitPrice: '',
-    productPrice: '',
-    strikethroughPrice: '',
+    unitPrice: '0',
+    productPrice: '0',
+    strikethroughPrice: '0',
     discountAvailable: '',
     discountString: '',
     deliveryEstimateStringText: '',
@@ -73,16 +74,18 @@ export function createEmptyDataObject(templateId) {
     realViews: {},
     productType: 'default',
     pluralUnitLabel: '',
+    singularUnitLabel: '',
     averageRating: '',
     totalReviews: '',
     tooltipTitle: '',
     tooltipDescription1: '',
     tooltipDescription2: '',
-    attributes: { quantities: [] },
+    attributes: { qty: [] },
     compareValueTooltipTitle: '',
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
     productDescriptions: [],
+    region,
   };
   return emptyDataObject;
 }
@@ -94,20 +97,29 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
-    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(
+      productDetails.product.productType,
+      attribute,
+    );
   }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  dataObject.attributes.quantities = quantitiesOptions;
+  const quantitiesOptions = formatQuantityOptionsObject(
+    productDetails.product.quantities,
+    productDetails.product.pluralUnitLabel,
+    productDetails.product.singularUnitLabel,
+  );
+  dataObject.attributes.qty = quantitiesOptions;
   dataObject.productDescriptions = formatProductDescriptions(productDetails);
   return dataObject;
 }
 
 export function updateDataObjectProductPrice(dataObject, productPrice, quantity) {
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const applicableDiscount = productPrice
+    ?.discountProductItems[1] || productPrice?.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  const calculatedProductPrice = (applicableDiscount
+    ?.priceAdjusted ?? productPrice?.unitPrice ?? 0) * quantity;
   dataObject.productPrice = calculatedProductPrice;
-  dataObject.strikethroughPrice = productPrice?.unitPrice * quantity;
+  dataObject.strikethroughPrice = (productPrice?.unitPrice ?? 0) * quantity;
   dataObject.discountAvailable = discountAvailable;
   dataObject.discountString = applicableDiscount?.discountString;
   return dataObject;
@@ -131,22 +143,42 @@ export function updateDataObjectProductRenditions(dataObject, productRenditions)
 }
 
 export function updateDataObjectUIStrings(dataObject, UIStrings) {
-  dataObject.compareValueTooltipTitle = UIStrings.adobe_compareValueTooltipTitle;
-  dataObject.compareValueTooltipDescription1 = UIStrings.zi_product_Price_CompValueTooltip1Adobe;
-  dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
-  dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
-  dataObject.compareValueInfoIconLabel = UIStrings.zi_product_Price_CompValue;
-  dataObject.classicPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Title;
-  dataObject.classicPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Description;
-  dataObject.classicPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_ClassicPrinting_Summary;
-  dataObject.vividPrintingTitle = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Title;
-  dataObject.vividPrintingDescription = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Description;
-  dataObject.vividPrintingSummary = UIStrings.zi_product_PDP_PrintingProcess_VividPrinting_Summary;
-  dataObject.sizeChart = UIStrings.adobe_sizeChartExample;
+  dataObject.compareValueTooltipTitle = UIStrings
+    .adobe_compareValueTooltipTitle;
+  dataObject.compareValueTooltipDescription1 = UIStrings
+    .zi_product_Price_CompValueTooltip1Adobe;
+  dataObject.compareValueTooltipDescription2 = UIStrings
+    .zi_product_Price_CompValueTooltip2Adobe;
+  dataObject.deliveryEstimateStringText = UIStrings
+    .adobe_deliveryEstimateStringText;
+  dataObject.compareValueInfoIconLabel = UIStrings
+    .zi_product_Price_CompValue;
+  dataObject.classicPrintingTitle = UIStrings
+    .zi_product_PDP_PrintingProcess_ClassicPrinting_Title;
+  dataObject.classicPrintingDescription = UIStrings
+    .zi_product_PDP_PrintingProcess_ClassicPrinting_Description;
+  dataObject.classicPrintingSummary = UIStrings
+    .zi_product_PDP_PrintingProcess_ClassicPrinting_Summary;
+  dataObject.vividPrintingTitle = UIStrings
+    .zi_product_PDP_PrintingProcess_VividPrinting_Title;
+  dataObject.vividPrintingDescription = UIStrings
+    .zi_product_PDP_PrintingProcess_VividPrinting_Description;
+  dataObject.vividPrintingSummary = UIStrings
+    .zi_product_PDP_PrintingProcess_VividPrinting_Summary;
+  dataObject.sizeChart = UIStrings
+    .adobe_sizeChartExample;
   return dataObject;
 }
 
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId, UIStrings }) {
+export async function normalizeProductDetailObject({
+  productDetails,
+  productPrice,
+  productReviews,
+  productRenditions,
+  productShippingEstimates,
+  quantity,
+  templateId,
+  UIStrings }) {
   let dataObject = createEmptyDataObject(templateId);
   dataObject = await updateDataObjectProductDetails(dataObject, productDetails);
   dataObject = await updateDataObjectProductPrice(dataObject, productPrice, quantity);
