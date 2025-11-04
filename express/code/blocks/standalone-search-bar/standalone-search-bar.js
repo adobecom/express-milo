@@ -132,7 +132,6 @@ function initSearchFunction(block, searchBarWrapper) {
 
   const onSearchSubmit = async () => {
     const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
-    searchBar.disabled = true;
     sampleRUM('search', {
       source: block.dataset.blockName,
       target: searchBar.value,
