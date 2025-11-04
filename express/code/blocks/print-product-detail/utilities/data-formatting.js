@@ -80,7 +80,7 @@ export function createEmptyDataObject(templateId, region) {
     tooltipTitle: '',
     tooltipDescription1: '',
     tooltipDescription2: '',
-    attributes: { quantities: [] },
+    attributes: { qty: [] },
     compareValueTooltipTitle: '',
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
@@ -107,7 +107,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
     productDetails.product.pluralUnitLabel,
     productDetails.product.singularUnitLabel,
   );
-  dataObject.attributes.quantities = quantitiesOptions;
+  dataObject.attributes.qty = quantitiesOptions;
   dataObject.productDescriptions = formatProductDescriptions(productDetails);
   return dataObject;
 }

@@ -15,6 +15,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productId = productDetails.id;
+  const hiddenSelectInputId = `pdpx-hidden-input-${hiddenSelectInputName}`;
   let selectedValue = false;
   const classicOptions = customizationOptions.filter((option) => option.printingProcess === 'classic');
   const vividOptions = customizationOptions.filter((option) => option.printingProcess === 'vivid');
@@ -48,7 +49,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
     miniPillOptionsSectionContainerClassic,
     miniPillOptionsSectionContainerVivid,
   );
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
+  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputId });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const miniPillSelectorOptionsContainer = customizationOptions[i].printingProcess === 'classic' ? miniPillSelectorOptionsContainerClassic : miniPillSelectorOptionsContainerVivid;
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
