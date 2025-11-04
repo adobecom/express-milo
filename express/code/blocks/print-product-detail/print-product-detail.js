@@ -4,7 +4,7 @@ import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObject
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
-import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref } from './createComponents/createProductDetailsSection.js';
+import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
 import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
@@ -55,6 +55,8 @@ async function updatePageWithProductDetails(productDetails) {
   const form = globalContainer.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
+  const assuranceLockup = createAssuranceLockup();
+  productInfoSection.append(assuranceLockup);
   const checkoutButton = globalContainer.querySelector('#pdpx-checkout-button');
   const checkoutButtonHref = createCheckoutButtonHref(
     productDetails.templateId,

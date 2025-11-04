@@ -44,12 +44,13 @@ async function convertAttributeToOptionsObject(productType, attribute) {
   return optionsArray;
 }
 
-function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
+function formatQuantityOptionsObject(quantities, pluralUnitLabel, singularUnitLabel) {
   const optionsArray = [];
   for (let i = 0; i < quantities.length; i += 1) {
     const option = quantities[i];
+    const label = (i === 0) ? `${option} ${singularUnitLabel}` : `${option} ${pluralUnitLabel}`;
     optionsArray.push({
-      title: `${option} ${pluralUnitLabel}`,
+      title: label,
       name: option,
     });
   }
@@ -73,6 +74,7 @@ export function createEmptyDataObject(templateId, region) {
     realViews: {},
     productType: 'default',
     pluralUnitLabel: '',
+    singularUnitLabel: '',
     averageRating: '',
     totalReviews: '',
     tooltipTitle: '',
@@ -103,6 +105,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const quantitiesOptions = formatQuantityOptionsObject(
     productDetails.product.quantities,
     productDetails.product.pluralUnitLabel,
+    productDetails.product.singularUnitLabel,
   );
   dataObject.attributes.quantities = quantitiesOptions;
   dataObject.productDescriptions = formatProductDescriptions(productDetails);

@@ -1,4 +1,4 @@
-import { getLibs } from '../../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
 import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
@@ -8,53 +8,54 @@ let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
-
   const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
   const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
-
   const accordionBlock = createTag('div', { class: 'ax-accordion pdpx-product-details-accordion' });
-
   const mapToAccordionFormat = (descriptions) => descriptions.map((item) => ({
     title: item.title,
     content: item.description,
   }));
-
   accordionBlock.accordionData = mapToAccordionFormat(productDescriptions);
-
   await axAccordionDecorate(accordionBlock);
-
   productDetailsSectionContainer.appendChild(accordionBlock);
-
   const formFieldToAccordionTitle = {
     media: 'Paper',
     cornerstyle: 'Corner Style',
     style: 'Size',
     qty: null,
   };
-
   BlockMediator.subscribe('product:updated', (e) => {
     const { productDetails, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
-
     let changedField = null;
     Object.keys(formData).forEach((key) => {
       if (formData[key] !== oldFormData[key]) {
         changedField = key;
       }
     });
-
     const updatedDescriptions = formatProductDescriptions(productDetails, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
-
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
-
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);
   });
   return productDetailsSectionContainer;
+}
+
+export function createAssuranceLockup() {
+  const assuranceLockupContainer = createTag('div', { class: 'pdpx-assurance-lockup-container' });
+  const assuranceLockupItem1 = createTag('div', { class: 'pdpx-assurance-lockup-item' });
+  const assuranceLockupItem1Icon = getIconElementDeprecated('shield_check_icon');
+  const assuranceLockupItem1Text = createTag('span', { class: 'pdpx-assurance-lockup-item-text' }, '100% satisfaction guarantee');
+  const assuranceLockupItem2 = createTag('div', { class: 'pdpx-assurance-lockup-item' });
+  const assuranceLockupItem2Icon = getIconElementDeprecated('print_icon');
+  const assuranceLockupItem2Text = createTag('span', { class: 'pdpx-assurance-lockup-item-text' }, 'Made and printed in the USA');
+  assuranceLockupItem1.append(assuranceLockupItem1Icon, assuranceLockupItem1Text);
+  assuranceLockupItem2.append(assuranceLockupItem2Icon, assuranceLockupItem2Text);
+  assuranceLockupContainer.append(assuranceLockupItem1, assuranceLockupItem2);
+  return assuranceLockupContainer;
 }
 
 export function createCheckoutButtonHref(templateId, parameters, productType) {
@@ -98,7 +99,6 @@ export async function createCheckoutButton(productDetails) {
     CTAText = CTATextDesktop;
   }
   const buttonDisabled = outOfRegion || isMobile;
-
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
   const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
   if (buttonDisabled) {
