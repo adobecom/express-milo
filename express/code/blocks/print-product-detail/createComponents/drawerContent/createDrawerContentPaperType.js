@@ -64,18 +64,17 @@ export default async function createDrawerContentPaperType(
   infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-name' }, defaultValueOption.title));
   infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-price' }, defaultValueOption.priceAdjustment));
   infoContainer.append(createTag('img', { src: defaultValueOption.thumbnail, alt: heroImageAlt }), infoText);
-  drawerFoot.appendChild(infoContainer);
   const selectButton = createTag('button', { class: 'pdpx-drawer-foot-select-button' }, 'Select');
   selectButton.addEventListener('click', async () => {
     closeDrawer();
   });
-  drawerFoot.appendChild(selectButton);
-  drawerContainer.appendChild(drawerHead);
-  drawerBody.appendChild(heroImageContainer);
-  drawerBody.appendChild(titleRow);
-  drawerBody.appendChild(pillsContainer);
-  drawerBody.appendChild(paperTypeSelectorContainer);
-  drawerBody.appendChild(description);
-  drawerContainer.appendChild(drawerBody);
-  drawerContainer.appendChild(drawerFoot);
+  drawerFoot.appendChild(infoContainer, selectButton);
+  drawerBody.append(
+    heroImageContainer,
+    titleRow,
+    pillsContainer,
+    paperTypeSelectorContainer,
+    description,
+  );
+  drawerContainer.append(drawerHead, drawerBody, drawerFoot);
 }
