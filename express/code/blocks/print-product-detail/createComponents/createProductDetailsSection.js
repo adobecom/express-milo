@@ -2,6 +2,7 @@ import { getLibs } from '../../../scripts/utils.js';
 import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
+import { detectMobile } from '../utilities/utility-functions.js';
 
 let createTag;
 
@@ -84,11 +85,24 @@ export async function createCheckoutButton(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const validRegions = ['en-US', 'en-GB'];
   const outOfRegion = !validRegions.includes(productDetails.region);
-  const CTAText = outOfRegion ? 'Print with Adobe Express isn’t available yet in your region. Check back soon!' : 'Customize and print it';
+  const isMobile = detectMobile();
+  let CTAText;
+  const CTATextMobile = 'Create in Adobe Express now, open on desktop to order print';
+  const CTATextDesktop = 'Customize and print it';
+  const CTATextOutOfRegion = 'Print with Adobe Express isn’t available yet in your region. Check back soon!';
+  if (outOfRegion) {
+    CTAText = CTATextOutOfRegion;
+  } else if (isMobile) {
+    CTAText = CTATextMobile;
+  } else {
+    CTAText = CTATextDesktop;
+  }
+  const buttonDisabled = outOfRegion || isMobile;
+
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
   const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
-  if (outOfRegion) {
-    checkoutButtonContainer.classList.add('pdpx-checkout-button-out-of-region');
+  if (buttonDisabled) {
+    checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
   }
   const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
   const CTATextElement = createTag('span', { class: 'pdpx-checkout-button-text' }, CTAText);
@@ -96,7 +110,7 @@ export async function createCheckoutButton(productDetails) {
   const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
   const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
-  if (!outOfRegion) {
+  if (!buttonDisabled) {
     checkoutButton.append(CTAIcon);
   }
   checkoutButton.append(CTATextElement);

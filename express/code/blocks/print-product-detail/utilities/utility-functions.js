@@ -1,5 +1,24 @@
 import { createTag } from '../../../scripts/utils.js';
 
+export function isMobileDevice() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  return /android|iphone|ipad|ipod|blackberry|iemobile|webos|opera mini/i.test(userAgent.toLowerCase());
+}
+
+export function detectMobileWithUAData() {
+  const userAgent = navigator.userAgentData;
+  if (!userAgent) return false;
+  return userAgent.mobile || userAgent.platform === 'Android' || userAgent.platform === 'iOS';
+}
+
+export function detectMobileWithBrowserWidth() {
+  return window.innerWidth <= 500;
+}
+
+export function detectMobile() {
+  return isMobileDevice() || detectMobileWithUAData();
+}
+
 export function formatPaperThickness(thickness) {
   const thicknessFormatted = `${thickness.replace('_', '.')}pt thickness`;
   return thicknessFormatted;

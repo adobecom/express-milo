@@ -308,7 +308,7 @@
   justify-content: center;
   gap: 2px;
 }
-.pdpx-checkout-button-out-of-region a.pdpx-checkout-button {
+.pdpx-checkout-button-disabled a.pdpx-checkout-button {
   background-color: #505050;
   border-radius: 10px;
   cursor: not-allowed;
