@@ -292,12 +292,13 @@ async function decorateSearchFunctions(block) {
   }
 
   const searchForm = createTag('form', { class: 'search-form' });
+  const searchPlaceholder = blockConfig['search-bar-text'] || 'Search for over 50,000 templates';
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: blockConfig['search-bar-text'] || 'Search for over 50,000 templates',
+    placeholder: searchPlaceholder,
     enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
-    'aria-label': blockConfig['search-bar-text'] || 'Search for templates',
+    'aria-label': searchPlaceholder,
     role: 'searchbox',
     'aria-autocomplete': 'list',
   });
