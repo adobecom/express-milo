@@ -819,6 +819,8 @@ main .section.panel {
 @media (max-width: 599px) {
   main .section.panel {
     margin: 0 var(--spacing-300) var(--spacing-600) var(--spacing-300);
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
