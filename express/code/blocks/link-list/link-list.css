@@ -15,6 +15,7 @@ main .section .link-list-wrapper:has(.link-list.link-text),
   main .section.panel .link-list-wrapper:has(.link-list.link-text) {
     padding: 0;
     margin: 0;
+    max-width: unset;
   }
 
 /* Mobile: allow text link to be visible outside carousel */
