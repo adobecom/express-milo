@@ -169,8 +169,8 @@
 
 @media (min-width: 900px) {
   .prompt-marquee {
-    padding-top: var(--prompt-marquee-desktop-padding-block);
-    padding-bottom: var(--prompt-marquee-desktop-padding-block);
+    padding-top:  var(--spacing-900);
+    padding-bottom: var(--spacing-900);
   }
 
   .prompt-marquee > div > .column-picture:not(.column-picture-mobile) {
