@@ -617,10 +617,18 @@ export default async function decorate(block) {
     ...(quickAction === 'merge-videos' && { multiple: true }),
   });
   inputElement.onchange = () => {
-    if (quickAction === 'merge-videos' && inputElement.files.length > 1) {
-      startSDKWithUnconvertedFiles(inputElement.files, quickAction, block);
+    const { files } = inputElement;
+    if (!files?.length) {
+      document.body.dataset.suppressfloatingcta = 'false';
+      return;
+    }
+
+    document.body.dataset.suppressfloatingcta = 'true';
+
+    if (quickAction === 'merge-videos' && files.length > 1) {
+      startSDKWithUnconvertedFiles(files, quickAction, block);
     } else {
-      const file = inputElement.files[0];
+      const [file] = files;
       startSDKWithUnconvertedFiles([file], quickAction, block);
     }
   };
@@ -629,11 +637,11 @@ export default async function decorate(block) {
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();
     if (quickAction === 'generate-qr-code') {
+      document.body.dataset.suppressfloatingcta = 'true';
       startSDK([''], quickAction, block);
     } else {
       inputElement.click();
     }
-    document.body.dataset.suppressfloatingcta = 'true';
   });
 
   function preventDefaults(e) {
@@ -664,6 +672,13 @@ export default async function decorate(block) {
   dropzoneContainer.addEventListener('drop', async (e) => {
     const dt = e.dataTransfer;
     const { files } = dt;
+    if (!files?.length) {
+      document.body.dataset.suppressfloatingcta = 'false';
+      return;
+    }
+
+    document.body.dataset.suppressfloatingcta = 'true';
+
     if (quickAction === 'merge-videos' && files.length > 1) {
       startSDKWithUnconvertedFiles(files, quickAction, block);
     } else {
@@ -672,7 +687,6 @@ export default async function decorate(block) {
       );
     }
 
-    document.body.dataset.suppressfloatingcta = 'true';
   }, false);
 
   const freePlanTags = await buildFreePlanWidget({
