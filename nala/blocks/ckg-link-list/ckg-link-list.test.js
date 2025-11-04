@@ -74,4 +74,61 @@ test.describe('Ckg Link List Block Test Suite', () => {
       }
     });
   });
+
+  test(`[Test Id - ${features[1].tcid}] ${features[1].name},${features[1].tags}`, async ({ page, baseURL }) => {
+    await test.step('Go to German CLL block test page', async () => {
+      await page.goto(`${baseURL}${features[1].path}`);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(`${baseURL}${features[1].path}`);
+      await page.waitForTimeout(3000);
+    });
+
+    await test.step('Verify pills are displayed with locale prefix', async () => {
+      await page.waitForLoadState();
+      await ckgLinkList.ckgLinkList.scrollIntoViewIfNeeded();
+      await expect(ckgLinkList.ckgLinkList).toBeVisible();
+      const totalPills = await ckgLinkList.pillLink.count();
+      expect(totalPills).toBeTruthy();
+
+      for (let i = 0; i < totalPills; i++) {
+        const href = await ckgLinkList.pillLink.nth(i).getAttribute('href');
+        // Verify all links start with /de/express (German locale prefix)
+        expect(href).toMatch(/^\/de\/express\/colors\//);
+      }
+    });
+
+    await test.step('Click pill and navigate to German page', async () => {
+      await ckgLinkList.ckgLinkList.scrollIntoViewIfNeeded();
+      await page.waitForLoadState();
+      const totalPills = await ckgLinkList.pill.count();
+
+      if (totalPills) {
+        await ckgLinkList.pill.nth(0).click();
+        await page.waitForLoadState('domcontentloaded');
+
+        // Verify the URL maintains the /de prefix
+        const currentURL = page.url();
+        expect(currentURL).toContain('/de/express/colors/');
+      }
+    });
+
+    await test.step('Verify color dots are present', async () => {
+      await page.goto(`${baseURL}${features[1].path}`);
+      await page.waitForLoadState('domcontentloaded');
+      await page.waitForTimeout(2000);
+
+      const colorDots = page.locator('.color-dot');
+      const dotCount = await colorDots.count();
+      expect(dotCount).toBeGreaterThan(0);
+
+      // Verify each color dot has a background color
+      for (let i = 0; i < Math.min(dotCount, 5); i++) {
+        const bgColor = await colorDots
+          .nth(i)
+          .evaluate((el) => window.getComputedStyle(el).backgroundColor);
+        expect(bgColor).toBeTruthy();
+        expect(bgColor).not.toBe('rgba(0, 0, 0, 0)'); // Not transparent
+      }
+    });
+  });
 });
