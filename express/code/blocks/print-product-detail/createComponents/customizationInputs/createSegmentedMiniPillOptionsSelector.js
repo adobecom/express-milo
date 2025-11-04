@@ -1,5 +1,6 @@
 import { getLibs } from '../../../../scripts/utils.js';
-import updateAllDynamicElements, { openDrawer } from '../../utilities/event-handlers.js';
+import updateAllDynamicElements from '../../utilities/event-handlers.js';
+import { openDrawer } from '../drawerContent/createDrawerContent.js';
 
 let createTag;
 

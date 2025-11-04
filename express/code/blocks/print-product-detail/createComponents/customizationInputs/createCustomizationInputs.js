@@ -1,11 +1,19 @@
 import { getLibs } from '../../../../scripts/utils.js';
-import updateAllDynamicElements, { openDrawer } from '../../utilities/event-handlers.js';
+import updateAllDynamicElements from '../../utilities/event-handlers.js';
+import { openDrawer } from '../drawerContent/createDrawerContent.js';
 import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
 import createMiniPillOptionsSelector from './createMiniPillOptionsSelector.js';
 
 let createTag;
 
-function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, CTAText) {
+function createStandardSelector(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  productDetails,
+  defaultValue,
+  CTAText,
+) {
   const selectedOption = defaultValue || customizationOptions[0].name;
   const productId = productDetails.id;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
@@ -18,7 +26,7 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
-  standardSelectorInput.addEventListener('change', (element) => {
+  standardSelectorInput.addEventListener('change', () => {
     updateAllDynamicElements(productId);
   });
   standardSelectorInput.value = selectedOption;
@@ -34,7 +42,13 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
   return standardSelectorContainer;
 }
 
-function createPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, productId, defaultValue) {
+function createPillOptionsSelector(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  productId,
+  defaultValue,
+) {
   const selectedPillOption = defaultValue || customizationOptions[0].name;
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
@@ -77,7 +91,12 @@ export async function createBusinessCardInputs(container, productDetails, formDa
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails, formDataObject?.qty, null);
-  container.append(paperTypeSelectorContainer, cornerStyleSelectorContainer, sizeSelectorContainer, quantitySelectorContainer);
+  container.append(
+    paperTypeSelectorContainer,
+    cornerStyleSelectorContainer,
+    sizeSelectorContainer,
+    quantitySelectorContainer,
+  );
 }
 
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
@@ -85,9 +104,14 @@ export async function createTShirtInputs(container, productDetails, formDataObje
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails, formDataObject?.qty, null);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject?.size, 'Size chart');
-  container.append(styleSelectorContainer, colorSelectorContainer, quantitySelectorContainer, sizeSelectorContainer);
+  container.append(
+    styleSelectorContainer,
+    colorSelectorContainer,
+    quantitySelectorContainer,
+    sizeSelectorContainer,
+  );
 }
-function createDefaultInputs(container, productDetails, formDataObject = {}) {
+function createDefaultInputs(container) {
   return container;
 }
 
