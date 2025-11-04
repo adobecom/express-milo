@@ -82,20 +82,29 @@ export function createCheckoutButtonHref(templateId, parameters, productType) {
 
 export async function createCheckoutButton(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const validRegions = ['en-US', 'en-GB'];
+  const outOfRegion = !validRegions.includes(productDetails.region);
+  const CTAText = outOfRegion ? 'Print with Adobe Express isn’t available yet in your region. Check back soon!' : 'Customize and print it';
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
   const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
+  if (outOfRegion) {
+    checkoutButtonContainer.classList.add('pdpx-checkout-button-out-of-region');
+  }
   const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
-  const CTAText = createTag('span', { class: 'pdpx-checkout-button-text' }, 'Customize and print it');
-  checkoutButton.appendChild(CTAIcon);
-  checkoutButton.appendChild(CTAText);
+  const CTATextElement = createTag('span', { class: 'pdpx-checkout-button-text' }, CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
   const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
   const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadImage);
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadLink);
-  checkoutButtonSubhead.appendChild(checkoutButtonSubheadText);
-  checkoutButtonContainer.appendChild(checkoutButton);
-  checkoutButtonContainer.appendChild(checkoutButtonSubhead);
+  if (!outOfRegion) {
+    checkoutButton.append(CTAIcon);
+  }
+  checkoutButton.append(CTATextElement);
+  checkoutButtonSubhead.append(
+    checkoutButtonSubheadImage,
+    checkoutButtonSubheadLink,
+    checkoutButtonSubheadText,
+  );
+  checkoutButtonContainer.append(checkoutButton, checkoutButtonSubhead);
   return checkoutButtonContainer;
 }

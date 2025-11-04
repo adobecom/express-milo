@@ -56,7 +56,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export function createEmptyDataObject(templateId) {
+export function createEmptyDataObject(templateId, region) {
   const emptyDataObject = {
     id: '',
     templateId,
@@ -83,6 +83,7 @@ export function createEmptyDataObject(templateId) {
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
     productDescriptions: [],
+    region,
   };
   return emptyDataObject;
 }

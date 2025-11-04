@@ -88,9 +88,11 @@ export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
   const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text', id: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
   const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
-  deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
-  deliveryEstimatePillContainer.appendChild(deliveryEstimatePillText);
-  deliveryEstimatePillContainer.appendChild(deliveryEstimatePillDate);
+  deliveryEstimatePillContainer.append(
+    deliveryEstimatePillIcon,
+    deliveryEstimatePillText,
+    deliveryEstimatePillDate,
+  );
   return deliveryEstimatePillContainer;
 }
 
@@ -99,11 +101,9 @@ export default async function createProductInfoHeadingSection(productDetails) {
   const productInfoHeadingSectionWrapper = createTag('div', { class: 'pdpx-product-info-heading-section-wrapper' });
   const productInfoHeadingSectionContainer = createTag('div', { class: 'pdpx-product-info-heading-section-container' });
   const productTitleAndRatingsContainer = createProductTitleAndRatingsContainer(productDetails);
-  productInfoHeadingSectionContainer.append(productTitleAndRatingsContainer);
   const priceInfoContainer = await createPriceLockup(productDetails);
-  productInfoHeadingSectionContainer.append(priceInfoContainer);
-  productInfoHeadingSectionWrapper.appendChild(productInfoHeadingSectionContainer);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
-  productInfoHeadingSectionWrapper.appendChild(deliveryEstimatePill);
+  productInfoHeadingSectionContainer.append(productTitleAndRatingsContainer, priceInfoContainer);
+  productInfoHeadingSectionWrapper.append(productInfoHeadingSectionContainer, deliveryEstimatePill);
   return productInfoHeadingSectionWrapper;
 }

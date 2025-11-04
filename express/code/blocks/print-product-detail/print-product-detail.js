@@ -113,11 +113,12 @@ function updatePageWithUIStrings(productDetails) {
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  addPrefetchLinks();
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
+  addPrefetchLinks(ietf);
   const templateId = extractTemplateId(block);
-  let productId;
-  let dataObject = createEmptyDataObject(templateId);
   block.innerHTML = '';
+  let dataObject = createEmptyDataObject(templateId, ietf);
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
   const productDetails = fetchProductDetails(templateId);
@@ -133,7 +134,7 @@ export default async function decorate(block) {
     upsertLdJson('pdp-product-jsonld', initialJsonLd);
     const breadcrumbsLd = buildBreadcrumbsJsonLdFromDom();
     if (breadcrumbsLd) upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbsLd);
-    productId = productDetailsResponse.product.id;
+    const productId = productDetailsResponse.product.id;
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
     productRenditions.then((productRenditionsResponse) => {
       dataObject = updateDataObjectProductRenditions(dataObject, productRenditionsResponse);

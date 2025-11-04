@@ -262,6 +262,7 @@
   border: 1px solid #5258e4;
 }
 
+/* CHECKOUT BUTTON */
 .pdpx-checkout-button-container {
   position: sticky;
   bottom: 0;
@@ -307,6 +308,18 @@
   justify-content: center;
   gap: 2px;
 }
+.pdpx-checkout-button-out-of-region a.pdpx-checkout-button {
+  background-color: #505050;
+  border-radius: 10px;
+  cursor: not-allowed;
+  pointer-events: none;
+  font-weight: 400;
+  span.pdpx-checkout-button-text {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+/* END CHECKOUT BUTTON */
 
 /* Pill Selector */
 .pdpx-pill-selector-container {
@@ -518,7 +531,6 @@ main .section .pdpx-drawer-description {
         width: fit-content;
       }
     }
-    
   }
 }
 /* END DRAWER*/
@@ -941,8 +953,6 @@ main .section .pdpx-drawer-description {
   }
 }
 
-
-
 /* SIZE CHART */
 .drawer-body--size-chart {
   display: flex;
@@ -962,7 +972,7 @@ main .section .pdpx-drawer-description {
 
 .size-chart-table-container {
   border-radius: 16px;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #d5d5d5;
   padding: var(--spacing-300);
   color: var(--color-gray-900);
 }
@@ -1014,7 +1024,7 @@ main .section .pdpx-drawer-description {
 }
 
 .size-chart-table tbody tr:nth-child(odd) {
-  background: #EBEBEB;
+  background: #ebebeb;
 }
 
 .size-chart-table tbody tr:nth-child(odd) td:first-child {

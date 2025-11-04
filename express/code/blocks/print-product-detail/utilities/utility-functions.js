@@ -1,4 +1,4 @@
-import { getLibs, createTag } from '../../../scripts/utils.js';
+import { createTag } from '../../../scripts/utils.js';
 
 export function formatPaperThickness(thickness) {
   const thicknessFormatted = `${thickness.replace('_', '.')}pt thickness`;
@@ -85,9 +85,7 @@ export function formatStringSnakeCase(string) {
   return formattedString;
 }
 
-export async function addPrefetchLinks() {
-  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-  const { ietf } = getConfig().locale;
+export async function addPrefetchLinks(ietf) {
   const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
   const prefetchLink1 = createTag('link', {
     rel: 'dns-prefetch',
