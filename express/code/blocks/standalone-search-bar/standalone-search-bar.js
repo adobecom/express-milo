@@ -297,6 +297,9 @@ async function decorateSearchFunctions(block) {
     type: 'text',
     placeholder: blockConfig['search-bar-text'] || 'Search for over 50,000 templates',
     enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
+    'aria-label': blockConfig['search-bar-text'] || 'Search for templates',
+    role: 'searchbox',
+    'aria-autocomplete': 'list',
   });
 
   searchForm.append(searchBar);
