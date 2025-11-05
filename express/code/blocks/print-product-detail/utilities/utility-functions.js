@@ -1,0 +1,130 @@
+import { createTag } from '../../../scripts/utils.js';
+
+export function isMobileDevice() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  return /android|iphone|ipad|ipod|blackberry|iemobile|webos|opera mini/i.test(userAgent.toLowerCase());
+}
+
+export function detectMobileWithUAData() {
+  const userAgent = navigator.userAgentData;
+  if (!userAgent) return false;
+  return userAgent.mobile || userAgent.platform === 'Android' || userAgent.platform === 'iOS';
+}
+
+export function detectMobileWithBrowserWidth() {
+  return window.innerWidth <= 500;
+}
+
+export function detectMobile() {
+  return isMobileDevice() || detectMobileWithUAData();
+}
+
+export function formatPaperThickness(thickness) {
+  const thicknessFormatted = `${thickness.replace('_', '.')}pt thickness`;
+  return thicknessFormatted;
+}
+
+export function formatPaperWeight(weight) {
+  const [weightValue, gsmValue] = weight.split('lb');
+  const weightFormatted = `${weightValue}lb weight`;
+  const gsmFormatted = gsmValue?.replace('gsm', ' GSM');
+  return { weight: weightFormatted, gsm: gsmFormatted };
+}
+
+export function extractTemplateId(block) {
+  const templateIdBlock = block.children[0].children[1].textContent;
+  const urlParams = new URLSearchParams(window.location.search);
+  const templateIdURL = urlParams.get('templateId');
+  const templateId = templateIdURL || templateIdBlock;
+  return templateId;
+}
+
+export function formatDeliveryEstimateDateRange(minDate, maxDate) {
+  const options = { month: 'short', day: 'numeric' };
+  const minFormatted = new Date(minDate).toLocaleDateString('en-US', options);
+  const maxFormatted = new Date(maxDate).toLocaleDateString('en-US', options);
+  return `${minFormatted} - ${maxFormatted}`;
+}
+
+export function formatLargeNumberToK(totalReviews) {
+  if (totalReviews > 1000) {
+    const hundreds = Math.round((totalReviews % 1000) / 100);
+    if (hundreds === 0) {
+      return `${Math.round(totalReviews / 1000)}k`;
+    }
+    return `${Math.round(totalReviews / 1000)}.${Math.round((totalReviews % 1000) / 100)}k`;
+  }
+  return totalReviews;
+}
+
+export function exchangeRegionForTopLevelDomain(region) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const regionURL = urlParams.get('region');
+  const regionFinal = regionURL || region;
+  const regionToTopLevelDomainMap = {
+    'en-GB': 'co.uk',
+    'en-US': 'com',
+    'en-CA': 'ca',
+    'en-AU': 'au',
+    'en-NZ': 'nz',
+  };
+  const topLevelDomain = regionToTopLevelDomainMap[regionFinal];
+  return topLevelDomain;
+}
+
+export async function formatPriceZazzle(price, differential = false) {
+  const { getCountry } = await import('../../../scripts/utils/location-utils.js');
+  const country = await getCountry();
+  const { getCurrency, formatPrice } = await import('../../../scripts/utils/pricing.js');
+  const currency = await getCurrency(country);
+  const urlParams = new URLSearchParams(window.location.search);
+  const region = urlParams.get('region');
+  const currencyMap = {
+    'en-GB': 'GBP',
+    'en-US': 'USD',
+    'en-CA': 'CAD',
+    'en-AU': 'AUD',
+    'en-NZ': 'NZD',
+  };
+  const currencyFinal = currencyMap[region] || currency;
+  let priceDifferentialOperator;
+  const localizedPrice = await formatPrice(price, currencyFinal);
+  if (differential) {
+    priceDifferentialOperator = price >= 0 ? '+' : '';
+  } else {
+    priceDifferentialOperator = '';
+  }
+  const formattedPrice = priceDifferentialOperator + localizedPrice;
+  return formattedPrice;
+}
+
+export function formatStringSnakeCase(string) {
+  const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '_');
+  const formattedString = normalizedString.trim().toLowerCase().replace(/ /g, '_');
+  return formattedString;
+}
+
+export async function addPrefetchLinks(ietf) {
+  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  const prefetchLink1 = createTag('link', {
+    rel: 'dns-prefetch',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  const prefetchLink2 = createTag('link', {
+    rel: 'dns-prefetch',
+    href: `https://rlv.zcache.${topLevelDomain}`,
+  });
+
+  const preconnectLink1 = createTag('link', {
+    rel: 'preconnect',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  const preconnectLink2 = createTag('link', {
+    rel: 'preconnect',
+    href: `https://www.zazzle.${topLevelDomain}`,
+  });
+  document.head.appendChild(prefetchLink1);
+  document.head.appendChild(prefetchLink2);
+  document.head.appendChild(preconnectLink1);
+  document.head.appendChild(preconnectLink2);
+}
