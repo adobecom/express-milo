@@ -37,8 +37,11 @@ async function initDependencies() {
 
 const getImsToken = async (operation) => {
   try {
-    const token = window.adobeIMS?.getAccessToken?.()?.token;
-    // Just return the token (or null) - let the API decide if it's needed
+    const tokenData = window.adobeIMS?.getAccessToken?.();
+    const token = tokenData?.token;
+
+    // For guest users, return null so we make API calls without auth
+    // For logged-in users, return their token
     return token || null;
   } catch (error) {
     // Only log actual errors, not missing tokens
@@ -239,14 +242,6 @@ export async function createRatingsContainer({
   votesText = 'votes',
 }) {
   await initDependencies();
-
-  // Check if user can interact with ratings (has token) - if not, don't show ratings at all
-  const token = await getAndValidateImsToken('create ratings container');
-  if (!token) {
-    // No token available - don't show ratings container to avoid IMS errors
-    return null;
-  }
-
   const data = await fetchRatingsData(sheet);
   if (!data) return null;
 
@@ -764,12 +759,6 @@ export function sliderFunctionality(block, { sheetCamelCase, ratings }) {
 export async function createRatingSlider(title, headingTag = 'h3') {
   await initDependencies();
 
-  // Check if user can submit ratings (has token)
-  const token = await getAndValidateImsToken('create rating slider');
-  if (!token) {
-    // No token available - don't show interactive rating slider
-    return null;
-  }
   const headingWrapper = createTag('div', { class: 'ratings-heading' });
   const heading = createTag(headingTag, { id: toClassName(title) });
   heading.textContent = title;
@@ -819,13 +808,6 @@ export async function createRatingSlider(title, headingTag = 'h3') {
  * @returns {Promise<HTMLElement>} The hover rating container
  */
 export async function createHoverStarRating({ ratings, onRatingSelect }) {
-  // Check if user can submit ratings (has token)
-  const token = await getAndValidateImsToken('create hover star rating');
-  if (!token) {
-    // No token available - don't show interactive rating component
-    return null;
-  }
-
   // Import dependencies at the start
   const placeholders = await import(`${getLibs()}/features/placeholders.js`);
   const config = getConfig();
