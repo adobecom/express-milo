@@ -39,12 +39,12 @@ const getImsToken = async (operation) => {
   try {
     const token = window.adobeIMS.getAccessToken()?.token;
     if (!token) {
-      throw new Error(`Cannot ${operation} token is missing`);
+      throw new Error(`Cannot ${operation} - no token available`);
     }
     return token;
   } catch (error) {
     window.lana?.log(
-      `RnR: ${error.message}`,
+      `RnR: Error getting IMS token for ${operation}: ${error.message}`,
       lanaOptions,
     );
     return null;
