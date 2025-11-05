@@ -243,12 +243,12 @@ async function createQuotesRatings({
     wrapper.appendChild(hoverRating);
   } else {
     // Use existing slider for other variants
-    // const { container } = await createRatingSlider('', 'h3');
-    // sliderFunctionality(container, {
-    //   sheetCamelCase: sheet,
-    //   ratings: RATINGS_CONFIG,
-    // });
-    // wrapper.appendChild(container);
+    const { container } = await createRatingSlider('', 'h3');
+    sliderFunctionality(container, {
+      sheetCamelCase: sheet,
+      ratings: RATINGS_CONFIG,
+    });
+    wrapper.appendChild(container);
   }
 
   return wrapper;

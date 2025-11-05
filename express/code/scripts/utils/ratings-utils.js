@@ -92,7 +92,7 @@ const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
   window.dispatchEvent(new window.CustomEvent('getImsLibInstance'));
 });
 
-const getAndValidateImsToken = async (operation) => {
+export const getAndValidateImsToken = async (operation) => {
   try {
     await waitForIms();
     const token = await getImsToken(operation);
@@ -243,14 +243,6 @@ export async function createRatingsContainer({
   votesText = 'votes',
 }) {
   await initDependencies();
-
-  // Check if we have a valid token before attempting any API calls
-  const token = await getAndValidateImsToken('create ratings container');
-  if (!token) {
-    // No valid token - don't show ratings widget or make API calls
-    return null;
-  }
-
   const data = await fetchRatingsData(sheet);
   if (!data) return null;
 
@@ -769,13 +761,6 @@ export function sliderFunctionality(block, { sheetCamelCase, ratings }) {
 export async function createRatingSlider(title, headingTag = 'h3') {
   await initDependencies();
 
-  // Check if user can submit ratings (has token)
-  const token = await getAndValidateImsToken('create rating slider');
-  if (!token) {
-    // No token available - don't show interactive rating slider
-    return null;
-  }
-
   const headingWrapper = createTag('div', { class: 'ratings-heading' });
   const heading = createTag(headingTag, { id: toClassName(title) });
   heading.textContent = title;
@@ -825,13 +810,6 @@ export async function createRatingSlider(title, headingTag = 'h3') {
  * @returns {Promise<HTMLElement>} The hover rating container
  */
 export async function createHoverStarRating({ ratings, onRatingSelect }) {
-  // Check if user can submit ratings (has token)
-  const token = await getAndValidateImsToken('create hover star rating');
-  if (!token) {
-    // No token available - don't show interactive rating component
-    return null;
-  }
-
   // Import dependencies at the start
   const placeholders = await import(`${getLibs()}/features/placeholders.js`);
   const config = getConfig();
