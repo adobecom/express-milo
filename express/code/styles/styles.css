@@ -9,11 +9,13 @@
 :root {
   --color-white: #fff;
   --color-light-gray: #E9E9E9;
-  --color-gray-100: #f8f8f8;
+  --color-gray-100: #F8F8F8;
   --color-gray-150: #f3f3f3;
   --color-gray-200: #e8e8e8;
+  --color-gray-250: #e1e1e1;
   --color-gray-300: #d4d4d4;
   --color-gray-300-variant: #dadada;
+  --color-gray-325: #D5D5D5;
   --color-gray-400: #b6b6b6;
   --color-gray-400-variant: #C6C6C6;
   --color-gray-500: #909090;
@@ -23,6 +25,7 @@
   --color-gray-800: #242424;
   --color-gray-800-variant: #292929;
   --color-gray-900: #222;
+  --color-gray-950: #131313;
   --color-blue-600: #0066CC;
   --color-black: #000;
   --color-content-neutral: #222222;
@@ -799,6 +802,57 @@ main .section p.legal-copy {
 /* make page : default content */
 main .section.secondary {
   background-color: var(--color-gray-100);
+}
+
+main .section.panel {
+  margin: 0 var(--spacing-600) var(--spacing-900) var(--spacing-600); 
+  padding: var(--spacing-600) var(--spacing-500);
+  border-radius: 16px;
+  border: 2px solid var(--color-white);
+  background: var(--color-gray-100);
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.08), 0 1px 4px 0 rgba(0, 0, 0, 0.04), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 899px) {
+  main .section.panel {
+    margin: 0 var(--spacing-500) var(--spacing-600) var(--spacing-500);
+  }
+}
+
+@media (max-width: 599px) {
+  main .section.panel {
+    margin: 0 var(--spacing-300) var(--spacing-600) var(--spacing-300);
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (min-width: 1800px) {
+  main .section.panel {
+    margin: 0 auto var(--spacing-900) auto;
+    max-width: 1679px;
+  }
+}
+
+/* Align link-list with template container when in modular-search */
+main .section.panel .link-list-wrapper,
+main .section.panel .link-list-wrapper:has(.link-list),
+main .section.panel .link-list-wrapper:has(.link-list:is([class*=" "])),
+main .section.panel .link-list-wrapper:has(.link-list.inline) {
+  max-width: var(--ax-grid-10-col-width);
+  margin: 0 auto;
+  padding: 0 28px var(--spacing-500) 28px;
+}
+
+@media (min-width: 1200px) {
+  main .section.panel .link-list-wrapper,
+  main .section.panel .link-list-wrapper:has(.link-list),
+  main .section.panel .link-list-wrapper:has(.link-list:is([class*=" "])),
+  main .section.panel .link-list-wrapper:has(.link-list.inline) {
+    max-width: var(--ax-grid-10-col-width);
+    margin: 0 auto;
+    padding: 0;
+  }
 }
 
 main .section p.button-container,
