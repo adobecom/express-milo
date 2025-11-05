@@ -37,14 +37,13 @@ async function initDependencies() {
 
 const getImsToken = async (operation) => {
   try {
-    const token = window.adobeIMS.getAccessToken()?.token;
-    if (!token) {
-      throw new Error(`Cannot ${operation} - no token available`);
-    }
-    return token;
+    const token = window.adobeIMS?.getAccessToken?.()?.token;
+    // Just return the token (or null) - let the API decide if it's needed
+    return token || null;
   } catch (error) {
+    // Only log actual errors, not missing tokens
     window.lana?.log(
-      `RnR: Error getting IMS token for ${operation}: ${error.message}`,
+      `RnR: Error accessing IMS for ${operation}: ${error.message}`,
       lanaOptions,
     );
     return null;
@@ -52,10 +51,8 @@ const getImsToken = async (operation) => {
 };
 
 const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
-  // If already available AND has token, resolve immediately
-  if (window.adobeIMS
-      && typeof window.adobeIMS.getAccessToken === 'function'
-      && window.adobeIMS.getAccessToken()?.token) {
+  // If already available, resolve immediately
+  if (window.adobeIMS && typeof window.adobeIMS.getAccessToken === 'function') {
     resolve(true);
     return;
   }
@@ -75,13 +72,6 @@ const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
     const instance = data?.detail?.instance;
     if (!instance) {
       reject(new Error('Invalid IMS instance'));
-      return;
-    }
-
-    // Also check if tokens are available
-    const token = instance.getAccessToken?.()?.token;
-    if (!token) {
-      reject(new Error('IMS loaded but no token available'));
       return;
     }
 
