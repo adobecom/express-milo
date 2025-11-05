@@ -232,13 +232,18 @@ async function filterAllBlogPostsOnPage() {
 async function getFilteredResults(config) {
   const results = await filterAllBlogPostsOnPage();
   const configStr = JSON.stringify(config);
-  let matchingResult = {};
-  results.forEach((res) => {
-    if (JSON.stringify(res.config) === configStr) {
-      matchingResult = res.posts;
+  const match = results.find((res) => JSON.stringify(res.config) === configStr);
+  if (match) return match.posts;
+
+  const posts = filterBlogPosts(config, blogIndex || { data: [], byPath: {} });
+  if (Array.isArray(posts)) {
+    if (Array.isArray(results)) {
+      results.push({ config, posts });
+      blogResults = results;
     }
-  });
-  return (matchingResult);
+    return posts;
+  }
+  return [];
 }
 
 // Translates the Read More string into the local language

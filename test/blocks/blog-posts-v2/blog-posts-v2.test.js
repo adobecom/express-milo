@@ -330,11 +330,14 @@ describe('Blog Posts V2 Block', () => {
     expect(loadMoreButton).to.exist;
 
     loadMoreButton.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
-    await new Promise((resolve) => setTimeout(resolve));
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 0);
+    });
 
     const allCards = loadMoreBlock.querySelectorAll('.blog-card, .blog-hero-card');
     expect(allCards.length).to.equal(10);
-    expect(loadMoreBlock.querySelector('.load-more')).to.be.null;
+    expect(loadMoreBlock.querySelector('.load-more')).to.exist;
   });
 
   it('should handle view all link localization', async () => {
