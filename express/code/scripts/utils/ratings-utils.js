@@ -242,6 +242,14 @@ export async function createRatingsContainer({
   votesText = 'votes',
 }) {
   await initDependencies();
+
+  // Check if we have a valid token before attempting any API calls
+  const token = await getAndValidateImsToken('create ratings container');
+  if (!token) {
+    // No valid token - don't show ratings widget or make API calls
+    return null;
+  }
+
   const data = await fetchRatingsData(sheet);
   if (!data) return null;
 
