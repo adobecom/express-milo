@@ -22,7 +22,7 @@ async function fetchBlogIndex(locales) {
   const resp = await Promise.all(urls.map((url) => fetch(url)
     .then((res) => res.ok && res.json())))
     .then((res) => res);
-  resp.forEach((item) => jointData.push(...item.data));
+  resp.forEach((item) => jointData.push(...item.data || []));
 
   const byPath = {};
   jointData.forEach((post) => {
@@ -265,7 +265,10 @@ function getCardParameters(post, dateFormatter) {
   const publicationDate = new Date(post.date * 1000);
   const dateString = dateFormatter.format(publicationDate);
   const filteredTitle = title.replace(/(\s?)(｜|\|)(\s?Adobe\sExpress\s?)$/g, '');
-  const imagePath = image.split('?')[0].split('_')[1];
+  const imagePath = image.split('?')[0].split('_')[1] || '';
+  if (imagePath === '') {
+    window.lana.log('Image path is empty for post', post);
+  }
   return {
     path, title, teaser, dateString, filteredTitle, imagePath,
   };
@@ -478,7 +481,6 @@ export default async function decorate(block) {
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
-
 
   if (block.classList.contains('spreadsheet-powered')) {
     await handleSpreadsheetVariant(block);
