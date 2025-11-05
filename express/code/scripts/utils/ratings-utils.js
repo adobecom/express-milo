@@ -52,8 +52,10 @@ const getImsToken = async (operation) => {
 };
 
 const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
-  // If already available, resolve immediately
-  if (window.adobeIMS && typeof window.adobeIMS.getAccessToken === 'function') {
+  // If already available AND has token, resolve immediately
+  if (window.adobeIMS
+      && typeof window.adobeIMS.getAccessToken === 'function'
+      && window.adobeIMS.getAccessToken()?.token) {
     resolve(true);
     return;
   }
@@ -73,6 +75,13 @@ const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
     const instance = data?.detail?.instance;
     if (!instance) {
       reject(new Error('Invalid IMS instance'));
+      return;
+    }
+
+    // Also check if tokens are available
+    const token = instance.getAccessToken?.()?.token;
+    if (!token) {
+      reject(new Error('IMS loaded but no token available'));
       return;
     }
 
