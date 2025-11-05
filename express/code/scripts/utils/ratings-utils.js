@@ -51,18 +51,58 @@ const getImsToken = async (operation) => {
   }
 };
 
-const waitForIms = (timeout = 1000) => new Promise((resolve) => {
-  if (window.adobeIMS) {
+const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
+  // If already available, resolve immediately
+  if (window.adobeIMS && typeof window.adobeIMS.getAccessToken === 'function') {
     resolve(true);
     return;
   }
-  setTimeout(() => resolve(!!window.adobeIMS), timeout);
+
+  // Declare variables first to avoid circular dependencies
+  let waitTimeout;
+  let onSuccess;
+
+  const onFail = () => {
+    if (onSuccess) {
+      window.removeEventListener('onImsLibInstance', onSuccess);
+    }
+    reject(new Error('IMS library not available within timeout'));
+  };
+
+  onSuccess = (data) => {
+    const instance = data?.detail?.instance;
+    if (!instance) {
+      reject(new Error('Invalid IMS instance'));
+      return;
+    }
+
+    if (waitTimeout) {
+      clearTimeout(waitTimeout);
+    }
+    window.removeEventListener('onImsLibInstance', onSuccess);
+    resolve(true);
+  };
+
+  // Set timeout after functions are defined
+  waitTimeout = setTimeout(onFail, timeout);
+
+  window.addEventListener('onImsLibInstance', onSuccess);
+  window.dispatchEvent(new window.CustomEvent('getImsLibInstance'));
 });
 
 const getAndValidateImsToken = async (operation) => {
-  await waitForIms();
-  const token = await getImsToken(operation);
-  return token;
+  try {
+    await waitForIms();
+    const token = await getImsToken(operation);
+    return token;
+  } catch (error) {
+    // IMS library not available - log but don't throw to avoid production spam
+    window.lana?.log(
+      `RnR: ${error.message} for operation: ${operation}`,
+      lanaOptions,
+    );
+    return null;
+  }
 };
 
 // #endregion
