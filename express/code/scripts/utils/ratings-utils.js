@@ -131,15 +131,16 @@ export async function fetchRatingsData(sheet) {
     await initDependencies();
     const token = await getAndValidateImsToken('load review data');
 
+    // If no token available, don't attempt API call to avoid 401 errors
+    if (!token) {
+      return null;
+    }
+
     const headers = {
       Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
       'x-api-key': RNR_API_KEY,
+      Authorization: token,
     };
-
-    // Add auth header only if token is available
-    if (token) {
-      headers.Authorization = token;
-    }
 
     const response = await fetch(
       `${RNR_API_URL}/ratings?assetType=${ASSET_TYPE}&assetId=${sheet}`,
@@ -369,6 +370,11 @@ export async function submitRating(sheet, rating, comment) {
   try {
     const token = await getAndValidateImsToken('post review');
 
+    // If no token available, don't attempt API call to avoid 401 errors
+    if (!token) {
+      throw new Error('Authentication required for rating submission');
+    }
+
     // Get locale from config
     const { locale } = getConfig();
     const localeString = locale.ietf?.replace('-', '_') || 'en-US';
@@ -386,12 +392,8 @@ export async function submitRating(sheet, rating, comment) {
       Accept: 'application/vnd.adobe-review.review-data-v1+json',
       'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
       'x-api-key': RNR_API_KEY,
+      Authorization: token,
     };
-
-    // Add auth header only if token is available
-    if (token) {
-      headers.Authorization = token;
-    }
 
     const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
 
@@ -767,6 +769,13 @@ export function sliderFunctionality(block, { sheetCamelCase, ratings }) {
 export async function createRatingSlider(title, headingTag = 'h3') {
   await initDependencies();
 
+  // Check if user can submit ratings (has token)
+  const token = await getAndValidateImsToken('create rating slider');
+  if (!token) {
+    // No token available - don't show interactive rating slider
+    return null;
+  }
+
   const headingWrapper = createTag('div', { class: 'ratings-heading' });
   const heading = createTag(headingTag, { id: toClassName(title) });
   heading.textContent = title;
@@ -816,6 +825,13 @@ export async function createRatingSlider(title, headingTag = 'h3') {
  * @returns {Promise<HTMLElement>} The hover rating container
  */
 export async function createHoverStarRating({ ratings, onRatingSelect }) {
+  // Check if user can submit ratings (has token)
+  const token = await getAndValidateImsToken('create hover star rating');
+  if (!token) {
+    // No token available - don't show interactive rating component
+    return null;
+  }
+
   // Import dependencies at the start
   const placeholders = await import(`${getLibs()}/features/placeholders.js`);
   const config = getConfig();
