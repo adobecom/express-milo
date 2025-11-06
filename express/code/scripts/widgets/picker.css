@@ -70,13 +70,11 @@
   flex-shrink: 0;
   width: 10px;
   height: 10px;
-  background-image: url('/express/code/icons/chevron.svg');
+  background-image: url('/express/code/icons/chevron-down.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  transform: rotate(90deg);
   pointer-events: none;
-  transition: transform 130ms ease-in-out;
 }
 
 .picker-input-wrapper:hover {
