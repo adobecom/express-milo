@@ -54,10 +54,16 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  color: #292929;
+  color: #292929 !important;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+/* Ensure current value never inherits blue color from active state */
+.picker-container.opened .picker-current-value,
+.picker-button-wrapper .picker-current-value {
+  color: #292929 !important;
 }
 
 .picker-chevron {
@@ -125,6 +131,9 @@
 
 .picker-option-button.active {
   font-weight: 700;
+}
+
+.picker-option-button.active .picker-option-text {
   color: #5c5ce0;
 }
 
