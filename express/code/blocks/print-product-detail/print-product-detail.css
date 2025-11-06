@@ -55,6 +55,10 @@
   margin-bottom: var(--spacing-200);
 }
 
+.pdpx-customization-inputs-container {
+  padding-bottom: 24px;
+}
+
 .pdpx-product-title {
   font-size: 28px;
 }
