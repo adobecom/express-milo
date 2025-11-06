@@ -199,6 +199,8 @@ export function createPicker({
             }
           }
           closeDropdown();
+          // Return focus to picker button
+          buttonWrapper.focus();
         });
       }
 
@@ -262,6 +264,7 @@ export function createPicker({
       if (isOpen && focusedOptionIndex >= 0) {
         // Select the focused option
         opts[focusedOptionIndex]?.click();
+        // Focus will be returned by the click handler
       } else {
         // Open dropdown
         toggleDropdown();
@@ -269,6 +272,7 @@ export function createPicker({
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeDropdown();
+      buttonWrapper.focus();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (!isOpen) {
@@ -297,6 +301,7 @@ export function createPicker({
       // Allow tab to close and move to next element
       if (isOpen) {
         closeDropdown();
+        // Don't refocus on Tab - let it naturally move to next element
       }
     }
   });
