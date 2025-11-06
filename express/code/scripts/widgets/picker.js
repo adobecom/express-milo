@@ -195,18 +195,27 @@ export function createPicker({
 
             // Call onChange callback
             if (onChange) {
+              // Set up observer to watch for new button being added to DOM
+              const observer = new MutationObserver((mutations, obs) => {
+                const newButton = document.getElementById(id);
+                if (newButton && newButton !== buttonWrapper) {
+                  newButton.focus();
+                  obs.disconnect();
+                }
+              });
+
+              observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+              });
+
               onChange(value, { target: { value } });
+
+              // Fallback: disconnect observer after 2 seconds
+              setTimeout(() => observer.disconnect(), 2000);
             }
           }
           closeDropdown();
-          // Return focus to picker button after any DOM updates from onChange
-          // Use setTimeout to wait for DOM re-creation and find the new button by ID
-          setTimeout(() => {
-            const newButton = document.getElementById(id);
-            if (newButton) {
-              newButton.focus();
-            }
-          }, 100);
         });
       }
 
