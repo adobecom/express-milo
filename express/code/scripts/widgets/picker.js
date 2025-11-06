@@ -231,10 +231,27 @@ export function createPicker({
     container.classList.remove('opened');
     buttonWrapper.setAttribute('aria-expanded', 'false');
     focusedOptionIndex = -1;
+    // Remove focused class from all options
+    optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+      opt.classList.remove('focused');
+    });
   };
 
   // Click handler for button
   buttonWrapper.addEventListener('click', toggleDropdown);
+
+  // Update focused option visually
+  const updateFocusedOption = () => {
+    const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
+    opts.forEach((opt, idx) => {
+      if (idx === focusedOptionIndex) {
+        opt.classList.add('focused');
+        opt.scrollIntoView({ block: 'nearest' });
+      } else {
+        opt.classList.remove('focused');
+      }
+    });
+  };
 
   // Keyboard navigation
   buttonWrapper.addEventListener('keydown', (e) => {
@@ -242,7 +259,13 @@ export function createPicker({
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      toggleDropdown();
+      if (isOpen && focusedOptionIndex >= 0) {
+        // Select the focused option
+        opts[focusedOptionIndex]?.click();
+      } else {
+        // Open dropdown
+        toggleDropdown();
+      }
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeDropdown();
@@ -250,29 +273,30 @@ export function createPicker({
       e.preventDefault();
       if (!isOpen) {
         openDropdown();
+        focusedOptionIndex = 0;
+        updateFocusedOption();
       } else {
         focusedOptionIndex = Math.min(focusedOptionIndex + 1, opts.length - 1);
-        if (opts[focusedOptionIndex]) {
-          opts[focusedOptionIndex].click();
-        }
+        updateFocusedOption();
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (isOpen) {
         focusedOptionIndex = Math.max(focusedOptionIndex - 1, 0);
-        if (opts[focusedOptionIndex]) {
-          opts[focusedOptionIndex].click();
-        }
+        updateFocusedOption();
       }
     } else if (e.key === 'Home' && isOpen) {
       e.preventDefault();
       focusedOptionIndex = 0;
-      if (opts[0]) opts[0].click();
+      updateFocusedOption();
     } else if (e.key === 'End' && isOpen) {
       e.preventDefault();
       focusedOptionIndex = opts.length - 1;
-      if (opts[focusedOptionIndex]) {
-        opts[focusedOptionIndex].click();
+      updateFocusedOption();
+    } else if (e.key === 'Tab') {
+      // Allow tab to close and move to next element
+      if (isOpen) {
+        closeDropdown();
       }
     }
   });

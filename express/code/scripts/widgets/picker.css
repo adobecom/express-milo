@@ -118,7 +118,8 @@
   gap: 8px;
 }
 
-.picker-option-button:hover {
+.picker-option-button:hover,
+.picker-option-button.focused {
   background-color: #e1e1e1;
 }
 
