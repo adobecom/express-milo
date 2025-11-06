@@ -39,7 +39,6 @@ export default async function decorate(block) {
   // Check if user has valid token - if not, hide the entire ratings block
   const token = await getAndValidateImsToken('ratings block initialization');
   if (!token) {
-    // No valid token - remove the block entirely to avoid showing unusable UI
     block.remove();
     return;
   }

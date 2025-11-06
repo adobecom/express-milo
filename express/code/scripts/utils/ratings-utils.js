@@ -46,7 +46,7 @@ const getImsToken = async (operation) => {
     return token;
   } catch (error) {
     window.lana?.log(
-      `RnR: ${error.message}`,
+      `RnR Express err: ${error.message}`,
       lanaOptions,
     );
     return null;
