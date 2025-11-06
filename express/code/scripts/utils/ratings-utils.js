@@ -39,7 +39,7 @@ const getImsToken = async (operation) => {
   try {
     const token = window.adobeIMS.getAccessToken()?.token;
     if (!token) {
-      throw new Error(`Cannot ${operation} token is missing`);
+      throw new Error(`Cannot something ${operation} token is missing`);
     }
     return token;
   } catch (error) {
