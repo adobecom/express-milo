@@ -784,6 +784,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.highlight .column.column-picture {
   padding-left: 0;
   padding-right: 0;
+  position: relative;
 }
 
 /* Custom color variant */
