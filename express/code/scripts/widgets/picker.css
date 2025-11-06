@@ -69,11 +69,11 @@
   padding-right: 11px;
   flex-shrink: 0;
   width: 10px;
-  height: 10px;
+  height: 32px;
   background-image: url('/express/code/icons/chevron-down-black.svg');
-  background-size: contain;
+  background-size: 10px 10px;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: left center;
   pointer-events: none;
 }
 
