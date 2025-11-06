@@ -4,9 +4,6 @@ let stylesLoaded = false;
 let loadStyle;
 let getConfig;
 
-/**
- * Initializes utils from milo
- */
 async function initUtils() {
   if (!loadStyle) {
     const utils = await import(`${getLibs()}/utils/utils.js`);
@@ -14,9 +11,6 @@ async function initUtils() {
   }
 }
 
-/**
- * Loads picker styles (once per page)
- */
 async function loadPickerStyles() {
   if (stylesLoaded) return;
   await initUtils();
@@ -25,25 +19,6 @@ async function loadPickerStyles() {
   stylesLoaded = true;
 }
 
-/**
- * Creates a standard picker/selector component
- * @param {Object} config - Configuration object
- * @param {string} config.id - ID for the select element
- * @param {string} config.name - Name attribute for the select
- * @param {string} config.label - Label text
- * @param {boolean} config.required - Whether field is required (adds asterisk)
- * @param {string} config.helpText - Help text below the picker
- * @param {Array} config.options - Array of {value, text, disabled} objects
- * @param {string} config.defaultValue - Default selected value
- * @param {Function} config.onChange - Change handler function(value, event)
- * @param {boolean} config.disabled - Whether picker is disabled
- * @param {string} config.size - Size variant: 's', 'm' (default), 'l', 'xl'
- * @param {string} config.variant - Visual variant: 'default', 'quiet'
- * @param {string} config.labelPosition - Label position: 'top' (default), 'side'
- * @param {string} config.ariaLabel - ARIA label for accessibility
- * @param {string} config.ariaDescribedBy - ARIA described-by for help text
- * @returns {HTMLElement} The picker container element
- */
 export function createPicker({
   id,
   name,
@@ -120,9 +95,42 @@ export function createPicker({
     role: 'listbox',
   });
 
+  const hiddenInput = createTag('input', {
+    type: 'hidden',
+    name: name || id,
+    value: currentValue,
+  });
+
+  const openDropdown = () => {
+    if (container.classList.contains('disabled')) return;
+    isOpen = true;
+    container.classList.add('opened');
+    buttonWrapper.setAttribute('aria-expanded', 'true');
+    focusedOptionIndex = -1;
+  };
+
+  const closeDropdown = () => {
+    isOpen = false;
+    container.classList.remove('opened');
+    buttonWrapper.setAttribute('aria-expanded', 'false');
+    focusedOptionIndex = -1;
+    optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+      opt.classList.remove('focused');
+    });
+  };
+
+  const toggleDropdown = () => {
+    if (container.classList.contains('disabled')) return;
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  };
+
   const createOptionButtons = (opts) => {
     optionsWrapper.innerHTML = '';
-    opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
+    opts.forEach(({ value, text, disabled: optionDisabled }) => {
       const isActive = String(value) === String(currentValue);
       const optionButton = createTag('div', {
         class: `picker-option-button${isActive ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
@@ -172,7 +180,6 @@ export function createPicker({
             optionButton.insertBefore(checkmark, optionButton.firstChild);
 
             if (onChange) {
-              // Watch for new button after DOM re-creation to restore focus
               const observer = new MutationObserver((mutations, obs) => {
                 const newButton = document.getElementById(id);
                 if (newButton && newButton !== buttonWrapper) {
@@ -195,33 +202,6 @@ export function createPicker({
   };
 
   createOptionButtons(options);
-
-  const toggleDropdown = () => {
-    if (disabled) return;
-    if (isOpen) {
-      closeDropdown();
-    } else {
-      openDropdown();
-    }
-  };
-
-  const openDropdown = () => {
-    if (disabled) return;
-    isOpen = true;
-    container.classList.add('opened');
-    buttonWrapper.setAttribute('aria-expanded', 'true');
-    focusedOptionIndex = -1;
-  };
-
-  const closeDropdown = () => {
-    isOpen = false;
-    container.classList.remove('opened');
-    buttonWrapper.setAttribute('aria-expanded', 'false');
-    focusedOptionIndex = -1;
-    optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
-      opt.classList.remove('focused');
-    });
-  };
 
   buttonWrapper.addEventListener('click', toggleDropdown);
 
@@ -289,12 +269,6 @@ export function createPicker({
   };
   document.addEventListener('click', handleClickOutside);
 
-  const hiddenInput = createTag('input', {
-    type: 'hidden',
-    name: name || id,
-    value: currentValue,
-  });
-
   const componentWrapper = labelPosition === 'side'
     ? createTag('div', { class: 'picker-wrapper' })
     : container;
@@ -358,7 +332,6 @@ export function createPicker({
   container.getPicker = () => currentValue;
 
   container.setOptions = (newOptions) => {
-    options = newOptions;
     createOptionButtons(newOptions);
     if (!newOptions.find((opt) => String(opt.value) === String(currentValue))) {
       currentValue = newOptions[0]?.value || '';
@@ -368,7 +341,6 @@ export function createPicker({
   };
 
   container.setDisabled = (isDisabled) => {
-    disabled = isDisabled;
     if (isDisabled) {
       buttonWrapper.setAttribute('tabindex', '-1');
       container.classList.add('disabled');
@@ -399,8 +371,12 @@ export function createPicker({
   container.clearError = () => {
     container.classList.remove('error');
     const helpTextEl = container.querySelector('.picker-help-text');
-    if (helpTextEl && helpText) {
-      helpTextEl.textContent = helpText;
+    if (helpTextEl) {
+      if (helpText) {
+        helpTextEl.textContent = helpText;
+      } else {
+        helpTextEl.remove();
+      }
     }
   };
 
@@ -427,9 +403,6 @@ export function createPicker({
   return container;
 }
 
-/**
- * Default export for block initialization (if used as a standalone block)
- */
 export default function decorate(block) {
   const config = {};
 
