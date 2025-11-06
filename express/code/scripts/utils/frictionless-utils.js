@@ -266,16 +266,19 @@ export async function createMobileExportConfig(
   downloadText,
   editText,
 ) {
-  const exportConfig = createDefaultExportConfig();
+  const isVideoQA = QA_CONFIGS[quickAction].group === 'video';
   const result = [
     {
-      ...exportConfig[0],
-      ...(QA_CONFIGS[quickAction].group === 'video'
-        ? {}
-        : { label: downloadText }),
+      id: 'downloadExportOption',
+      ...(isVideoQA ? {} : { label: downloadText }),
+      action: { target: 'download' },
       style: {
-        ...exportConfig[0].style,
+        uiType: 'button',
         variant: isIOSDevice ? 'accent' : 'secondary',
+      },
+      buttonStyle: {
+        treatment: 'fill',
+        size: 'xl',
       },
     },
   ];
@@ -283,8 +286,15 @@ export async function createMobileExportConfig(
   // Only add the edit option if not iOS device
   if (!isIOSDevice) {
     result.push({
-      ...exportConfig[1],
-      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
+      id: 'edit-in-express',
+      ...(isVideoQA ? {} : { label: editText }),
+      action: { target: 'express' },
+      style: { uiType: 'button' },
+      buttonStyle: {
+        variant: 'primary',
+        treatment: 'fill',
+        size: 'xl',
+      },
     });
   }
 
