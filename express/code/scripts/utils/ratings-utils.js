@@ -37,74 +37,32 @@ async function initDependencies() {
 
 const getImsToken = async (operation) => {
   try {
-    const tokenData = window.adobeIMS?.getAccessToken?.();
-    const token = tokenData?.token;
-
-    // For guest users, return null so we make API calls without auth
-    // For logged-in users, return their token
-    return token || null;
+    const token = window.adobeIMS.getAccessToken()?.token;
+    if (!token) {
+      throw new Error(`Cannot ${operation} token is missing`);
+    }
+    return token;
   } catch (error) {
-    // Only log actual errors, not missing tokens
     window.lana?.log(
-      `RnR: Error accessing IMS for ${operation}: ${error.message}`,
+      `RnR: ${error.message}`,
       lanaOptions,
     );
     return null;
   }
 };
 
-const waitForIms = (timeout = 3000) => new Promise((resolve, reject) => {
-  // If already available, resolve immediately
-  if (window.adobeIMS && typeof window.adobeIMS.getAccessToken === 'function') {
+const waitForIms = (timeout = 1000) => new Promise((resolve) => {
+  if (window.adobeIMS) {
     resolve(true);
     return;
   }
-
-  // Declare variables first to avoid circular dependencies
-  let waitTimeout;
-  let onSuccess;
-
-  const onFail = () => {
-    if (onSuccess) {
-      window.removeEventListener('onImsLibInstance', onSuccess);
-    }
-    reject(new Error('IMS library not available within timeout'));
-  };
-
-  onSuccess = (data) => {
-    const instance = data?.detail?.instance;
-    if (!instance) {
-      reject(new Error('Invalid IMS instance'));
-      return;
-    }
-
-    if (waitTimeout) {
-      clearTimeout(waitTimeout);
-    }
-    window.removeEventListener('onImsLibInstance', onSuccess);
-    resolve(true);
-  };
-
-  // Set timeout after functions are defined
-  waitTimeout = setTimeout(onFail, timeout);
-
-  window.addEventListener('onImsLibInstance', onSuccess);
-  window.dispatchEvent(new window.CustomEvent('getImsLibInstance'));
+  setTimeout(() => resolve(!!window.adobeIMS), timeout);
 });
 
-export const getAndValidateImsToken = async (operation) => {
-  try {
-    await waitForIms();
-    const token = await getImsToken(operation);
-    return token;
-  } catch (error) {
-    // IMS library not available - log but don't throw to avoid production spam
-    window.lana?.log(
-      `RnR: ${error.message} for operation: ${operation}`,
-      lanaOptions,
-    );
-    return null;
-  }
+const getAndValidateImsToken = async (operation) => {
+  await waitForIms();
+  const token = await getImsToken(operation);
+  return token;
 };
 
 // #endregion
@@ -130,11 +88,7 @@ export async function fetchRatingsData(sheet) {
   try {
     await initDependencies();
     const token = await getAndValidateImsToken('load review data');
-
-    // If no token available, don't attempt API call to avoid 401 errors
-    if (!token) {
-      return null;
-    }
+    if (!token) return null;
 
     const headers = {
       Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
@@ -361,11 +315,7 @@ export function determineActionUsed(actionSegments) {
 export async function submitRating(sheet, rating, comment) {
   try {
     const token = await getAndValidateImsToken('post review');
-
-    // If no token available, don't attempt API call to avoid 401 errors
-    if (!token) {
-      throw new Error('Authentication required for rating submission');
-    }
+    if (!token) return;
 
     // Get locale from config
     const { locale } = getConfig();
@@ -760,7 +710,6 @@ export function sliderFunctionality(block, { sheetCamelCase, ratings }) {
  */
 export async function createRatingSlider(title, headingTag = 'h3') {
   await initDependencies();
-
   const headingWrapper = createTag('div', { class: 'ratings-heading' });
   const heading = createTag(headingTag, { id: toClassName(title) });
   heading.textContent = title;
