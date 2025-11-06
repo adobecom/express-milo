@@ -66,6 +66,9 @@ export function createPicker({
   let isOpen = false;
   let focusedOptionIndex = -1;
 
+  // eslint-disable-next-line no-console
+  console.log('Picker initialized:', { defaultValue, currentValue, options });
+
   const container = createTag('div', { class: 'picker-container' });
 
   if (size && size !== 'm') {
@@ -104,8 +107,11 @@ export function createPicker({
 
   // Current selected value display
   const currentValueSpan = createTag('span', { class: 'picker-current-value' });
-  const selectedOption = options.find((opt) => opt.value === currentValue);
+  const selectedOption = options.find((opt) => String(opt.value) === String(currentValue));
   currentValueSpan.textContent = selectedOption ? selectedOption.text : '';
+
+  // eslint-disable-next-line no-console
+  console.log('Selected option:', { currentValue, selectedOption, displayText: currentValueSpan.textContent });
 
   // Chevron icon
   const chevron = createTag('img', {
@@ -128,15 +134,19 @@ export function createPicker({
   const createOptionButtons = (opts) => {
     optionsWrapper.innerHTML = '';
     opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
+      const isActive = String(value) === String(currentValue);
       const optionButton = createTag('div', {
-        class: `picker-option-button${value === currentValue ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
+        class: `picker-option-button${isActive ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
         'data-value': value,
         role: 'option',
-        'aria-selected': value === currentValue ? 'true' : 'false',
+        'aria-selected': isActive ? 'true' : 'false',
       });
 
+      // eslint-disable-next-line no-console
+      console.log('Creating option:', { value, text, currentValue, isActive });
+
       // Add checkmark icon for active option
-      if (value === currentValue) {
+      if (isActive) {
         const checkmark = createTag('img', {
           class: 'picker-option-checkmark',
           src: '/express/code/icons/checkmark.svg',
@@ -153,10 +163,13 @@ export function createPicker({
 
       if (!optionDisabled) {
         optionButton.addEventListener('click', () => {
-          if (currentValue !== value) {
+          if (String(currentValue) !== String(value)) {
             currentValue = value;
             currentValueSpan.textContent = text;
             hiddenInput.value = value;
+
+            // eslint-disable-next-line no-console
+            console.log('Option clicked:', { value, text, newCurrentValue: currentValue });
 
             // Update active state and checkmarks
             optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
@@ -307,7 +320,7 @@ export function createPicker({
 
   // Public API methods
   container.setPicker = (value) => {
-    const option = options.find((opt) => opt.value === value);
+    const option = options.find((opt) => String(opt.value) === String(value));
     if (option) {
       currentValue = value;
       currentValueSpan.textContent = option.text;
@@ -323,7 +336,7 @@ export function createPicker({
           existingCheckmark.remove();
         }
 
-        if (opt.getAttribute('data-value') === value) {
+        if (String(opt.getAttribute('data-value')) === String(value)) {
           opt.classList.add('active');
           opt.setAttribute('aria-selected', 'true');
           // Add checkmark to active option
@@ -348,7 +361,7 @@ export function createPicker({
   container.setOptions = (newOptions) => {
     options = newOptions;
     createOptionButtons(newOptions);
-    if (!newOptions.find((opt) => opt.value === currentValue)) {
+    if (!newOptions.find((opt) => String(opt.value) === String(currentValue))) {
       currentValue = newOptions[0]?.value || '';
       currentValueSpan.textContent = newOptions[0]?.text || '';
       hiddenInput.value = currentValue;
