@@ -54,16 +54,9 @@ function transformToVideoColumn(cell, aTag, block) {
   cell.classList.add('column-video');
   parent.classList.add('columns-video');
 
-  const highlightInteractive = block.classList.contains('highlight')
-    && !block.classList.contains('highlight-no-video');
-
   setTimeout(() => {
     const sibling = parent.querySelector('.column-picture');
-    if (
-      highlightInteractive
-      && sibling
-      && !sibling.querySelector('.column-video-overlay')
-    ) {
+    if (sibling && block.classList.contains('highlight')) {
       const videoOverlay = createTag('div', { class: 'column-video-overlay' });
       const videoOverlayIcon = getIconElementDeprecated('play', 44);
       videoOverlay.append(videoOverlayIcon);
@@ -71,7 +64,7 @@ function transformToVideoColumn(cell, aTag, block) {
     }
   }, 1);
 
-  const modalActivator = highlightInteractive ? parent : aTag;
+  const modalActivator = block.classList.contains('highlight') ? parent : aTag;
   modalActivator.addEventListener('click', () => {
     displayVideoModal(vidUrls, title, true);
   });
@@ -383,7 +376,7 @@ export default async function decorate(block) {
         decorateIconList(cell, rowNum, block.classList);
       }
       if (isVideoLink(aTag?.href)) {
-        handleVideos(cell, aTag, block);
+        handleVideos(cell, aTag, block, pics[0]);
       }
 
       if (aTag?.textContent.trim().startsWith('https://')) {
