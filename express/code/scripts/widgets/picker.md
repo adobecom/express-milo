@@ -17,7 +17,7 @@ The Picker widget is a custom dropdown component that provides full control over
 ```javascript
 import { createPicker } from '../../../../scripts/widgets/picker.js';
 
-const picker = createPicker({
+const picker = await createPicker({
   id: 'size-selector',
   name: 'size',
   label: 'Size',
@@ -38,7 +38,7 @@ document.body.appendChild(picker);
 ### With All Options
 
 ```javascript
-const picker = createPicker({
+const picker = await createPicker({
   id: 'product-selector',
   name: 'product',
   label: 'Choose Product',
@@ -59,6 +59,7 @@ const picker = createPicker({
   labelPosition: 'side',
   ariaLabel: 'Product selection',
   ariaDescribedBy: 'product-help',
+  maintainFocusAfterChange: false,
 });
 ```
 
@@ -80,6 +81,7 @@ const picker = createPicker({
 | `labelPosition` | `string` | `'top'` | Label position: `'top'`, `'side'` |
 | `ariaLabel` | `string` | `''` | ARIA label for accessibility |
 | `ariaDescribedBy` | `string` | `''` | ARIA described-by attribute |
+| `maintainFocusAfterChange` | `boolean` | `false` | Auto-restore focus when picker is re-created after `onChange` |
 
 ## Public API Methods
 
@@ -171,21 +173,26 @@ picker.destroy();
 
 The picker implements the following ARIA attributes:
 
-- `role="button"` on the closed state button
+- `role="combobox"` on the trigger button (follows ARIA APG standard for select patterns)
 - `role="listbox"` on the options container
 - `role="option"` on each option
 - `aria-haspopup="listbox"` on the button
 - `aria-expanded` (true/false) on the button
 - `aria-selected` (true/false) on options
+- `aria-activedescendant` (points to focused option ID)
+- `aria-labelledby` (links to label element)
 - `aria-label` (optional) on the button
 - `aria-describedby` (optional) connecting to help text
+- `aria-required` (true) when `required` is set
 
 ### Focus Management
 
 - Focus ring only appears on keyboard navigation (`:focus-visible`)
 - After selection, focus returns to the picker button
-- Handles DOM re-creation scenarios (e.g., when `onChange` triggers re-render)
-- Uses `MutationObserver` to track new DOM elements and restore focus
+- **Optional**: Set `maintainFocusAfterChange: true` to auto-restore focus when the picker is re-created after `onChange` callback
+  - Uses `MutationObserver` to track new DOM elements and restore focus
+  - Useful when `onChange` triggers a full DOM re-render (not recommended, but supported)
+  - Default: `false` (simpler behavior, better for most use cases)
 
 ### Screen Reader Support
 

@@ -19,7 +19,7 @@ async function loadPickerStyles() {
   stylesLoaded = true;
 }
 
-export function createPicker({
+export async function createPicker({
   id,
   name,
   label = '',
@@ -34,8 +34,9 @@ export function createPicker({
   labelPosition = 'top',
   ariaLabel = '',
   ariaDescribedBy = '',
+  maintainFocusAfterChange = false,
 } = {}) {
-  loadPickerStyles();
+  await loadPickerStyles();
 
   let currentValue = defaultValue || (options.length > 0 ? options[0].value : '');
   let isOpen = false;
@@ -69,7 +70,7 @@ export function createPicker({
   const buttonWrapperAttrs = {
     class: 'picker-button-wrapper',
     id,
-    role: 'button',
+    role: 'combobox',
     tabindex: disabled ? '-1' : '0',
     'aria-haspopup': 'listbox',
     'aria-expanded': 'false',
@@ -206,27 +207,31 @@ export function createPicker({
             setTimeout(() => { statusRegion.textContent = ''; }, 1000);
 
             if (onChange) {
-              if (focusObserver) focusObserver.disconnect();
+              if (maintainFocusAfterChange) {
+                if (focusObserver) focusObserver.disconnect();
 
-              focusObserver = new MutationObserver((mutations, obs) => {
-                const newButton = document.getElementById(id);
-                if (newButton && newButton !== buttonWrapper) {
-                  newButton.focus();
-                  obs.disconnect();
-                  focusObserver = null;
-                }
-              });
+                focusObserver = new MutationObserver((mutations, obs) => {
+                  const newButton = document.getElementById(id);
+                  if (newButton && newButton !== buttonWrapper) {
+                    newButton.focus();
+                    obs.disconnect();
+                    focusObserver = null;
+                  }
+                });
 
-              const observeTarget = container.parentElement || document.body;
-              focusObserver.observe(observeTarget, { childList: true, subtree: true });
-              onChange(value, { target: { value } });
+                const observeTarget = container.parentElement || document.body;
+                focusObserver.observe(observeTarget, { childList: true, subtree: true });
+                onChange(value, { target: { value } });
 
-              setTimeout(() => {
-                if (focusObserver) {
-                  focusObserver.disconnect();
-                  focusObserver = null;
-                }
-              }, 2000);
+                setTimeout(() => {
+                  if (focusObserver) {
+                    focusObserver.disconnect();
+                    focusObserver = null;
+                  }
+                }, 2000);
+              } else {
+                onChange(value, { target: { value } });
+              }
             }
           }
           closeDropdown();

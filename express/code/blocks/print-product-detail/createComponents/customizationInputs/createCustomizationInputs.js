@@ -7,7 +7,7 @@ import { createPicker } from '../../../../scripts/widgets/picker.js';
 
 let createTag;
 
-function createStandardSelector(
+async function createStandardSelector(
   customizationOptions,
   labelText,
   hiddenSelectInputName,
@@ -29,7 +29,7 @@ function createStandardSelector(
     text: option.title,
   }));
 
-  const pickerContainer = createPicker({
+  const pickerContainer = await createPicker({
     id: `pdpx-standard-selector-${hiddenSelectInputName}`,
     name: hiddenSelectInputName,
     label: labelText,
@@ -109,7 +109,7 @@ export async function createBusinessCardInputs(container, productDetails, formDa
   const paperTypeSelectorContainer = await createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type', 'media', 'Compare Paper Types', productDetails, formDataObject?.media, 'paperType');
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
+  const quantitySelectorContainer = await createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
   container.append(
     paperTypeSelectorContainer,
     cornerStyleSelectorContainer,
@@ -121,8 +121,8 @@ export async function createBusinessCardInputs(container, productDetails, formDa
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
-  const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
+  const quantitySelectorContainer = await createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
+  const sizeSelectorContainer = await createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
 
   const pickerGroup = createTag('div', { class: 'picker-group' });
   pickerGroup.append(quantitySelectorContainer, sizeSelectorContainer);

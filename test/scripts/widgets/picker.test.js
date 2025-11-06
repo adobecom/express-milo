@@ -20,8 +20,8 @@ describe('Picker Widget', () => {
   });
 
   describe('Initialization and Rendering', () => {
-    it('should create a picker with basic options', () => {
-      const picker = createPicker({
+    it('should create a picker with basic options', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         name: 'test',
         options: [
@@ -34,8 +34,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('picker-container')).to.be.true;
     });
 
-    it('should render label when provided', () => {
-      const picker = createPicker({
+    it('should render label when provided', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         label: 'Test Label',
         options: [{ value: '1', text: 'Option 1' }],
@@ -46,8 +46,8 @@ describe('Picker Widget', () => {
       expect(label.textContent).to.equal('Test Label');
     });
 
-    it('should render label with required indicator when required is true', () => {
-      const picker = createPicker({
+    it('should render label with required indicator when required is true', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         label: 'Test Label',
         required: true,
@@ -58,8 +58,8 @@ describe('Picker Widget', () => {
       expect(label.classList.contains('required')).to.be.true;
     });
 
-    it('should set default value correctly', () => {
-      const picker = createPicker({
+    it('should set default value correctly', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -73,8 +73,8 @@ describe('Picker Widget', () => {
       expect(currentValue.textContent).to.equal('Option 2');
     });
 
-    it('should default to first option when no defaultValue provided', () => {
-      const picker = createPicker({
+    it('should default to first option when no defaultValue provided', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -87,8 +87,8 @@ describe('Picker Widget', () => {
       expect(currentValue.textContent).to.equal('Option 1');
     });
 
-    it('should render help text when provided', () => {
-      const picker = createPicker({
+    it('should render help text when provided', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         helpText: 'This is help text',
         options: [{ value: '1', text: 'Option 1' }],
@@ -99,8 +99,8 @@ describe('Picker Widget', () => {
       expect(helpText.textContent).to.equal('This is help text');
     });
 
-    it('should apply size variant class', () => {
-      const picker = createPicker({
+    it('should apply size variant class', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         size: 's',
         options: [{ value: '1', text: 'Option 1' }],
@@ -109,8 +109,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('size-s')).to.be.true;
     });
 
-    it('should apply variant class', () => {
-      const picker = createPicker({
+    it('should apply variant class', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         variant: 'quiet',
         options: [{ value: '1', text: 'Option 1' }],
@@ -119,8 +119,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('quiet')).to.be.true;
     });
 
-    it('should apply side label position class', () => {
-      const picker = createPicker({
+    it('should apply side label position class', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         labelPosition: 'side',
         label: 'Test',
@@ -130,8 +130,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('side')).to.be.true;
     });
 
-    it('should create hidden input for form submission', () => {
-      const picker = createPicker({
+    it('should create hidden input for form submission', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         name: 'test-name',
         options: [{ value: '1', text: 'Option 1' }],
@@ -143,8 +143,8 @@ describe('Picker Widget', () => {
       expect(hiddenInput.value).to.equal('1');
     });
 
-    it('should render checkmark on active option', () => {
-      const picker = createPicker({
+    it('should render checkmark on active option', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -165,8 +165,8 @@ describe('Picker Widget', () => {
   });
 
   describe('Dropdown Open/Close', () => {
-    it('should open dropdown when button is clicked', () => {
-      const picker = createPicker({
+    it('should open dropdown when button is clicked', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -179,8 +179,8 @@ describe('Picker Widget', () => {
       expect(button.getAttribute('aria-expanded')).to.equal('true');
     });
 
-    it('should close dropdown when button is clicked again', () => {
-      const picker = createPicker({
+    it('should close dropdown when button is clicked again', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -194,8 +194,8 @@ describe('Picker Widget', () => {
       expect(button.getAttribute('aria-expanded')).to.equal('false');
     });
 
-    it('should close dropdown when clicking outside', () => {
-      const picker = createPicker({
+    it('should close dropdown when clicking outside', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -209,8 +209,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.false;
     });
 
-    it('should not open dropdown when disabled', () => {
-      const picker = createPicker({
+    it('should not open dropdown when disabled', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
         disabled: true,
@@ -225,8 +225,8 @@ describe('Picker Widget', () => {
   });
 
   describe('Option Selection', () => {
-    it('should update value when option is clicked', () => {
-      const picker = createPicker({
+    it('should update value when option is clicked', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -247,9 +247,9 @@ describe('Picker Widget', () => {
       expect(currentValue.textContent).to.equal('Option 2');
     });
 
-    it('should call onChange callback when value changes', () => {
+    it('should call onChange callback when value changes', async () => {
       const onChangeSpy = sinon.spy();
-      const picker = createPicker({
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -269,9 +269,9 @@ describe('Picker Widget', () => {
       expect(onChangeSpy.firstCall.args[0]).to.equal('2');
     });
 
-    it('should not call onChange when selecting same value', () => {
+    it('should not call onChange when selecting same value', async () => {
       const onChangeSpy = sinon.spy();
-      const picker = createPicker({
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -290,8 +290,8 @@ describe('Picker Widget', () => {
       expect(onChangeSpy.called).to.be.false;
     });
 
-    it('should close dropdown after selection', () => {
-      const picker = createPicker({
+    it('should close dropdown after selection', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -309,8 +309,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.false;
     });
 
-    it('should update checkmark on new active option', () => {
-      const picker = createPicker({
+    it('should update checkmark on new active option', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -332,8 +332,8 @@ describe('Picker Widget', () => {
       expect(options[1].querySelector('.picker-option-checkmark')).to.exist;
     });
 
-    it('should not allow selection of disabled option', () => {
-      const picker = createPicker({
+    it('should not allow selection of disabled option', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -355,8 +355,8 @@ describe('Picker Widget', () => {
   });
 
   describe('Keyboard Navigation', () => {
-    it('should open dropdown on Enter key', () => {
-      const picker = createPicker({
+    it('should open dropdown on Enter key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -371,8 +371,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.true;
     });
 
-    it('should open dropdown on Space key', () => {
-      const picker = createPicker({
+    it('should open dropdown on Space key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -387,8 +387,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.true;
     });
 
-    it('should close dropdown on Escape key', () => {
-      const picker = createPicker({
+    it('should close dropdown on Escape key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -403,8 +403,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.false;
     });
 
-    it('should navigate options with ArrowDown', () => {
-      const picker = createPicker({
+    it('should navigate options with ArrowDown', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -424,8 +424,8 @@ describe('Picker Widget', () => {
       expect(options[0].classList.contains('focused')).to.be.true;
     });
 
-    it('should navigate options with ArrowUp', () => {
-      const picker = createPicker({
+    it('should navigate options with ArrowUp', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -449,8 +449,8 @@ describe('Picker Widget', () => {
       expect(options[0].classList.contains('focused')).to.be.true;
     });
 
-    it('should jump to first option with Home key', () => {
-      const picker = createPicker({
+    it('should jump to first option with Home key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -474,8 +474,8 @@ describe('Picker Widget', () => {
       expect(options[0].classList.contains('focused')).to.be.true;
     });
 
-    it('should jump to last option with End key', () => {
-      const picker = createPicker({
+    it('should jump to last option with End key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -495,8 +495,8 @@ describe('Picker Widget', () => {
       expect(options[2].classList.contains('focused')).to.be.true;
     });
 
-    it('should select focused option on Enter', (done) => {
-      const picker = createPicker({
+    it('should select focused option on Enter', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -515,14 +515,12 @@ describe('Picker Widget', () => {
       event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
       button.dispatchEvent(event);
 
-      setTimeout(() => {
-        expect(picker.getPicker()).to.equal('2');
-        done();
-      }, 50);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(picker.getPicker()).to.equal('2');
     });
 
-    it('should close dropdown on Tab key', () => {
-      const picker = createPicker({
+    it('should close dropdown on Tab key', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -537,8 +535,8 @@ describe('Picker Widget', () => {
       expect(picker.classList.contains('opened')).to.be.false;
     });
 
-    it('should skip disabled options when navigating', () => {
-      const picker = createPicker({
+    it('should skip disabled options when navigating', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -562,8 +560,8 @@ describe('Picker Widget', () => {
 
   describe('Public API Methods', () => {
     describe('setPicker', () => {
-      it('should update picker value programmatically', () => {
-        const picker = createPicker({
+      it('should update picker value programmatically', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: '1', text: 'Option 1' },
@@ -579,8 +577,8 @@ describe('Picker Widget', () => {
         expect(currentValue.textContent).to.equal('Option 2');
       });
 
-      it('should update checkmark when value is set', () => {
-        const picker = createPicker({
+      it('should update checkmark when value is set', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: '1', text: 'Option 1' },
@@ -599,8 +597,8 @@ describe('Picker Widget', () => {
         expect(activeOption.querySelector('.picker-option-checkmark')).to.exist;
       });
 
-      it('should handle string and number value types', () => {
-        const picker = createPicker({
+      it('should handle string and number value types', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: 1, text: 'Option 1' },
@@ -614,8 +612,8 @@ describe('Picker Widget', () => {
     });
 
     describe('getPicker', () => {
-      it('should return current picker value', () => {
-        const picker = createPicker({
+      it('should return current picker value', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: '1', text: 'Option 1' },
@@ -629,8 +627,8 @@ describe('Picker Widget', () => {
     });
 
     describe('setOptions', () => {
-      it('should update options dynamically', () => {
-        const picker = createPicker({
+      it('should update options dynamically', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -651,8 +649,8 @@ describe('Picker Widget', () => {
         expect(optionButtons[0].querySelector('.picker-option-text').textContent).to.equal('Option A');
       });
 
-      it('should preserve current value if it exists in new options', () => {
-        const picker = createPicker({
+      it('should preserve current value if it exists in new options', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: '1', text: 'Option 1' },
@@ -669,8 +667,8 @@ describe('Picker Widget', () => {
         expect(picker.getPicker()).to.equal('2');
       });
 
-      it('should reset to first option if current value not in new options', () => {
-        const picker = createPicker({
+      it('should reset to first option if current value not in new options', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [
             { value: '1', text: 'Option 1' },
@@ -689,8 +687,8 @@ describe('Picker Widget', () => {
     });
 
     describe('setDisabled', () => {
-      it('should disable picker', () => {
-        const picker = createPicker({
+      it('should disable picker', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -703,8 +701,8 @@ describe('Picker Widget', () => {
         expect(button.getAttribute('tabindex')).to.equal('-1');
       });
 
-      it('should enable picker', () => {
-        const picker = createPicker({
+      it('should enable picker', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
           disabled: true,
@@ -718,8 +716,8 @@ describe('Picker Widget', () => {
         expect(button.getAttribute('tabindex')).to.equal('0');
       });
 
-      it('should prevent interaction when disabled', () => {
-        const picker = createPicker({
+      it('should prevent interaction when disabled', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -735,8 +733,8 @@ describe('Picker Widget', () => {
     });
 
     describe('setError', () => {
-      it('should set error state with message', () => {
-        const picker = createPicker({
+      it('should set error state with message', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -750,8 +748,8 @@ describe('Picker Widget', () => {
         expect(errorText.textContent).to.equal('This field is required');
       });
 
-      it('should update existing error message', () => {
-        const picker = createPicker({
+      it('should update existing error message', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -767,8 +765,8 @@ describe('Picker Widget', () => {
     });
 
     describe('clearError', () => {
-      it('should clear error state and message', () => {
-        const picker = createPicker({
+      it('should clear error state and message', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -784,8 +782,8 @@ describe('Picker Widget', () => {
     });
 
     describe('setLoading', () => {
-      it('should set loading state', () => {
-        const picker = createPicker({
+      it('should set loading state', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -797,8 +795,8 @@ describe('Picker Widget', () => {
         expect(picker.classList.contains('disabled')).to.be.true;
       });
 
-      it('should clear loading state and re-enable if not originally disabled', () => {
-        const picker = createPicker({
+      it('should clear loading state and re-enable if not originally disabled', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -811,8 +809,8 @@ describe('Picker Widget', () => {
         expect(picker.classList.contains('disabled')).to.be.false;
       });
 
-      it('should not re-enable if was already disabled', () => {
-        const picker = createPicker({
+      it('should not re-enable if was already disabled', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
           disabled: true,
@@ -827,8 +825,8 @@ describe('Picker Widget', () => {
     });
 
     describe('destroy', () => {
-      it('should remove event listeners', () => {
-        const picker = createPicker({
+      it('should remove event listeners', async () => {
+        const picker = await createPicker({
           id: 'test-picker',
           options: [{ value: '1', text: 'Option 1' }],
         });
@@ -846,21 +844,21 @@ describe('Picker Widget', () => {
   });
 
   describe('Accessibility', () => {
-    it('should have correct ARIA attributes on button', () => {
-      const picker = createPicker({
+    it('should have correct ARIA attributes on button', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
 
       const button = picker.querySelector('.picker-button-wrapper');
-      expect(button.getAttribute('role')).to.equal('button');
+      expect(button.getAttribute('role')).to.equal('combobox');
       expect(button.getAttribute('aria-haspopup')).to.equal('listbox');
       expect(button.getAttribute('aria-expanded')).to.equal('false');
       expect(button.getAttribute('tabindex')).to.equal('0');
     });
 
-    it('should update aria-expanded when opened', () => {
-      const picker = createPicker({
+    it('should update aria-expanded when opened', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -872,8 +870,8 @@ describe('Picker Widget', () => {
       expect(button.getAttribute('aria-expanded')).to.equal('true');
     });
 
-    it('should have correct ARIA attributes on options wrapper', () => {
-      const picker = createPicker({
+    it('should have correct ARIA attributes on options wrapper', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
       });
@@ -882,8 +880,8 @@ describe('Picker Widget', () => {
       expect(optionsWrapper.getAttribute('role')).to.equal('listbox');
     });
 
-    it('should have correct ARIA attributes on options', () => {
-      const picker = createPicker({
+    it('should have correct ARIA attributes on options', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1' },
@@ -902,8 +900,8 @@ describe('Picker Widget', () => {
       expect(options[1].getAttribute('aria-selected')).to.equal('false');
     });
 
-    it('should support custom aria-label', () => {
-      const picker = createPicker({
+    it('should support custom aria-label', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
         ariaLabel: 'Custom Label',
@@ -913,8 +911,8 @@ describe('Picker Widget', () => {
       expect(button.getAttribute('aria-label')).to.equal('Custom Label');
     });
 
-    it('should support custom aria-describedby', () => {
-      const picker = createPicker({
+    it('should support custom aria-describedby', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
         ariaDescribedBy: 'custom-description',
@@ -924,8 +922,8 @@ describe('Picker Widget', () => {
       expect(button.getAttribute('aria-describedby')).to.equal('custom-description');
     });
 
-    it('should auto-generate aria-describedby for help text', () => {
-      const picker = createPicker({
+    it('should auto-generate aria-describedby for help text', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [{ value: '1', text: 'Option 1' }],
         helpText: 'This is help text',
@@ -941,8 +939,8 @@ describe('Picker Widget', () => {
   });
 
   describe('Edge Cases', () => {
-    it('should handle empty options array', () => {
-      const picker = createPicker({
+    it('should handle empty options array', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [],
       });
@@ -951,8 +949,8 @@ describe('Picker Widget', () => {
       expect(picker.getPicker()).to.equal('');
     });
 
-    it('should handle options with same values', () => {
-      const picker = createPicker({
+    it('should handle options with same values', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: 'Option 1A' },
@@ -968,8 +966,8 @@ describe('Picker Widget', () => {
       expect(options.length).to.equal(2);
     });
 
-    it('should handle numeric values', () => {
-      const picker = createPicker({
+    it('should handle numeric values', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: 1, text: 'One' },
@@ -981,8 +979,8 @@ describe('Picker Widget', () => {
       expect(picker.getPicker()).to.equal(1);
     });
 
-    it('should handle boolean values', () => {
-      const picker = createPicker({
+    it('should handle boolean values', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: true, text: 'Yes' },
@@ -994,9 +992,9 @@ describe('Picker Widget', () => {
       expect(picker.getPicker()).to.equal(true);
     });
 
-    it('should handle very long option text', () => {
+    it('should handle very long option text', async () => {
       const longText = 'This is a very long option text that should not break the layout or cause issues';
-      const picker = createPicker({
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: '1', text: longText },
@@ -1008,8 +1006,8 @@ describe('Picker Widget', () => {
       expect(currentValue.textContent).to.equal(longText);
     });
 
-    it('should handle special characters in values', () => {
-      const picker = createPicker({
+    it('should handle special characters in values', async () => {
+      const picker = await createPicker({
         id: 'test-picker',
         options: [
           { value: 'option-1', text: 'Option 1' },
