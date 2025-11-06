@@ -134,21 +134,51 @@ export function createPicker({
         role: 'option',
         'aria-selected': value === currentValue ? 'true' : 'false',
       });
-      optionButton.textContent = text;
+
+      // Add checkmark icon for active option
+      if (value === currentValue) {
+        const checkmark = createTag('img', {
+          class: 'picker-option-checkmark',
+          src: '/express/code/icons/checkmark.svg',
+          alt: '',
+          'aria-hidden': 'true',
+        });
+        optionButton.appendChild(checkmark);
+      }
+
+      // Add text content
+      const textSpan = createTag('span', { class: 'picker-option-text' });
+      textSpan.textContent = text;
+      optionButton.appendChild(textSpan);
 
       if (!optionDisabled) {
         optionButton.addEventListener('click', () => {
           if (currentValue !== value) {
             currentValue = value;
             currentValueSpan.textContent = text;
+            hiddenInput.value = value;
 
-            // Update active state
+            // Update active state and checkmarks
             optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
               opt.classList.remove('active');
               opt.setAttribute('aria-selected', 'false');
+              // Remove checkmark
+              const existingCheckmark = opt.querySelector('.picker-option-checkmark');
+              if (existingCheckmark) {
+                existingCheckmark.remove();
+              }
             });
+
+            // Add active class and checkmark to selected option
             optionButton.classList.add('active');
             optionButton.setAttribute('aria-selected', 'true');
+            const checkmark = createTag('img', {
+              class: 'picker-option-checkmark',
+              src: '/express/code/icons/checkmark.svg',
+              alt: '',
+              'aria-hidden': 'true',
+            });
+            optionButton.insertBefore(checkmark, optionButton.firstChild);
 
             // Call onChange callback
             if (onChange) {
@@ -283,13 +313,27 @@ export function createPicker({
       currentValueSpan.textContent = option.text;
       hiddenInput.value = value;
 
-      // Update active state
+      // Update active state and checkmarks
       optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
         opt.classList.remove('active');
         opt.setAttribute('aria-selected', 'false');
+        // Remove existing checkmark
+        const existingCheckmark = opt.querySelector('.picker-option-checkmark');
+        if (existingCheckmark) {
+          existingCheckmark.remove();
+        }
+
         if (opt.getAttribute('data-value') === value) {
           opt.classList.add('active');
           opt.setAttribute('aria-selected', 'true');
+          // Add checkmark to active option
+          const checkmark = createTag('img', {
+            class: 'picker-option-checkmark',
+            src: '/express/code/icons/checkmark.svg',
+            alt: '',
+            'aria-hidden': 'true',
+          });
+          opt.insertBefore(checkmark, opt.firstChild);
         }
       });
 

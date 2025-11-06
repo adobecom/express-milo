@@ -115,6 +115,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .picker-option-button:hover {
@@ -133,6 +136,20 @@
 
 .picker-option-button.disabled:hover {
   background-color: transparent;
+}
+
+.picker-option-checkmark {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.picker-option-text {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .picker-help-text {
