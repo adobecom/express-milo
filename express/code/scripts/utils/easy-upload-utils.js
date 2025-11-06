@@ -1,15 +1,31 @@
 // Constants
 
+// SVG loader icon
+const ROTATE_LOADER_SVG = `
+<svg xmlns="http://www.w3.org/2000/svg" id="ICONS" width="44" height="44" viewBox="0 0 44 44">
+  <defs>
+    <style>
+      .fill {
+        fill: #222;
+      }
+    </style>
+  </defs>
+  <rect id="Canvas" fill="#ff13dc" opacity="0" width="44" height="44" />
+  <path class="fill" d="m22.39014,3.83301c-6.90808,0-13.18256,3.73047-16.39014,9.5144v-6.26831c0-.82812-.67139-1.5-1.5-1.5s-1.5.67188-1.5,1.5v10.47363c0,.82812.67139,1.5,1.5,1.5h10.5c.82861,0,1.5-.67188,1.5-1.5s-.67139-1.5-1.5-1.5h-6.98792c2.42493-5.54883,8.08215-9.21973,14.37805-9.21973,8.60742,0,15.60986,6.7666,15.60986,15.08398,0,8.31641-7.00244,15.08301-15.60986,15.08301-3.95312,0-7.72461-1.43066-10.61963-4.02832-.6167-.55273-1.56543-.50293-2.11816.11426-.55371.61719-.50195,1.56543.11426,2.11816,3.44678,3.09277,7.92969,4.7959,12.62354,4.7959,10.26172,0,18.60986-8.1123,18.60986-18.08301,0-9.97168-8.34814-18.08398-18.60986-18.08398Z" />
+</svg>
+`;
+
 export const EasyUploadVariants = {
     removeBackgroundEasyUploadVariant: 'remove-background-easy-upload-variant',
     resizeImageEasyUploadVariant: 'resize-image-easy-upload-variant',
-    cropImageEasyUploadVariant: 'crop-image-easy-upload-variant'
-}
+    cropImageEasyUploadVariant: 'crop-image-easy-upload-variant',
+};
+
 export const EasyUploadControls = {
     removeBackgroundEasyUploadControl: 'remove-background-easy-upload-control',
     resizeImageEasyUploadControl: 'resize-image-easy-upload-control',
-    cropImageEasyUploadControl: 'crop-image-easy-upload-control'
-}
+    cropImageEasyUploadControl: 'crop-image-easy-upload-control',
+};
 
 export const EasyUploadVariantsPromoidMap = {
     [EasyUploadVariants.removeBackgroundEasyUploadVariant]: '<To be added>',
@@ -18,7 +34,7 @@ export const EasyUploadVariantsPromoidMap = {
     [EasyUploadControls.removeBackgroundEasyUploadControl]: '<To be added>',
     [EasyUploadControls.resizeImageEasyUploadControl]: '<To be added>',
     [EasyUploadControls.cropImageEasyUploadControl]: '<To be added>',
-}
+};
 
 const QR_CODE_CDN_URL = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
 
@@ -59,7 +75,7 @@ const LINK_REL = {
 
 // QR Code Configuration Constants
 const QR_CODE_CONFIG = {
-    REFRESH_INTERVAL: 30 * 60 * 1000, // 30 minutes
+    REFRESH_INTERVAL: 6000, // 30 minutes
     DISPLAY_CONFIG: {
         width: 200,
         height: 200,
@@ -139,6 +155,7 @@ export class EasyUpload {
         this.qrCode = null;
         this.qrCodeContainer = null;
         this.qrRefreshInterval = null;
+        this.loaderContainer = null;
         // Start loading QR Code library immediately (non-blocking)
         this.qrCodeLibraryPromise = this.loadQRCodeLibrary();
 
@@ -484,6 +501,53 @@ export class EasyUpload {
     }
 
     /**
+     * Create loader container with rotating SVG
+     * @returns {HTMLElement} Loader container element
+     */
+    createLoader() {
+        if (!this.loaderContainer) {
+            this.loaderContainer = this.createTag('div', { class: 'qr-code-loader' });
+            this.loaderContainer.innerHTML = ROTATE_LOADER_SVG;
+        }
+        const dropzone = document.querySelector('.dropzone');
+        const buttonContainer = dropzone?.querySelector('.button-container');
+        buttonContainer.appendChild(this.loaderContainer);
+        return this.loaderContainer;
+    }
+
+    /**
+     * Show loader in place of QR code
+     */
+    showLoader() {
+        if (!this.loaderContainer) {
+            this.createLoader();
+        }
+        // Hide QR code container if it exists
+        if (this.qrCodeContainer) {
+            this.qrCodeContainer.classList.add('hidden');
+        }
+
+        // Show loader
+        if (this.loaderContainer) {
+            this.loaderContainer.classList.remove('hidden');
+        }
+    }
+
+    /**
+     * Hide loader and show QR code
+     */
+    hideLoader() {
+        if (this.loaderContainer) {
+            this.loaderContainer.classList.add('hidden');
+        }
+
+        // Show QR code container
+        if (this.qrCodeContainer) {
+            this.qrCodeContainer.classList.remove('hidden');
+        }
+    }
+
+    /**
      * Display QR code in the UI
      * @param {string} uploadUrl - URL to encode in QR code
      * @returns {Promise<void>}
@@ -504,18 +568,32 @@ export class EasyUpload {
             });
         }
 
-        // Create a container for the QR code
+        // Create containers for QR code and loader
         const dropzone = document.querySelector('.dropzone');
         const buttonContainer = dropzone?.querySelector('.button-container');
-        if (buttonContainer && !this.qrCodeContainer) {
-            this.qrCodeContainer = this.createTag('div', { class: 'qr-code-container' });
-            buttonContainer.appendChild(this.qrCodeContainer);
+
+        if (buttonContainer) {
+            // Create QR code container if it doesn't exist
+            if (!this.qrCodeContainer) {
+                this.qrCodeContainer = this.createTag('div', { class: 'qr-code-container' });
+                buttonContainer.appendChild(this.qrCodeContainer);
+            }
+
+            // Create and insert loader container parallel to QR code container
+            if (!this.loaderContainer) {
+                this.createLoader();
+                this.loaderContainer.classList.add('hidden');
+                buttonContainer.appendChild(this.loaderContainer);
+            }
         }
 
         if (this.qrCodeContainer) {
             this.qrCodeContainer.innerHTML = '';
             this.qrCode.append(this.qrCodeContainer);
         }
+
+        // Hide loader and show QR code
+        this.hideLoader();
     }
 
     /**
@@ -525,6 +603,9 @@ export class EasyUpload {
      */
     async initializeQRCode() {
         try {
+            // Show loader while generating QR code
+            this.showLoader();
+
             const uploadUrl = await this.generateUploadUrl();
             console.log('Upload URL:', uploadUrl);
             const finalUrl = await this.shortenUrl(uploadUrl);
@@ -534,6 +615,8 @@ export class EasyUpload {
             this.scheduleQRRefresh();
         } catch (error) {
             console.error('Failed to initialize QR code:', error);
+            // Hide loader on error
+            this.hideLoader();
             throw error;
         }
     }
@@ -652,11 +735,10 @@ export class EasyUpload {
      */
     async setupQRCodeInterface() {
         try {
-            await this.initializeQRCode();
-
             // Add Confirm Import button
             const dropzone = document.querySelector('.dropzone');
             const buttonContainer = dropzone?.querySelector('.button-container');
+            await this.initializeQRCode();
             if (buttonContainer) {
                 const confirmButton = this.createConfirmButton();
                 buttonContainer.appendChild(confirmButton);
