@@ -6,41 +6,11 @@ setLibs('/libs');
 
 describe('Template List Block', () => {
   let mockBlock;
-  let mockProps;
 
   beforeEach(() => {
     // Create a mock block element
     mockBlock = document.createElement('div');
     mockBlock.className = 'template-list apipowered';
-
-    // Create mock props
-    mockProps = {
-      templates: [],
-      filters: {
-        locales: '(en)',
-        tasks: '',
-        topics: '',
-        premium: '',
-        animated: '',
-      },
-      tailButton: '',
-      limit: 20,
-      total: 0,
-      start: '',
-      sort: '-_score,-remixCount',
-      masonry: undefined,
-      authoringError: false,
-      headingTitle: null,
-      headingSlug: null,
-      viewAllLink: null,
-      placeholderFormat: [16, 9],
-      renditionParams: {
-        format: 'jpg',
-        dimension: 'width',
-        size: 151,
-      },
-      loadedOtherCategoryCounts: false,
-    };
 
     // Mock window.matchMedia
     Object.defineProperty(window, 'matchMedia', {
