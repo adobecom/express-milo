@@ -253,7 +253,7 @@ export function createPicker({
         opt.classList.remove('focused');
       }
     });
-    
+
     if (focusedOptionIndex === -1) {
       buttonWrapper.setAttribute('aria-activedescendant', '');
     }

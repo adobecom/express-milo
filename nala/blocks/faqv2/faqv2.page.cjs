@@ -34,4 +34,3 @@ class Faqv2 {
 }
 
 module.exports = Faqv2;
-

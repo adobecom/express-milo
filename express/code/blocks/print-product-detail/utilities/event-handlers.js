@@ -137,14 +137,11 @@ export default async function updateAllDynamicElements(productId) {
     normalizeProductDetailsParametersObject,
   );
   for (const [key, value] of Object.entries(formDataObject)) {
-    // Skip validation if attribute doesn't exist in normalized product details
     if (normalizedProductDetails.attributes[key]) {
-      // Check if the current value exists in the available options
       const valueExists = normalizedProductDetails.attributes[key].some(
         (v) => String(v.name) === String(value) || v.name === value,
       );
 
-      // Only reset to first option if value truly doesn't exist
       if (!valueExists) {
         // eslint-disable-next-line no-console
         console.warn(`Value "${value}" for "${key}" not found in options, resetting to first option`);
