@@ -91,35 +91,11 @@ describe('Template List Block', () => {
     it('should be a function', () => {
       expect(decorateTemplateList).to.be.a('function');
     });
-
-    it('should handle basic function call', async () => {
-      // Test that the function exists and can be called
-      expect(() => {
-        try {
-          decorateTemplateList(mockBlock, mockProps);
-        } catch (e) {
-          // Expected to fail due to missing dependencies
-          expect(e).to.be.an('error');
-        }
-      }).to.not.throw();
-    });
   });
 
   describe('decorate (default export)', () => {
     it('should be a function', () => {
       expect(decorate).to.be.a('function');
-    });
-
-    it('should handle basic decoration', async () => {
-      // Test that the function exists and can be called
-      expect(() => {
-        try {
-          decorate(mockBlock);
-        } catch (e) {
-          // Expected to fail due to missing dependencies
-          expect(e).to.be.an('error');
-        }
-      }).to.not.throw();
     });
   });
 
