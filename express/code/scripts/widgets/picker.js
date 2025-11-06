@@ -40,6 +40,9 @@ export function createPicker({
   let currentValue = defaultValue || (options.length > 0 ? options[0].value : '');
   let isOpen = false;
   let focusedOptionIndex = -1;
+  let optionElements = [];
+  let focusObserver = null;
+  let cleanupObserver = null;
 
   const container = createTag('div', { class: 'picker-container' });
 
@@ -53,10 +56,11 @@ export function createPicker({
     container.classList.add('side');
   }
 
+  const labelId = `${id}-label`;
   if (label) {
     const labelEl = createTag('label', {
       class: `picker-label${required ? ' required' : ''}`,
-      for: id,
+      id: labelId,
     });
     labelEl.textContent = label;
     container.appendChild(labelEl);
@@ -69,9 +73,19 @@ export function createPicker({
     tabindex: disabled ? '-1' : '0',
     'aria-haspopup': 'listbox',
     'aria-expanded': 'false',
+    'aria-activedescendant': '',
   };
 
-  if (ariaLabel) buttonWrapperAttrs['aria-label'] = ariaLabel;
+  if (required) {
+    buttonWrapperAttrs['aria-required'] = 'true';
+  }
+
+  if (label) {
+    buttonWrapperAttrs['aria-labelledby'] = labelId;
+  } else if (ariaLabel) {
+    buttonWrapperAttrs['aria-label'] = ariaLabel;
+  }
+
   if (ariaDescribedBy) buttonWrapperAttrs['aria-describedby'] = ariaDescribedBy;
 
   const buttonWrapper = createTag('div', buttonWrapperAttrs);
@@ -99,6 +113,12 @@ export function createPicker({
     type: 'hidden',
     name: name || id,
     value: currentValue,
+  });
+
+  const statusRegion = createTag('div', {
+    'aria-live': 'polite',
+    'aria-atomic': 'true',
+    class: 'visually-hidden',
   });
 
   const openDropdown = () => {
@@ -130,11 +150,14 @@ export function createPicker({
 
   const createOptionButtons = (opts) => {
     optionsWrapper.innerHTML = '';
-    opts.forEach(({ value, text, disabled: optionDisabled }) => {
+    optionElements = [];
+    opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
       const isActive = String(value) === String(currentValue);
+      const optionId = `${id}-option-${index}`;
       const optionButton = createTag('div', {
         class: `picker-option-button${isActive ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
         'data-value': value,
+        id: optionId,
         role: 'option',
         'aria-selected': isActive ? 'true' : 'false',
       });
@@ -160,7 +183,7 @@ export function createPicker({
             currentValueSpan.textContent = text;
             hiddenInput.value = value;
 
-            optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+            optionElements.forEach((opt) => {
               opt.classList.remove('active');
               opt.setAttribute('aria-selected', 'false');
               const existingCheckmark = opt.querySelector('.picker-option-checkmark');
@@ -179,24 +202,38 @@ export function createPicker({
             });
             optionButton.insertBefore(checkmark, optionButton.firstChild);
 
+            statusRegion.textContent = `Selected: ${text}`;
+            setTimeout(() => { statusRegion.textContent = ''; }, 1000);
+
             if (onChange) {
-              const observer = new MutationObserver((mutations, obs) => {
+              if (focusObserver) focusObserver.disconnect();
+
+              focusObserver = new MutationObserver((mutations, obs) => {
                 const newButton = document.getElementById(id);
                 if (newButton && newButton !== buttonWrapper) {
                   newButton.focus();
                   obs.disconnect();
+                  focusObserver = null;
                 }
               });
 
-              observer.observe(document.body, { childList: true, subtree: true });
+              const observeTarget = container.parentElement || document.body;
+              focusObserver.observe(observeTarget, { childList: true, subtree: true });
               onChange(value, { target: { value } });
-              setTimeout(() => observer.disconnect(), 2000);
+
+              setTimeout(() => {
+                if (focusObserver) {
+                  focusObserver.disconnect();
+                  focusObserver = null;
+                }
+              }, 2000);
             }
           }
           closeDropdown();
         });
       }
 
+      optionElements.push(optionButton);
       optionsWrapper.appendChild(optionButton);
     });
   };
@@ -206,19 +243,24 @@ export function createPicker({
   buttonWrapper.addEventListener('click', toggleDropdown);
 
   const updateFocusedOption = () => {
-    const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
+    const opts = optionElements.filter((opt) => !opt.classList.contains('disabled'));
     opts.forEach((opt, idx) => {
       if (idx === focusedOptionIndex) {
         opt.classList.add('focused');
         opt.scrollIntoView({ block: 'nearest' });
+        buttonWrapper.setAttribute('aria-activedescendant', opt.id);
       } else {
         opt.classList.remove('focused');
       }
     });
+    
+    if (focusedOptionIndex === -1) {
+      buttonWrapper.setAttribute('aria-activedescendant', '');
+    }
   };
 
   buttonWrapper.addEventListener('keydown', (e) => {
-    const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
+    const opts = optionElements.filter((opt) => !opt.classList.contains('disabled'));
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -236,17 +278,19 @@ export function createPicker({
       if (!isOpen) {
         openDropdown();
         focusedOptionIndex = 0;
-        updateFocusedOption();
       } else {
         focusedOptionIndex = Math.min(focusedOptionIndex + 1, opts.length - 1);
-        updateFocusedOption();
       }
+      updateFocusedOption();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      if (isOpen) {
+      if (!isOpen) {
+        openDropdown();
+        focusedOptionIndex = opts.length - 1;
+      } else {
         focusedOptionIndex = Math.max(focusedOptionIndex - 1, 0);
-        updateFocusedOption();
       }
+      updateFocusedOption();
     } else if (e.key === 'Home' && isOpen) {
       e.preventDefault();
       focusedOptionIndex = 0;
@@ -269,6 +313,14 @@ export function createPicker({
   };
   document.addEventListener('click', handleClickOutside);
 
+  cleanupObserver = new MutationObserver(() => {
+    if (!document.body.contains(container)) {
+      container.destroy();
+      if (cleanupObserver) cleanupObserver.disconnect();
+    }
+  });
+  cleanupObserver.observe(document.body, { childList: true, subtree: true });
+
   const componentWrapper = labelPosition === 'side'
     ? createTag('div', { class: 'picker-wrapper' })
     : container;
@@ -276,6 +328,7 @@ export function createPicker({
   componentWrapper.appendChild(buttonWrapper);
   componentWrapper.appendChild(optionsWrapper);
   componentWrapper.appendChild(hiddenInput);
+  componentWrapper.appendChild(statusRegion);
 
   if (labelPosition === 'side') {
     container.appendChild(componentWrapper);
@@ -302,7 +355,7 @@ export function createPicker({
       currentValueSpan.textContent = option.text;
       hiddenInput.value = value;
 
-      optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+      optionElements.forEach((opt) => {
         opt.classList.remove('active');
         opt.setAttribute('aria-selected', 'false');
         const existingCheckmark = opt.querySelector('.picker-option-checkmark');
@@ -322,6 +375,9 @@ export function createPicker({
           opt.insertBefore(checkmark, opt.firstChild);
         }
       });
+
+      statusRegion.textContent = `Selected: ${option.text}`;
+      setTimeout(() => { statusRegion.textContent = ''; }, 1000);
 
       if (onChange) {
         onChange(value, { target: { value } });
@@ -394,6 +450,13 @@ export function createPicker({
 
   container.destroy = () => {
     document.removeEventListener('click', handleClickOutside);
+    if (focusObserver) {
+      focusObserver.disconnect();
+      focusObserver = null;
+    }
+    if (cleanupObserver) {
+      cleanupObserver.disconnect();
+    }
   };
 
   if (disabled) {
