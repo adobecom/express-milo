@@ -21,98 +21,118 @@
   margin-left: 4px;
 }
 
-.picker-input-wrapper {
+/* Button wrapper - the closed state (what looks like the select field) */
+.picker-button-wrapper {
   position: relative;
-  width: 100%;
   background-color: #e1e1e1;
   border-radius: 8px;
-  transition: background-color 130ms ease-in-out;
-}
-
-.picker-select {
-  width: 100%;
   height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding-left: 12px;
-  padding-right: 27px;
-  background-color: transparent;
-  border: none;
-  border-radius: 8px;
-  font-family: var(--body-font-family);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  color: #292929;
+  padding-right: 11px;
   cursor: pointer;
-  /* Remove native select styling across all browsers */
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  /* Remove default arrow in IE 10/11 */
-  background-image: none;
-  /* Ensure text doesn't overflow */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  transition: background-color 0.2s;
+  user-select: none;
 }
 
-/* Remove dropdown arrow in IE */
-.picker-select::-ms-expand {
-  display: none;
-}
-
-.picker-chevron {
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  pointer-events: none;
-}
-
-.picker-input-wrapper:hover {
+.picker-button-wrapper:hover {
   background-color: #d0d0d0;
 }
 
-.picker-select:focus {
-  outline: none;
-}
-
-.picker-input-wrapper:has(.picker-select:focus) {
+.picker-button-wrapper:focus {
   background-color: #e1e1e1;
   outline: 2px solid #3B63FB;
   outline-offset: 2px;
 }
 
-.picker-select:disabled {
+.picker-current-value {
+  flex: 1 1 0;
+  min-width: 0;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #292929;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.picker-chevron {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.picker-container.opened .picker-chevron {
+  transform: rotate(180deg);
+}
+
+.picker-container.disabled .picker-button-wrapper {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.picker-input-wrapper:has(.picker-select:disabled) {
-  opacity: 0.4;
+/* Options wrapper - the dropdown menu */
+.picker-options-wrapper {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12),
+              0 2px 6px 0 rgba(0, 0, 0, 0.04),
+              0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
-.picker-input-wrapper:has(.picker-select:disabled) .picker-chevron {
-  opacity: 0.4;
+.picker-container.opened .picker-options-wrapper {
+  display: flex;
 }
 
-/* Ensure consistent option styling across browsers */
-.picker-option {
-  padding: 8px 12px;
+/* Individual option buttons */
+.picker-option-button {
+  padding: 7px 12px;
   font-family: var(--body-font-family);
   font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
   color: #292929;
-  background-color: #ffffff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  user-select: none;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.picker-option:hover {
-  background-color: #f5f5f5;
-}
-
-.picker-option:checked,
-.picker-option:focus {
+.picker-option-button:hover {
   background-color: #e1e1e1;
+}
+
+.picker-option-button.active {
+  font-weight: 700;
+  color: #5c5ce0;
+}
+
+.picker-option-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.picker-option-button.disabled:hover {
+  background-color: transparent;
 }
 
 .picker-help-text {
@@ -124,7 +144,7 @@
   padding: 7px 0 0;
 }
 
-.picker-container.error .picker-select {
+.picker-container.error .picker-button-wrapper {
   border: 2px solid var(--color-error-red, #d7373f);
   background-color: var(--color-white, #fff);
 }
@@ -150,6 +170,7 @@
   flex-direction: column;
   gap: 0;
   width: 100%;
+  position: relative;
 }
 
 .picker-container.side .picker-wrapper {
@@ -157,78 +178,87 @@
   min-width: 64px;
 }
 
-.picker-container.quiet .picker-select {
+.picker-container.quiet .picker-button-wrapper {
   background-color: transparent;
   border-bottom: 1px solid #b6b6b6;
   border-radius: 0;
 }
 
-.picker-container.quiet .picker-select:hover {
+.picker-container.quiet .picker-button-wrapper:hover {
   background-color: transparent;
   border-bottom-color: #909090;
 }
 
-.picker-container.quiet .picker-select:focus {
+.picker-container.quiet .picker-button-wrapper:focus {
   border-bottom-color: #3B63FB;
   background-color: transparent;
 }
 
 /* Size variants */
-.picker-container.size-s .picker-select {
+.picker-container.size-s .picker-button-wrapper {
   height: 24px;
-  padding: 0 28px 0 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.picker-container.size-s .picker-current-value {
   font-size: 12px;
   line-height: 16px;
 }
 
-.picker-container.size-s .picker-input-wrapper::after {
-  right: 8px;
+.picker-container.size-s .picker-chevron {
   width: 8px;
   height: 8px;
 }
 
-.picker-container.size-l .picker-select {
+.picker-container.size-l .picker-button-wrapper {
   height: 40px;
-  padding: 0 36px 0 16px;
+  padding-left: 16px;
+  padding-right: 14px;
+}
+
+.picker-container.size-l .picker-current-value {
   font-size: 16px;
   line-height: 20px;
 }
 
-.picker-container.size-l .picker-input-wrapper::after {
-  right: 14px;
+.picker-container.size-l .picker-chevron {
   width: 12px;
   height: 12px;
 }
 
-.picker-container.size-xl .picker-select {
+.picker-container.size-xl .picker-button-wrapper {
   height: 48px;
-  padding: 0 40px 0 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.picker-container.size-xl .picker-current-value {
   font-size: 18px;
   line-height: 24px;
 }
 
-.picker-container.size-xl .picker-input-wrapper::after {
-  right: 16px;
+.picker-container.size-xl .picker-chevron {
   width: 14px;
   height: 14px;
 }
 
 /* Loading state */
-.picker-container.loading .picker-select {
+.picker-container.loading .picker-button-wrapper {
   opacity: 0.6;
   cursor: wait;
 }
 
-.picker-container.loading .picker-input-wrapper::after {
+.picker-container.loading .picker-chevron {
   animation: picker-spinner 0.6s linear infinite;
 }
 
 @keyframes picker-spinner {
   0% {
-    transform: translateY(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    transform: translateY(-50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 

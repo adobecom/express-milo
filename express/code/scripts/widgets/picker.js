@@ -62,6 +62,10 @@ export function createPicker({
 } = {}) {
   loadPickerStyles();
 
+  let currentValue = defaultValue || (options.length > 0 ? options[0].value : '');
+  let isOpen = false;
+  let focusedOptionIndex = -1;
+
   const container = createTag('div', { class: 'picker-container' });
 
   if (size && size !== 'm') {
@@ -83,40 +87,27 @@ export function createPicker({
     container.appendChild(labelEl);
   }
 
-  const inputWrapper = createTag('div', { class: 'picker-input-wrapper' });
-
-  const selectAttrs = {
-    class: 'picker-select',
-    name: name || id,
+  // Create button wrapper (what looks like the select)
+  const buttonWrapperAttrs = {
+    class: 'picker-button-wrapper',
     id,
+    role: 'button',
+    tabindex: disabled ? '-1' : '0',
+    'aria-haspopup': 'listbox',
+    'aria-expanded': 'false',
   };
 
-  if (disabled) selectAttrs.disabled = '';
-  if (ariaLabel) selectAttrs['aria-label'] = ariaLabel;
-  if (ariaDescribedBy) selectAttrs['aria-describedby'] = ariaDescribedBy;
-  if (required) selectAttrs.required = '';
+  if (ariaLabel) buttonWrapperAttrs['aria-label'] = ariaLabel;
+  if (ariaDescribedBy) buttonWrapperAttrs['aria-describedby'] = ariaDescribedBy;
 
-  const select = createTag('select', selectAttrs);
+  const buttonWrapper = createTag('div', buttonWrapperAttrs);
 
-  options.forEach(({ value, text, disabled: optionDisabled }) => {
-    const optionAttrs = {
-      class: 'picker-option',
-      value,
-    };
+  // Current selected value display
+  const currentValueSpan = createTag('span', { class: 'picker-current-value' });
+  const selectedOption = options.find((opt) => opt.value === currentValue);
+  currentValueSpan.textContent = selectedOption ? selectedOption.text : '';
 
-    if (value === defaultValue) optionAttrs.selected = '';
-    if (optionDisabled) optionAttrs.disabled = '';
-
-    const option = createTag('option', optionAttrs);
-    option.textContent = text;
-    select.appendChild(option);
-  });
-
-  if (onChange) {
-    select.addEventListener('change', (e) => onChange(e.target.value, e));
-  }
-
-  // Create chevron icon as an img element
+  // Chevron icon
   const chevron = createTag('img', {
     class: 'picker-chevron',
     src: '/express/code/icons/drop-down-arrow.svg',
@@ -124,14 +115,147 @@ export function createPicker({
     'aria-hidden': 'true',
   });
 
-  inputWrapper.appendChild(select);
-  inputWrapper.appendChild(chevron);
+  buttonWrapper.appendChild(currentValueSpan);
+  buttonWrapper.appendChild(chevron);
+
+  // Create options wrapper (the dropdown)
+  const optionsWrapper = createTag('div', {
+    class: 'picker-options-wrapper',
+    role: 'listbox',
+  });
+
+  // Create option buttons
+  const createOptionButtons = (opts) => {
+    optionsWrapper.innerHTML = '';
+    opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
+      const optionButton = createTag('div', {
+        class: `picker-option-button${value === currentValue ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
+        'data-value': value,
+        role: 'option',
+        'aria-selected': value === currentValue ? 'true' : 'false',
+      });
+      optionButton.textContent = text;
+
+      if (!optionDisabled) {
+        optionButton.addEventListener('click', () => {
+          if (currentValue !== value) {
+            currentValue = value;
+            currentValueSpan.textContent = text;
+
+            // Update active state
+            optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+              opt.classList.remove('active');
+              opt.setAttribute('aria-selected', 'false');
+            });
+            optionButton.classList.add('active');
+            optionButton.setAttribute('aria-selected', 'true');
+
+            // Call onChange callback
+            if (onChange) {
+              onChange(value, { target: { value } });
+            }
+          }
+          closeDropdown();
+        });
+      }
+
+      optionsWrapper.appendChild(optionButton);
+    });
+  };
+
+  createOptionButtons(options);
+
+  // Toggle dropdown
+  const toggleDropdown = () => {
+    if (disabled) return;
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  };
+
+  const openDropdown = () => {
+    if (disabled) return;
+    isOpen = true;
+    container.classList.add('opened');
+    buttonWrapper.setAttribute('aria-expanded', 'true');
+    focusedOptionIndex = -1;
+  };
+
+  const closeDropdown = () => {
+    isOpen = false;
+    container.classList.remove('opened');
+    buttonWrapper.setAttribute('aria-expanded', 'false');
+    focusedOptionIndex = -1;
+  };
+
+  // Click handler for button
+  buttonWrapper.addEventListener('click', toggleDropdown);
+
+  // Keyboard navigation
+  buttonWrapper.addEventListener('keydown', (e) => {
+    const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleDropdown();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      closeDropdown();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!isOpen) {
+        openDropdown();
+      } else {
+        focusedOptionIndex = Math.min(focusedOptionIndex + 1, opts.length - 1);
+        if (opts[focusedOptionIndex]) {
+          opts[focusedOptionIndex].click();
+        }
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (isOpen) {
+        focusedOptionIndex = Math.max(focusedOptionIndex - 1, 0);
+        if (opts[focusedOptionIndex]) {
+          opts[focusedOptionIndex].click();
+        }
+      }
+    } else if (e.key === 'Home' && isOpen) {
+      e.preventDefault();
+      focusedOptionIndex = 0;
+      if (opts[0]) opts[0].click();
+    } else if (e.key === 'End' && isOpen) {
+      e.preventDefault();
+      focusedOptionIndex = opts.length - 1;
+      if (opts[focusedOptionIndex]) {
+        opts[focusedOptionIndex].click();
+      }
+    }
+  });
+
+  // Click outside to close
+  const handleClickOutside = (e) => {
+    if (isOpen && !container.contains(e.target)) {
+      closeDropdown();
+    }
+  };
+  document.addEventListener('click', handleClickOutside);
+
+  // Hidden input for form submission
+  const hiddenInput = createTag('input', {
+    type: 'hidden',
+    name: name || id,
+    value: currentValue,
+  });
 
   const componentWrapper = labelPosition === 'side'
     ? createTag('div', { class: 'picker-wrapper' })
     : container;
 
-  componentWrapper.appendChild(inputWrapper);
+  componentWrapper.appendChild(buttonWrapper);
+  componentWrapper.appendChild(optionsWrapper);
+  componentWrapper.appendChild(hiddenInput);
 
   if (labelPosition === 'side') {
     container.appendChild(componentWrapper);
@@ -147,36 +271,55 @@ export function createPicker({
     componentWrapper.appendChild(helpTextEl);
 
     if (!ariaDescribedBy) {
-      select.setAttribute('aria-describedby', helpTextId);
+      buttonWrapper.setAttribute('aria-describedby', helpTextId);
     }
   }
 
+  // Public API methods
   container.setPicker = (value) => {
-    select.value = value;
-    select.dispatchEvent(new Event('change'));
+    const option = options.find((opt) => opt.value === value);
+    if (option) {
+      currentValue = value;
+      currentValueSpan.textContent = option.text;
+      hiddenInput.value = value;
+
+      // Update active state
+      optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
+        opt.classList.remove('active');
+        opt.setAttribute('aria-selected', 'false');
+        if (opt.getAttribute('data-value') === value) {
+          opt.classList.add('active');
+          opt.setAttribute('aria-selected', 'true');
+        }
+      });
+
+      if (onChange) {
+        onChange(value, { target: { value } });
+      }
+    }
   };
 
-  container.getPicker = () => select.value;
+  container.getPicker = () => currentValue;
 
   container.setOptions = (newOptions) => {
-    select.innerHTML = '';
-    newOptions.forEach(({ value, text, disabled: optionDisabled }) => {
-      const optionAttrs = {
-        class: 'picker-option',
-        value,
-      };
-      if (optionDisabled) optionAttrs.disabled = '';
-      const option = createTag('option', optionAttrs);
-      option.textContent = text;
-      select.appendChild(option);
-    });
+    options = newOptions;
+    createOptionButtons(newOptions);
+    if (!newOptions.find((opt) => opt.value === currentValue)) {
+      currentValue = newOptions[0]?.value || '';
+      currentValueSpan.textContent = newOptions[0]?.text || '';
+      hiddenInput.value = currentValue;
+    }
   };
 
   container.setDisabled = (isDisabled) => {
+    disabled = isDisabled;
     if (isDisabled) {
-      select.setAttribute('disabled', '');
+      buttonWrapper.setAttribute('tabindex', '-1');
+      container.classList.add('disabled');
+      closeDropdown();
     } else {
-      select.removeAttribute('disabled');
+      buttonWrapper.setAttribute('tabindex', '0');
+      container.classList.remove('disabled');
     }
   };
 
@@ -192,8 +335,8 @@ export function createPicker({
         id: helpTextId,
       });
       newHelpText.textContent = errorMessage;
-      container.appendChild(newHelpText);
-      select.setAttribute('aria-describedby', helpTextId);
+      componentWrapper.appendChild(newHelpText);
+      buttonWrapper.setAttribute('aria-describedby', helpTextId);
     }
   };
 
@@ -208,14 +351,23 @@ export function createPicker({
   container.setLoading = (isLoading) => {
     if (isLoading) {
       container.classList.add('loading');
-      select.setAttribute('disabled', '');
+      container.setDisabled(true);
     } else {
       container.classList.remove('loading');
       if (!disabled) {
-        select.removeAttribute('disabled');
+        container.setDisabled(false);
       }
     }
   };
+
+  // Cleanup on destroy
+  container.destroy = () => {
+    document.removeEventListener('click', handleClickOutside);
+  };
+
+  if (disabled) {
+    container.setDisabled(true);
+  }
 
   return container;
 }
