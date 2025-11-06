@@ -63,17 +63,10 @@
 }
 
 .picker-chevron {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding-right: 11px;
   flex-shrink: 0;
   width: 10px;
-  height: 32px;
-  background-image: url('/express/code/icons/chevron-down-black.svg');
-  background-size: 10px 10px;
-  background-repeat: no-repeat;
-  background-position: left center;
+  height: 6px;
   pointer-events: none;
 }
 

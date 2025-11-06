@@ -116,8 +116,13 @@ export function createPicker({
     select.addEventListener('change', (e) => onChange(e.target.value, e));
   }
 
-  // Create chevron icon as a real element
-  const chevron = createTag('span', { class: 'picker-chevron', 'aria-hidden': 'true' });
+  // Create chevron icon as an img element
+  const chevron = createTag('img', { 
+    class: 'picker-chevron icon icon-drop-down-arrow',
+    src: '/express/code/icons/drop-down-arrow.svg',
+    alt: '',
+    'aria-hidden': 'true'
+  });
 
   inputWrapper.appendChild(select);
   inputWrapper.appendChild(chevron);
