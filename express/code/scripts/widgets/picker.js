@@ -199,8 +199,10 @@ export function createPicker({
             }
           }
           closeDropdown();
-          // Return focus to picker button
-          buttonWrapper.focus();
+          // Return focus to picker button after any DOM updates from onChange
+          requestAnimationFrame(() => {
+            buttonWrapper.focus();
+          });
         });
       }
 
@@ -272,7 +274,9 @@ export function createPicker({
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeDropdown();
-      buttonWrapper.focus();
+      requestAnimationFrame(() => {
+        buttonWrapper.focus();
+      });
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (!isOpen) {
