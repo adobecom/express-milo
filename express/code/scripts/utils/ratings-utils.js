@@ -59,8 +59,12 @@ const waitForIms = (timeout = 1000) => new Promise((resolve) => {
   setTimeout(() => resolve(!!window.adobeIMS), timeout);
 });
 
-const getAndValidateImsToken = async (operation) => {
-  await waitForIms();
+export const getAndValidateImsToken = async (operation) => {
+  const imsAvailable = await waitForIms();
+  if (!imsAvailable) {
+    // IMS is not available - don't attempt to get token
+    return null;
+  }
   const token = await getImsToken(operation);
   return token;
 };
