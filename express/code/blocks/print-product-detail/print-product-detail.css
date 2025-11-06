@@ -35,8 +35,10 @@
   align-items: flex-start;
 }
 .pdpx-product-info-section-container {
-  display: contents;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
   .pdpx-product-info-section {
     width: 100%;
     order: 3;
@@ -913,8 +915,7 @@ main .section .pdpx-drawer-description {
     order: 2;
     flex: 1 1 auto;
     height: 90vh;
-    overflow-x: clip;
-    overflow-clip-margin: 150px;
+    overflow-x: visible;
     overflow-y: scroll;
     scrollbar-gutter: stable;
     padding-right: var(--spacing-400);

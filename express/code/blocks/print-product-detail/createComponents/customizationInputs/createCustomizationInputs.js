@@ -3,6 +3,7 @@ import updateAllDynamicElements from '../../utilities/event-handlers.js';
 import openDrawer from '../drawerContent/openDrawer.js';
 import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
 import createMiniPillOptionsSelector from './createMiniPillOptionsSelector.js';
+import { createPicker } from '../../../../scripts/widgets/picker.js';
 
 let createTag;
 
@@ -22,34 +23,41 @@ function createStandardSelector(
   }
   const selectedOption = defaultValue || customizationOptions[0].name;
   const productId = productDetails.id;
-  const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
-  const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label', for: `pdpx-standard-selector-${hiddenSelectInputName}` }, labelText);
-  standardSelectorContainer.appendChild(standardSelectorLabel);
-  const standardSelectorInputContainer = createTag('div', { class: 'pdpx-standard-selector-input-container' });
-  const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName, id: `pdpx-standard-selector-${hiddenSelectInputName}` });
-  for (let i = 0; i < customizationOptions.length; i += 1) {
-    const optionLabel = customizationOptions[i].title;
-    const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
-    standardSelectorInput.appendChild(standardOption);
-  }
-  standardSelectorInput.addEventListener('change', () => {
-    updateAllDynamicElements(productId);
+
+  const options = customizationOptions.map((option) => ({
+    value: option.name,
+    text: option.title,
+  }));
+
+  const pickerContainer = createPicker({
+    id: `pdpx-standard-selector-${hiddenSelectInputName}`,
+    name: hiddenSelectInputName,
+    label: labelText,
+    labelPosition: 'side',
+    options,
+    defaultValue: selectedOption,
+    onChange: () => {
+      updateAllDynamicElements(productId);
+    },
   });
-  standardSelectorInput.value = selectedOption;
-  standardSelectorInputContainer.appendChild(standardSelectorInput);
-  standardSelectorContainer.appendChild(standardSelectorInputContainer);
+
   let isTriBlend = false;
   if (productDetails.productType === 'zazzle_shirt') {
     isTriBlend = formDataObject.style === 'triblend_shortsleeve3413';
   }
   if (CTAText && isTriBlend) {
-    const standardSelectorCTA = createTag('button', { class: 'pdpx-standard-selector-cta', type: 'button' }, CTAText);
+    const wrapper = createTag('div', { class: 'picker-with-link' });
+    wrapper.appendChild(pickerContainer);
+    
+    const standardSelectorCTA = createTag('button', { class: 'picker-link', type: 'button' }, CTAText);
     standardSelectorCTA.addEventListener('click', async () => {
       await openDrawer(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, 'sizeChart');
     });
-    standardSelectorInputContainer.appendChild(standardSelectorCTA);
+    wrapper.appendChild(standardSelectorCTA);
+    
+    return wrapper;
   }
-  return standardSelectorContainer;
+  return pickerContainer;
 }
 
 function createPillOptionsSelector(
@@ -115,11 +123,14 @@ export async function createTShirtInputs(container, productDetails, formDataObje
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
+  
+  const pickerGroup = createTag('div', { class: 'picker-group' });
+  pickerGroup.append(quantitySelectorContainer, sizeSelectorContainer);
+  
   container.append(
     styleSelectorContainer,
     colorSelectorContainer,
-    quantitySelectorContainer,
-    sizeSelectorContainer,
+    pickerGroup,
   );
 }
 function createDefaultInputs(container) {
