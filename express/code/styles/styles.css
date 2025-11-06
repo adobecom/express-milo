@@ -101,6 +101,9 @@
   --heading-font-size-xs: 1.25rem;
   /* 20px */
 
+  --heading-font-size-ml : 2rem;
+ /* 32px */
+ 
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
