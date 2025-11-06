@@ -87,7 +87,6 @@ export function createPicker({
     container.appendChild(labelEl);
   }
 
-  // Create button wrapper (what looks like the select)
   const buttonWrapperAttrs = {
     class: 'picker-button-wrapper',
     id,
@@ -102,12 +101,10 @@ export function createPicker({
 
   const buttonWrapper = createTag('div', buttonWrapperAttrs);
 
-  // Current selected value display
   const currentValueSpan = createTag('span', { class: 'picker-current-value' });
   const selectedOption = options.find((opt) => String(opt.value) === String(currentValue));
   currentValueSpan.textContent = selectedOption ? selectedOption.text : '';
 
-  // Chevron icon
   const chevron = createTag('img', {
     class: 'picker-chevron',
     src: '/express/code/icons/drop-down-arrow.svg',
@@ -118,13 +115,11 @@ export function createPicker({
   buttonWrapper.appendChild(currentValueSpan);
   buttonWrapper.appendChild(chevron);
 
-  // Create options wrapper (the dropdown)
   const optionsWrapper = createTag('div', {
     class: 'picker-options-wrapper',
     role: 'listbox',
   });
 
-  // Create option buttons
   const createOptionButtons = (opts) => {
     optionsWrapper.innerHTML = '';
     opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
@@ -136,7 +131,6 @@ export function createPicker({
         'aria-selected': isActive ? 'true' : 'false',
       });
 
-      // Add checkmark icon for active option
       if (isActive) {
         const checkmark = createTag('img', {
           class: 'picker-option-checkmark',
@@ -147,7 +141,6 @@ export function createPicker({
         optionButton.appendChild(checkmark);
       }
 
-      // Add text content
       const textSpan = createTag('span', { class: 'picker-option-text' });
       textSpan.textContent = text;
       optionButton.appendChild(textSpan);
@@ -159,18 +152,15 @@ export function createPicker({
             currentValueSpan.textContent = text;
             hiddenInput.value = value;
 
-            // Update active state and checkmarks
             optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
               opt.classList.remove('active');
               opt.setAttribute('aria-selected', 'false');
-              // Remove checkmark
               const existingCheckmark = opt.querySelector('.picker-option-checkmark');
               if (existingCheckmark) {
                 existingCheckmark.remove();
               }
             });
 
-            // Add active class and checkmark to selected option
             optionButton.classList.add('active');
             optionButton.setAttribute('aria-selected', 'true');
             const checkmark = createTag('img', {
@@ -181,9 +171,9 @@ export function createPicker({
             });
             optionButton.insertBefore(checkmark, optionButton.firstChild);
 
-            // Call onChange callback
             if (onChange) {
-              // Set up observer to watch for new button being added to DOM
+              // Watch for new button after DOM re-creation to restore focus
+              const observer = new MutationObserver((mutations, obs) => {
               const observer = new MutationObserver((mutations, obs) => {
                 const newButton = document.getElementById(id);
                 if (newButton && newButton !== buttonWrapper) {
@@ -192,14 +182,8 @@ export function createPicker({
                 }
               });
 
-              observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-              });
-
+              observer.observe(document.body, { childList: true, subtree: true });
               onChange(value, { target: { value } });
-
-              // Fallback: disconnect observer after 2 seconds
               setTimeout(() => observer.disconnect(), 2000);
             }
           }
@@ -213,7 +197,6 @@ export function createPicker({
 
   createOptionButtons(options);
 
-  // Toggle dropdown
   const toggleDropdown = () => {
     if (disabled) return;
     if (isOpen) {
@@ -236,16 +219,13 @@ export function createPicker({
     container.classList.remove('opened');
     buttonWrapper.setAttribute('aria-expanded', 'false');
     focusedOptionIndex = -1;
-    // Remove focused class from all options
     optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
       opt.classList.remove('focused');
     });
   };
 
-  // Click handler for button
   buttonWrapper.addEventListener('click', toggleDropdown);
 
-  // Update focused option visually
   const updateFocusedOption = () => {
     const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
     opts.forEach((opt, idx) => {
@@ -258,24 +238,19 @@ export function createPicker({
     });
   };
 
-  // Keyboard navigation
   buttonWrapper.addEventListener('keydown', (e) => {
     const opts = [...optionsWrapper.querySelectorAll('.picker-option-button:not(.disabled)')];
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (isOpen && focusedOptionIndex >= 0) {
-        // Select the focused option
         opts[focusedOptionIndex]?.click();
-        // Focus will be returned by the click handler
       } else {
-        // Open dropdown
         toggleDropdown();
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeDropdown();
-      // Escape doesn't trigger onChange, so buttonWrapper should still be valid
       buttonWrapper.focus();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -302,15 +277,12 @@ export function createPicker({
       focusedOptionIndex = opts.length - 1;
       updateFocusedOption();
     } else if (e.key === 'Tab') {
-      // Allow tab to close and move to next element
       if (isOpen) {
         closeDropdown();
-        // Don't refocus on Tab - let it naturally move to next element
       }
     }
   });
 
-  // Click outside to close
   const handleClickOutside = (e) => {
     if (isOpen && !container.contains(e.target)) {
       closeDropdown();
@@ -318,7 +290,6 @@ export function createPicker({
   };
   document.addEventListener('click', handleClickOutside);
 
-  // Hidden input for form submission
   const hiddenInput = createTag('input', {
     type: 'hidden',
     name: name || id,
@@ -351,7 +322,6 @@ export function createPicker({
     }
   }
 
-  // Public API methods
   container.setPicker = (value) => {
     const option = options.find((opt) => String(opt.value) === String(value));
     if (option) {
@@ -359,11 +329,9 @@ export function createPicker({
       currentValueSpan.textContent = option.text;
       hiddenInput.value = value;
 
-      // Update active state and checkmarks
       optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
         opt.classList.remove('active');
         opt.setAttribute('aria-selected', 'false');
-        // Remove existing checkmark
         const existingCheckmark = opt.querySelector('.picker-option-checkmark');
         if (existingCheckmark) {
           existingCheckmark.remove();
@@ -372,7 +340,6 @@ export function createPicker({
         if (String(opt.getAttribute('data-value')) === String(value)) {
           opt.classList.add('active');
           opt.setAttribute('aria-selected', 'true');
-          // Add checkmark to active option
           const checkmark = createTag('img', {
             class: 'picker-option-checkmark',
             src: '/express/code/icons/checkmark.svg',
@@ -450,7 +417,6 @@ export function createPicker({
     }
   };
 
-  // Cleanup on destroy
   container.destroy = () => {
     document.removeEventListener('click', handleClickOutside);
   };
