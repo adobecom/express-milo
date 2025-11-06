@@ -39,8 +39,9 @@ const getImsToken = async (operation) => {
   try {
     const token = window.adobeIMS.getAccessToken()?.token;
     if (!token) {
-      console.log('token is missing', operation);
-      // throw new Error(`Cannot something ${operation} token is missing`);
+      window.lana?.log(
+        `RnR Express: Cannot ${operation} because token is missing`,
+      );
     }
     return token;
   } catch (error) {
