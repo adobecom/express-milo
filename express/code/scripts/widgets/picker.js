@@ -200,9 +200,13 @@ export function createPicker({
           }
           closeDropdown();
           // Return focus to picker button after any DOM updates from onChange
-          requestAnimationFrame(() => {
-            buttonWrapper.focus();
-          });
+          // Use setTimeout to wait for DOM re-creation and find the new button by ID
+          setTimeout(() => {
+            const newButton = document.getElementById(id);
+            if (newButton) {
+              newButton.focus();
+            }
+          }, 100);
         });
       }
 
@@ -274,9 +278,8 @@ export function createPicker({
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeDropdown();
-      requestAnimationFrame(() => {
-        buttonWrapper.focus();
-      });
+      // Escape doesn't trigger onChange, so buttonWrapper should still be valid
+      buttonWrapper.focus();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (!isOpen) {
