@@ -929,7 +929,7 @@ main .section .pdpx-drawer-description {
   }
   .pdpx-product-images-container,
   .pdpx-product-info-section-container {
-    width: calc(50% - 12px);
+    width: calc(50% - 8px);
   }
   .pdpx-checkout-button-subhead {
     display: flex;
