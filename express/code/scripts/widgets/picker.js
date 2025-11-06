@@ -117,11 +117,11 @@ export function createPicker({
   }
 
   // Create chevron icon as an img element
-  const chevron = createTag('img', { 
+  const chevron = createTag('img', {
     class: 'picker-chevron',
     src: '/express/code/icons/drop-down-arrow.svg',
     alt: '',
-    'aria-hidden': 'true'
+    'aria-hidden': 'true',
   });
 
   inputWrapper.appendChild(select);
@@ -261,4 +261,3 @@ export default function decorate(block) {
   block.innerHTML = '';
   block.appendChild(picker);
 }
-

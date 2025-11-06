@@ -48,13 +48,13 @@ function createStandardSelector(
   if (CTAText && isTriBlend) {
     const wrapper = createTag('div', { class: 'picker-with-link' });
     wrapper.appendChild(pickerContainer);
-    
+
     const standardSelectorCTA = createTag('button', { class: 'picker-link', type: 'button' }, CTAText);
     standardSelectorCTA.addEventListener('click', async () => {
       await openDrawer(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, 'sizeChart');
     });
     wrapper.appendChild(standardSelectorCTA);
-    
+
     return wrapper;
   }
   return pickerContainer;
@@ -123,10 +123,10 @@ export async function createTShirtInputs(container, productDetails, formDataObje
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
-  
+
   const pickerGroup = createTag('div', { class: 'picker-group' });
   pickerGroup.append(quantitySelectorContainer, sizeSelectorContainer);
-  
+
   container.append(
     styleSelectorContainer,
     colorSelectorContainer,
