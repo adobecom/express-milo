@@ -66,9 +66,6 @@ export function createPicker({
   let isOpen = false;
   let focusedOptionIndex = -1;
 
-  // eslint-disable-next-line no-console
-  console.log('Picker initialized:', { defaultValue, currentValue, options });
-
   const container = createTag('div', { class: 'picker-container' });
 
   if (size && size !== 'm') {
@@ -110,9 +107,6 @@ export function createPicker({
   const selectedOption = options.find((opt) => String(opt.value) === String(currentValue));
   currentValueSpan.textContent = selectedOption ? selectedOption.text : '';
 
-  // eslint-disable-next-line no-console
-  console.log('Selected option:', { currentValue, selectedOption, displayText: currentValueSpan.textContent });
-
   // Chevron icon
   const chevron = createTag('img', {
     class: 'picker-chevron',
@@ -142,9 +136,6 @@ export function createPicker({
         'aria-selected': isActive ? 'true' : 'false',
       });
 
-      // eslint-disable-next-line no-console
-      console.log('Creating option:', { value, text, currentValue, isActive });
-
       // Add checkmark icon for active option
       if (isActive) {
         const checkmark = createTag('img', {
@@ -167,9 +158,6 @@ export function createPicker({
             currentValue = value;
             currentValueSpan.textContent = text;
             hiddenInput.value = value;
-
-            // eslint-disable-next-line no-console
-            console.log('Option clicked:', { value, text, newCurrentValue: currentValue });
 
             // Update active state and checkmarks
             optionsWrapper.querySelectorAll('.picker-option-button').forEach((opt) => {
