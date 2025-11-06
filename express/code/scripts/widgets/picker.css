@@ -70,7 +70,7 @@
   flex-shrink: 0;
   width: 10px;
   height: 10px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='none'%3E%3Cpath d='M3.75 2.5L6.25 5L3.75 7.5' stroke='%23292929' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url('/express/code/icons/chevron.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
