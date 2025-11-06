@@ -22,17 +22,22 @@
 }
 
 .picker-input-wrapper {
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   width: 100%;
+  background-color: #e1e1e1;
+  border-radius: 8px;
+  transition: background-color 130ms ease-in-out;
 }
 
 .picker-select {
-  width: 100%;
+  flex: 1;
   height: 32px;
-  padding: 0 32px 0 12px;
-  background-color: #e1e1e1;
+  padding-left: 12px;
+  background-color: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: 8px 0 0 8px;
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 400;
@@ -49,7 +54,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  transition: background-color 130ms ease-in-out;
+  min-width: 0;
 }
 
 /* Remove dropdown arrow in IE */
@@ -57,38 +62,46 @@
   display: none;
 }
 
-.picker-input-wrapper::after {
-  content: '';
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
+.picker-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 11px;
+  flex-shrink: 0;
   width: 10px;
   height: 10px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10' fill='none'%3E%3Cpath d='M3.75 2.5L6.25 5L3.75 7.5' stroke='%23292929' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
+  transform: rotate(90deg);
   pointer-events: none;
   transition: transform 130ms ease-in-out;
 }
 
-.picker-select:hover {
+.picker-input-wrapper:hover {
   background-color: #d0d0d0;
 }
 
 .picker-select:focus {
   outline: 2px solid #3B63FB;
   outline-offset: 2px;
+}
+
+.picker-input-wrapper:has(.picker-select:focus) {
   background-color: #e1e1e1;
 }
 
 .picker-select:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  background-color: #e1e1e1;
 }
 
-.picker-input-wrapper .picker-select:disabled ~ ::after {
+.picker-input-wrapper:has(.picker-select:disabled) {
+  opacity: 0.4;
+}
+
+.picker-input-wrapper:has(.picker-select:disabled) .picker-chevron {
   opacity: 0.4;
 }
 

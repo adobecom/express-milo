@@ -116,7 +116,11 @@ export function createPicker({
     select.addEventListener('change', (e) => onChange(e.target.value, e));
   }
 
+  // Create chevron icon as a real element
+  const chevron = createTag('span', { class: 'picker-chevron', 'aria-hidden': 'true' });
+
   inputWrapper.appendChild(select);
+  inputWrapper.appendChild(chevron);
 
   const componentWrapper = labelPosition === 'side'
     ? createTag('div', { class: 'picker-wrapper' })
