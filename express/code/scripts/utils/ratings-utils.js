@@ -51,13 +51,42 @@ const getImsToken = async (operation) => {
   }
 };
 
-const waitForIms = (timeout = 1000) => new Promise((resolve) => {
-  if (window.adobeIMS) {
-    resolve(true);
-    return;
-  }
-  setTimeout(() => resolve(!!window.adobeIMS), timeout);
-});
+let imsReady = false;
+let existingImsCall = null;
+
+const waitForIms = (timeout = 3000) => {
+  existingImsCall = existingImsCall || new Promise((resolve, reject) => {
+    // If already ready, resolve immediately
+    if (imsReady && window.adobeIMS) {
+      resolve(true);
+      return;
+    }
+
+    const onFail = () => {
+      if (!imsReady) reject(new Error('IMS not ready within timeout'));
+    };
+
+    const waitTimeout = setTimeout(onFail, timeout);
+
+    const onSuccess = (data) => {
+      const instance = data?.detail?.instance;
+      if (!instance) {
+        reject(new Error('Invalid IMS instance'));
+        return;
+      }
+
+      imsReady = true;
+      window.removeEventListener('onImsLibInstance', onSuccess);
+      clearTimeout(waitTimeout);
+      resolve(true);
+    };
+
+    window.addEventListener('onImsLibInstance', onSuccess);
+    window.dispatchEvent(new window.CustomEvent('getImsLibInstance'));
+  });
+
+  return existingImsCall;
+};
 
 export const getAndValidateImsToken = async (operation) => {
   const imsAvailable = await waitForIms();
