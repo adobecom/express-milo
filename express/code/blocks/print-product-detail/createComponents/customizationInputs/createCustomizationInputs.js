@@ -45,7 +45,7 @@ function createStandardSelector(
   if (CTAText && isTriBlend) {
     const standardSelectorCTA = createTag('button', { class: 'pdpx-standard-selector-cta', type: 'button' }, CTAText);
     standardSelectorCTA.addEventListener('click', async () => {
-      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTAText, productDetails, defaultValue, 'sizeChart');
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, 'sizeChart');
     });
     standardSelectorInputContainer.appendChild(standardSelectorCTA);
   }

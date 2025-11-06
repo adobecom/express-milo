@@ -105,6 +105,10 @@
   --block-wd-max-width: 1440px;
 
   /* Spacing */
+  --spacing-0: 0px;
+  --spacing-50: 2px;
+  --spacing-75: 4px;
+  --spacing-80: 6px;
   --spacing-100: 8px;
   --spacing-200: 12px;
   --spacing-300: 16px;

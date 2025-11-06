@@ -90,7 +90,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
         customizationOptions,
         labelText,
         hiddenSelectInputName,
-        CTALinkText,
         productDetails,
         defaultValue,
         drawerType,
