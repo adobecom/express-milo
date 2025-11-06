@@ -24,6 +24,8 @@ import {
   EXPERIMENTAL_VARIANTS_PROMOID_MAP,
 } from '../../scripts/utils/frictionless-utils.js';
 
+import { EasyUploadVariants, EasyUploadVariantsPromoidMap } from '../../scripts/utils/easy-upload-utils.js';
+
 let createTag;
 let getConfig;
 let getMetadata;
@@ -87,8 +89,37 @@ function showErrorToast(block, msg) {
   timeoutId = setTimeout(hideToast, 6000);
 }
 
+function easyUploadExperiment(quickActionId, docConfig, appConfig, exportConfig, contConfig, fromQrCode = false) {
+  appConfig.metaData.variant = quickActionId;
+  appConfig.metaData.promoid = EasyUploadVariantsPromoidMap[variant];
+  appConfig.metaData.mv = 'other';
+  appConfig.metaData.entryPoint = fromQrCode ? 'seo-quickaction-qr-code' : 'seo-quickaction-image-upload';
+  switch (variant) {
+    case EasyUploadVariants.removeBackgroundEasyUploadVariant:
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadVariants.resizeImageEasyUploadVariant:
+      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadVariants.cropImageEasyUploadVariant:
+      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.removeBackgroundEasyUploadControl:
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.resizeImageEasyUploadControl:
+      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.cropImageEasyUploadControl:
+      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    default:
+      break;
+  }
+}
+
 // eslint-disable-next-line default-param-last
-export function runQuickAction(quickActionId, data, block) {
+export function runQuickAction(quickActionId, data, block, fromQrCode = false) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
   const exportConfig = createDefaultExportConfig();
 
@@ -164,6 +195,19 @@ export function runQuickAction(quickActionId, data, block) {
     return;
   }
 
+  if (isEasyUploadExperimentEnabled(quickActionId) || isEasyUploadControlExperimentEnabled(quickActionId)) {
+    easyUploadExperiment(
+      quickActionId,
+      docConfig,
+      appConfig,
+      exportConfig,
+      contConfig,
+      fromQrCode
+    );
+    return;
+  }
+
+
   // Execute the quick action using the helper function
   executeQuickAction(
     ccEverywhere,
@@ -177,11 +221,11 @@ export function runQuickAction(quickActionId, data, block) {
 }
 
 // eslint-disable-next-line default-param-last
-async function startSDK(data = [''], quickAction, block) {
+async function startSDK(data = [''], quickAction, block, fromQrCode = false) {
   if (!ccEverywhere) {
     ccEverywhere = await loadAndInitializeCCEverywhere(getConfig);
   }
-  runQuickAction(quickAction, data, block);
+  runQuickAction(quickAction, data, block, fromQrCode);
 }
 
 function resetUploadUI() {
@@ -491,7 +535,7 @@ async function performUploadAction(files, block, quickAction) {
   window.location.href = url.toString();
 }
 
-async function startSDKWithUnconvertedFiles(files, quickAction, block) {
+async function startSDKWithUnconvertedFiles(files, quickAction, block, fromQrCode = false) {
   let data = await processFilesForQuickAction(files, quickAction);
   if (!data[0]) {
     const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
@@ -516,7 +560,7 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     return;
   }
 
-  startSDK(data, quickAction, block);
+  startSDK(data, quickAction, block, fromQrCode);
 }
 
 function createCaptionLocaleDropdown() {
@@ -550,7 +594,8 @@ export default async function decorate(block) {
     (r) => r.children
       && r.children[0].textContent.toLowerCase().trim() === 'quick-action',
   );
-  const quickAction = quickActionRow?.[0].children[1]?.textContent;
+
+  let quickAction = quickActionRow?.[0].children[1]?.textContent;
   if (!quickAction) {
     throw new Error('Invalid Quick Action Type.');
   }
@@ -567,6 +612,7 @@ export default async function decorate(block) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
+  quickAction = urlVariant || quickAction;
   if (variant === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1
     || variant === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
     const isStage = urlParams.get('hzenv') === 'stage';
@@ -739,6 +785,21 @@ export default async function decorate(block) {
 }
 
 function isEasyUploadExperimentEnabled(quickAction) {
-  const enabledQuickActions = ['remove-background', 'resize-image', 'crop-image'];
-  return enabledQuickActions.includes(quickAction);
+  let isEnabled = false;
+  Object.values(EasyUploadVariants).forEach(variant => {
+    if (variant === quickAction) {
+      isEnabled = true;
+    }
+  });
+  return isEnabled;
+}
+
+function isEasyUploadControlExperimentEnabled(quickAction) {
+  let isEnabled = false;
+  Object.values(EasyUploadControls).forEach(control => {
+    if (control === quickAction) {
+      isEnabled = true;
+    }
+  });
+  return isEnabled;
 }

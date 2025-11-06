@@ -1,4 +1,25 @@
 // Constants
+
+export const EasyUploadVariants = {
+    removeBackgroundEasyUploadVariant: 'remove-background-easy-upload-variant',
+    resizeImageEasyUploadVariant: 'resize-image-easy-upload-variant',
+    cropImageEasyUploadVariant: 'crop-image-easy-upload-variant'
+}
+export const EasyUploadControls = {
+    removeBackgroundEasyUploadControl: 'remove-background-easy-upload-control',
+    resizeImageEasyUploadControl: 'resize-image-easy-upload-control',
+    cropImageEasyUploadControl: 'crop-image-easy-upload-control'
+}
+
+export const EasyUploadVariantsPromoidMap = {
+    [EasyUploadVariants.removeBackgroundEasyUploadVariant]: '<To be added>',
+    [EasyUploadVariants.resizeImageEasyUploadVariant]: '<To be added>',
+    [EasyUploadVariants.cropImageEasyUploadVariant]: '<To be added>',
+    [EasyUploadControls.removeBackgroundEasyUploadControl]: '<To be added>',
+    [EasyUploadControls.resizeImageEasyUploadControl]: '<To be added>',
+    [EasyUploadControls.cropImageEasyUploadControl]: '<To be added>',
+}
+
 const QR_CODE_CDN_URL = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
 
 // URL Shortener Service Configuration
@@ -570,7 +591,7 @@ export class EasyUpload {
 
             if (file) {
                 // Process the file (trigger the standard upload flow)
-                await this.startSDKWithUnconvertedFiles([file], this.quickAction, this.block);
+                await this.startSDKWithUnconvertedFiles([file], this.quickAction, this.block, true);
             } else {
                 console.warn('No file was uploaded');
                 // Note: showErrorToast is not imported, would need to be added

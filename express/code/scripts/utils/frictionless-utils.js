@@ -107,6 +107,12 @@ export const QA_CONFIGS = {
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'edit-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'edit-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
+  'remove-background-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'resize-image-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
+  'crop-image-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'remove-background-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'resize-image-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
+  'crop-image-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
 };
 
 // Experimental variants
@@ -121,8 +127,7 @@ export const EXPERIMENTAL_VARIANTS_PROMOID_MAP = {
   'qa-in-product-variant1': '98SH4CD4',
   'qa-in-product-variant2': '9DJJ47N3',
   'qa-nba': '9J8K43X2',
-  'qa-in-product-control': '91BF4LV6',
-  'qa-easy-upload': '<To be added>',
+  'qa-in-product-control': '91BF4LV6'
 };
 
 // Quick actions allowed in frictionless upload feature
