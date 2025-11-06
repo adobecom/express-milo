@@ -289,7 +289,6 @@
 /* Desktop: increase label width for more space */
 @media (min-width: 768px) {
   .picker-container.side .picker-label {
-    width: 120px;
     max-width: 120px;
   }
 
