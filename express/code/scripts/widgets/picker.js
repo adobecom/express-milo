@@ -118,7 +118,7 @@ export function createPicker({
 
   // Create chevron icon as an img element
   const chevron = createTag('img', { 
-    class: 'picker-chevron icon icon-drop-down-arrow',
+    class: 'picker-chevron',
     src: '/express/code/icons/drop-down-arrow.svg',
     alt: '',
     'aria-hidden': 'true'
