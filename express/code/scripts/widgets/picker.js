@@ -174,7 +174,6 @@ export function createPicker({
             if (onChange) {
               // Watch for new button after DOM re-creation to restore focus
               const observer = new MutationObserver((mutations, obs) => {
-              const observer = new MutationObserver((mutations, obs) => {
                 const newButton = document.getElementById(id);
                 if (newButton && newButton !== buttonWrapper) {
                   newButton.focus();
