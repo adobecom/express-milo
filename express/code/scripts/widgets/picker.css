@@ -142,6 +142,7 @@
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(36%) sepia(97%) saturate(3234%) hue-rotate(231deg) brightness(99%) contrast(93%);
 }
 
 .picker-option-text {
