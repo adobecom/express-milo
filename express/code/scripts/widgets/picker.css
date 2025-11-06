@@ -81,7 +81,8 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  width: 100%;
+  min-width: 200px;
+  width: max-content;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12),
@@ -113,8 +114,6 @@
   user-select: none;
   text-align: left;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -146,10 +145,6 @@
 }
 
 .picker-option-text {
-  flex: 1 1 0;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
