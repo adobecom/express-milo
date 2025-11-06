@@ -81,7 +81,7 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  width: max-content;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12),
@@ -344,6 +344,10 @@
 
   .picker-with-link {
     max-width: 400px;
+  }
+
+  .picker-options-wrapper {
+    width: max-content;
   }
 }
 
