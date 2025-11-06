@@ -292,5 +292,17 @@
     width: 120px;
     max-width: 120px;
   }
+
+  .picker-container.side .picker-wrapper {
+    max-width: 280px;
+  }
+
+  .picker-group {
+    max-width: 400px;
+  }
+
+  .picker-with-link {
+    max-width: 400px;
+  }
 }
 
