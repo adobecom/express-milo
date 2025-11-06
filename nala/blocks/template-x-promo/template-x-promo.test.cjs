@@ -84,6 +84,28 @@ test.describe('Template X Promo block tests', () => {
       if (globalTemplateCount > 0) {
         // Test hover interactions on templates
         const firstTemplate = templateXPromo.page.locator('.template').first();
+        // Wait for template to be in DOM (not necessarily visible due to lazy loading)
+        await firstTemplate.waitFor({ state: 'attached', timeout: 10000 });
+
+        // Scroll template into view to trigger lazy loading BEFORE checking visibility
+        await firstTemplate.scrollIntoViewIfNeeded();
+        await templateXPromo.page.waitForTimeout(1000);
+
+        // Wait for template images to load (fixes lazy-load visibility issue)
+        await templateXPromo.page.waitForLoadState('networkidle');
+        try {
+          await templateXPromo.page.waitForFunction(() => {
+            const template = document.querySelector('.template');
+            const img = template?.querySelector('img');
+            return img && img.complete && img.naturalHeight > 0;
+          }, { timeout: 15000 });
+          console.log('✅ Template image loaded successfully');
+        } catch (e) {
+          console.log('⚠️ Image load check timed out - proceeding with test (lazy-load behavior)');
+        }
+
+        // Now wait for template to be visible (after lazy load triggered)
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
         await firstTemplate.hover();
         console.log('✅ Template hover interaction tested');
 
@@ -256,6 +278,14 @@ test.describe('Template X Promo block tests', () => {
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
 
+        // Ensure template is in DOM and scroll into view to trigger lazy loading
+        await firstTemplate.waitFor({ state: 'attached', timeout: 10000 });
+        await firstTemplate.scrollIntoViewIfNeeded();
+        await templateXPromo.page.waitForTimeout(1000);
+
+        // Now wait for visibility after lazy load triggered
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
+
         // Hover to show the button-container with cta-link
         await firstTemplate.hover();
         await templateXPromo.page.waitForTimeout(500);
@@ -303,6 +333,15 @@ test.describe('Template X Promo block tests', () => {
 
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
+
+        // Ensure template is in DOM and scroll into view to trigger lazy loading
+        await firstTemplate.waitFor({ state: 'attached', timeout: 10000 });
+        await firstTemplate.scrollIntoViewIfNeeded();
+        await templateXPromo.page.waitForTimeout(1000);
+
+        // Now wait for visibility after lazy load triggered
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
+
         const ctaLink = firstTemplate.locator('.cta-link');
         const href = await ctaLink.getAttribute('href');
 
@@ -345,6 +384,14 @@ test.describe('Template X Promo block tests', () => {
 
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
+
+        // Ensure template is in DOM and scroll into view to trigger lazy loading
+        await firstTemplate.waitFor({ state: 'attached', timeout: 10000 });
+        await firstTemplate.scrollIntoViewIfNeeded();
+        await templateXPromo.page.waitForTimeout(1000);
+
+        // Now wait for visibility after lazy load triggered
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
 
         // Hover to show button container
         await firstTemplate.hover();
