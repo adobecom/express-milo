@@ -175,7 +175,6 @@ export class EasyUpload {
 
         // Upload state
         this.confirmButton = null;
-        this.isUploadFinalizing = false;
 
         // ACP Storage state
         this.asset = null;
@@ -560,11 +559,7 @@ export class EasyUpload {
         }
 
         // Disable confirm import button
-        if (this.confirmButton) {
-            this.confirmButton.classList.add('disabled');
-            this.confirmButton.setAttribute('aria-disabled', 'true');
-            this.confirmButton.style.pointerEvents = 'none';
-        }
+        this.updateConfirmButtonState(true);
     }
 
     /**
@@ -581,11 +576,7 @@ export class EasyUpload {
         }
 
         // Enable confirm import button
-        if (this.confirmButton) {
-            this.confirmButton.classList.remove('disabled');
-            this.confirmButton.removeAttribute('aria-disabled');
-            this.confirmButton.style.pointerEvents = 'auto';
-        }
+        this.updateConfirmButtonState(false);
     }
 
     /**
@@ -613,11 +604,7 @@ export class EasyUpload {
         }
 
         // Keep confirm button disabled in failed state
-        if (this.confirmButton) {
-            this.confirmButton.classList.add('disabled');
-            this.confirmButton.setAttribute('aria-disabled', 'true');
-            this.confirmButton.style.pointerEvents = 'none';
-        }
+        this.updateConfirmButtonState(true);
     }
 
     /**
@@ -727,9 +714,6 @@ export class EasyUpload {
      * @returns {Promise<void>}
      */
     async handleConfirmImport() {
-        if (this.isUploadFinalizing) return;
-
-        this.isUploadFinalizing = true;
         this.updateConfirmButtonState(true);
 
         try {
@@ -743,7 +727,6 @@ export class EasyUpload {
             console.error('Failed to finalize upload:', error);
             // Re-enable button to allow retry on error
             this.updateConfirmButtonState(false);
-            this.isUploadFinalizing = false;
             return;
         }
         try {
@@ -761,10 +744,6 @@ export class EasyUpload {
             console.error('Failed to confirm import:', error);
             // Re-enable button to allow retry on error
             this.refreshQRCode();
-            // Note: showErrorToast is not imported, would need to be added
-            // showErrorToast(this.block, 'Failed to import file. Please try again.');
-        } finally {
-            this.isUploadFinalizing = false;
         }
     }
 
