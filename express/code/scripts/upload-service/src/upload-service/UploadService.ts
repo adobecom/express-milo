@@ -577,7 +577,7 @@ export class UploadService {
       }
       return createAssetResult?.result?.result;
     } catch (error) {
-      this.logService?.log("Failed to create temporary guest asset", {
+      this.logService?.log("LOG_UPLOAD_START", "createAsset", "Failed to create temporary guest asset", {
         documentPath: path,
         error: error instanceof Error ? error.message : String(error)
       });
@@ -596,7 +596,7 @@ export class UploadService {
         const error = new Error(
           `Get Versions failed: ${versions.response.statusCode} ${versions.response.message}`
         );
-        this.logService?.log("Failed to get asset versions", {
+        this.logService?.log("LOG_UPLOAD_ERROR", "getAssetVersion", "Failed to get asset versions", {
           assetId: asset.assetId,
           statusCode: versions.response.statusCode,
           message: versions.response.message
@@ -609,7 +609,7 @@ export class UploadService {
       }
 
       const latestVersion = versions.result.versions[versions.result.versions.length - 1]["version"];
-      this.logService?.log("Retrieved asset version", {
+      this.logService?.log("LOG_UPLOAD_RESPONSE", "getAssetVersion", "Retrieved asset version", {
         assetId: asset.assetId,
         version: latestVersion,
         totalVersions: versions.result.versions.length
@@ -617,7 +617,7 @@ export class UploadService {
 
       return latestVersion;
     } catch (error) {
-      this.logService?.log("Error getting asset versions", {
+      this.logService?.log("LOG_UPLOAD_ERROR", "getAssetVersion", "Error getting asset versions", {
         assetId: asset.assetId,
         error: error instanceof Error ? error.message : String(error)
       });
@@ -631,8 +631,6 @@ export class UploadService {
    * @returns Promise resolving to the asset content
    */
   async downloadAssetContent(asset: AdobeAsset): Promise<Blob> {
-    this.logService?.log("Downloading asset content", { assetId: asset.assetId });
-
     try {
       const downloadResponse = await this.session.blockDownloadAsset(asset);
 
@@ -642,14 +640,14 @@ export class UploadService {
       this._validateDownloadedContent(blob);
 
 
-      this.logService?.log("Asset content downloaded successfully", {
+      this.logService?.log("LOG_UPLOAD_STATUS", "downloadAssetContent", "Asset content downloaded successfully", {
         assetId: asset.assetId,
         blobSize: blob.size
       });
 
       return blob;
     } catch (error) {
-      this.logService?.log("Failed to download asset content", {
+      this.logService?.log("LOG_UPLOAD_ERROR", "downloadAssetContent", "Failed to download asset content", {
         assetId: asset.assetId,
         error: error instanceof Error ? error.message : String(error)
       });
@@ -690,7 +688,7 @@ export class UploadService {
     try {
       await this.session.deleteAsset({ repositoryId, assetId } as PathOrIdAssetDesignator);
     } catch (error) {
-      this.logService?.log("Failed to delete asset", {
+      this.logService?.log("LOG_UPLOAD_ERROR", "deleteAsset", "Failed to delete asset", {
         assetId: assetId,
         error: error instanceof Error ? error.message : String(error)
       });
@@ -737,13 +735,13 @@ export class UploadService {
 
       const uploadAsset = await response.response
 
-      this.logService?.log('Block upload initialized successfully', {
+      this.logService?.log('LOG_UPLOAD_START', 'initializeBlockUpload', 'Block upload initialized successfully', {
         hasLinks: !!uploadAsset._links,
       });
 
       return uploadAsset;
     } catch (error) {
-      this.logService?.log('Failed to initialize block upload:', error);
+      this.logService?.log('LOG_UPLOAD_ERROR', 'initializeBlockUpload', 'Failed to initialize block upload:', error);
       throw error;
     }
   }
@@ -752,8 +750,6 @@ export class UploadService {
    * Finalize the upload
    */
   async finalizeUpload(asset: ACPTransferDocumentWithLinks) {
-    this.logService?.log('Finalizing upload');
-
     try {
       const finalizeUrl = this.getLinkHref(asset._links, LinkRelation.BLOCK_FINALIZE);
       if (!finalizeUrl) {
@@ -771,9 +767,9 @@ export class UploadService {
         throw new Error(`Block upload finalization failed: ${response.statusCode} ${response.message}. ${response.response}`);
       }
 
-      this.logService?.log('Upload finalized successfully');
+      this.logService?.log('LOG_UPLOAD_STATUS', 'finalizeUpload', 'Upload finalized successfully');
     } catch (error) {
-      this.logService?.log('Failed to finalize upload:', error);
+      this.logService?.log('LOG_UPLOAD_ERROR', 'finalizeUpload', 'Failed to finalize upload:', error);
       throw error;
     }
   }

@@ -88,8 +88,8 @@ const LINK_REL = {
 
 // QR Code Configuration Constants
 const QR_CODE_CONFIG = {
-    REFRESH_INTERVAL: 6000, // 30 minutes
-    GENERATION_TIMEOUT: 10000, // 10 seconds timeout for QR code generation
+    REFRESH_INTERVAL: 30 * 1000 * 60, // 30 minutes
+    GENERATION_TIMEOUT: 10 * 1000, // 10 seconds timeout for QR code generation
     DISPLAY_CONFIG: {
         width: 200,
         height: 200,
@@ -739,25 +739,32 @@ export class EasyUpload {
 
             // Finalize the upload first
             await this.finalizeUpload();
-
+        } catch (error) {
+            console.error('Failed to finalize upload:', error);
+            // Re-enable button to allow retry on error
+            this.updateConfirmButtonState(false);
+            this.isUploadFinalizing = false;
+            return;
+        }
+        try {
             // Retrieve the uploaded file
             const file = await this.retrieveUploadedFile();
 
             if (file) {
                 // Process the file (trigger the standard upload flow)
                 await this.startSDKWithUnconvertedFiles([file], this.quickAction, this.block, true);
+                // Keep button disabled on success (operation complete)
             } else {
-                console.warn('No file was uploaded');
-                // Note: showErrorToast is not imported, would need to be added
-                // showErrorToast(this.block, 'No file detected. Please upload a file from your mobile device.');
+                throw new Error('No file was uploaded');
             }
         } catch (error) {
             console.error('Failed to confirm import:', error);
+            // Re-enable button to allow retry on error
+            this.refreshQRCode();
             // Note: showErrorToast is not imported, would need to be added
             // showErrorToast(this.block, 'Failed to import file. Please try again.');
         } finally {
             this.isUploadFinalizing = false;
-            this.updateConfirmButtonState(false);
         }
     }
 
@@ -770,9 +777,11 @@ export class EasyUpload {
             if (disabled) {
                 this.confirmButton.classList.add('disabled');
                 this.confirmButton.setAttribute('aria-disabled', 'true');
+                this.confirmButton.style.pointerEvents = 'none';
             } else {
                 this.confirmButton.classList.remove('disabled');
                 this.confirmButton.removeAttribute('aria-disabled');
+                this.confirmButton.style.pointerEvents = 'auto';
             }
         }
     }
