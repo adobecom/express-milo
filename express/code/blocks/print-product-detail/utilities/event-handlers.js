@@ -68,14 +68,14 @@ async function updateCheckoutButton(productDetails, formDataObject) {
 }
 
 async function updateDrawerContent(productDetails, formDataObject) {
-  const drawer = document.querySelector('.drawer');
+  const drawer = document.querySelector('#pdpx-drawer');
   if (drawer.classList.contains('hidden')) {
     return;
   }
   if (productDetails.productType === 'zazzle_businesscard') {
     const mediaValue = productDetails.attributes.media.find((v) => v.name === formDataObject.media);
     drawer.innerHTML = '';
-    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', null, productDetails, mediaValue.name, 'paperType', drawer);
+    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', productDetails, mediaValue.name, 'paperType', drawer);
   }
 }
 
