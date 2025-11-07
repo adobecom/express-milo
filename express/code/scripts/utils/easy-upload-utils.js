@@ -1,3 +1,6 @@
+// Import required utilities
+import { getIconElementDeprecated } from '../utils.js';
+
 // Constants
 
 // SVG loader icon
@@ -156,7 +159,7 @@ export class EasyUpload {
      * @param {Function} startSDKWithUnconvertedFiles - Function to start SDK with files
      * @param {Function} createTag - Function to create DOM elements
      */
-    constructor(uploadService, envName, quickAction, block, startSDKWithUnconvertedFiles, createTag) {
+    constructor(uploadService, envName, quickAction, block, startSDKWithUnconvertedFiles, createTag, showErrorToast) {
         // Core dependencies
         this.uploadService = uploadService;
         this.envName = envName;
@@ -164,7 +167,7 @@ export class EasyUpload {
         this.block = block;
         this.startSDKWithUnconvertedFiles = startSDKWithUnconvertedFiles;
         this.createTag = createTag;
-
+        this.showErrorToast = showErrorToast;
         // QR Code state
         this.qrCode = null;
         this.qrCodeContainer = null;
@@ -181,6 +184,9 @@ export class EasyUpload {
         this.uploadAsset = null;
         this.pollingInterval = null;
         this.versionReadyPromise = null;
+
+        // Toast state
+        this.toastTimeoutId = null;
 
         // Bind cleanup to window unload
         this.handleBeforeUnload = () => this.cleanup();
@@ -676,6 +682,8 @@ export class EasyUpload {
             console.error('Failed to initialize QR code:', error);
             // Show failed QR state
             this.showFailedQR();
+            // Show error toast
+            this.showErrorToast(this.block, 'Failed to generate QR code.');
         }
     }
 
@@ -725,6 +733,8 @@ export class EasyUpload {
             await this.finalizeUpload();
         } catch (error) {
             console.error('Failed to finalize upload:', error);
+            // Show error toast
+            this.showErrorToast(this.block, 'Wait for a few more seconds for mobile upload to complete.');
             // Re-enable button to allow retry on error
             this.updateConfirmButtonState(false);
             return;
@@ -742,6 +752,8 @@ export class EasyUpload {
             }
         } catch (error) {
             console.error('Failed to confirm import:', error);
+            // Show error toast
+            this.showErrorToast(this.block, 'Invalid file, try uploading another file.');
             // Re-enable button to allow retry on error
             this.refreshQRCode();
         }

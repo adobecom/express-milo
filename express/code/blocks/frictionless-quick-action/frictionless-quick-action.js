@@ -70,9 +70,11 @@ function frictionlessQAExperiment(
 let timeoutId = null;
 function showErrorToast(block, msg) {
   let toast = block.querySelector('.error-toast');
-  const hideToast = () => toast.classList.add('hide');
+  const hideToast = () => { toast.classList.add('hide'); toast.html = "" };
   if (!toast) {
     toast = createTag('div', { class: 'error-toast hide' });
+    block.append(toast);
+  }
     toast.prepend(getIconElementDeprecated('error'));
     const close = createTag(
       'button',
@@ -80,9 +82,7 @@ function showErrorToast(block, msg) {
       getIconElementDeprecated('close-white'),
     );
     close.addEventListener('click', hideToast);
-    toast.append(close);
-    block.append(toast);
-  }
+  toast.append(close);
   toast.textContent = msg;
   toast.classList.remove('hide');
   clearTimeout(timeoutId);
@@ -745,6 +745,7 @@ export default async function decorate(block) {
           block,
           startSDKWithUnconvertedFiles,
           createTag,
+          showErrorToast
         );
         await easyUpload.setupQRCodeInterface();
       } catch (error) {
