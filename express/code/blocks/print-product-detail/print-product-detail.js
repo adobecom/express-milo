@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
@@ -89,10 +89,39 @@ async function updatePageWithProductPrice(productDetails) {
   priceInfoContainer.querySelector('#pdpx-savings-text').textContent = productDetails.discountString;
 }
 
+function populateStars(count, starType, parent) {
+  for (let i = 0; i < count; i += 1) {
+    parent.appendChild(getIconElementDeprecated(starType));
+  }
+}
+
+function updateStarRating(rating) {
+  const starRatingsContainer = document.querySelector('#pdpx-product-ratings-lockup-container .pdpx-star-ratings');
+  if (!starRatingsContainer) return;
+
+  // Clear existing stars
+  starRatingsContainer.innerHTML = '';
+
+  // Calculate partial stars based on rating (rounded to nearest 0.5)
+  const ratingValue = Math.round(rating * 10) / 10;
+  const ratingRoundedHalf = Math.round(ratingValue * 2) / 2;
+  const filledStars = Math.floor(ratingRoundedHalf);
+  const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
+  const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
+
+  // Populate stars with filled, half, and empty
+  populateStars(filledStars, 'star', starRatingsContainer);
+  populateStars(halfStars, 'star-half', starRatingsContainer);
+  populateStars(emptyStars, 'star-empty', starRatingsContainer);
+}
+
 function updatePageWithProductReviews(productDetails) {
   const productRatingsLockupContainer = document.getElementById('pdpx-product-ratings-lockup-container');
   productRatingsLockupContainer.querySelector('#pdpx-ratings-number').textContent = Math.round(productDetails.averageRating * 10) / 10;
   productRatingsLockupContainer.querySelector('#pdpx-ratings-amount').textContent = formatLargeNumberToK(productDetails.totalReviews);
+
+  // Update stars with actual rating
+  updateStarRating(productDetails.averageRating);
 }
 
 function updatePageWithProductShippingEstimates(productDetails) {
