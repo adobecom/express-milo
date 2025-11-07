@@ -149,56 +149,73 @@ jobs:
             
             core.setOutput('prList', prList);
 
+      - name: Set notification title for bot token
+        if: env.SLACK_BOT_TOKEN != '' && steps.extract-prs.outputs.prList != ''
+        id: set-bot-title
+        run: |
+          if [ "${{ github.event.inputs.test_mode }}" = "true" ] || [ "${{ github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification') }}" = "true" ]; then
+            echo "title=@ax-devs 🚀 *Express Milo Release Deployed* (TEST MODE)" >> $GITHUB_OUTPUT
+          else
+            echo "title=@ax-devs 🚀 *Express Milo Release Deployed*" >> $GITHUB_OUTPUT
+          fi
+
       - name: Send release notification with bot token
         if: env.SLACK_BOT_TOKEN != '' && steps.extract-prs.outputs.prList != ''
         id: send-notification
+        env:
+          PR_LIST: ${{ steps.extract-prs.outputs.prList }}
+          NOTIFICATION_TITLE: ${{ steps.set-bot-title.outputs.title }}
         run: |
           echo "📤 Sending release notification with bot token..."
+          
+          # Escape special characters for JSON
+          PR_LIST_JSON=$(echo "$PR_LIST" | jq -Rs .)
+          TITLE_JSON=$(echo "$NOTIFICATION_TITLE" | jq -Rs .)
           
           # Use bot token to send message and get message details
           MESSAGE_RESPONSE=$(curl -s -X POST -H "Authorization: Bearer ${{ env.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "channel": "${{ env.SLACK_CHANNEL_ID }}",
-              "text": "@ax-devs 🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST_MODE)' || '' }}",
-              "attachments": [
+            -d "{
+              \"channel\": \"${{ env.SLACK_CHANNEL_ID }}\",
+              \"text\": $TITLE_JSON,
+              \"attachments\": [
                 {
-                  "color": "#0066cc",
-                  "fields": [
+                  \"color\": \"#0066cc\",
+                  \"fields\": [
                     {
-                      "title": "🌿 Branch", 
-                      "value": "main",
-                      "short": true
+                      \"title\": \"🌿 Branch\", 
+                      \"value\": \"main\",
+                      \"short\": true
                     },
                     {
-                      "title": "🔗 Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
-                      "short": true
+                      \"title\": \"🔗 Commit\",
+                      \"value\": \"<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>\",
+                      \"short\": true
                     }
                   ]
                 },
                 {
-                  "color": "#ff6b35",
-                  "fields": [
+                  \"color\": \"#ff6b35\",
+                  \"fields\": [
                     {
-                      "title": "🌐 Test URLs",
-                      "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
-                      "short": false
+                      \"title\": \"🌐 Test URLs\",
+                      \"value\": \"• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\\n• <https://adobecom.com/express|adobecom.com/express>\",
+                      \"short\": false
                     }
                   ]
                 },
                 {
-                  "color": "#28a745",
-                  "fields": [
+                  \"color\": \"#28a745\",
+                  \"fields\": [
                     {
-                      "title": "📋 Changes in this Release",
-                      "value": "${{ steps.extract-prs.outputs.prList }}",
-                      "short": false
+                      \"title\": \"📋 Changes in this Release\",
+                      \"value\": $PR_LIST_JSON,
+                      \"short\": false
                     }
                   ]
                 }
               ]
-            }' \
+            }" \
             "https://slack.com/api/chat.postMessage")
           
           echo "Message response: $MESSAGE_RESPONSE"
@@ -213,53 +230,70 @@ jobs:
             exit 1
           fi
 
+      - name: Set notification title for webhook
+        if: env.SLACK_WEBHOOK_URL != '' && env.SLACK_BOT_TOKEN == '' && steps.extract-prs.outputs.prList != ''
+        id: set-webhook-title
+        run: |
+          if [ "${{ github.event.inputs.test_mode }}" = "true" ] || [ "${{ github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification') }}" = "true" ]; then
+            echo "title=<!here> 🚀 *Express Milo Release Deployed* (TEST MODE)" >> $GITHUB_OUTPUT
+          else
+            echo "title=<!here> 🚀 *Express Milo Release Deployed*" >> $GITHUB_OUTPUT
+          fi
+
       - name: Send release notification with webhook (fallback)
         if: env.SLACK_WEBHOOK_URL != '' && env.SLACK_BOT_TOKEN == '' && steps.extract-prs.outputs.prList != ''
         id: send-notification-webhook
+        env:
+          PR_LIST: ${{ steps.extract-prs.outputs.prList }}
+          NOTIFICATION_TITLE: ${{ steps.set-webhook-title.outputs.title }}
         run: |
           echo "📤 Sending release notification with webhook (no pinning available)..."
           
+          # Escape special characters for JSON
+          PR_LIST_JSON=$(echo "$PR_LIST" | jq -Rs .)
+          TITLE_JSON=$(echo "$NOTIFICATION_TITLE" | jq -Rs .)
+          
           curl -X POST -H 'Content-type: application/json' \
-            --data '{
-              "text": "<!here> 🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
-              "attachments": [
+            --data "{
+              \"text\": $TITLE_JSON,
+              \"attachments\": [
                 {
-                  "color": "#0066cc",
-                  "fields": [
+                  \"color\": \"#0066cc\",
+                  \"fields\": [
                     {
-                      "title": "🌿 Branch", 
-                      "value": "main",
-                      "short": true
+                      \"title\": \"🌿 Branch\", 
+                      \"value\": \"main\",
+                      \"short\": true
                     },
                     {
-                      "title": "🔗 Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
-                      "short": true
+                      \"title\": \"🔗 Commit\",
+                      \"value\": \"<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>\",
+                      \"short\": true
                     }
                   ]
                 },
                 {
-                  "color": "#ff6b35",
-                  "fields": [
+                  \"color\": \"#ff6b35\",
+                  \"fields\": [
                     {
-                      "title": "🌐 Test URLs",
-                      "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
-                      "short": false
+                      \"title\": \"🌐 Test URLs\",
+                      \"value\": \"• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\\n• <https://adobecom.com/express|adobecom.com/express>\",
+                      \"short\": false
                     }
                   ]
                 },
                 {
-                  "color": "#28a745",
-                  "fields": [
+                  \"color\": \"#28a745\",
+                  \"fields\": [
                     {
-                      "title": "📋 Changes in this Release",
-                      "value": "${{ steps.extract-prs.outputs.prList }}",
-                      "short": false
+                      \"title\": \"📋 Changes in this Release\",
+                      \"value\": $PR_LIST_JSON,
+                      \"short\": false
                     }
                   ]
                 }
               ]
-            }' \
+            }" \
             ${{ env.SLACK_WEBHOOK_URL }}
           
           echo "✅ Webhook notification sent (no pinning available)"
