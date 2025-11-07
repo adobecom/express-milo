@@ -30,12 +30,13 @@ async function updateProductPrice(productDetails) {
 }
 
 async function updateProductImages(productDetails) {
-  const heroImg = document.getElementById('pdpx-product-hero-image');
-  const firstImageType = Object.keys(productDetails.realViews)[0];
+  const productImagesContainer = document.getElementById('pdpx-product-images-container');
+  const heroImg = productImagesContainer.querySelector('#pdpx-product-hero-image');
   let imageType;
   if (productDetails.realViews[heroImg.dataset.imageType]) {
     imageType = heroImg.dataset.imageType;
   } else {
+    const firstImageType = Object.keys(productDetails.realViews)[0];
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
@@ -44,7 +45,7 @@ async function updateProductImages(productDetails) {
     newHeroImgSrc,
     imageType,
   );
-  document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  productImagesContainer.replaceWith(newProductImagesContainer);
   newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
 }
 
@@ -136,6 +137,9 @@ export default async function updateAllDynamicElements(productId) {
   const normalizedProductDetails = await normalizeProductDetailObject(
     normalizeProductDetailsParametersObject,
   );
+  await updateProductImages(normalizedProductDetails);
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   for (const [key, value] of Object.entries(formDataObject)) {
     if (!normalizedProductDetails.attributes[key].some(
       (v) => v.name.toString() === value.toString(),
@@ -145,14 +149,13 @@ export default async function updateAllDynamicElements(productId) {
     }
   }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
-  await updateProductImages(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
-  await updateProductPrice(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
     productDetails,
     formData: formDataObject,
   });
+  console.log("BlockMediator.get('product:updated')");
+  console.log(BlockMediator.get('product:updated'));
 }

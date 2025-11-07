@@ -1,12 +1,12 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from './fetchData/fetchProductDetails.js';
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize } from './utilities/utility-functions.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
 
 let createTag;
@@ -41,7 +41,7 @@ async function createGlobalContainer(productDetails) {
 async function updatePageWithProductDetails(productDetails) {
   const globalContainer = document.getElementById('pdpx-global-container');
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
-  productHeroImage.src = productDetails.heroImage;
+  productHeroImage.src = convertImageSize(productDetails.heroImage, '1000');
   productHeroImage.removeAttribute('data-skeleton');
   const productTitle = globalContainer.querySelector('#pdpx-product-title');
   productTitle.textContent = productDetails.productTitle;
@@ -123,7 +123,7 @@ export default async function decorate(block) {
   let dataObject = createEmptyDataObject(templateId, ietf);
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
-  const productDetails = fetchProductDetails(templateId);
+  const productDetails = fetchAPIData(templateId, null, 'getproductfromtemplate', 'templateId');
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
     updatePageWithProductDetails(dataObject);

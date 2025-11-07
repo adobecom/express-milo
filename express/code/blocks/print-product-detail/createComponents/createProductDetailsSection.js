@@ -1,5 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
-import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { formatProductDescriptions } from '../utilities/data-formatting.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 import { detectMobile } from '../utilities/utility-functions.js';

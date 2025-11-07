@@ -1,11 +1,22 @@
 import { getLibs } from '../../../scripts/utils.js';
+import { convertImageSize } from '../utilities/utility-functions.js';
 
 let createTag;
 
-export function createproductHeroImage(heroImage, heroImageType) {
+export function createproductHeroImage(heroImageSrc, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
-  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, fetchpriority: 'high', decoding: 'async', loading: 'eager', alt: altTextHero, src: heroImage });
+  const heroImageSrcLarge = heroImageSrc ? convertImageSize(heroImageSrc, '1000') : heroImageSrc;
+  const productHeroImage = createTag('img', {
+    class: 'pdpx-product-hero-image',
+    id: 'pdpx-product-hero-image',
+    'data-image-type': heroImageType,
+    fetchpriority: 'high',
+    decoding: 'async',
+    loading: 'eager',
+    alt: altTextHero,
+    src: heroImageSrcLarge,
+  });
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }
@@ -18,8 +29,13 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
       imageThumbnailCarouselItem.classList.add('selected');
     }
     const imageURL = realViews[Object.keys(realViews)[i]];
+    const imageURLSmall = convertImageSize(imageURL, '100');
     const altTextThumbnail = `Product Image Thumbnail: ${Object.keys(realViews)[i]}`;
-    const imageThumbnailCarouselItemImage = createTag('img', { class: 'pdpx-image-thumbnail-carousel-item-image', 'data-image-type': Object.keys(realViews)[i], alt: altTextThumbnail, src: imageURL });
+    const imageThumbnailCarouselItemImage = createTag('img', { class: 'pdpx-image-thumbnail-carousel-item-image',
+      'data-image-type': Object.keys(realViews)[i],
+      alt: altTextThumbnail,
+      src: imageURLSmall,
+    });
     imageThumbnailCarouselItem.addEventListener('click', (element) => {
       imageThumbnailCarouselItem.classList.add('selected');
       imageThumbnailCarouselContainer.querySelectorAll('.pdpx-image-thumbnail-carousel-item').forEach((item) => {
@@ -27,7 +43,7 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
           item.classList.remove('selected');
         }
       });
-      productHeroImage.src = element.currentTarget.querySelector('img').src;
+      productHeroImage.src = convertImageSize(element.currentTarget.querySelector('img').src, '1000');
       productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
     });
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);

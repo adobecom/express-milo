@@ -1,5 +1,11 @@
 import { createTag } from '../../../scripts/utils.js';
 
+export function convertImageSize(imageURL, size) {
+  const url = new URL(imageURL);
+  url.searchParams.set('max_dim', size);
+  return url.toString();
+}
+
 export function isMobileDevice() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
   return /android|iphone|ipad|ipod|blackberry|iemobile|webos|opera mini/i.test(userAgent.toLowerCase());

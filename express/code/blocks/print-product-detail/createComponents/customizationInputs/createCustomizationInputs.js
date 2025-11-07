@@ -14,28 +14,26 @@ function createStandardSelector(
   formDataObject,
   CTAText,
 ) {
-  let defaultValue = formDataObject[hiddenSelectInputName];
-  const isDefaultValueAnOptionName = customizationOptions
-    .some((option) => option.name === defaultValue);
-  if (isDefaultValueAnOptionName) {
-    defaultValue = customizationOptions.find((option) => option.name === defaultValue).name;
-  }
-  const selectedOption = defaultValue || customizationOptions[0].name;
-  const productId = productDetails.id;
+  const defaultValue = formDataObject[hiddenSelectInputName];
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
-  const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label', for: `pdpx-standard-selector-${hiddenSelectInputName}` }, labelText);
-  standardSelectorContainer.appendChild(standardSelectorLabel);
+  standardSelectorContainer.appendChild(
+    createTag('label', { class: 'pdpx-standard-selector-label', for: `pdpx-standard-selector-${hiddenSelectInputName}` }, labelText),
+  );
   const standardSelectorInputContainer = createTag('div', { class: 'pdpx-standard-selector-input-container' });
-  const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName, id: `pdpx-standard-selector-${hiddenSelectInputName}` });
+  const standardSelectorInput = createTag('select', {
+    class: 'pdpx-standard-selector',
+    name: hiddenSelectInputName,
+    id: `pdpx-standard-selector-${hiddenSelectInputName}`,
+  });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const optionLabel = customizationOptions[i].title;
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
+  standardSelectorInput.value = defaultValue;
   standardSelectorInput.addEventListener('change', () => {
-    updateAllDynamicElements(productId);
+    updateAllDynamicElements(productDetails.id);
   });
-  standardSelectorInput.value = selectedOption;
   standardSelectorInputContainer.appendChild(standardSelectorInput);
   standardSelectorContainer.appendChild(standardSelectorInputContainer);
   let isTriBlend = false;
@@ -75,12 +73,11 @@ function createPillOptionsSelector(
     const inputPillImage = createTag('img', { class: 'pdpx-pill-image', src: customizationOptions[i].thumbnail });
     inputPillImageContainer.appendChild(inputPillImage);
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
-    const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title);
-    const inputPillOptionPrice = createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment);
-    inputPillTextContainer.appendChild(inputPillOptionName);
-    inputPillTextContainer.appendChild(inputPillOptionPrice);
-    pillContainer.appendChild(inputPillImageContainer);
-    pillContainer.appendChild(inputPillTextContainer);
+    inputPillTextContainer.append(
+      createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title),
+      createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment),
+    );
+    pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
     pillContainer.addEventListener('click', async (element) => {
       pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
@@ -92,8 +89,7 @@ function createPillOptionsSelector(
     });
   }
   hiddenSelectInput.value = selectedPillOption;
-  pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
-  pillSelectorContainer.appendChild(hiddenSelectInput);
+  pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
   return pillSelectorContainer;
 }
 
