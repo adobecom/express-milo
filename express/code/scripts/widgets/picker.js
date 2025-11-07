@@ -105,7 +105,7 @@ export async function createPicker({
   buttonWrapper.appendChild(currentValueSpan);
   buttonWrapper.appendChild(chevron);
 
-  const optionsWrapper = createTag('div', {
+  const optionsWrapper = createTag('ul', {
     class: 'picker-options-wrapper',
     role: 'listbox',
   });
@@ -155,7 +155,7 @@ export async function createPicker({
     opts.forEach(({ value, text, disabled: optionDisabled }, index) => {
       const isActive = String(value) === String(currentValue);
       const optionId = `${id}-option-${index}`;
-      const optionButton = createTag('div', {
+      const optionButton = createTag('li', {
         class: `picker-option-button${isActive ? ' active' : ''}${optionDisabled ? ' disabled' : ''}`,
         'data-value': value,
         id: optionId,
