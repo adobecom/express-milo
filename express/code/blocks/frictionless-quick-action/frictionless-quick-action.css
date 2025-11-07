@@ -338,6 +338,13 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     display: none;
 }
 
+/* Disabled Confirm Import Button */
+.confirm-import-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #d3d3d3;
+    color: #888;
+}
 @keyframes rotate-loader {
     from {
         transform: rotate(0deg);

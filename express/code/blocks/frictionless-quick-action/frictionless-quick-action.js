@@ -729,28 +729,29 @@ export default async function decorate(block) {
   dropzone.append(freePlanTags);
 
   // Load Easy Upload Experiment for enabled quick actions if experiment is on.
-
-  if (isEasyUploadExperimentEnabled(quickAction)) {
-    try {
-      const { EasyUpload } = await import('../../scripts/utils/easy-upload-utils.js');
-      const { env } = getConfig();
-      const uploadService = await initializeUploadService();
-      if (!uploadService) {
-        throw new Error('Upload service not initialized');
+  setTimeout(async () => {
+    if (isEasyUploadExperimentEnabled(quickAction)) {
+      try {
+        const { EasyUpload } = await import('../../scripts/utils/easy-upload-utils.js');
+        const { env } = getConfig();
+        const uploadService = await initializeUploadService();
+        if (!uploadService) {
+          throw new Error('Upload service not initialized');
+        }
+        const easyUpload = new EasyUpload(
+          uploadService,
+          env.name,
+          quickAction,
+          block,
+          startSDKWithUnconvertedFiles,
+          createTag,
+        );
+        await easyUpload.setupQRCodeInterface();
+      } catch (error) {
+        console.error('Failed to load QR code library:', error);
       }
-      const easyUpload = new EasyUpload(
-        uploadService,
-        env.name,
-        quickAction,
-        block,
-        startSDKWithUnconvertedFiles,
-        createTag,
-      );
-      await easyUpload.setupQRCodeInterface();
-    } catch (error) {
-      console.error('Failed to load QR code library:', error);
     }
-  }
+  }, 10);
 
   window.addEventListener('popstate', (e) => {
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
