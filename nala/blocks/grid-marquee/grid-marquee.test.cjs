@@ -71,7 +71,9 @@ test.describe('grid-marquee test suite', () => {
 
       await test.step('validate drawer operations ', async () => {
         if (cardCount) {
-          await expect(gridMarquee.cardImage.nth(0)).toBeVisible();
+          // Wait for images to load after navigation (fixes WebKit timing issue)
+          await gridMarquee.page.waitForLoadState('networkidle');
+          await expect(gridMarquee.cardImage.nth(0)).toBeVisible({ timeout: 10000 });
           await gridMarquee.cardImage.nth(0).hover();
           await expect(gridMarquee.cardDrawer.nth(0)).toBeVisible();
         }
