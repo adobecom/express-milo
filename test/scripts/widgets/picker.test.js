@@ -515,7 +515,7 @@ describe('Picker Widget', () => {
       event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
       button.dispatchEvent(event);
 
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise((resolve) => { setTimeout(resolve, 50); });
       expect(picker.getPicker()).to.equal('2');
     });
 
