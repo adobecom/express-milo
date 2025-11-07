@@ -264,6 +264,17 @@ async function uploadAssetToStorage(file) {
   });
 
   progressBar.setProgress(100);
+
+  // Log video upload success for analytics
+  if (file.type.startsWith('video/')) {
+    window.lana?.log('Video upload successful', {
+      tags: 'frictionless-video-upload-success',
+      assetId: asset.assetId,
+      fileSize: file.size,
+      fileType: file.type,
+    });
+  }
+
   return asset.assetId;
 }
 
