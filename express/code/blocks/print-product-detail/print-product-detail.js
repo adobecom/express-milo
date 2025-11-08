@@ -117,8 +117,18 @@ function updateStarRating(rating) {
 
 function updatePageWithProductReviews(productDetails) {
   const productRatingsLockupContainer = document.getElementById('pdpx-product-ratings-lockup-container');
-  productRatingsLockupContainer.querySelector('#pdpx-ratings-number').textContent = Math.round(productDetails.averageRating * 10) / 10;
-  productRatingsLockupContainer.querySelector('#pdpx-ratings-amount').textContent = formatLargeNumberToK(productDetails.totalReviews);
+  const ratingsNumberEl = productRatingsLockupContainer.querySelector('#pdpx-ratings-number');
+  const ratingsAmountEl = productRatingsLockupContainer.querySelector('#pdpx-ratings-amount');
+  const starRatingsEl = productRatingsLockupContainer.querySelector('.pdpx-star-ratings');
+
+  const ratingValue = Math.round(productDetails.averageRating * 10) / 10;
+  ratingsNumberEl.textContent = ratingValue;
+  ratingsNumberEl.setAttribute('aria-label', `${ratingValue} out of 5`);
+
+  ratingsAmountEl.textContent = `${formatLargeNumberToK(productDetails.totalReviews)} ratings`;
+  ratingsAmountEl.setAttribute('aria-label', `${productDetails.totalReviews.toLocaleString()} ratings`);
+
+  starRatingsEl.setAttribute('aria-label', `${ratingValue} out of 5 stars`);
 
   // Update stars with actual rating
   updateStarRating(productDetails.averageRating);

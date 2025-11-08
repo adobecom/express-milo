@@ -161,7 +161,10 @@
   }
   .pdpx-ratings-amount {
     font-size: 14px;
-    text-decoration-line: underline;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 0;
   }
 }
 .pdpx-delivery-estimate-pill {

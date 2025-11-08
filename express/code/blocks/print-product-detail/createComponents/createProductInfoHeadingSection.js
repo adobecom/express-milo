@@ -17,8 +17,17 @@ function populateStars(count, starType, parent) {
 }
 
 function createProductRatingsLockup(productDetails) {
-  const productRatingsLockupContainer = createTag('div', { class: 'pdpx-product-ratings-lockup-container', id: 'pdpx-product-ratings-lockup-container' });
-  const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
+  const productRatingsLockupContainer = createTag('div', {
+    class: 'pdpx-product-ratings-lockup-container',
+    id: 'pdpx-product-ratings-lockup-container',
+    role: 'group',
+    'aria-label': 'Product ratings',
+  });
+  const starRatings = createTag('div', {
+    class: 'pdpx-star-ratings',
+    role: 'img',
+    'aria-label': `${Math.round(productDetails.averageRating * 10) / 10} out of 5 stars`,
+  });
 
   // Calculate partial stars based on rating (rounded to nearest 0.5)
   const rating = productDetails.averageRating || 5;
@@ -34,9 +43,17 @@ function createProductRatingsLockup(productDetails) {
   populateStars(emptyStars, 'star-empty', starRatings);
 
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
-  const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number', id: 'pdpx-ratings-number' }, ratingValue);
+  const ratingsNumber = createTag('span', {
+    class: 'pdpx-ratings-number',
+    id: 'pdpx-ratings-number',
+    'aria-label': `${ratingValue} out of 5`,
+  }, ratingValue);
   const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
-  const ratingsAmount = createTag('span', { class: 'pdpx-ratings-amount', id: 'pdpx-ratings-amount' }, formatLargeNumberToK(productDetails.totalReviews));
+  const ratingsAmount = createTag('span', {
+    class: 'pdpx-ratings-amount',
+    id: 'pdpx-ratings-amount',
+    'aria-label': `${productDetails.totalReviews.toLocaleString()} ratings`,
+  }, `${formatLargeNumberToK(productDetails.totalReviews)} ratings`);
   ratingsNumberContainer.append(ratingsNumber);
   ratingsAmountContainer.appendChild(ratingsAmount);
   productRatingsLockupContainer.append(starRatings, ratingsNumberContainer, ratingsAmountContainer);
