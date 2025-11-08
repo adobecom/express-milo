@@ -137,11 +137,16 @@ export default async function updateAllDynamicElements(productId) {
     normalizeProductDetailsParametersObject,
   );
   for (const [key, value] of Object.entries(formDataObject)) {
-    if (!normalizedProductDetails.attributes[key].some(
-      (v) => v.name.toString() === value.toString(),
-    )
-    ) {
-      formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
+    if (normalizedProductDetails.attributes[key]) {
+      const valueExists = normalizedProductDetails.attributes[key].some(
+        (v) => String(v.name) === String(value) || v.name === value,
+      );
+
+      if (!valueExists) {
+        // eslint-disable-next-line no-console
+        console.warn(`Value "${value}" for "${key}" not found in options, resetting to first option`);
+        formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
+      }
     }
   }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
