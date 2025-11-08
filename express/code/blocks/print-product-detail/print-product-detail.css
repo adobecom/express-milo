@@ -616,9 +616,6 @@ main .section .pdpx-drawer-description {
   position: relative;
   width: 100%;
   overflow: visible;
-  padding-top: 60px;
-  margin-top: -60px;
-  pointer-events: none;
   .simple-carousel-container {
     position: relative;
     width: 100%;
@@ -627,7 +624,6 @@ main .section .pdpx-drawer-description {
   .simple-carousel-platform {
     display: flex;
     gap: var(--spacing-75);
-    pointer-events: auto;
   }
   .simple-carousel-fader-left,
   .simple-carousel-fader-right {
