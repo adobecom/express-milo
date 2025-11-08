@@ -132,7 +132,6 @@
 .pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
   gap: var(--spacing-75);
   .pdpx-product-info-header-ratings-star {
     width: 17px;
