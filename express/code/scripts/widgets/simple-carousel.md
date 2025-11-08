@@ -213,12 +213,44 @@ When `centerActive: true`:
 
 ## Common Use Cases
 
-1. **Product Detail Pages**: Thumbnail galleries
-2. **Color Pickers**: Horizontal color swatches
+1. **Product Detail Pages**: Thumbnail galleries, paper type selectors, color pickers
+2. **Color Pickers**: Horizontal color swatches  
 3. **Size Selectors**: Size options carousel
 4. **Business Drawers**: Organization/team selectors
 5. **Image Galleries**: Simple photo carousels
 6. **Filter Options**: Scrollable filter chips
+
+### PDP Implementation Notes
+
+The Print Product Detail (PDP) block uses this carousel for:
+
+**Thumbnail Gallery** (Desktop & Mobile):
+- Always a carousel at all viewport sizes
+- Gradient fade overlays on arrow edges (88px wide)
+- `centerActive: true` to keep selected thumbnail centered
+- Arrows positioned at container edges with fade effect
+
+**Mini-Pill Selectors** (Paper Type, Color, etc.):
+- Always a carousel at all viewport sizes
+- Gradient fade overlays on arrow edges (64px wide)
+- Tooltips on hover (custom CSS `::after` pseudo-elements)
+- First pill tooltip aligns left to prevent clipping
+- Container uses `overflow: visible` to allow tooltips to escape
+- Platform uses `overflow-x: hidden; overflow-y: visible` for scrolling
+
+**Key CSS Override Pattern**:
+```css
+.pdpx-mini-pill-selector-options-wrapper {
+  overflow: visible; /* Allow tooltips to escape */
+  .simple-carousel-container {
+    overflow: hidden; /* Clip horizontal scroll */
+  }
+  .simple-carousel-platform {
+    overflow-x: auto; /* Enable scrolling */
+    overflow-y: visible; /* Allow tooltips above */
+  }
+}
+```
 
 ## Migration from Other Carousels
 

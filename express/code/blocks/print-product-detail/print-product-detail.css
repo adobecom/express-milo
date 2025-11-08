@@ -612,26 +612,19 @@ main .section .pdpx-drawer-description {
   text-decoration: underline;
   cursor: pointer;
 }
-.pdpx-mini-pill-selector-options-wrapper {
+.pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) {
   position: relative;
   width: 100%;
-  overflow: visible;
-  .simple-carousel-container {
-    position: relative;
-    width: 100%;
-    overflow: visible;
-  }
-  .simple-carousel-platform {
-    display: flex;
-    gap: var(--spacing-75);
-  }
-  .simple-carousel-fader-left,
-  .simple-carousel-fader-right {
-    display: none;
-  }
 }
 
-.pdpx-mini-pill-selector-options-wrapper .pdpx-mini-pill-container {
+.pdpx-mini-pill-selector-options-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-75);
+}
+
+.pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) .pdpx-mini-pill-container {
   position: relative;
 }
 
@@ -643,13 +636,16 @@ main .section .pdpx-drawer-description {
 }
 
 @media (max-width: 767px) {
-  .pdpx-mini-pill-selector-options-wrapper {
-    padding-top: 0;
-    margin-top: 0;
+  .pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) {
+    overflow: visible;
     .simple-carousel-container {
+      position: relative;
+      width: 100%;
       overflow: hidden;
     }
     .simple-carousel-platform {
+      display: flex;
+      gap: var(--spacing-75);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
@@ -662,12 +658,13 @@ main .section .pdpx-drawer-description {
     }
     .simple-carousel-fader-left,
     .simple-carousel-fader-right {
-      display: flex;
       position: absolute;
       top: 0;
       bottom: 0;
       z-index: 200;
+      display: flex;
       align-items: center;
+      transition: opacity 0.3s ease;
       pointer-events: none;
       width: 64px;
     }

@@ -99,17 +99,19 @@ export default async function createSegmentedMiniPillOptionsSelector(
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
-
-  if (window.innerWidth < 768) {
-    if (classicOptions.length > 0) {
+  
+  if (classicOptions.length > 0) {
+    if (window.innerWidth < 768) {
       await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
         ariaLabel: 'Classic printing color options',
         centerActive: false,
         activeClass: 'selected',
       });
     }
-
-    if (vividOptions.length > 0) {
+  }
+  
+  if (vividOptions.length > 0) {
+    if (window.innerWidth < 768) {
       await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
         ariaLabel: 'Vivid printing color options',
         centerActive: false,
@@ -117,7 +119,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
     }
   }
-
+  
   miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }
