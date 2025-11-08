@@ -160,13 +160,8 @@
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    background: transparent;
     font-size: 14px;
-    border: none;
-    padding: 0;
-    margin: 0;
     text-decoration-line: underline;
-    cursor: default;
   }
 }
 .pdpx-delivery-estimate-pill {

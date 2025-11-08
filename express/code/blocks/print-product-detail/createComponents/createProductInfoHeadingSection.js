@@ -36,7 +36,7 @@ function createProductRatingsLockup(productDetails) {
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
   const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number', id: 'pdpx-ratings-number' }, ratingValue);
   const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
-  const ratingsAmount = createTag('button', { class: 'pdpx-ratings-amount', id: 'pdpx-ratings-amount', type: 'button' }, formatLargeNumberToK(productDetails.totalReviews));
+  const ratingsAmount = createTag('span', { class: 'pdpx-ratings-amount', id: 'pdpx-ratings-amount' }, formatLargeNumberToK(productDetails.totalReviews));
   ratingsNumberContainer.append(ratingsNumber);
   ratingsAmountContainer.appendChild(ratingsAmount);
   productRatingsLockupContainer.append(starRatings, ratingsNumberContainer, ratingsAmountContainer);
