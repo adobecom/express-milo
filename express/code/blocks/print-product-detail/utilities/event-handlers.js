@@ -1,7 +1,6 @@
 import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import { formatDeliveryEstimateDateRange } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
-import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import createDrawerContentPaperType from '../createComponents/drawerContent/createDrawerContentPaperType.js';
