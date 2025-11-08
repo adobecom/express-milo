@@ -39,16 +39,21 @@ async function updateProductImages(productDetails) {
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
-  const newProductImagesContainer = await createProductImagesContainer(
-    productDetails.realViews,
-    newHeroImgSrc,
-    imageType,
-  );
-  document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
-  const carouselWrapper = newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-wrapper');
-  if (carouselWrapper) {
-    carouselWrapper.dataset.skeleton = 'false';
-  }
+  
+  heroImg.src = newHeroImgSrc;
+  heroImg.dataset.imageType = imageType;
+  
+  const thumbnailButtons = document.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
+  thumbnailButtons.forEach((button) => {
+    const btnImageType = button.dataset.imageType;
+    if (productDetails.realViews[btnImageType]) {
+      const img = button.querySelector('.pdpx-image-thumbnail-carousel-item-image');
+      if (img) {
+        img.src = productDetails.realViews[btnImageType];
+      }
+      button.removeAttribute('data-skeleton');
+    }
+  });
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
