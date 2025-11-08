@@ -7,7 +7,7 @@
 
 .picker-label {
   font-family: var(--body-font-family);
-  font-size: var(--spacing-250);
+  font-size: var(--body-font-size-s);
   font-weight: 400;
   line-height: var(--spacing-350);
   color: var(--color-dark-gray);
@@ -52,7 +52,7 @@
 
 .picker-current-value {
   font-family: var(--body-font-family);
-  font-size: var(--spacing-250);
+  font-size: var(--body-font-size-s);
   font-weight: 400;
   line-height: var(--spacing-350);
   color: var(--color-gray-800-variant);
@@ -102,7 +102,7 @@
 .picker-option-button {
   padding: 7px 12px;
   font-family: var(--body-font-family);
-  font-size: var(--spacing-250);
+  font-size: var(--body-font-size-s);
   font-weight: 500;
   line-height: var(--spacing-350);
   color: var(--color-gray-800-variant);
@@ -144,7 +144,7 @@
 
 .picker-help-text {
   font-family: var(--body-font-family);
-  font-size: var(--spacing-250);
+  font-size: var(--body-font-size-s);
   font-weight: 400;
   line-height: var(--spacing-350);
   color: var(--color-dark-gray);
@@ -291,7 +291,7 @@
 
 .picker-link {
   font-family: var(--body-font-family);
-  font-size: var(--spacing-250);
+  font-size: var(--body-font-size-s);
   font-weight: 400;
   line-height: var(--spacing-350);
   color: var(--color-gray-900);
