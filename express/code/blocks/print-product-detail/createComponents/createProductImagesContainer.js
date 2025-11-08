@@ -1,9 +1,19 @@
 import { getLibs } from '../../../scripts/utils.js';
 import { convertImageSize, createHeroImageSrcset } from '../utilities/utility-functions.js';
+import createSimpleCarousel from '../../../scripts/widgets/simple-carousel.js';
 
 let createTag;
 
-export function createproductHeroImage(heroImageSrc, heroImageType) {
+export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
+  const { productHeroImage, productHeroImageContainer } = createproductHeroImage(heroImage, heroImageType);
+  const imageThumbnailCarouselContainer = await createProductThumbnailCarousel(realViews, heroImageType, productHeroImage);
+  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
+  return productImagesContainer;
+}
+
+export function createproductHeroImage(heroImage, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
   const productHeroImage = createTag('img', {
@@ -18,27 +28,38 @@ export function createproductHeroImage(heroImageSrc, heroImageType) {
     width: '500',
     height: '500',
   });
-  if (heroImageSrc) {
-    productHeroImage.srcset = createHeroImageSrcset(heroImageSrc);
-    productHeroImage.src = convertImageSize(heroImageSrc, '500');
+  if (heroImage) {
+    productHeroImage.srcset = createHeroImageSrcset(heroImage);
+    productHeroImage.src = convertImageSize(heroImage, '500');
   }
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }
 
-export function createProductThumbnailCarousel(realViews, heroImageType, productHeroImage) {
-  const imageThumbnailCarouselContainer = createTag('div', { class: 'pdpx-image-thumbnail-carousel-container', id: 'pdpx-image-thumbnail-carousel-container', 'data-skeleton': 'true' });
-  for (let i = 0; i < Object.keys(realViews).length; i += 1) {
-    const imageThumbnailCarouselItem = createTag('button', { class: 'pdpx-image-thumbnail-carousel-item', 'data-image-type': Object.keys(realViews)[i], 'data-skeleton': 'true' });
-    if (heroImageType === Object.keys(realViews)[i]) {
+export async function createProductThumbnailCarousel(realViews, heroImageType, productHeroImage) {
+  const carouselWrapper = createTag('div', {
+    class: 'pdpx-image-thumbnail-carousel-wrapper',
+    id: 'pdpx-image-thumbnail-carousel-wrapper',
+  });
+
+  Object.keys(realViews).forEach((viewKey) => {
+    const imageThumbnailCarouselItem = createTag('button', {
+      class: 'pdpx-image-thumbnail-carousel-item',
+      'data-image-type': viewKey,
+      'data-skeleton': 'true',
+      title: viewKey,
+    });
+
+    if (heroImageType === viewKey) {
       imageThumbnailCarouselItem.classList.add('selected');
     }
-    const imageURL = realViews[Object.keys(realViews)[i]];
+
+    const imageURL = realViews[viewKey];
     const imageURLSmall = convertImageSize(imageURL, '100');
-    const altTextThumbnail = `Product Image Thumbnail: ${Object.keys(realViews)[i]}`;
+    const altTextThumbnail = `Product Image Thumbnail: ${viewKey}`;
     const imageThumbnailCarouselItemImage = createTag('img', {
       class: 'pdpx-image-thumbnail-carousel-item-image',
-      'data-image-type': Object.keys(realViews)[i],
+      'data-image-type': viewKey,
       alt: altTextThumbnail,
       src: imageURLSmall,
       loading: 'lazy',
@@ -46,36 +67,27 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
       width: '76',
       height: '76',
     });
-    imageThumbnailCarouselItem.addEventListener('click', (element) => {
-      imageThumbnailCarouselItem.classList.add('selected');
-      imageThumbnailCarouselContainer.querySelectorAll('.pdpx-image-thumbnail-carousel-item').forEach((item) => {
-        if (item !== element.currentTarget) {
-          item.classList.remove('selected');
-        }
+
+    imageThumbnailCarouselItem.addEventListener('click', (e) => {
+      carouselWrapper.querySelectorAll('.pdpx-image-thumbnail-carousel-item').forEach((item) => {
+        item.classList.remove('selected');
       });
-      const thumbnailImageURL = element.currentTarget.querySelector('img').src;
+      e.currentTarget.classList.add('selected');
+      const thumbnailImageURL = e.currentTarget.querySelector('img').src;
       productHeroImage.srcset = createHeroImageSrcset(thumbnailImageURL);
       productHeroImage.src = convertImageSize(thumbnailImageURL, '500');
-      productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
+      productHeroImage.dataset.imageType = e.currentTarget.dataset.imageType;
     });
-    imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);
-    imageThumbnailCarouselContainer.appendChild(imageThumbnailCarouselItem);
-  }
-  return imageThumbnailCarouselContainer;
-}
 
-export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
-  const {
-    productHeroImage,
-    productHeroImageContainer,
-  } = createproductHeroImage(heroImage, heroImageType);
-  const imageThumbnailCarouselContainer = createProductThumbnailCarousel(
-    realViews,
-    heroImageType,
-    productHeroImage,
-  );
-  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
-  return productImagesContainer;
+    imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);
+    carouselWrapper.appendChild(imageThumbnailCarouselItem);
+  });
+
+  await createSimpleCarousel('.pdpx-image-thumbnail-carousel-item', carouselWrapper, {
+    ariaLabel: 'Product image thumbnails',
+    centerActive: true,
+    activeClass: 'selected',
+  });
+
+  return carouselWrapper;
 }
