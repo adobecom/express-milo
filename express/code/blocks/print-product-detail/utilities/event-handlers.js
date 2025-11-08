@@ -30,13 +30,12 @@ async function updateProductPrice(productDetails) {
 }
 
 async function updateProductImages(productDetails) {
-  const productImagesContainer = document.getElementById('pdpx-product-images-container');
-  const heroImg = productImagesContainer.querySelector('#pdpx-product-hero-image');
+  const heroImg = document.getElementById('pdpx-product-hero-image');
+  const firstImageType = Object.keys(productDetails.realViews)[0];
   let imageType;
   if (productDetails.realViews[heroImg.dataset.imageType]) {
     imageType = heroImg.dataset.imageType;
   } else {
-    const firstImageType = Object.keys(productDetails.realViews)[0];
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
@@ -45,8 +44,11 @@ async function updateProductImages(productDetails) {
     newHeroImgSrc,
     imageType,
   );
-  productImagesContainer.replaceWith(newProductImagesContainer);
-  newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
+  document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  const carouselWrapper = newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-wrapper');
+  if (carouselWrapper) {
+    carouselWrapper.dataset.skeleton = 'false';
+  }
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
@@ -56,6 +58,28 @@ async function updateProductDeliveryEstimate(productDetails) {
 async function updateCustomizationOptions(productDetails, formDataObject) {
   const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
+}
+
+async function updatePillTextValues(productDetails) {
+  const pillButtons = document.querySelectorAll('.pdpx-pill-container[data-name], .pdpx-mini-pill-container .pdpx-mini-pill-image-container[data-name]');
+  
+  pillButtons.forEach((pill) => {
+    const pillName = pill.dataset.name;
+    
+    for (const [attrKey, options] of Object.entries(productDetails.attributes || {})) {
+      const matchingOption = options.find((opt) => opt.name === pillName);
+      if (matchingOption) {
+        const nameSpan = pill.querySelector('.pdpx-pill-text-name');
+        const priceSpan = pill.querySelector('.pdpx-pill-text-price, .pdpx-mini-pill-price');
+        const imgElement = pill.querySelector('.pdpx-pill-image, .pdpx-mini-pill-image');
+        
+        if (nameSpan) nameSpan.textContent = matchingOption.title || matchingOption.name;
+        if (priceSpan) priceSpan.textContent = matchingOption.priceAdjustment || '+US$0.00';
+        if (imgElement && matchingOption.thumbnail) imgElement.src = matchingOption.thumbnail;
+        break;
+      }
+    }
+  });
 }
 
 async function updateCheckoutButton(productDetails, formDataObject) {
@@ -137,25 +161,38 @@ export default async function updateAllDynamicElements(productId) {
   const normalizedProductDetails = await normalizeProductDetailObject(
     normalizeProductDetailsParametersObject,
   );
-  await updateProductImages(normalizedProductDetails);
-  await updateProductPrice(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
   for (const [key, value] of Object.entries(formDataObject)) {
     if (normalizedProductDetails.attributes[key]) {
       const valueExists = normalizedProductDetails.attributes[key].some(
         (v) => String(v.name) === String(value) || v.name === value,
       );
+
       if (!valueExists) {
+        // eslint-disable-next-line no-console
+        console.warn(`Value "${value}" for "${key}" not found in options, resetting to first option`);
         formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
       }
     }
   }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
-  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  await updateProductImages(normalizedProductDetails);
+  
+  const currentAttributeKeys = Object.keys(normalizedProductDetails.attributes || {}).sort().join(',');
+  const existingForm = document.querySelector('#pdpx-customization-inputs-form');
+  const existingAttributeKeys = existingForm ? existingForm.dataset.attributeKeys || '' : '';
+  
+  if (currentAttributeKeys !== existingAttributeKeys) {
+    await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  } else {
+    await updatePillTextValues(normalizedProductDetails);
+  }
+  
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
-    attributes: productDetails.product.attributes,
+    productDetails,
     formData: formDataObject,
   });
 }
