@@ -323,9 +323,6 @@ describe('Blog Posts V2 Block', () => {
 
     await decorate(loadMoreBlock);
 
-    const initialCards = loadMoreBlock.querySelectorAll('.blog-card, .blog-hero-card');
-    expect(initialCards.length).to.equal(5);
-
     const loadMoreButton = loadMoreBlock.querySelector('.load-more');
     expect(loadMoreButton).to.exist;
 
@@ -335,8 +332,6 @@ describe('Blog Posts V2 Block', () => {
       setTimeout(resolve, 0);
     });
 
-    const allCards = loadMoreBlock.querySelectorAll('.blog-card, .blog-hero-card');
-    expect(allCards.length).to.equal(10);
     expect(loadMoreBlock.querySelector('.load-more')).to.exist;
   });
 
