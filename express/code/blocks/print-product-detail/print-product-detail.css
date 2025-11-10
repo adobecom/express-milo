@@ -35,10 +35,8 @@
   align-items: flex-start;
 }
 .pdpx-product-info-section-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
+  display: contents;
+  overflow-y: scroll;
   .pdpx-product-info-section {
     width: 100%;
     order: 3;
