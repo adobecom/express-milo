@@ -235,8 +235,6 @@ export default async function decorate(block) {
   } else {
     items = extractItemsFromBlock(block);
   }
-  console.log('items', items);
-  console.log('block', block);
   setupAutoCollapse(block);
   buildAccordion(block, items);
   block.updateAccordion = (newItems, forceExpandTitle = null) => {

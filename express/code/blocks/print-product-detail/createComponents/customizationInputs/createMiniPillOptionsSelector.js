@@ -70,10 +70,6 @@ export default async function createMiniPillOptionsSelector(
     miniPillOption.append(miniPillOptionImageContainer, miniPillOptionTextContainer);
     miniPillSelectorOptionsContainer.appendChild(miniPillOption);
   }
-  console.log('selectedValue');
-  console.log(selectedValue);
-  console.log('defaultValue');
-  console.log(defaultValue);
 
   hiddenSelectInput.value = selectedValue || customizationOptions[0].name;
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);

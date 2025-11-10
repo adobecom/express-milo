@@ -161,6 +161,4 @@ export default async function updateAllDynamicElements(productId) {
     productDetails,
     formData: formDataObject,
   });
-  console.log("BlockMediator.get('product:updated')");
-  console.log(BlockMediator.get('product:updated'));
 }
