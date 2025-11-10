@@ -1,4 +1,4 @@
-import { getLibs } from '../../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
 import { formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from '../utilities/utility-functions.js';
 
 let createTag;
@@ -10,24 +10,50 @@ function createProductTitle(productDetails) {
   return productTitleContainer;
 }
 
-function createProductRatingsLockup(productDetails, imageSize = '17') {
-  const productRatingsLockupContainer = createTag('div', { class: 'pdpx-product-ratings-lockup-container', id: 'pdpx-product-ratings-lockup-container' });
-  const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
-  for (let i = 0; i < 5; i += 1) {
-    const star = createTag('img', {
-      class: 'pdpx-product-info-header-ratings-star',
-      src: '/express/code/icons/star-sharp.svg',
-      alt: 'Ratings Star',
-      width: imageSize,
-      height: imageSize,
-      'data-image-size': imageSize,
-    });
-    starRatings.appendChild(star);
+function populateStars(count, starType, parent) {
+  for (let i = 0; i < count; i += 1) {
+    parent.appendChild(getIconElementDeprecated(starType));
   }
+}
+
+function createProductRatingsLockup(productDetails) {
+  const productRatingsLockupContainer = createTag('div', {
+    class: 'pdpx-product-ratings-lockup-container',
+    id: 'pdpx-product-ratings-lockup-container',
+    role: 'group',
+    'aria-label': 'Product ratings',
+  });
+  const starRatings = createTag('div', {
+    class: 'pdpx-star-ratings',
+    role: 'img',
+    'aria-label': `${Math.round(productDetails.averageRating * 10) / 10} out of 5 stars`,
+  });
+
+  // Calculate partial stars based on rating (rounded to nearest 0.5)
+  const rating = productDetails.averageRating || 5;
+  const ratingValue = Math.round(rating * 10) / 10;
+  const ratingRoundedHalf = Math.round(ratingValue * 2) / 2;
+  const filledStars = Math.floor(ratingRoundedHalf);
+  const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
+  const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
+
+  // Populate stars with filled, half, and empty
+  populateStars(filledStars, 'star', starRatings);
+  populateStars(halfStars, 'star-half', starRatings);
+  populateStars(emptyStars, 'star-empty', starRatings);
+
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
-  const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number', id: 'pdpx-ratings-number' }, Math.round(productDetails.averageRating * 10) / 10);
+  const ratingsNumber = createTag('span', {
+    class: 'pdpx-ratings-number',
+    id: 'pdpx-ratings-number',
+    'aria-label': `${ratingValue} out of 5`,
+  }, ratingValue);
   const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
-  const ratingsAmount = createTag('button', { class: 'pdpx-ratings-amount', id: 'pdpx-ratings-amount', type: 'button' }, formatLargeNumberToK(productDetails.totalReviews));
+  const ratingsAmount = createTag('span', {
+    class: 'pdpx-ratings-amount',
+    id: 'pdpx-ratings-amount',
+    'aria-label': `${productDetails.totalReviews.toLocaleString()} ratings`,
+  }, `${formatLargeNumberToK(productDetails.totalReviews)} ratings`);
   ratingsNumberContainer.append(ratingsNumber);
   ratingsAmountContainer.appendChild(ratingsAmount);
   productRatingsLockupContainer.append(starRatings, ratingsNumberContainer, ratingsAmountContainer);

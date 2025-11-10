@@ -132,7 +132,6 @@
 .pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
   gap: var(--spacing-75);
   .pdpx-product-info-header-ratings-star {
     width: 17px;
@@ -141,19 +140,32 @@
   }
   .pdpx-star-ratings {
     display: flex;
-    align-self: anchor-center;
+    align-items: center;
+    gap: var(--figma-spacing-50);
+  }
+  .pdpx-star-ratings svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+  .pdpx-star-ratings .icon-star {
+    color: var(--color-black);
+  }
+  .pdpx-star-ratings .icon-star-half {
+    color: var(--color-black);
+  }
+  .pdpx-star-ratings .icon-star-empty {
+    color: var(--color-gray-300);
   }
   .pdpx-ratings-number {
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    background: transparent;
     font-size: 14px;
-    border: none;
-    padding: 0;
-    margin: 0;
-    text-decoration-line: underline;
-    cursor: default;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 0;
   }
 }
 .pdpx-delivery-estimate-pill {
