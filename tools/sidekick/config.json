@@ -1,6 +1,9 @@
 {
   "project": "Express Milo",
-  "trustedHosts": ["milo.adobe.com"],
+  "host": "www.adobe.com",
+  "previewHost": "main--express-milo--adobecom.aem.page",
+  "liveHost": "main--express-milo--adobecom.aem.live",
+  "trustedHosts": ["milo.adobe.com", "*---express-milo--adobecom.aem.page", "*---express-milo--adobecom.aem.live"],
   "plugins": [
     {
       "id": "publish",
@@ -20,7 +23,7 @@
     {
       "id": "docs",
       "title": "Docs",
-      "url": "https://main--express--adobecom.aem.live/docs/",
+      "url": "https://main--express-milo--adobecom.aem.live/docs/",
       "environments": [ "edit" ],
       "excludePaths": [ "/**" ],
       "includePaths": [ "**.docx**" ]
