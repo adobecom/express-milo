@@ -27,11 +27,11 @@ async function createProductInfoContainer(productDetails, drawer) {
 
 async function createGlobalContainer(productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container', id: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
-  const { curtain, drawer } = await createDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(
     productDetails.realViews,
     productDetails.heroImage,
   );
+  const { curtain, drawer } = await createDrawer(productDetails);
   const productInfoSection = await createProductInfoContainer(productDetails, drawer);
   globalContainer.append(productImagesContainer, productInfoSection);
   document.body.append(curtain);
@@ -63,6 +63,7 @@ async function updatePageWithProductDetails(productDetails) {
     formDataObject,
     productDetails.productType,
   );
+  debugger;
   checkoutButton.href = checkoutButtonHref;
 }
 

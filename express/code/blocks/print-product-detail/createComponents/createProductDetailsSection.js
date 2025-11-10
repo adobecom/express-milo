@@ -100,7 +100,10 @@ export async function createCheckoutButton(productDetails) {
   }
   const buttonDisabled = outOfRegion || isMobile;
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
-  const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
+  const checkoutButton = createTag('a', {
+    class: 'pdpx-checkout-button',
+    id: 'pdpx-checkout-button',
+    href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
   if (buttonDisabled) {
     checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
   }

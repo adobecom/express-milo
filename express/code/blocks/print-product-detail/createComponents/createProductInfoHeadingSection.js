@@ -10,11 +10,18 @@ function createProductTitle(productDetails) {
   return productTitleContainer;
 }
 
-function createProductRatingsLockup(productDetails) {
+function createProductRatingsLockup(productDetails, imageSize = '17') {
   const productRatingsLockupContainer = createTag('div', { class: 'pdpx-product-ratings-lockup-container', id: 'pdpx-product-ratings-lockup-container' });
   const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
   for (let i = 0; i < 5; i += 1) {
-    const star = createTag('img', { class: 'pdpx-product-info-header-ratings-star', src: '/express/code/icons/star-sharp.svg' });
+    const star = createTag('img', {
+      class: 'pdpx-product-info-header-ratings-star',
+      src: '/express/code/icons/star-sharp.svg',
+      alt: 'Ratings Star',
+      width: imageSize,
+      height: imageSize,
+      'data-image-size': imageSize,
+    });
     starRatings.appendChild(star);
   }
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
@@ -85,7 +92,13 @@ export function createDeliveryEstimatePill(productDetails) {
     productDetails.deliveryEstimateMaxDate,
   );
   const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
-  const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
+  const deliveryEstimatePillIcon = createTag('img', {
+    class: 'pdpx-delivery-estimate-pill-icon',
+    src: '/express/code/icons/delivery-truck.svg',
+    alt: 'Delivery Estimate Shipping Icon',
+    width: '32',
+    height: '17',
+  });
   const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text', id: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
   const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.append(
