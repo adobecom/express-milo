@@ -50,7 +50,7 @@ function createAccordionItem(container, { title, content }, index) {
   const contentWrapper = createTag('div');
   contentWrapper.innerHTML = content;
   itemDescription.appendChild(contentWrapper);
-  itemContainer.appendChild(itemButton, itemDescription);
+  itemContainer.append(itemButton, itemDescription);
   itemButton.addEventListener('click', () => {
     let cachedButtons = buttonCache.get(container);
     if (!cachedButtons || cachedButtons.length === 0) {
@@ -235,6 +235,8 @@ export default async function decorate(block) {
   } else {
     items = extractItemsFromBlock(block);
   }
+  console.log('items', items);
+  console.log('block', block);
   setupAutoCollapse(block);
   buildAccordion(block, items);
   block.updateAccordion = (newItems, forceExpandTitle = null) => {
