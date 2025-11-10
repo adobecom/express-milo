@@ -9,7 +9,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-weight: 400;
-  line-height: var(--spacing-350);
+  line-height: var(--spacing-325);
   color: var(--color-dark-gray);
   padding: 7px 0;
 }
@@ -54,7 +54,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-weight: 400;
-  line-height: var(--spacing-350);
+  line-height: var(--spacing-325);
   color: var(--color-gray-800-variant);
   white-space: nowrap;
 }
@@ -104,7 +104,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-weight: 500;
-  line-height: var(--spacing-350);
+  line-height: var(--spacing-325);
   color: var(--color-gray-800-variant);
   cursor: pointer;
   border-radius: 4px;
@@ -146,7 +146,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-weight: 400;
-  line-height: var(--spacing-350);
+  line-height: var(--spacing-325);
   color: var(--color-dark-gray);
   padding: 7px 0 0;
 }
@@ -228,7 +228,7 @@
 
 .picker-container.size-l .picker-current-value {
   font-size: var(--spacing-300);
-  line-height: var(--spacing-375);
+  line-height: var(--spacing-350);
 }
 
 .picker-container.size-l .picker-chevron {
@@ -243,7 +243,7 @@
 }
 
 .picker-container.size-xl .picker-current-value {
-  font-size: var(--spacing-350);
+  font-size: var(--spacing-325);
   line-height: var(--spacing-400);
 }
 
@@ -293,7 +293,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-weight: 400;
-  line-height: var(--spacing-350);
+  line-height: var(--spacing-325);
   color: var(--color-gray-900);
   text-decoration: underline;
   text-underline-offset: 2px;
