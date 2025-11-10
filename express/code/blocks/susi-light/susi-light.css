@@ -162,6 +162,7 @@
 .susi-light.edu .subheading {
   font-size: var(--body-font-size-s);
   line-height: 1.3;
+  color: #464646;
 }
 
 /* modal styles */
