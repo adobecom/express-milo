@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/prefer-default-export */
 import { expect } from '@playwright/test';
 
 export async function runSeoChecks({ page, feature }) {
