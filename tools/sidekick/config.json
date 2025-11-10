@@ -3,6 +3,10 @@
   "trustedHosts": ["milo.adobe.com"],
   "plugins": [
     {
+      "id": "publish",
+      "confirm": true
+    },
+    {
       "id": "path",
       "title": "Path",
       "environments": [ "edit" ],
