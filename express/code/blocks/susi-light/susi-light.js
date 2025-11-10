@@ -199,6 +199,30 @@ async function buildEdu(el, locale, imsClientId, noRedirect) {
   return createSUSIComponent(params);
 }
 
+// TODO: rename after buildEdu is deprecated
+async function buildEduNew(el, locale, imsClientId, noRedirect) {
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const subheading = rows[3];
+  subheading?.classList.add('subheading');
+  const variant = 'standard';
+  const destURL = await getDestURL(redirectUrl);
+  const susiConfigs = {
+    client_id, variant, destURL, locale, title: '', hideIcon: true,
+  };
+  const params = buildSUSIParams(susiConfigs);
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  await SUSIUtils.loadSUSIScripts();
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
+  const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, subheading, susiWrapper]);
+  return layout;
+}
+
 // wrap susi component with custom logo + footer
 async function buildB2B(el, locale, imsClientId, noRedirect) {
   const emailFirst = el.classList.contains('email-first');
@@ -380,8 +404,10 @@ export default async function init(el) {
     { cls: 'b2b', build: buildB2B },
     { cls: 'tabs', build: buildSUSITabs },
     { cls: 'student', build: buildStudent },
+    { cls: 'edu', build: buildEduNew },
   ].find(({ cls }) => el.classList.contains(cls));
 
+  // default edu-express variant, TODO: to be deprecated soon
   const susi = await (match?.build || buildEdu)(el, locale, imsClientId, noRedirect);
   el.replaceChildren(susi);
 
