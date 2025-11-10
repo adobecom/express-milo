@@ -78,7 +78,7 @@ export default async function createMiniPillOptionsSelector(
   miniPillSelectorLabelName.textContent = selectedMiniPillOptionImageContainer.dataset.title;
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);
-  
+
   if (window.innerWidth < 768) {
     await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapper, {
       ariaLabel: `${labelText} options`,
@@ -86,7 +86,7 @@ export default async function createMiniPillOptionsSelector(
       activeClass: 'selected',
     });
   }
-  
+
   miniPillSelectorContainer.append(miniPillSelectorOptionsWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }

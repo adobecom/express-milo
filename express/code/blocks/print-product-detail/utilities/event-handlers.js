@@ -38,10 +38,10 @@ async function updateProductImages(productDetails) {
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
-  
+
   heroImg.src = newHeroImgSrc;
   heroImg.dataset.imageType = imageType;
-  
+
   const thumbnailButtons = document.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
   thumbnailButtons.forEach((button) => {
     const btnImageType = button.dataset.imageType;
@@ -66,17 +66,17 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
 
 async function updatePillTextValues(productDetails) {
   const pillButtons = document.querySelectorAll('.pdpx-pill-container[data-name], .pdpx-mini-pill-container .pdpx-mini-pill-image-container[data-name]');
-  
+
   pillButtons.forEach((pill) => {
     const pillName = pill.dataset.name;
-    
-    for (const [attrKey, options] of Object.entries(productDetails.attributes || {})) {
+
+    for (const options of Object.values(productDetails.attributes || {})) {
       const matchingOption = options.find((opt) => opt.name === pillName);
       if (matchingOption) {
         const nameSpan = pill.querySelector('.pdpx-pill-text-name');
         const priceSpan = pill.querySelector('.pdpx-pill-text-price, .pdpx-mini-pill-price');
         const imgElement = pill.querySelector('.pdpx-pill-image, .pdpx-mini-pill-image');
-        
+
         if (nameSpan) nameSpan.textContent = matchingOption.title || matchingOption.name;
         if (priceSpan) priceSpan.textContent = matchingOption.priceAdjustment || '+US$0.00';
         if (imgElement && matchingOption.thumbnail) imgElement.src = matchingOption.thumbnail;
@@ -180,17 +180,17 @@ export default async function updateAllDynamicElements(productId) {
   }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
   await updateProductImages(normalizedProductDetails);
-  
+
   const currentAttributeKeys = Object.keys(normalizedProductDetails.attributes || {}).sort().join(',');
   const existingForm = document.querySelector('#pdpx-customization-inputs-form');
   const existingAttributeKeys = existingForm ? existingForm.dataset.attributeKeys || '' : '';
-  
+
   if (currentAttributeKeys !== existingAttributeKeys) {
     await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   } else {
     await updatePillTextValues(normalizedProductDetails);
   }
-  
+
   await updateProductPrice(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateDrawerContent(normalizedProductDetails, formDataObject);

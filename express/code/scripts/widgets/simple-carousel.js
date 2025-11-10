@@ -13,7 +13,7 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
 
-  if (carouselContent.length === 0) return;
+  if (carouselContent.length === 0) return undefined;
   const platform = createTag('div', { class: 'simple-carousel-platform' });
   const container = createTag('div', {
     class: 'simple-carousel-container',
@@ -175,4 +175,3 @@ export default async function createSimpleCarousel(selector, parent, options) {
   await cssLoaded;
   return initializeSimpleCarousel(selector, parent, options);
 }
-

@@ -99,7 +99,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
-  
+
   if (classicOptions.length > 0) {
     if (window.innerWidth < 768) {
       await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
@@ -109,7 +109,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
     }
   }
-  
+
   if (vividOptions.length > 0) {
     if (window.innerWidth < 768) {
       await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
@@ -119,7 +119,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
     }
   }
-  
+
   miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }

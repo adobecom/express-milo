@@ -755,15 +755,15 @@ main .section .pdpx-drawer-description {
   border-color: var(--color-black);
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* TOOLTIP CONTENT */
+/* TOOLTIP CONTENT - Left-aligned to prevent clipping at viewport edges */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
   position: absolute;
   font-size: 14px;
   padding: 18px 12px;
-  left: 50%;
+  left: 0;
   bottom: 100%;
-  transform: translate(-50%, -8px);
+  transform: translate(0, -8px);
   background: var(--color-gray-800-variant);
   color: var(--color-white);
   border-radius: 6px;
@@ -782,13 +782,13 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--spacing-100);
 }
 
-/* TOOLTIP ARROW */
+/* TOOLTIP ARROW - Aligned with left edge of tooltip */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 12px;
   bottom: 100%;
-  transform: translate(-50%, -4px) rotate(45deg);
+  transform: translate(0, -4px) rotate(45deg);
   width: 8px;
   height: 8px;
   background: var(--color-gray-800-variant);
@@ -803,19 +803,6 @@ main .section .pdpx-drawer-description {
   opacity: 1;
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
-}
-
-/* First item tooltip align left to prevent clipping (skip carousel triggers with nth-child(2)) */
-.pdpx-mini-pill-container:nth-child(2) .pdpx-mini-pill-image-container:hover::after,
-.simple-carousel-item:nth-child(2) .pdpx-mini-pill-image-container:hover::after {
-  left: 0;
-  transform: translate(0, -8px);
-}
-
-.pdpx-mini-pill-container:nth-child(2) .pdpx-mini-pill-image-container:hover::before,
-.simple-carousel-item:nth-child(2) .pdpx-mini-pill-image-container:hover::before {
-  left: 12px;
-  transform: translate(0, -4px) rotate(45deg);
 }
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
