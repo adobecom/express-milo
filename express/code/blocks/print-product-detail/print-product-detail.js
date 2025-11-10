@@ -63,7 +63,6 @@ async function updatePageWithProductDetails(productDetails) {
     formDataObject,
     productDetails.productType,
   );
-  debugger;
   checkoutButton.href = checkoutButtonHref;
 }
 

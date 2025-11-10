@@ -15,13 +15,7 @@ async function createStandardSelector(
   formDataObject,
   CTAText,
 ) {
-  let defaultValue = formDataObject[hiddenSelectInputName];
-  const isDefaultValueAnOptionName = customizationOptions
-    .some((option) => option.name === defaultValue);
-  if (isDefaultValueAnOptionName) {
-    defaultValue = customizationOptions.find((option) => option.name === defaultValue).name;
-  }
-  const selectedOption = defaultValue || customizationOptions[0].name;
+  const defaultValue = formDataObject[hiddenSelectInputName];
   const productId = productDetails.id;
 
   const options = customizationOptions.map((option) => ({
@@ -35,7 +29,7 @@ async function createStandardSelector(
     label: labelText,
     labelPosition: 'side',
     options,
-    defaultValue: selectedOption,
+    defaultValue,
     onChange: () => {
       updateAllDynamicElements(productId);
     },
@@ -48,13 +42,11 @@ async function createStandardSelector(
   if (CTAText && isTriBlend) {
     const wrapper = createTag('div', { class: 'picker-with-link' });
     wrapper.appendChild(pickerContainer);
-
     const standardSelectorCTA = createTag('button', { class: 'picker-link', type: 'button' }, CTAText);
     standardSelectorCTA.addEventListener('click', async () => {
       await openDrawer(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, 'sizeChart');
     });
     wrapper.appendChild(standardSelectorCTA);
-
     return wrapper;
   }
   return pickerContainer;
