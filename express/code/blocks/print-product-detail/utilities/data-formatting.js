@@ -1,8 +1,7 @@
 import { formatPriceZazzle, formatPaperThickness, formatPaperWeight } from './utility-functions.js';
 
-export function formatProductDescriptions(productDetails, selectedOptions = {}) {
+export function formatProductDescriptions(attributes, selectedOptions = {}) {
   const productDescriptions = [];
-  const attributes = productDetails.product?.attributes;
   if (!attributes) {
     return productDescriptions;
   }
@@ -154,7 +153,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
     productDetails.product.singularUnitLabel,
   );
   dataObject.attributes.qty = quantitiesOptions;
-  dataObject.productDescriptions = formatProductDescriptions(productDetails);
+  dataObject.productDescriptions = formatProductDescriptions(productDetails.product.attributes);
   return dataObject;
 }
 

@@ -158,7 +158,7 @@ export default async function updateAllDynamicElements(productId) {
   await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
-    attributes: productDetails.attributes,
+    attributes: productDetails.product.attributes,
     formData: formDataObject,
   });
 }

@@ -1,14 +1,19 @@
 import { createTag } from '../../../scripts/utils.js';
 
 export function convertImageSize(imageURL, newSize) {
-  const lastUnderscoreIndex = imageURL.lastIndexOf('_');
-  const afterUnderscore = imageURL.substring(lastUnderscoreIndex + 1);
-  const extensionIndex = afterUnderscore.indexOf('.');
-  const fileExtension = extensionIndex !== -1 ? afterUnderscore.substring(extensionIndex) : '';
-  const newImageURL = imageURL.substring(0, lastUnderscoreIndex + 1) + newSize + fileExtension;
-  const dotIndex = newImageURL.lastIndexOf('.');
-  const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=1000`;
-  return newImageURLFinal;
+  if (!imageURL || !newSize) return imageURL;
+  try {
+    const lastUnderscoreIndex = imageURL.lastIndexOf('_');
+    const afterUnderscore = imageURL.substring(lastUnderscoreIndex + 1);
+    const extensionIndex = afterUnderscore.indexOf('.');
+    const fileExtension = extensionIndex !== -1 ? afterUnderscore.substring(extensionIndex) : '';
+    const newImageURL = imageURL.substring(0, lastUnderscoreIndex + 1) + newSize + fileExtension;
+    const dotIndex = newImageURL.lastIndexOf('.');
+    const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=1000`;
+    return newImageURLFinal;
+  } catch (error) {
+    return imageURL;
+  }
 }
 
 export function createHeroImageSrcset(imageURL) {
