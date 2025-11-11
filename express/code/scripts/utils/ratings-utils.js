@@ -19,9 +19,9 @@ const isProd = [
 
 const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adobe.io/v1';
 
-// Errors, Analytics & Logging
+// Errors & Logging
 const lanaOptions = {
-  sampleRate: 10,
+  sampleRate: 1,
   tags: 'Express_Milo, RnR Block',
 };
 
