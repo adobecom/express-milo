@@ -153,17 +153,17 @@
     color: var(--color-black);
   }
   .pdpx-star-ratings .icon-star-empty {
-    color: var(--color-gray-300);
+    color: var(--color-dark-gray);
   }
   .pdpx-ratings-number {
+    font-size: var(--body-font-size-s);
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 130%;
-    letter-spacing: 0;
+    font-size: var(--body-font-size-s);
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--color-dark-gray);
   }
 }
 .pdpx-delivery-estimate-pill {
