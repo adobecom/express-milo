@@ -4,19 +4,25 @@ main .sticky-promo-bar {
     right: 0;
     bottom: 0;
     transform: translateY(calc(100% + 24px));
-    background-color: var(--color-dark-gray);
     color: white;
+    font-weight: 900;
     z-index: 10;
     transition: transform 0.4s;
-    padding: var(--spacing-300);
-    max-width: 100%;
-    margin: 0 auto;
+    padding: var(--spacing-350) var(--spacing-300);
     box-sizing: border-box;
+}
+
+main .sticky-promo-bar > div,
+main .sticky-promo-bar > p {
+    background-color: var(--color-dark-gray);
     border-radius: 10px;
+    padding: var(--spacing-200);
     text-align: center;
     font-size: 14px;
     line-height: 1.3;
     font-weight: 400;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 main .sticky-promo-bar.shown {
@@ -30,9 +36,7 @@ main .sticky-promo-bar.clone {
 
 main .sticky-promo-bar.rounded {
     border-radius: 10px;
-    font-weight: 300;
-    padding: 7px 16px 9px;
-    margin: 12px auto;
+    font-weight: 400;
     box-sizing: border-box;
     text-align: center;
 }
@@ -113,16 +117,14 @@ main .sticky-promo-bar .close:after {
     font-size: var(--body-font-size-s);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
     main .sticky-promo-bar {
-        max-width: 1440px;
-        padding: var(--spacing-300) var(--spacing-500);
+        padding: var(--spacing-350) var(--spacing-500);
     }
 }
 
 @media (min-width: 1200px) {
     main .sticky-promo-bar {
-        max-width: 1440px;
-        padding: var(--spacing-300) var(--spacing-600);
+        padding: var(--spacing-350) var(--spacing-600);
     }
 }
