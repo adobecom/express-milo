@@ -1,12 +1,12 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from './fetchData/fetchProductDetails.js';
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize, createHeroImageSrcset } from './utilities/utility-functions.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
 
 let createTag;
@@ -27,21 +27,21 @@ async function createProductInfoContainer(productDetails, drawer) {
 
 async function createGlobalContainer(productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container', id: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
-  const { curtain, drawer } = await createDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(
     productDetails.realViews,
     productDetails.heroImage,
   );
+  const { curtain, drawer } = await createDrawer(productDetails);
   const productInfoSection = await createProductInfoContainer(productDetails, drawer);
   globalContainer.append(productImagesContainer, productInfoSection);
   document.body.append(curtain);
   return globalContainer;
 }
 
-async function updatePageWithProductDetails(productDetails) {
-  const globalContainer = document.getElementById('pdpx-global-container');
+async function updatePageWithProductDetails(productDetails, globalContainer) {
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
-  productHeroImage.src = productDetails.heroImage;
+  productHeroImage.srcset = createHeroImageSrcset(productDetails.heroImage);
+  productHeroImage.src = convertImageSize(productDetails.heroImage, '500');
   productHeroImage.removeAttribute('data-skeleton');
   const productTitle = globalContainer.querySelector('#pdpx-product-title');
   productTitle.textContent = productDetails.productTitle;
@@ -162,10 +162,23 @@ export default async function decorate(block) {
   let dataObject = createEmptyDataObject(templateId, ietf);
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
-  const productDetails = fetchProductDetails(templateId);
+  const productDetails = fetchAPIData(templateId, null, 'getproductfromtemplate', 'templateId');
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    updatePageWithProductDetails(dataObject);
+    try {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = convertImageSize(dataObject.heroImage, '750');
+      link.fetchPriority = 'high';
+      link.setAttribute('imagesrcset', createHeroImageSrcset(dataObject.heroImage));
+      link.setAttribute('imagesizes', '(max-width: 600px) 100vw, 50vw');
+      head.appendChild(link);
+    } catch (e) {
+      /* no-op */
+    }
+    updatePageWithProductDetails(dataObject, globalContainer);
     // SEO: title/description (respect authored), initial Product JSON-LD
     // (updated later when price arrives)
     const canonicalUrl = getCanonicalUrl();
