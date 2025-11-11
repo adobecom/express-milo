@@ -3,7 +3,7 @@ main .sticky-promo-bar {
     left: 0;
     right: 0;
     bottom: 0;
-    transform: translateY(calc(100% + 24px));
+    transform: translateY(calc(100% + var(--spacing-400)));
     color: white;
     font-weight: 900;
     z-index: 10;
@@ -18,10 +18,10 @@ main .sticky-promo-bar > p {
     border-radius: 10px;
     padding: var(--spacing-200);
     text-align: center;
-    font-size: 14px;
-    line-height: 1.3;
-    font-weight: 400;
-    max-width: 1440px;
+    font-size: var(--body-font-size-s);
+    line-height: var(--heading-line-height);
+    font-weight: var(--ax-body-weight);
+    max-width: var(--block-wd-max-width);
     margin: 0 auto;
 }
 
@@ -36,24 +36,24 @@ main .sticky-promo-bar.clone {
 
 main .sticky-promo-bar.rounded {
     border-radius: 10px;
-    font-weight: 400;
+    font-weight: var(--ax-body-weight);
     box-sizing: border-box;
     text-align: center;
 }
 
 body[data-device="mobile"] main .sticky-promo-bar.loadinbody {
-    margin: 12px auto;
+    margin: var(--spacing-200) auto;
     box-sizing: border-box;
 }
 
 main .sticky-promo-bar:not(.rounded) a:any-link {
     color: white;
     border: 2px solid white;
-    border-radius: 20px;
+    border-radius: var(--spacing-350);
     padding: 3px 10px 5px 10px;
     text-decoration: none;
-    margin-left: 20px;
-    font-weight: 400;
+    margin-left: var(--spacing-350);
+    font-weight: var(--ax-body-weight);
     font-size: 0.9em;
     white-space: nowrap;
     display: inline-block;
