@@ -36,10 +36,15 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
     const imageURL = realViews[Object.keys(realViews)[i]];
     const imageURLSmall = convertImageSize(imageURL, '100');
     const altTextThumbnail = `Product Image Thumbnail: ${Object.keys(realViews)[i]}`;
-    const imageThumbnailCarouselItemImage = createTag('img', { class: 'pdpx-image-thumbnail-carousel-item-image',
+    const imageThumbnailCarouselItemImage = createTag('img', {
+      class: 'pdpx-image-thumbnail-carousel-item-image',
       'data-image-type': Object.keys(realViews)[i],
       alt: altTextThumbnail,
       src: imageURLSmall,
+      loading: 'lazy',
+      decoding: 'async',
+      width: '76',
+      height: '76',
     });
     imageThumbnailCarouselItem.addEventListener('click', (element) => {
       imageThumbnailCarouselItem.classList.add('selected');

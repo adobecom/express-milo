@@ -165,6 +165,19 @@ export default async function decorate(block) {
   const productDetails = fetchAPIData(templateId, null, 'getproductfromtemplate', 'templateId');
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
+    try {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = convertImageSize(dataObject.heroImage, '750');
+      link.fetchPriority = 'high';
+      link.setAttribute('imagesrcset', createHeroImageSrcset(dataObject.heroImage));
+      link.setAttribute('imagesizes', '(max-width: 600px) 100vw, 50vw');
+      head.appendChild(link);
+    } catch (e) {
+      /* no-op */
+    }
     updatePageWithProductDetails(dataObject, globalContainer);
     // SEO: title/description (respect authored), initial Product JSON-LD
     // (updated later when price arrives)
