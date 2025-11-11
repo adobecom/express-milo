@@ -709,7 +709,7 @@ export class EasyUpload {
     async refreshQRCode() {
         try {
             console.log('Refreshing QR code...');
-            this.cleanup();
+            await this.cleanup();
             await this.initializeQRCode();
         } catch (error) {
             console.error('Failed to refresh QR code:', error);

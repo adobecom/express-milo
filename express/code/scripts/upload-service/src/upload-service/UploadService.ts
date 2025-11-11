@@ -609,7 +609,7 @@ export class UploadService {
       }
 
       const latestVersion = versions.result.versions[versions.result.versions.length - 1]["version"];
-      this.logService?.log("LOG_UPLOAD_RESPONSE", "getAssetVersion", "Retrieved asset version", {
+      this.logService?.log("LOG_UPLOAD_STATUS", "getAssetVersion", "Retrieved asset version", {
         assetId: asset.assetId,
         version: latestVersion,
         totalVersions: versions.result.versions.length

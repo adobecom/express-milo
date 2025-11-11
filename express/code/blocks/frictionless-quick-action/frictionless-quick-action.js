@@ -91,10 +91,10 @@ function showErrorToast(block, msg) {
 
 function easyUploadExperiment(quickActionId, docConfig, appConfig, exportConfig, contConfig, fromQrCode = false) {
   appConfig.metaData.variant = quickActionId;
-  appConfig.metaData.promoid = EasyUploadVariantsPromoidMap[variant];
+  appConfig.metaData.promoid = EasyUploadVariantsPromoidMap[quickActionId];
   appConfig.metaData.mv = 'other';
   appConfig.metaData.entryPoint = fromQrCode ? 'seo-quickaction-qr-code' : 'seo-quickaction-image-upload';
-  switch (variant) {
+  switch (quickActionId) {
     case EasyUploadVariants.removeBackgroundEasyUploadVariant:
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
