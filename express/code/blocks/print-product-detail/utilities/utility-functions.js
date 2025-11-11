@@ -9,7 +9,7 @@ export function convertImageSize(imageURL, newSize) {
     const fileExtension = extensionIndex !== -1 ? afterUnderscore.substring(extensionIndex) : '';
     const newImageURL = imageURL.substring(0, lastUnderscoreIndex + 1) + newSize + fileExtension;
     const dotIndex = newImageURL.lastIndexOf('.');
-    const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=1000`;
+    const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=${newSize}`;
     return newImageURLFinal;
   } catch (error) {
     return imageURL;

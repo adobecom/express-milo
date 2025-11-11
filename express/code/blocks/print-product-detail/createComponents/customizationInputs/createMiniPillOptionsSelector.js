@@ -34,7 +34,7 @@ export default async function createMiniPillOptionsSelector(
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
-    const optionImageContainer = createTag('button', {
+    const optionButton = createTag('button', {
       class: `pdpx-mini-pill-image-container ${customizationOptions[i].name === defaultValue ? 'selected' : ''}`,
       type: 'button',
       'data-name': customizationOptions[i].name,
@@ -52,18 +52,18 @@ export default async function createMiniPillOptionsSelector(
       'aria-hidden': 'true',
       decoding: 'async',
     });
-    optionImageContainer.appendChild(optionImage);
-    const optionPriceContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
-    const optionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    optionImageContainer.addEventListener('click', async (element) => {
+    optionButton.appendChild(optionImage);
+    optionButton.addEventListener('click', async (element) => {
       const allInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
       allInputs.forEach((input) => {
         input.value = element.currentTarget.getAttribute('data-name');
       });
       updateAllDynamicElements(productDetails.id);
     });
+    const optionPriceContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
+    const optionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
     optionPriceContainer.appendChild(optionPrice);
-    miniPillOption.append(optionImageContainer, optionPriceContainer);
+    miniPillOption.append(optionButton, optionPriceContainer);
     optionsContainer.appendChild(miniPillOption);
   }
   if (CTALinkText) {
