@@ -22,7 +22,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
   const labelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, defaultValueOption.title);
   labelNameContainer.append(miniPillSelectorLabel, labelName);
   labelContainer.appendChild(labelNameContainer);
-  miniPillSelectorContainer.appendChild(labelContainer);
   const optionsContainerWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-container-wrapper', role: 'radiogroup', 'aria-label': labelText });
   const classicOptions = customizationOptions.filter((option) => option.printingProcess === 'classic');
   const vividOptions = customizationOptions.filter((option) => option.printingProcess === 'vivid');
@@ -101,6 +100,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
     });
     labelContainer.appendChild(drawerLink);
   }
-  miniPillSelectorContainer.append(optionsContainerWrapper, hiddenSelectInput);
+  miniPillSelectorContainer.append(labelContainer, optionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }
