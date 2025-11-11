@@ -1,15 +1,15 @@
 const { test, expect } = require('@playwright/test');
-const { features } = require('./pricing-cards.spec.cjs');
-const PricingCardsBlock = require('./pricing-cards.page.cjs');
+const { features } = require('./gen-ai-cards.spec.cjs');
+const GenAiCardsBlock = require('./gen-ai-cards.page.cjs');
 const { runAccessibilityTest } = require('../../libs/accessibility.cjs');
 const { runSeoChecks } = require('../../libs/seo-check.cjs');
 
-test.describe('PricingCardsBlock Test Suite', () => {
-  // Test Id : 0 : @pricing-cards-default
+test.describe('GenAiCardsBlock Test Suite', () => {
+  // Test Id : 0 : @gen-ai-cards-default
   test(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}`;
-    const block = new PricingCardsBlock(page, features[0].selector);
+    const block = new GenAiCardsBlock(page, features[0].selector);
     console.info(`[Test Page]: ${testUrl}`);
 
     await test.step('step-1: Navigate to page', async () => {
