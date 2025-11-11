@@ -100,6 +100,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
     });
     labelContainer.appendChild(drawerLink);
   }
+  hiddenSelectInput.value = defaultValue;
   miniPillSelectorContainer.append(labelContainer, optionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }

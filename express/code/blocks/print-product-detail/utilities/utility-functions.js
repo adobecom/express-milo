@@ -12,7 +12,6 @@ export function convertImageSize(imageURL, newSize) {
     const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=${newSize}`;
     return newImageURLFinal;
   } catch (error) {
-    console.error(error);
     return imageURL;
   }
 }

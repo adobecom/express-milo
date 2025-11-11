@@ -17,12 +17,10 @@ async function createStandardSelector(
 ) {
   const defaultValue = formDataObject[hiddenSelectInputName];
   const productId = productDetails.id;
-
   const options = customizationOptions.map((option) => ({
     value: option.name,
     text: option.title,
   }));
-
   const pickerContainer = await createPicker({
     id: `pdpx-standard-selector-${hiddenSelectInputName}`,
     name: hiddenSelectInputName,
@@ -34,7 +32,6 @@ async function createStandardSelector(
       updateAllDynamicElements(productId);
     },
   });
-
   let isTriBlend = false;
   if (productDetails.productType === 'zazzle_shirt') {
     isTriBlend = formDataObject.style === 'triblend_shortsleeve3413';
@@ -59,26 +56,38 @@ function createPillOptionsSelector(
   productId,
   defaultValue,
 ) {
-  const hiddenSelectInputId = `pdpx-hidden-input-${hiddenSelectInputName}`;
-  const selectedPillOption = defaultValue || customizationOptions[0].name;
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
   pillSelectorContainer.appendChild(pillSelectorContainerLabel);
   const pillSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputId });
+  const hiddenSelectInput = createTag('select', {
+    class: 'pdpx-hidden-select-input',
+    name: hiddenSelectInputName,
+    id: `pdpx-hidden-input-${hiddenSelectInputName}`,
+    value: defaultValue,
+    'aria-hidden': 'true',
+  });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
-    const isSelected = customizationOptions[i].name === selectedPillOption;
+    const isSelected = customizationOptions[i].name === defaultValue;
     hiddenSelectInput.appendChild(option);
-    const pillContainer = createTag('button', { class: isSelected ? 'pdpx-pill-container selected' : 'pdpx-pill-container', type: 'button', 'data-name': customizationOptions[i].name });
+    const pillContainer = createTag('button', {
+      class: `pdpx-pill-container ${isSelected ? 'selected' : ''}`,
+      type: 'button',
+      'data-name': customizationOptions[i].name,
+      role: 'radio',
+      'aria-label': customizationOptions[i].title,
+      'aria-checked': isSelected ? 'true' : 'false',
+    });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
     const inputPillImage = createTag('img', {
       class: 'pdpx-pill-image',
       src: customizationOptions[i].thumbnail,
       width: '54',
       height: '54',
-      alt: `${labelText} option image thumbnail: ${customizationOptions[i].title}`,
+      alt: `${labelText}: ${customizationOptions[i].title}`,
       decoding: 'async',
+      'aria-hidden': 'true',
     });
     inputPillImageContainer.appendChild(inputPillImage);
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
@@ -89,15 +98,11 @@ function createPillOptionsSelector(
     pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
     pillContainer.addEventListener('click', async (element) => {
-      pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
-        pill.classList.remove('selected');
-      });
-      element.currentTarget.classList.toggle('selected');
       hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
   }
-  hiddenSelectInput.value = selectedPillOption;
+  hiddenSelectInput.value = defaultValue;
   pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
   return pillSelectorContainer;
 }

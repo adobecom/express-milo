@@ -145,10 +145,7 @@ export default async function updateAllDynamicElements(productId) {
       const valueExists = normalizedProductDetails.attributes[key].some(
         (v) => String(v.name) === String(value) || v.name === value,
       );
-
       if (!valueExists) {
-        // eslint-disable-next-line no-console
-        console.warn(`Value "${value}" for "${key}" not found in options, resetting to first option`);
         formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
       }
     }

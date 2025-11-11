@@ -80,6 +80,7 @@ export default async function createMiniPillOptionsSelector(
     });
     labelAndCTAContainer.appendChild(drawerLink);
   }
+  hiddenSelectInput.value = defaultValue;
   miniPillSelectorContainer.append(labelAndCTAContainer, optionsContainer, hiddenSelectInput);
   return miniPillSelectorContainer;
 }
