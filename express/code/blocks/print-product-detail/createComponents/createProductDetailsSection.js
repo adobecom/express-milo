@@ -107,10 +107,22 @@ export async function createCheckoutButton(productDetails) {
   if (buttonDisabled) {
     checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
   }
-  const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
+  const CTAIcon = createTag('img', {
+    class: 'pdpx-checkout-button-icon',
+    src: '/express/code/icons/print-icon.svg',
+    width: '22',
+    height: '22',
+    alt: 'Print icon',
+  });
   const CTATextElement = createTag('span', { class: 'pdpx-checkout-button-text' }, CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
-  const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
+  const checkoutButtonSubheadImage = createTag('img', {
+    class: 'pdpx-checkout-button-subhead-image',
+    src: '/express/code/icons/powered-by-zazzle.svg',
+    alt: 'Zazzle logo',
+    width: '123',
+    height: '14',
+  });
   const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
   if (!buttonDisabled) {

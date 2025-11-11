@@ -72,7 +72,14 @@ function createPillOptionsSelector(
     hiddenSelectInput.appendChild(option);
     const pillContainer = createTag('button', { class: isSelected ? 'pdpx-pill-container selected' : 'pdpx-pill-container', type: 'button', 'data-name': customizationOptions[i].name });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
-    const inputPillImage = createTag('img', { class: 'pdpx-pill-image', src: customizationOptions[i].thumbnail });
+    const inputPillImage = createTag('img', {
+      class: 'pdpx-pill-image',
+      src: customizationOptions[i].thumbnail,
+      width: '54',
+      height: '54',
+      alt: `${labelText} option image thumbnail: ${customizationOptions[i].title}`,
+      decoding: 'async',
+    });
     inputPillImageContainer.appendChild(inputPillImage);
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
     inputPillTextContainer.append(

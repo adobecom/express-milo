@@ -93,6 +93,8 @@
       width: max-content;
       .pdpx-compare-price-info-icon {
         width: 12px;
+        height: 12px;
+        aspect-ratio: 1/1;
       }
     }
     .pdpx-info-tooltip-content {
@@ -273,6 +275,7 @@
 }
 .pdpx-checkout-button-subhead-image {
   margin-bottom: 1px;
+  aspect-ratio: 123/14;
 }
 main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   white-space: nowrap;
@@ -283,7 +286,11 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-checkout-button-subhead-text {
   text-align: right;
 }
-
+.pdpx-checkout-button-icon {
+  aspect-ratio: 1/1;
+  width: 22px;
+  height: 22px;
+}
 .pdpx-checkout-button-disabled a.pdpx-checkout-button {
   background-color: var(--color-dark-gray);
   border-radius: 10px;
@@ -356,6 +363,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
+  aspect-ratio: 1/1;
 }
 .pdpx-pill-image {
   width: 100%;
@@ -568,6 +576,7 @@ main .section .pdpx-drawer-description {
   transition: var(--standard-transition-hover-out-border-color);
   .pdpx-mini-pill-image {
     border-radius: 4px;
+    aspect-ratio: 1/1;
     width: 100%;
     height: 100%;
     object-fit: cover;

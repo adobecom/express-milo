@@ -50,7 +50,13 @@ export default async function createMiniPillOptionsSelector(
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
     const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
     const altTextMiniPill = `${labelText} Option Image Thumbnail: ${customizationOptions[i].title}`;
-    const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', alt: altTextMiniPill, src: customizationOptions[i].thumbnail });
+    const miniPillOptionImage = createTag('img', {
+      class: 'pdpx-mini-pill-image',
+      alt: altTextMiniPill,
+      src: customizationOptions[i].thumbnail,
+      width: '48',
+      height: '48',
+    });
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);

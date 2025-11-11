@@ -100,7 +100,13 @@ export async function createPriceLockup(productDetails) {
   ['mouseleave'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
-  comparePriceInfoIconButton.appendChild(createTag('img', { class: 'pdpx-compare-price-info-icon', src: '/express/code/icons/info.svg' }));
+  comparePriceInfoIconButton.appendChild(createTag('img', {
+    class: 'pdpx-compare-price-info-icon',
+    src: '/express/code/icons/info.svg',
+    width: '12',
+    height: '12',
+    alt: 'Compare Value Info icon',
+  }));
   comparePriceInfoIconContainer.append(comparePriceInfoIconButton, infoTooltipContent);
   priceInfoRow.append(
     priceContainer,
