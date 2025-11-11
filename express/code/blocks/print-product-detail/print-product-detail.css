@@ -172,7 +172,7 @@
   width: 100%;
   order: 2;
   .pdpx-product-hero-image-container {
-    margin-bottom: 0;
+    margin-bottom: var(--spacing-100);
     aspect-ratio: 1/1;
     border-radius: 12px;
     overflow: hidden;
@@ -1185,7 +1185,10 @@ main .section .pdpx-drawer-description {
   .pdpx-assurance-lockup-container {
     flex-direction: row;
   }
-  .pdpx-image-thumbnail-carousel-item {
+  .pdpx-product-images-container .pdpx-product-hero-image-container {
+    margin-bottom: var(--spacing-200);
+  }
+  .pdpx-product-images-container .pdpx-image-thumbnail-carousel-item {
     width: 76px;
     height: 76px;
   }

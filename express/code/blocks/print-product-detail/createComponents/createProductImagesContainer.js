@@ -4,15 +4,6 @@ import createSimpleCarousel from '../../../scripts/widgets/simple-carousel.js';
 
 let createTag;
 
-export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
-  const { productHeroImage, productHeroImageContainer } = createproductHeroImage(heroImage, heroImageType);
-  const imageThumbnailCarouselContainer = await createProductThumbnailCarousel(realViews, heroImageType, productHeroImage);
-  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
-  return productImagesContainer;
-}
-
 export function createproductHeroImage(heroImage, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
@@ -90,4 +81,27 @@ export async function createProductThumbnailCarousel(realViews, heroImageType, p
   });
 
   return carouselWrapper;
+}
+
+export default async function createProductImagesContainer(
+  realViews,
+  heroImage,
+  heroImageType = 'Front',
+) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const productImagesContainer = createTag('div', {
+    class: 'pdpx-product-images-container',
+    id: 'pdpx-product-images-container',
+  });
+  const { productHeroImage, productHeroImageContainer } = createproductHeroImage(
+    heroImage,
+    heroImageType,
+  );
+  const imageThumbnailCarouselContainer = await createProductThumbnailCarousel(
+    realViews,
+    heroImageType,
+    productHeroImage,
+  );
+  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
+  return productImagesContainer;
 }
