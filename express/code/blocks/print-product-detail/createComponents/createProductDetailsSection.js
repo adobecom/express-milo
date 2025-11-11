@@ -28,7 +28,7 @@ export default async function createProductDetailsSection(productDescriptions) {
     qty: null,
   };
   BlockMediator.subscribe('product:updated', (e) => {
-    const { productDetails, formData } = e.newValue;
+    const { attributes, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
     let changedField = null;
     Object.keys(formData).forEach((key) => {
@@ -36,7 +36,7 @@ export default async function createProductDetailsSection(productDescriptions) {
         changedField = key;
       }
     });
-    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
+    const updatedDescriptions = formatProductDescriptions(attributes, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);

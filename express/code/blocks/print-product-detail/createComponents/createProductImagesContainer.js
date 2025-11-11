@@ -1,12 +1,11 @@
 import { getLibs } from '../../../scripts/utils.js';
-import { convertImageSize } from '../utilities/utility-functions.js';
+import { convertImageSize, createHeroImageSrcset } from '../utilities/utility-functions.js';
 
 let createTag;
 
 export function createproductHeroImage(heroImageSrc, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
-  const heroImageSrcLarge = heroImageSrc ? convertImageSize(heroImageSrc, '1000') : heroImageSrc;
   const productHeroImage = createTag('img', {
     class: 'pdpx-product-hero-image',
     id: 'pdpx-product-hero-image',
@@ -15,8 +14,14 @@ export function createproductHeroImage(heroImageSrc, heroImageType) {
     decoding: 'async',
     loading: 'eager',
     alt: altTextHero,
-    src: heroImageSrcLarge,
+    sizes: '(max-width: 600px) 100vw, 50vw',
+    width: '1000',
+    height: '1000',
   });
+  if (heroImageSrc) {
+    productHeroImage.srcset = createHeroImageSrcset(heroImageSrc);
+    productHeroImage.src = convertImageSize(heroImageSrc, '1000');
+  }
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }

@@ -6,7 +6,7 @@ import createProductImagesContainer, { createProductThumbnailCarousel } from './
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize, createHeroImageSrcset } from './utilities/utility-functions.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
 
 let createTag;
@@ -38,9 +38,9 @@ async function createGlobalContainer(productDetails) {
   return globalContainer;
 }
 
-async function updatePageWithProductDetails(productDetails) {
-  const globalContainer = document.getElementById('pdpx-global-container');
+async function updatePageWithProductDetails(productDetails, globalContainer) {
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
+  productHeroImage.srcset = createHeroImageSrcset(productDetails.heroImage);
   productHeroImage.src = convertImageSize(productDetails.heroImage, '1000');
   productHeroImage.removeAttribute('data-skeleton');
   const productTitle = globalContainer.querySelector('#pdpx-product-title');
@@ -165,7 +165,7 @@ export default async function decorate(block) {
   const productDetails = fetchAPIData(templateId, null, 'getproductfromtemplate', 'templateId');
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    updatePageWithProductDetails(dataObject);
+    updatePageWithProductDetails(dataObject, globalContainer);
     // SEO: title/description (respect authored), initial Product JSON-LD
     // (updated later when price arrives)
     const canonicalUrl = getCanonicalUrl();
