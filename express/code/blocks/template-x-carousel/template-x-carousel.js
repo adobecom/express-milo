@@ -24,10 +24,10 @@ async function createTemplatesContainer(recipe, el) {
   const templatesContainer = createTag('div', { class: 'templates-container search-bar-gallery' });
 
   // Create custom properties for search bar variant
-  // TODO: Make baseUrl configurable via block config or environment
+  // Use web-only Branch.io URL to prevent app store prompts on mobile
   const customProperties = {
     customUrlConfig: {
-      baseUrl: 'https://adobesparkpost.app.link/8JaoEy0DrSb',
+      baseUrl: 'https://adobesparkpost-web.app.link/8JaoEy0DrSb',
       queryParams: 'source=seo-template',
     },
   };
