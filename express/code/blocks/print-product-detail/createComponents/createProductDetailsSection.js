@@ -71,14 +71,15 @@ export function createCheckoutButtonHref(templateId, parameters, productType) {
     taskId,
     loadPrintAddon: 'true',
     print: 'true',
-    action: 'pdp-cta',
+    action: 'customize-and-print-zazzle-iframe',
     source: 'a.com-print-and-deliver-seo',
+    entryPoint: 'a.com-print-and-deliver-seo',
     mv: 'other',
     url: 'express/print',
   });
   const urlParamsString = urlParams.toString();
   const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
-  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design-remix/template/${templateId}?${urlParamsStringFinal}`;
   return checkoutButtonHref;
 }
 

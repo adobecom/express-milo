@@ -18,7 +18,7 @@ export function convertImageSize(imageURL, newSize) {
 }
 
 export function createHeroImageSrcset(imageURL) {
-  const sizes = [400, 600, 800, 1000];
+  const sizes = [200, 400, 600, 800, 1000];
   return sizes.map((size) => `${convertImageSize(imageURL, size)} ${size}w`).join(', ');
 }
 

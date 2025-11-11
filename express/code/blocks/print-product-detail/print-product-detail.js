@@ -41,7 +41,7 @@ async function createGlobalContainer(productDetails) {
 async function updatePageWithProductDetails(productDetails, globalContainer) {
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
   productHeroImage.srcset = createHeroImageSrcset(productDetails.heroImage);
-  productHeroImage.src = convertImageSize(productDetails.heroImage, '1000');
+  productHeroImage.src = convertImageSize(productDetails.heroImage, '500');
   productHeroImage.removeAttribute('data-skeleton');
   const productTitle = globalContainer.querySelector('#pdpx-product-title');
   productTitle.textContent = productDetails.productTitle;

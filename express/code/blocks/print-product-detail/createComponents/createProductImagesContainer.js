@@ -15,12 +15,12 @@ export function createproductHeroImage(heroImageSrc, heroImageType) {
     loading: 'eager',
     alt: altTextHero,
     sizes: '(max-width: 600px) 100vw, 50vw',
-    width: '1000',
-    height: '1000',
+    width: '500',
+    height: '500',
   });
   if (heroImageSrc) {
     productHeroImage.srcset = createHeroImageSrcset(heroImageSrc);
-    productHeroImage.src = convertImageSize(heroImageSrc, '1000');
+    productHeroImage.src = convertImageSize(heroImageSrc, '500');
   }
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
@@ -50,7 +50,7 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
       });
       const thumbnailImageURL = element.currentTarget.querySelector('img').src;
       productHeroImage.srcset = createHeroImageSrcset(thumbnailImageURL);
-      productHeroImage.src = convertImageSize(thumbnailImageURL, '1000');
+      productHeroImage.src = convertImageSize(thumbnailImageURL, '500');
       productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
     });
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);
