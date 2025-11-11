@@ -1,5 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
-import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { formatProductDescriptions } from '../utilities/data-formatting.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 import { detectMobile } from '../utilities/utility-functions.js';
@@ -28,7 +28,7 @@ export default async function createProductDetailsSection(productDescriptions) {
     qty: null,
   };
   BlockMediator.subscribe('product:updated', (e) => {
-    const { productDetails, formData } = e.newValue;
+    const { attributes, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
     let changedField = null;
     Object.keys(formData).forEach((key) => {
@@ -36,7 +36,7 @@ export default async function createProductDetailsSection(productDescriptions) {
         changedField = key;
       }
     });
-    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
+    const updatedDescriptions = formatProductDescriptions(attributes, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);
@@ -71,14 +71,15 @@ export function createCheckoutButtonHref(templateId, parameters, productType) {
     taskId,
     loadPrintAddon: 'true',
     print: 'true',
-    action: 'pdp-cta',
+    action: 'customize-and-print-zazzle-iframe',
     source: 'a.com-print-and-deliver-seo',
+    entryPoint: 'a.com-print-and-deliver-seo',
     mv: 'other',
     url: 'express/print',
   });
   const urlParamsString = urlParams.toString();
   const urlParamsStringFinal = `${urlParamsString}&productSettings=${encodedParametersString}`;
-  const checkoutButtonHref = `https://new.express.adobe.com/design/template/${templateId}?${urlParamsStringFinal}`;
+  const checkoutButtonHref = `https://new.express.adobe.com/design-remix/template/${templateId}?${urlParamsStringFinal}`;
   return checkoutButtonHref;
 }
 
@@ -100,14 +101,29 @@ export async function createCheckoutButton(productDetails) {
   }
   const buttonDisabled = outOfRegion || isMobile;
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
-  const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
+  const checkoutButton = createTag('a', {
+    class: 'pdpx-checkout-button',
+    id: 'pdpx-checkout-button',
+    href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
   if (buttonDisabled) {
     checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
   }
-  const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
+  const CTAIcon = createTag('img', {
+    class: 'pdpx-checkout-button-icon',
+    src: '/express/code/icons/print-icon.svg',
+    width: '22',
+    height: '22',
+    alt: 'Print icon',
+  });
   const CTATextElement = createTag('span', { class: 'pdpx-checkout-button-text' }, CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
-  const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
+  const checkoutButtonSubheadImage = createTag('img', {
+    class: 'pdpx-checkout-button-subhead-image',
+    src: '/express/code/icons/powered-by-zazzle.svg',
+    alt: 'Zazzle logo',
+    width: '123',
+    height: '14',
+  });
   const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
   if (!buttonDisabled) {

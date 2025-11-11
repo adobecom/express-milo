@@ -100,7 +100,13 @@ export async function createPriceLockup(productDetails) {
   ['mouseleave'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
-  comparePriceInfoIconButton.appendChild(createTag('img', { class: 'pdpx-compare-price-info-icon', src: '/express/code/icons/info.svg' }));
+  comparePriceInfoIconButton.appendChild(createTag('img', {
+    class: 'pdpx-compare-price-info-icon',
+    src: '/express/code/icons/info.svg',
+    width: '12',
+    height: '12',
+    alt: 'Compare Value Info icon',
+  }));
   comparePriceInfoIconContainer.append(comparePriceInfoIconButton, infoTooltipContent);
   priceInfoRow.append(
     priceContainer,
@@ -118,7 +124,13 @@ export function createDeliveryEstimatePill(productDetails) {
     productDetails.deliveryEstimateMaxDate,
   );
   const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
-  const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
+  const deliveryEstimatePillIcon = createTag('img', {
+    class: 'pdpx-delivery-estimate-pill-icon',
+    src: '/express/code/icons/delivery-truck.svg',
+    alt: 'Delivery Estimate Shipping Icon',
+    width: '32',
+    height: '17',
+  });
   const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text', id: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
   const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.append(
