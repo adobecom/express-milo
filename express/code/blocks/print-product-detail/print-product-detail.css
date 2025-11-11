@@ -178,6 +178,11 @@
   padding: var(--spacing-100);
   gap: var(--spacing-75);
   margin-bottom: 0;
+  .pdpx-delivery-estimate-pill-icon {
+    width: 32px;
+    height: 17px;
+    aspect-ratio: 32/17;
+  }
 }
 /* END HEADER SECTION CONTENT */
 
