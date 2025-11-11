@@ -48,7 +48,7 @@ function wrapActions(sourceStore, stateSignal) {
 }
 
 async function createSignalBackedStore() {
-  const [{ signal, computed, batch }, { createZazzlePDPStore }] = await Promise.all([
+  const [{ signal, computed }, { createZazzlePDPStore }] = await Promise.all([
     loadSignalsModule(),
     import('../sdk/index.js'),
   ]);
@@ -61,9 +61,7 @@ async function createSignalBackedStore() {
   const stateSignal = signal(sdkStore.getSnapshot());
 
   sdkStore.subscribe(() => {
-    batch(() => {
-      stateSignal.value = sdkStore.getSnapshot();
-    });
+    stateSignal.value = sdkStore.getSnapshot();
   });
 
   const actions = wrapActions(sdkStore, stateSignal);
