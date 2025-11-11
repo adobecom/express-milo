@@ -30,12 +30,13 @@ async function updateProductPrice(productDetails) {
 }
 
 async function updateProductImages(productDetails) {
-  const heroImg = document.getElementById('pdpx-product-hero-image');
-  const firstImageType = Object.keys(productDetails.realViews)[0];
+  const productImagesContainer = document.getElementById('pdpx-product-images-container');
+  const heroImg = productImagesContainer.querySelector('#pdpx-product-hero-image');
   let imageType;
   if (productDetails.realViews[heroImg.dataset.imageType]) {
     imageType = heroImg.dataset.imageType;
   } else {
+    const firstImageType = Object.keys(productDetails.realViews)[0];
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
@@ -44,7 +45,7 @@ async function updateProductImages(productDetails) {
     newHeroImgSrc,
     imageType,
   );
-  document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  productImagesContainer.replaceWith(newProductImagesContainer);
   newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
 }
 
@@ -68,14 +69,14 @@ async function updateCheckoutButton(productDetails, formDataObject) {
 }
 
 async function updateDrawerContent(productDetails, formDataObject) {
-  const drawer = document.querySelector('.drawer');
+  const drawer = document.querySelector('#pdpx-drawer');
   if (drawer.classList.contains('hidden')) {
     return;
   }
   if (productDetails.productType === 'zazzle_businesscard') {
     const mediaValue = productDetails.attributes.media.find((v) => v.name === formDataObject.media);
     drawer.innerHTML = '';
-    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', null, productDetails, mediaValue.name, 'paperType', drawer);
+    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', productDetails, mediaValue.name, 'paperType', drawer);
   }
 }
 
@@ -136,23 +137,25 @@ export default async function updateAllDynamicElements(productId) {
   const normalizedProductDetails = await normalizeProductDetailObject(
     normalizeProductDetailsParametersObject,
   );
+  await updateProductImages(normalizedProductDetails);
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   for (const [key, value] of Object.entries(formDataObject)) {
-    if (!normalizedProductDetails.attributes[key].some(
-      (v) => v.name.toString() === value.toString(),
-    )
-    ) {
-      formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
+    if (normalizedProductDetails.attributes[key]) {
+      const valueExists = normalizedProductDetails.attributes[key].some(
+        (v) => String(v.name) === String(value) || v.name === value,
+      );
+      if (!valueExists) {
+        formDataObject[key] = normalizedProductDetails.attributes[key][0].name;
+      }
     }
   }
   await updateCheckoutButton(normalizedProductDetails, formDataObject);
-  await updateProductImages(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
-  await updateProductPrice(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
-    productDetails,
+    attributes: productDetails.product.attributes,
     formData: formDataObject,
   });
 }

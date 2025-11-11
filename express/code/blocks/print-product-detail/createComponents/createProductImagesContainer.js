@@ -1,11 +1,27 @@
 import { getLibs } from '../../../scripts/utils.js';
+import { convertImageSize, createHeroImageSrcset } from '../utilities/utility-functions.js';
 
 let createTag;
 
-export function createproductHeroImage(heroImage, heroImageType) {
+export function createproductHeroImage(heroImageSrc, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
   const altTextHero = `Product Hero Image: ${heroImageType}`;
-  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, fetchpriority: 'high', decoding: 'async', loading: 'eager', alt: altTextHero, src: heroImage });
+  const productHeroImage = createTag('img', {
+    class: 'pdpx-product-hero-image',
+    id: 'pdpx-product-hero-image',
+    'data-image-type': heroImageType,
+    fetchpriority: 'high',
+    decoding: 'async',
+    loading: 'eager',
+    alt: altTextHero,
+    sizes: '(max-width: 600px) 100vw, 50vw',
+    width: '500',
+    height: '500',
+  });
+  if (heroImageSrc) {
+    productHeroImage.srcset = createHeroImageSrcset(heroImageSrc);
+    productHeroImage.src = convertImageSize(heroImageSrc, '500');
+  }
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }
@@ -18,8 +34,18 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
       imageThumbnailCarouselItem.classList.add('selected');
     }
     const imageURL = realViews[Object.keys(realViews)[i]];
+    const imageURLSmall = convertImageSize(imageURL, '100');
     const altTextThumbnail = `Product Image Thumbnail: ${Object.keys(realViews)[i]}`;
-    const imageThumbnailCarouselItemImage = createTag('img', { class: 'pdpx-image-thumbnail-carousel-item-image', 'data-image-type': Object.keys(realViews)[i], alt: altTextThumbnail, src: imageURL });
+    const imageThumbnailCarouselItemImage = createTag('img', {
+      class: 'pdpx-image-thumbnail-carousel-item-image',
+      'data-image-type': Object.keys(realViews)[i],
+      alt: altTextThumbnail,
+      src: imageURLSmall,
+      loading: 'lazy',
+      decoding: 'async',
+      width: '76',
+      height: '76',
+    });
     imageThumbnailCarouselItem.addEventListener('click', (element) => {
       imageThumbnailCarouselItem.classList.add('selected');
       imageThumbnailCarouselContainer.querySelectorAll('.pdpx-image-thumbnail-carousel-item').forEach((item) => {
@@ -27,7 +53,9 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
           item.classList.remove('selected');
         }
       });
-      productHeroImage.src = element.currentTarget.querySelector('img').src;
+      const thumbnailImageURL = element.currentTarget.querySelector('img').src;
+      productHeroImage.srcset = createHeroImageSrcset(thumbnailImageURL);
+      productHeroImage.src = convertImageSize(thumbnailImageURL, '500');
       productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
     });
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);

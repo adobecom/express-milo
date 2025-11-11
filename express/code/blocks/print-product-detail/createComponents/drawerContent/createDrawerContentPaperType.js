@@ -8,7 +8,6 @@ export default async function createDrawerContentPaperType(
   customizationOptions,
   labelText,
   hiddenSelectInputName,
-  CTALinkText,
   productDetails,
   defaultValue,
   drawerType,
@@ -16,24 +15,24 @@ export default async function createDrawerContentPaperType(
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Select Paper Type');
-  const drawerBody = createTag('div', { class: 'drawer-body' });
+  const drawerBody = createTag('div', { class: 'pdpx-drawer-body' });
   const defaultValueSafe = defaultValue || customizationOptions[0].name;
+
   const defaultValueOption = customizationOptions.find(
     (option) => option.name === defaultValueSafe,
   );
   const defaultValueImageSrc = new URL(defaultValueOption.thumbnail);
   defaultValueImageSrc.searchParams.set('max_dim', '1000');
   const defaultValueImageSrcLarge = defaultValueImageSrc.toString();
-  const heroImageAlt = '';
   const heroImageContainer = createTag('div', { class: 'pdpx-drawer-hero-image-container' });
-  const heroImage = createTag('img', { class: 'pdpx-drawer-hero-image', src: defaultValueImageSrcLarge, alt: heroImageAlt });
-  heroImageContainer.appendChild(heroImage);
+  heroImageContainer.appendChild(
+    createTag('img', { class: 'pdpx-drawer-hero-image', src: defaultValueImageSrcLarge, alt: defaultValueOption.title }),
+  );
   const titleRow = createTag('div', { class: 'pdpx-drawer-title-row' });
   const drawerTitle = createTag('span', { class: 'pdpx-drawer-title' }, defaultValueOption.title);
   titleRow.appendChild(drawerTitle);
   if (defaultValueSafe === '175ptmatte') {
-    const recommendedBadge = createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended');
-    titleRow.appendChild(recommendedBadge);
+    titleRow.appendChild(createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended'));
   }
   const pillsContainer = createTag('div', { class: 'pdpx-drawer-pills-container' });
   const specs = [
@@ -43,9 +42,10 @@ export default async function createDrawerContentPaperType(
   ].filter(Boolean);
   specs.forEach((spec) => {
     const pill = createTag('div', { class: 'pdpx-drawer-pill' });
-    const pillIcon = getIconElementDeprecated('circle-check-mark');
-    const pillText = createTag('span', { class: 'pdpx-drawer-pill-text' }, spec);
-    pill.append(pillIcon, pillText);
+    pill.append(
+      getIconElementDeprecated('circle-check-mark'),
+      createTag('span', { class: 'pdpx-drawer-pill-text' }, spec),
+    );
     pillsContainer.appendChild(pill);
   });
   const paperTypeSelectorContainer = await createMiniPillOptionsSelector(
@@ -58,17 +58,22 @@ export default async function createDrawerContentPaperType(
     drawerType,
   );
   const description = createTag('div', { class: 'pdpx-drawer-description' }, defaultValueOption.description);
-  const drawerFoot = createTag('div', { class: 'drawer-foot' });
   const infoContainer = createTag('div', { class: 'pdpx-drawer-foot-info-container' });
   const infoText = createTag('div', { class: 'pdpx-drawer-foot-info-text' });
-  infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-name' }, defaultValueOption.title));
-  infoText.append(createTag('div', { class: 'pdpx-drawer-foot-info-price' }, defaultValueOption.priceAdjustment));
-  infoContainer.append(createTag('img', { src: defaultValueOption.thumbnail, alt: heroImageAlt }), infoText);
+  infoText.append(
+    createTag('div', { class: 'pdpx-drawer-foot-info-name' }, defaultValueOption.title),
+    createTag('div', { class: 'pdpx-drawer-foot-info-price' }, defaultValueOption.priceAdjustment),
+  );
+  infoContainer.append(
+    createTag('img', { src: defaultValueOption.thumbnail, alt: defaultValueOption.title }),
+    infoText,
+  );
   const selectButton = createTag('button', { class: 'pdpx-drawer-foot-select-button' }, 'Select');
   selectButton.addEventListener('click', async () => {
     closeDrawer();
   });
-  drawerFoot.appendChild(infoContainer, selectButton);
+  const drawerFoot = createTag('div', { class: 'pdpx-drawer-foot' });
+  drawerFoot.append(infoContainer, selectButton);
   drawerBody.append(
     heroImageContainer,
     titleRow,
