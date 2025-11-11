@@ -1,5 +1,4 @@
 import {
-  h,
   html as htmlFn,
   useState,
 } from '../vendor/htm-preact.js';

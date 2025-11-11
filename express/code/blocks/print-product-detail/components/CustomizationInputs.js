@@ -1,4 +1,4 @@
-import { h, html as htmlFn } from '../vendor/htm-preact.js';
+import { html as htmlFn } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
 import { ThumbnailSelector } from './selectors/ThumbnailSelector.js';
 import { DropdownSelector } from './selectors/DropdownSelector.js';

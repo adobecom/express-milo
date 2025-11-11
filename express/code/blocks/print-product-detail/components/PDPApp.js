@@ -1,5 +1,4 @@
 import {
-  h,
   html as htmlFn,
   useEffect,
   useRef,

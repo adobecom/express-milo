@@ -72,7 +72,6 @@ if ('jsxDEV' in preactH) {
 const html = htm.bind(instrumentedH);
 
 export {
-  instrumentedH as h,
   html,
   render,
   Component,
@@ -96,4 +95,3 @@ export {
   useErrorBoundary,
   useId,
 };
-

@@ -1,4 +1,4 @@
-import { h, html as htmlFn } from '../vendor/htm-preact.js';
+import { html as htmlFn } from '../vendor/htm-preact.js';
 
 const html = htmlFn;
 
