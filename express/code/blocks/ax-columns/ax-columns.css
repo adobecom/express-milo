@@ -1231,6 +1231,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     width: 50%;
   }
 
+  .ax-columns.highlight .column.column-picture {
+    position: initial;
+  }
+
   .ax-columns.enterprise .column h2 {
     font-size: var(--heading-font-size-xxl);
   }
