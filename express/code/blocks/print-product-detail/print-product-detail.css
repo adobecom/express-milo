@@ -28,17 +28,15 @@
 .pdpx-global-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: var(--spacing-400);
+  padding: var(--spacing-300);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-300);
   align-items: flex-start;
 }
 .pdpx-product-info-section-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
+  display: contents;
+  overflow-y: scroll;
   .pdpx-product-info-section {
     width: 100%;
     order: 3;
@@ -95,6 +93,8 @@
       width: max-content;
       .pdpx-compare-price-info-icon {
         width: 12px;
+        height: 12px;
+        aspect-ratio: 1/1;
       }
     }
     .pdpx-info-tooltip-content {
@@ -132,26 +132,40 @@
 .pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
   gap: var(--spacing-75);
   .pdpx-product-info-header-ratings-star {
     width: 17px;
+    height: 17px;
+    aspect-ratio: 1/1;
   }
   .pdpx-star-ratings {
     display: flex;
-    align-self: anchor-center;
+    align-items: center;
+    gap: var(--figma-spacing-50);
+  }
+  .pdpx-star-ratings svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+  .pdpx-star-ratings .icon-star {
+    color: var(--color-black);
+  }
+  .pdpx-star-ratings .icon-star-half {
+    color: var(--color-black);
+  }
+  .pdpx-star-ratings .icon-star-empty {
+    color: var(--color-gray-300);
   }
   .pdpx-ratings-number {
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    background: transparent;
     font-size: 14px;
-    border: none;
-    padding: 0;
-    margin: 0;
-    text-decoration-line: underline;
-    cursor: default;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 0;
   }
 }
 .pdpx-delivery-estimate-pill {
@@ -164,6 +178,11 @@
   padding: var(--spacing-100);
   gap: var(--spacing-75);
   margin-bottom: 0;
+  .pdpx-delivery-estimate-pill-icon {
+    width: 32px;
+    height: 17px;
+    aspect-ratio: 32/17;
+  }
 }
 /* END HEADER SECTION CONTENT */
 
@@ -199,6 +218,13 @@
       background-color: transparent;
       padding: 0;
       cursor: pointer;
+      .pdpx-image-thumbnail-carousel-item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        aspect-ratio: 1/1;
+      }
     }
     .pdpx-image-thumbnail-carousel-item.selected {
       border: 1px solid var(--color-background-accent-default);
@@ -254,6 +280,7 @@
 }
 .pdpx-checkout-button-subhead-image {
   margin-bottom: 1px;
+  aspect-ratio: 123/14;
 }
 main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   white-space: nowrap;
@@ -264,7 +291,11 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-checkout-button-subhead-text {
   text-align: right;
 }
-
+.pdpx-checkout-button-icon {
+  aspect-ratio: 1/1;
+  width: 22px;
+  height: 22px;
+}
 .pdpx-checkout-button-disabled a.pdpx-checkout-button {
   background-color: var(--color-dark-gray);
   border-radius: 10px;
@@ -292,6 +323,9 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
     gap: var(--spacing-100);
     width: 50%;
     justify-content: center;
+    .pdpx-assurance-lockup-item-text {
+      white-space: nowrap;
+    }
   }
 }
 /* END CHECKOUT BUTTON */
@@ -334,6 +368,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
+  aspect-ratio: 1/1;
 }
 .pdpx-pill-image {
   width: 100%;
@@ -515,6 +550,7 @@ main .section .pdpx-drawer-description {
   gap: 0px;
 }
 .pdpx-pill-selector-label-compare-link {
+  font-family: var(--body-font-family);
   background: transparent;
   font-size: 14px;
   font-weight: 500;
@@ -545,6 +581,7 @@ main .section .pdpx-drawer-description {
   transition: var(--standard-transition-hover-out-border-color);
   .pdpx-mini-pill-image {
     border-radius: 4px;
+    aspect-ratio: 1/1;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -780,7 +817,6 @@ main .section .pdpx-drawer-description {
 }
 /*END DRAWER*/
 
-
 /* SIZE CHART */
 .pdpx-drawer-body--size-chart {
   display: flex;
@@ -904,11 +940,11 @@ main .section .pdpx-drawer-description {
 }
 /*END SIZE CHART*/
 
-
 /*TABLET*/
 @media (min-width: 600px) {
   .pdpx-global-container {
     flex-direction: row;
+    padding: var(--spacing-400);
   }
   .pdpx-product-images-container {
     order: 1;
