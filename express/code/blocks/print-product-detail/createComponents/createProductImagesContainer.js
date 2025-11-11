@@ -48,7 +48,9 @@ export function createProductThumbnailCarousel(realViews, heroImageType, product
           item.classList.remove('selected');
         }
       });
-      productHeroImage.src = convertImageSize(element.currentTarget.querySelector('img').src, '1000');
+      const thumbnailImageURL = element.currentTarget.querySelector('img').src;
+      productHeroImage.srcset = createHeroImageSrcset(thumbnailImageURL);
+      productHeroImage.src = convertImageSize(thumbnailImageURL, '1000');
       productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
     });
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);

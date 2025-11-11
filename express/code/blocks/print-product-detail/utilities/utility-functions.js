@@ -1,7 +1,7 @@
 import { createTag } from '../../../scripts/utils.js';
 
 export function convertImageSize(imageURL, newSize) {
-  if (!imageURL || !newSize) return imageURL;
+  if (!imageURL) return imageURL;
   try {
     const lastUnderscoreIndex = imageURL.lastIndexOf('_');
     const afterUnderscore = imageURL.substring(lastUnderscoreIndex + 1);
@@ -12,6 +12,7 @@ export function convertImageSize(imageURL, newSize) {
     const newImageURLFinal = `${newImageURL.substring(0, dotIndex + 1)}webp?max_dim=${newSize}`;
     return newImageURLFinal;
   } catch (error) {
+    console.error(error);
     return imageURL;
   }
 }
