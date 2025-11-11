@@ -155,17 +155,17 @@
     color: var(--color-black);
   }
   .pdpx-star-ratings .icon-star-empty {
-    color: var(--color-gray-300);
+    color: var(--color-dark-gray);
   }
   .pdpx-ratings-number {
+    font-size: var(--body-font-size-s);
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 130%;
-    letter-spacing: 0;
+    font-size: var(--body-font-size-s);
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--color-dark-gray);
   }
 }
 .pdpx-delivery-estimate-pill {
@@ -1027,21 +1027,5 @@ main .section .pdpx-drawer-description {
   }
   .pdpx-assurance-lockup-container {
     flex-direction: row;
-  }
-  .pdpx-drawer {
-    bottom: initial;
-    top: 0;
-    right: 0;
-    left: initial;
-    width: 50%;
-    height: 100%;
-    border-radius: initial;
-    transform: translateX(0);
-  }
-  .pdpx-drawer.hidden {
-    transform: translateX(100%);
-  }
-  .pdpx-drawer-title {
-    font-size: var(--body-font-size-xl);
   }
 }
