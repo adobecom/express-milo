@@ -172,7 +172,7 @@
   width: 100%;
   order: 2;
   .pdpx-product-hero-image-container {
-    margin-bottom: var(--spacing-200);
+    margin-bottom: 0;
     aspect-ratio: 1/1;
     border-radius: 12px;
     overflow: hidden;
@@ -193,7 +193,7 @@
     }
     .simple-carousel-platform {
       display: flex;
-      gap: var(--spacing-100);
+      gap: var(--spacing-75);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
@@ -236,8 +236,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: var(--spacing-500);
+      height: var(--spacing-500);
       background: var(--color-white, #ffffff);
       border-radius: 50%;
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
@@ -254,8 +254,8 @@
     }
     .simple-carousel-arrow::before {
       content: '';
-      width: 8px;
-      height: 8px;
+      width: var(--spacing-100);
+      height: var(--spacing-100);
       border-top: 2.5px solid var(--color-black, #000000);
       border-right: 2.5px solid var(--color-black, #000000);
     }
@@ -272,8 +272,8 @@
     border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
-    width: 76px;
-    height: 76px;
+    width: var(--spacing-700);
+    height: var(--spacing-700);
     border: 1px solid transparent;
     background-color: transparent;
     padding: 0;
@@ -705,8 +705,8 @@ main .section .pdpx-drawer-description {
     }
     .simple-carousel-arrow::before {
       content: '';
-      width: 8px;
-      height: 8px;
+      width: var(--spacing-100);
+      height: var(--spacing-100);
       border-top: 2.5px solid var(--color-black, #000000);
       border-right: 2.5px solid var(--color-black, #000000);
     }
@@ -1185,20 +1185,8 @@ main .section .pdpx-drawer-description {
   .pdpx-assurance-lockup-container {
     flex-direction: row;
   }
-  .pdpx-drawer {
-    bottom: initial;
-    top: 0;
-    right: 0;
-    left: initial;
-    width: 50%;
-    height: 100%;
-    border-radius: initial;
-    transform: translateX(0);
-  }
-  .pdpx-drawer.hidden {
-    transform: translateX(100%);
-  }
-  .pdpx-drawer-title {
-    font-size: var(--body-font-size-xl);
+  .pdpx-image-thumbnail-carousel-item {
+    width: 76px;
+    height: 76px;
   }
 }
