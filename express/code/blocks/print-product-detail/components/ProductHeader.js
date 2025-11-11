@@ -1,11 +1,9 @@
 import {
-  html as htmlFn,
+  html,
   useState,
 } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
 import { formatLargeNumberToK } from '../utilities/utility-functions.js';
-
-const html = htmlFn;
 
 export function ProductHeader() {
   const { state } = useStore();
@@ -97,4 +95,3 @@ export function ProductHeader() {
     </div>
   `;
 }
-

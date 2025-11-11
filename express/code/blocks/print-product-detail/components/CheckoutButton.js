@@ -1,11 +1,9 @@
 import {
-  html as htmlFn,
+  html,
   useEffect,
   useRef,
 } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
-
-const html = htmlFn;
 
 const TASK_ID_MAP = {
   zazzle_shirt: 'tshirt',
@@ -60,4 +58,3 @@ export function CheckoutButton({ templateId }) {
     </div>
   `;
 }
-

@@ -1,6 +1,4 @@
-import { html as htmlFn } from '../vendor/htm-preact.js';
-
-const html = htmlFn;
+import { html } from '../vendor/htm-preact.js';
 
 export function LoadingSkeleton() {
   return html`
@@ -20,4 +18,3 @@ export function LoadingSkeleton() {
     </div>
   `;
 }
-

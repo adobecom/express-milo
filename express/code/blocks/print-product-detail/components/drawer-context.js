@@ -1,13 +1,11 @@
 import {
-  html as htmlFn,
+  html,
   createContext,
   useContext,
   useState,
   useMemo,
   useEffect,
 } from '../vendor/htm-preact.js';
-
-const html = htmlFn;
 
 const DrawerContext = createContext(null);
 

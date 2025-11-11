@@ -1,12 +1,10 @@
 import {
-  html as htmlFn,
+  html,
   useEffect,
   useRef,
 } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
-
-const html = htmlFn;
 
 function mapToAccordionFormat(descriptions) {
   if (!descriptions || !Array.isArray(descriptions)) {
@@ -71,4 +69,3 @@ export function ProductDetails() {
     </div>
   `;
 }
-

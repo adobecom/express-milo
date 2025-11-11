@@ -62,4 +62,3 @@ export function useSeo(templateId) {
     }
   }, [state.value, templateId]);
 }
-

@@ -1,12 +1,10 @@
 import {
-  html as htmlFn,
+  html,
   useEffect,
   useState,
 } from '../vendor/htm-preact.js';
 import { useDrawer } from './drawer-context.js';
 import { useStore } from './store-context.js';
-
-const html = htmlFn;
 
 function SizeChartTable({ sizeChart }) {
   if (!sizeChart?.sizeChart) {

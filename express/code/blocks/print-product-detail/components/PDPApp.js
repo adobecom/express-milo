@@ -1,9 +1,9 @@
 import {
-  html as htmlFn,
+  html,
   useEffect,
   useRef,
 } from '../vendor/htm-preact.js';
-import { StoreContext } from './store-context.js';
+import { StoreContext, useStore } from './store-context.js';
 import { DrawerProvider, useDrawer } from './drawer-context.js';
 import { LoadingSkeleton } from './LoadingSkeleton.js';
 import { ProductImages } from './ProductImages.js';
@@ -12,10 +12,7 @@ import { CustomizationInputs } from './CustomizationInputs.js';
 import { ProductDetails } from './ProductDetails.js';
 import { CheckoutButton } from './CheckoutButton.js';
 import { Drawer } from './Drawer.js';
-import { useStore } from './store-context.js';
 import { useSeo } from './useSeo.js';
-
-const html = htmlFn;
 
 function PDPContent({ templateId }) {
   const store = useStore();

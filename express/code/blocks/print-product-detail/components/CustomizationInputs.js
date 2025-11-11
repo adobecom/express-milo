@@ -1,12 +1,10 @@
-import { html as htmlFn } from '../vendor/htm-preact.js';
+import { html } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
 import { ThumbnailSelector } from './selectors/ThumbnailSelector.js';
 import { DropdownSelector } from './selectors/DropdownSelector.js';
 import { RadioSelector } from './selectors/RadioSelector.js';
 import { CheckboxSelector } from './selectors/CheckboxSelector.js';
 import { QuantitySelector } from './selectors/QuantitySelector.js';
-
-const html = htmlFn;
 
 function renderAttribute(attribute, onRequestDrawer) {
   switch (attribute.selector.type) {
@@ -46,4 +44,3 @@ export function CustomizationInputs({ onRequestDrawer }) {
     </div>
   `;
 }
-

@@ -1,7 +1,5 @@
-import { html as htmlFn } from '../../vendor/htm-preact.js';
+import { html } from '../../vendor/htm-preact.js';
 import { useStore } from '../store-context.js';
-
-const html = htmlFn;
 
 export function RadioSelector({ attribute }) {
   const { actions } = useStore();
@@ -33,4 +31,3 @@ export function RadioSelector({ attribute }) {
     </div>
   `;
 }
-

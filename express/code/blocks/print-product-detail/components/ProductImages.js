@@ -1,7 +1,5 @@
-import { html as htmlFn } from '../vendor/htm-preact.js';
+import { html } from '../vendor/htm-preact.js';
 import { useStore } from './store-context.js';
-
-const html = htmlFn;
 
 function updateImageUrl(url, maxDim = 644) {
   try {
@@ -71,4 +69,3 @@ export function ProductImages() {
     </div>
   `;
 }
-

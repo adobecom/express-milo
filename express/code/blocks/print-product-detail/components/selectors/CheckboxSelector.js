@@ -1,7 +1,5 @@
-import { html as htmlFn } from '../../vendor/htm-preact.js';
+import { html } from '../../vendor/htm-preact.js';
 import { useStore } from '../store-context.js';
-
-const html = htmlFn;
 
 export function CheckboxSelector({ attribute }) {
   const { actions } = useStore();
@@ -27,4 +25,3 @@ export function CheckboxSelector({ attribute }) {
     </div>
   `;
 }
-
