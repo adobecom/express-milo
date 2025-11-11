@@ -23,13 +23,12 @@ function renderAttribute(attribute, onRequestDrawer) {
 
 export function CustomizationInputs({ onRequestDrawer }) {
   const { state } = useStore();
-  const snapshot = state.value;
 
-  if (!snapshot) {
+  if (!state) {
     return null;
   }
 
-  const productAttributes = (snapshot.attributes || []).filter((attribute) => attribute.name !== 'quantity');
+  const productAttributes = (state.attributes || []).filter((attribute) => attribute.name !== 'quantity');
 
   return html`
     <div class="pdpx-customization-inputs-container" id="pdpx-customization-inputs-container">

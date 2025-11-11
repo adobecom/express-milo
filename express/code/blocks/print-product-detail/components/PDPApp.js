@@ -3,7 +3,7 @@ import {
   useEffect,
   useRef,
 } from '../vendor/htm-preact.js';
-import { StoreContext, useStore } from './store-context.js';
+import { StoreProvider, useStore } from './store-context.js';
 import { DrawerProvider, useDrawer } from './drawer-context.js';
 import { LoadingSkeleton } from './LoadingSkeleton.js';
 import { ProductImages } from './ProductImages.js';
@@ -26,12 +26,12 @@ function PDPContent({ templateId }) {
     if (!templateId) {
       return;
     }
-    if (lastFetchedTemplateIdRef.current === templateId && state.value) {
+    if (lastFetchedTemplateIdRef.current === templateId && state) {
       return;
     }
     lastFetchedTemplateIdRef.current = templateId;
     actions.fetchProduct(templateId);
-  }, [templateId, actions, state.value]);
+  }, [templateId, actions, state]);
 
   const handleDrawerRequest = (request) => {
     if (!request) {
@@ -42,17 +42,17 @@ function PDPContent({ templateId }) {
     }
   };
 
-  if (!hasState.value || !state.value) {
+  if (!hasState || !state) {
     return html`
-      <>
+      <div>
         <${LoadingSkeleton} />
         <${Drawer} />
-      </>
+      </div>
     `;
   }
 
   return html`
-    <>
+    <div>
       <div class="pdpx-global-container" data-template-id="${templateId}">
         <${ProductImages} />
         <div class="pdpx-product-info-section-wrapper-container">
@@ -67,17 +67,16 @@ function PDPContent({ templateId }) {
         </div>
       </div>
       <${Drawer} />
-    </>
+    </div>
   `;
 }
 
-export function PDPApp({ store, templateId }) {
+export function PDPApp({ sdkStore, templateId }) {
   return html`
-    <${StoreContext.Provider} value=${store}>
+    <${StoreProvider} sdkStore=${sdkStore}>
       <${DrawerProvider}>
         <${PDPContent} templateId=${templateId} />
       </${DrawerProvider}>
-    </${StoreContext.Provider}>
+    </${StoreProvider}>
   `;
 }
-

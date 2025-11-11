@@ -100,7 +100,7 @@ export function Drawer() {
   const { state, closeDrawer } = useDrawer();
 
   return html`
-    <>
+    <div>
       <div
         class="pdp-curtain ${state.open ? '' : 'hidden'}"
         onClick=${closeDrawer}
@@ -120,7 +120,7 @@ export function Drawer() {
           `}
         </div>
       </aside>
-    </>
+    </div>
   `;
 }
 

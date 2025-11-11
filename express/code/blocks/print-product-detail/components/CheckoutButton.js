@@ -30,14 +30,13 @@ function buildCheckoutUrl(templateId, expressProductSettings, productType) {
 export function CheckoutButton({ templateId }) {
   const { state } = useStore();
   const anchorRef = useRef(null);
-  const snapshot = state.value;
 
   useEffect(() => {
-    if (!anchorRef.current || !snapshot?.expressProductSettings) {
+    if (!anchorRef.current || !state?.expressProductSettings) {
       return;
     }
-    anchorRef.current.href = buildCheckoutUrl(templateId, snapshot.expressProductSettings, snapshot.productType);
-  }, [snapshot?.expressProductSettings, snapshot?.productType, templateId]);
+    anchorRef.current.href = buildCheckoutUrl(templateId, state.expressProductSettings, state.productType);
+  }, [state?.expressProductSettings, state?.productType, templateId]);
 
   return html`
     <div class="pdpx-checkout-button-container">
@@ -45,7 +44,7 @@ export function CheckoutButton({ templateId }) {
         ref=${anchorRef}
         class="pdpx-checkout-button"
         id="pdpx-checkout-button"
-        href="${snapshot?.expressProductSettings ? buildCheckoutUrl(templateId, snapshot.expressProductSettings, snapshot.productType) : '#'}"
+        href="${state?.expressProductSettings ? buildCheckoutUrl(templateId, state.expressProductSettings, state.productType) : '#'}"
       >
         <img class="pdpx-checkout-button-icon" src="/express/code/icons/print-icon.svg" alt="print" />
         <span class="pdpx-checkout-button-text">Customize and print it</span>

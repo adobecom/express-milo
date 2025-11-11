@@ -3,13 +3,12 @@ import { useStore } from '../store-context.js';
 
 export function QuantitySelector() {
   const { state, actions } = useStore();
-  const snapshot = state.value;
 
-  if (!snapshot) {
+  if (!state) {
     return null;
   }
 
-  const { quantity, quantityOptions } = snapshot;
+  const { quantity, quantityOptions } = state;
 
   const handleChange = (event) => {
     const nextQuantity = parseInt(event.target.value, 10);

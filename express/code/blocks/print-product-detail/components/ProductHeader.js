@@ -7,14 +7,13 @@ import { formatLargeNumberToK } from '../utilities/utility-functions.js';
 
 export function ProductHeader() {
   const { state } = useStore();
-  const snapshot = state.value;
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  if (!snapshot) {
+  if (!state) {
     return null;
   }
 
-  const { title, pricing, shippingEstimate, reviewsStats } = snapshot;
+  const { title, pricing, shippingEstimate, reviewsStats } = state;
   const reviewsCount = reviewsStats?.count || 0;
   const reviewsRating = reviewsStats?.rating || 0;
   const formattedRating = reviewsRating ? Math.round(reviewsRating * 10) / 10 : '';

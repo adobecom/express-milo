@@ -13,13 +13,12 @@ function updateImageUrl(url, maxDim = 644) {
 
 export function ProductImages() {
   const { state, actions } = useStore();
-  const snapshot = state.value;
 
-  if (!snapshot || !snapshot.selectedRealview) {
+  if (!state || !state.selectedRealview) {
     return null;
   }
 
-  const { realviews = [], selectedRealview } = snapshot;
+  const { realviews = [], selectedRealview } = state;
   const heroImageUrl = updateImageUrl(selectedRealview.url, 644);
 
   const handleThumbnailClick = (realview) => {

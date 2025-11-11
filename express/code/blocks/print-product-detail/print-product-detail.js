@@ -1,6 +1,6 @@
 import { addPrefetchLinks, extractTemplateId } from './utilities/utility-functions.js';
 import { loadPreactBundle } from './lib/preact-deps.js';
-import { getZazzleSignalStore } from './store/zazzle-store.js';
+import getZazzleStore from './store/zazzle-store.js';
 
 export default async function decorate(block) {
   await addPrefetchLinks();
@@ -21,8 +21,8 @@ export default async function decorate(block) {
   const [{ html, render }, { PDPApp }, store] = await Promise.all([
     loadPreactBundle(),
     import('./components/PDPApp.js'),
-    getZazzleSignalStore(),
+    getZazzleStore(),
   ]);
 
-  render(html`<${PDPApp} store=${store} templateId=${templateId} />`, mountPoint);
+  render(html`<${PDPApp} sdkStore=${store.sdk} templateId=${templateId} />`, mountPoint);
 }

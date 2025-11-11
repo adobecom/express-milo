@@ -35,12 +35,11 @@ export function useSeo(templateId) {
   const { state } = useStore();
 
   useEffect(() => {
-    const snapshot = state.value;
-    if (!snapshot) {
+    if (!state) {
       return;
     }
 
-    const payload = mapStateToSeoPayload(snapshot, templateId);
+    const payload = mapStateToSeoPayload(state, templateId);
     upsertTitleAndDescriptionRespectingAuthored(payload);
 
     const canonicalUrl = getCanonicalUrl();
@@ -60,5 +59,5 @@ export function useSeo(templateId) {
     if (breadcrumbs) {
       upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbs);
     }
-  }, [state.value, templateId]);
+  }, [state, templateId]);
 }

@@ -18,16 +18,15 @@ function mapToAccordionFormat(descriptions) {
 
 export function ProductDetails() {
   const { state } = useStore();
-  const snapshot = state.value;
   const accordionRef = useRef(null);
   const previousDescriptionsRef = useRef(null);
 
   useEffect(() => {
-    if (!snapshot || !accordionRef.current) {
+    if (!state || !accordionRef.current) {
       return;
     }
 
-    const descriptions = snapshot.descriptionComponents;
+    const descriptions = state.descriptionComponents;
     if (!descriptions) {
       return;
     }
@@ -54,9 +53,9 @@ export function ProductDetails() {
     }
 
     previousDescriptionsRef.current = descriptions;
-  }, [state.value]);
+  }, [state]);
 
-  if (!snapshot) {
+  if (!state) {
     return null;
   }
 
