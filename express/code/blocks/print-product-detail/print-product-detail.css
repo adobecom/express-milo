@@ -1004,20 +1004,4 @@ main .section .pdpx-drawer-description {
   .pdpx-assurance-lockup-container {
     flex-direction: row;
   }
-  .pdpx-drawer {
-    bottom: initial;
-    top: 0;
-    right: 0;
-    left: initial;
-    width: 50%;
-    height: 100%;
-    border-radius: initial;
-    transform: translateX(0);
-  }
-  .pdpx-drawer.hidden {
-    transform: translateX(100%);
-  }
-  .pdpx-drawer-title {
-    font-size: var(--body-font-size-xl);
-  }
 }
