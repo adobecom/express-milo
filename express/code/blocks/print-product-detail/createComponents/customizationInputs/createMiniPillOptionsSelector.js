@@ -68,33 +68,21 @@ export default async function createMiniPillOptionsSelector(
       });
       updateAllDynamicElements(productId);
     });
-    // Smart tooltip edge detection
+    // Smart tooltip edge detection - prevent clipping at viewport edges
     miniPillOptionImageContainer.addEventListener('mouseenter', (e) => {
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
-      const btnCenterX = rect.left + (rect.width / 2);
       const tooltipText = btn.getAttribute('data-title') || '';
       const estimatedTooltipWidth = (tooltipText.length * 8) + 24;
       const tooltipHalfWidth = estimatedTooltipWidth / 2;
-      const leftEdge = btnCenterX - tooltipHalfWidth;
-      const rightEdge = btnCenterX + tooltipHalfWidth;
+      const btnCenterX = rect.left + (rect.width / 2);
+      const tooltipLeftIfCentered = btnCenterX - tooltipHalfWidth;
+      const tooltipRightIfCentered = btnCenterX + tooltipHalfWidth;
       btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
-      // eslint-disable-next-line no-console
-      console.log('🎯 Tooltip Debug:', {
-        text: tooltipText,
-        btnLeft: rect.left,
-        btnCenterX,
-        estimatedWidth: estimatedTooltipWidth,
-        leftEdge,
-        rightEdge,
-        viewportWidth,
-        willClipLeft: leftEdge < 16,
-        willClipRight: rightEdge > viewportWidth - 16,
-      });
-      if (btnCenterX - tooltipHalfWidth < 16) {
+      if (tooltipLeftIfCentered < 16) {
         btn.classList.add('tooltip-left-edge');
-      } else if (btnCenterX + tooltipHalfWidth > viewportWidth - 16) {
+      } else if (tooltipRightIfCentered > viewportWidth - 16) {
         btn.classList.add('tooltip-right-edge');
       }
     });

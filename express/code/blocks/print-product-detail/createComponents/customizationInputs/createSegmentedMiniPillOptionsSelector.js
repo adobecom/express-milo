@@ -76,19 +76,21 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
       updateAllDynamicElements(productId);
     });
-    // Smart tooltip edge detection
+    // Smart tooltip edge detection - prevent clipping at viewport edges
     miniPillOptionImageContainer.addEventListener('mouseenter', (e) => {
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
-      const btnCenterX = rect.left + (rect.width / 2);
       const tooltipText = btn.getAttribute('data-title') || '';
       const estimatedTooltipWidth = (tooltipText.length * 8) + 24;
       const tooltipHalfWidth = estimatedTooltipWidth / 2;
+      const btnCenterX = rect.left + (rect.width / 2);
+      const tooltipLeftIfCentered = btnCenterX - tooltipHalfWidth;
+      const tooltipRightIfCentered = btnCenterX + tooltipHalfWidth;
       btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
-      if (btnCenterX - tooltipHalfWidth < 16) {
+      if (tooltipLeftIfCentered < 16) {
         btn.classList.add('tooltip-left-edge');
-      } else if (btnCenterX + tooltipHalfWidth > viewportWidth - 16) {
+      } else if (tooltipRightIfCentered > viewportWidth - 16) {
         btn.classList.add('tooltip-right-edge');
       }
     });
