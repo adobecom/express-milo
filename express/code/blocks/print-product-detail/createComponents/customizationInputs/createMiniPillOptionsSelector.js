@@ -80,12 +80,17 @@ export default async function createMiniPillOptionsSelector(
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);
 
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  if (isMobile) {
-    await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapper, {
-      ariaLabel: `${labelText} options`,
-      centerActive: false,
-      activeClass: 'selected',
-    });
+  if (isMobile && miniPillSelectorOptionsContainer.children.length > 0) {
+    try {
+      await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapper, {
+        ariaLabel: `${labelText} options`,
+        centerActive: false,
+        activeClass: 'selected',
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to initialize carousel:', error);
+    }
   }
 
   miniPillSelectorContainer.append(miniPillSelectorOptionsWrapper, hiddenSelectInput);

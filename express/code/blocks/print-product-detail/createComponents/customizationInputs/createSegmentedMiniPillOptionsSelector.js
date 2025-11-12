@@ -102,20 +102,27 @@ export default async function createSegmentedMiniPillOptionsSelector(
 
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-  if (classicOptions.length > 0 && isMobile) {
-    await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
-      ariaLabel: 'Classic printing color options',
-      centerActive: false,
-      activeClass: 'selected',
-    });
-  }
+  if (isMobile) {
+    try {
+      if (classicOptions.length > 0 && miniPillSelectorOptionsWrapperClassic.children.length > 0) {
+        await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
+          ariaLabel: 'Classic printing color options',
+          centerActive: false,
+          activeClass: 'selected',
+        });
+      }
 
-  if (vividOptions.length > 0 && isMobile) {
-    await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
-      ariaLabel: 'Vivid printing color options',
-      centerActive: false,
-      activeClass: 'selected',
-    });
+      if (vividOptions.length > 0 && miniPillSelectorOptionsWrapperVivid.children.length > 0) {
+        await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
+          ariaLabel: 'Vivid printing color options',
+          centerActive: false,
+          activeClass: 'selected',
+        });
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to initialize carousel:', error);
+    }
   }
 
   miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
