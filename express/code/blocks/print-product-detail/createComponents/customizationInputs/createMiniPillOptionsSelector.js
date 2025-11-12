@@ -151,7 +151,7 @@ export default async function createMiniPillOptionsSelector(
   mediaQuery.addEventListener('change', handleResize);
   window.addEventListener('orientationchange', handleResize);
 
-  miniPillSelectorContainer._cleanupCarousel = () => {
+  miniPillSelectorContainer.cleanupCarousel = () => {
     mediaQuery.removeEventListener('change', handleResize);
     window.removeEventListener('orientationchange', handleResize);
     destroyCarousel();

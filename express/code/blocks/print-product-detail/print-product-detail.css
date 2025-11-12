@@ -227,7 +227,7 @@
       right: 0;
       background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
       justify-content: flex-end;
-      padding-right: var(--spacing-100, 8px);
+      padding-right: var(--spacing-100);
     }
     .simple-carousel-fader-left.arrow-hidden,
     .simple-carousel-fader-right.arrow-hidden {
@@ -239,7 +239,7 @@
       justify-content: center;
       width: var(--spacing-500);
       height: var(--spacing-500);
-      background: var(--color-white, #ffffff);
+      background: var(--color-white);
       border-radius: 50%;
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
       cursor: pointer;
@@ -247,18 +247,18 @@
       pointer-events: auto;
     }
     .simple-carousel-arrow:hover {
-      background: var(--color-gray-100, #f5f5f5);
+      background: var(--color-gray-100);
     }
     .simple-carousel-arrow:focus {
-      outline: 2px solid var(--color-background-accent-default, #5258e4);
+      outline: 2px solid var(--color-background-accent-default);
       outline-offset: 2px;
     }
     .simple-carousel-arrow::before {
       content: '';
       width: var(--spacing-100);
       height: var(--spacing-100);
-      border-top: 2.5px solid var(--color-black, #000000);
-      border-right: 2.5px solid var(--color-black, #000000);
+      border-top: 2.5px solid var(--color-black);
+      border-right: 2.5px solid var(--color-black);
     }
     .simple-carousel-arrow-left::before {
       transform: rotate(-135deg);
@@ -422,6 +422,10 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   padding: 0px;
   cursor: pointer;
 }
+.pdpx-pill-container:focus {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
+}
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
@@ -433,10 +437,6 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.pdpx-pill-container:focus {
-  outline: 2px solid var(--color-background-accent-default);
-  outline-offset: 2px;
 }
 .pdpx-pill-text-container {
   display: flex;
@@ -673,7 +673,6 @@ main .section .pdpx-drawer-description {
     .simple-carousel-platform::-webkit-scrollbar {
       display: none;
     }
-    /* Disable tooltips in mobile carousel - overflow-x clips them */
     .simple-carousel-item .pdpx-mini-pill-image-container::after,
     .simple-carousel-item .pdpx-mini-pill-image-container::before {
       display: none;
@@ -711,7 +710,7 @@ main .section .pdpx-drawer-description {
       justify-content: center;
       width: 32px;
       height: 32px;
-      background: var(--color-white, #ffffff);
+      background: var(--color-white);
       border-radius: 50%;
       box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
       cursor: pointer;
@@ -719,18 +718,18 @@ main .section .pdpx-drawer-description {
       pointer-events: auto;
     }
     .simple-carousel-arrow:hover {
-      background: var(--color-gray-100, #f5f5f5);
+      background: var(--color-gray-100);
     }
     .simple-carousel-arrow:focus {
-      outline: 2px solid var(--color-background-accent-default, #5258e4);
+      outline: 2px solid var(--color-background-accent-default);
       outline-offset: 2px;
     }
     .simple-carousel-arrow::before {
       content: '';
       width: var(--spacing-100);
       height: var(--spacing-100);
-      border-top: 2.5px solid var(--color-black, #000000);
-      border-right: 2.5px solid var(--color-black, #000000);
+      border-top: 2.5px solid var(--color-black);
+      border-right: 2.5px solid var(--color-black);
     }
     .simple-carousel-arrow-left::before {
       transform: rotate(-135deg);
@@ -796,7 +795,7 @@ main .section .pdpx-drawer-description {
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
-  z-index: 10000;
+  z-index: 200;
   max-width: 90vw;
   width: auto;
   height: auto;
@@ -871,7 +870,7 @@ main .section .pdpx-drawer-description {
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
-  z-index: 10000;
+  z-index: 200;
   max-width: 90vw;
   width: auto;
   height: auto;
@@ -1083,7 +1082,6 @@ main .section .pdpx-drawer-description {
 .pdpx-drawer-body .simple-carousel-platform {
   overflow: visible;
 }
-/* Allow tooltips to show on main page - overflow handled by mobile media query */
 .pdpx-customization-inputs-container .simple-carousel-container {
   overflow: visible;
 }
