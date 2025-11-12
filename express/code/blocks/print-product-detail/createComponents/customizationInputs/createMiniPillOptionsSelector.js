@@ -79,7 +79,8 @@ export default async function createMiniPillOptionsSelector(
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);
 
-  if (window.innerWidth < 768) {
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  if (isMobile) {
     await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapper, {
       ariaLabel: `${labelText} options`,
       centerActive: false,
