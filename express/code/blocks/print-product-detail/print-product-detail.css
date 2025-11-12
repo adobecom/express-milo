@@ -810,9 +810,16 @@ main .section .pdpx-drawer-description {
 /* Show tooltip on hover */
 .pdpx-mini-pill-image-container:hover::after,
 .pdpx-mini-pill-image-container:hover::before {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1 !important;
+  visibility: visible !important;
   transition: var(--standard-transition-hover-in-opacity);
+}
+
+/* DEBUG: Force tooltip to always show */
+.simple-carousel-item .pdpx-mini-pill-image-container::after,
+.simple-carousel-item .pdpx-mini-pill-image-container::before {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* REGULAR PILL TOOLTIPS - Center-aligned with smart positioning */
