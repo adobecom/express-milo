@@ -67,10 +67,11 @@ function createPillOptionsSelector(
     value: defaultValue,
     'aria-hidden': 'true',
   });
-  // Cache DOM query to avoid repeated querySelectorAll calls
+  // Cache DOM queries to avoid repeated querySelectorAll calls
   let cachedAllPillContainers = null;
+  let cachedAllInputs = null;
   // Create click handler function outside loop to avoid no-loop-func error
-  const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId) => async (element) => {
+  const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId, currentHiddenSelectInputName) => async (element) => {
     // Use cached query or query once and cache
     if (!cachedAllPillContainers) {
       cachedAllPillContainers = currentPillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
@@ -86,8 +87,29 @@ function createPillOptionsSelector(
     clickedPill.classList.add('selected');
     clickedPill.setAttribute('aria-current', 'true');
     clickedPill.setAttribute('aria-checked', 'true');
-    currentHiddenSelectInput.value = clickedPill.getAttribute('data-name');
-    updateAllDynamicElements(currentProductId);
+    const pillName = clickedPill.getAttribute('data-name');
+    // Update the hidden input in THIS selector container first
+    currentHiddenSelectInput.value = pillName;
+    // Ensure the selected option is also set
+    const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
+    if (optionToSelect) {
+      optionToSelect.selected = true;
+    }
+    // Then update all other inputs with the same name (for form consistency)
+    if (!cachedAllInputs) {
+      cachedAllInputs = document.querySelectorAll(`[name="${currentHiddenSelectInputName}"]`);
+    }
+    cachedAllInputs.forEach((input) => {
+      input.value = pillName;
+      // Also update option selection for select elements
+      if (input.tagName === 'SELECT') {
+        const selectOption = input.querySelector(`option[value="${pillName}"]`);
+        if (selectOption) {
+          selectOption.selected = true;
+        }
+      }
+    });
+    await updateAllDynamicElements(currentProductId);
   };
   // Create mouseenter handler function outside loop
   const createPillMouseEnterHandler = () => (e) => {
@@ -135,7 +157,7 @@ function createPillOptionsSelector(
     );
     pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    pillContainer.addEventListener('click', createPillClickHandler(hiddenSelectInput, pillSelectorOptionsContainer, productId));
+    pillContainer.addEventListener('click', createPillClickHandler(hiddenSelectInput, pillSelectorOptionsContainer, productId, hiddenSelectInputName));
     pillContainer.addEventListener('mouseenter', createPillMouseEnterHandler());
   }
   hiddenSelectInput.value = defaultValue;
