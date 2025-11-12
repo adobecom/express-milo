@@ -84,9 +84,15 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     }, 150);
   });
 
+  let isManualScroll = false;
+
   const moveCarousel = (direction) => {
+    isManualScroll = true;
     const scrollAmount = platform.offsetWidth * 0.75;
     platform.scrollLeft += direction === 'right' ? scrollAmount : -scrollAmount;
+    setTimeout(() => {
+      isManualScroll = false;
+    }, 350);
   };
 
   arrowLeft.addEventListener('click', (e) => {
@@ -109,7 +115,11 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
   });
 
   if (centerActive) {
+    let isScrolling = false;
+    let lastScrollTo = null;
+
     const centerActiveItem = () => {
+      if (isScrolling || isManualScroll) return;
       requestAnimationFrame(() => {
         const activeElement = platform.querySelector(`.${activeClass}`);
         if (activeElement) {
@@ -118,21 +128,60 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
           const itemWidth = activeItem.offsetWidth;
           const containerWidth = platform.offsetWidth;
           const maxScroll = platform.scrollWidth - containerWidth;
+
           let scrollTo = itemLeft - (containerWidth / 2) + (itemWidth / 2);
           scrollTo = Math.max(0, Math.min(scrollTo, maxScroll));
+
+          if (lastScrollTo === scrollTo) {
+            return;
+          }
+
+          const { scrollLeft: currentScroll } = platform;
+          if (Math.abs(currentScroll - scrollTo) < 5) {
+            return;
+          }
+
+          lastScrollTo = scrollTo;
+          isScrolling = true;
           platform.scrollTo({ left: scrollTo, behavior: 'smooth' });
+
+          setTimeout(() => {
+            isScrolling = false;
+            lastScrollTo = null;
+          }, 300);
         }
       });
     };
 
-    const activeObserver = new MutationObserver(centerActiveItem);
+    const activeObserver = new MutationObserver((mutations) => {
+      const hasSelectedChange = mutations.some((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const { target } = mutation;
+          const oldClasses = mutation.oldValue || '';
+          const newClasses = target.className || '';
+          const hadSelected = oldClasses.includes(activeClass);
+          const hasSelected = newClasses.includes(activeClass);
+          return hadSelected !== hasSelected;
+        }
+        return false;
+      });
+      if (hasSelectedChange) {
+        centerActiveItem();
+      }
+    });
     activeObserver.observe(platform, {
       attributes: true,
       attributeFilter: ['class'],
       subtree: true,
+      attributeOldValue: true,
     });
 
-    centerActiveItem();
+    requestAnimationFrame(() => {
+      const activeElement = platform.querySelector(`.${activeClass}`);
+      if (activeElement) {
+        centerActiveItem();
+      }
+    });
   }
 
   platform.addEventListener('keydown', (e) => {

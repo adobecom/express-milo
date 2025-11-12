@@ -757,6 +757,9 @@ main .section .pdpx-drawer-description {
   line-height: 0;
   cursor: pointer;
   transition: var(--standard-transition-hover-out-border-color);
+  font-family: var(--body-font-family);
+  font-weight: 400;
+  font-size: 14px;
   .pdpx-mini-pill-image {
     border-radius: 4px;
     width: 100%;
@@ -779,15 +782,13 @@ main .section .pdpx-drawer-description {
 }
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
-  display: inline-block;
   position: absolute;
   font-size: 14px;
-  line-height: normal;
   padding: 18px 12px;
   left: 50%;
   bottom: 100%;
   transform: translate(-50%, -8px);
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   color: var(--color-white);
   border-radius: 6px;
   white-space: nowrap;
@@ -796,10 +797,6 @@ main .section .pdpx-drawer-description {
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 200;
-  max-width: 90vw;
-  width: auto;
-  height: auto;
-  min-height: 1px;
 }
 .pdpx-mini-pill-image-container.tooltip-left-edge::after {
   left: -1px;
@@ -827,11 +824,12 @@ main .section .pdpx-drawer-description {
   transform: translate(-50%, -4px) rotate(45deg);
   width: 8px;
   height: 8px;
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+  z-index: 199;
 }
 .pdpx-mini-pill-image-container.tooltip-left-edge::before {
   left: 24px;
@@ -854,15 +852,13 @@ main .section .pdpx-drawer-description {
 
 .pdpx-pill-container::after {
   content: attr(data-title);
-  display: inline-block;
   position: absolute;
   font-size: 14px;
-  line-height: normal;
   padding: 18px 12px;
   left: 50%;
   bottom: 100%;
   transform: translate(-50%, -8px);
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   color: var(--color-white);
   border-radius: 6px;
   white-space: nowrap;
@@ -871,10 +867,6 @@ main .section .pdpx-drawer-description {
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 200;
-  max-width: 90vw;
-  width: auto;
-  height: auto;
-  min-height: 1px;
 }
 .pdpx-pill-container.tooltip-left-edge::after {
   left: -1px;
@@ -895,11 +887,12 @@ main .section .pdpx-drawer-description {
   transform: translate(-50%, -4px) rotate(45deg);
   width: 8px;
   height: 8px;
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+  z-index: 199;
 }
 .pdpx-pill-container.tooltip-left-edge::before {
   left: 27px;

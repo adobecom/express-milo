@@ -29,30 +29,53 @@ export default async function createSegmentedMiniPillOptionsSelector(
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
 
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
-  const miniPillSelectorOptionsContainerWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-container-wrapper' });
-  const miniPillOptionsSectionContainerClassic = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
-  const miniPillOptionsSectionContainerVivid = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
-  const miniPillSelectorOptionsWrapperClassic = createTag('div', { class: 'pdpx-mini-pill-selector-options-wrapper' });
+  const containerWrapper = createTag('div', {
+    class: 'pdpx-mini-pill-selector-options-container-wrapper',
+  });
+  const classicSection = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
+  const vividSection = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
+  const classicWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-wrapper' });
   if (classicOptions.length > 0) {
-    miniPillOptionsSectionContainerClassic.appendChild(
+    classicSection.appendChild(
       createTag('span', { class: 'pdpx-pill-selector-section-label' }, 'Classic Printing: No Underbase'),
     );
   }
-  const miniPillSelectorOptionsWrapperVivid = createTag('div', { class: 'pdpx-mini-pill-selector-options-wrapper' });
+  const vividWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-wrapper' });
   if (vividOptions.length > 0) {
-    miniPillOptionsSectionContainerVivid.appendChild(
+    vividSection.appendChild(
       createTag('span', { class: 'pdpx-pill-selector-section-label' }, 'Vivid Printing: White Underbase'),
     );
   }
-  miniPillOptionsSectionContainerClassic.append(miniPillSelectorOptionsWrapperClassic);
-  miniPillOptionsSectionContainerVivid.append(miniPillSelectorOptionsWrapperVivid);
-  miniPillSelectorOptionsContainerWrapper.append(
-    miniPillOptionsSectionContainerClassic,
-    miniPillOptionsSectionContainerVivid,
-  );
+  classicSection.append(classicWrapper);
+  vividSection.append(vividWrapper);
+  containerWrapper.append(classicSection, vividSection);
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputId });
+
+  let isClassicCarouselActive = false;
+  let isVividCarouselActive = false;
+  const mediaQuery = window.matchMedia('(max-width: 767px)');
+  const tooltipMap = new Map();
+
+  const hideJSTooltip = (tooltipEl) => {
+    const arrow = tooltipEl.querySelector('.pdpx-js-tooltip-arrow');
+
+    tooltipEl.style.transition = 'var(--standard-transition-hover-out-opacity)';
+    tooltipEl.style.opacity = '0';
+    if (arrow) {
+      arrow.style.transition = 'var(--standard-transition-hover-out-opacity)';
+      arrow.style.opacity = '0';
+    }
+
+    setTimeout(() => {
+      tooltipEl.style.visibility = 'hidden';
+      if (arrow) {
+        arrow.style.visibility = 'hidden';
+      }
+    }, 300);
+  };
+
   for (let i = 0; i < customizationOptions.length; i += 1) {
-    const miniPillSelectorOptionsWrapper = customizationOptions[i].printingProcess === 'classic' ? miniPillSelectorOptionsWrapperClassic : miniPillSelectorOptionsWrapperVivid;
+    const wrapper = customizationOptions[i].printingProcess === 'classic' ? classicWrapper : vividWrapper;
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     if (customizationOptions[i].name === defaultValue) {
       selectedValue = customizationOptions[i].name;
@@ -66,10 +89,18 @@ export default async function createSegmentedMiniPillOptionsSelector(
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
     miniPillOptionImageContainer.addEventListener('click', async (element) => {
-      miniPillSelectorOptionsContainerWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
+      tooltipMap.forEach((tooltipEl) => {
+        hideJSTooltip(tooltipEl);
+      });
+      containerWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
         pill.classList.remove('selected');
+        pill.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
       });
       element.currentTarget.classList.toggle('selected');
+      const labelNameElement = miniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
+      if (labelNameElement) {
+        labelNameElement.textContent = element.currentTarget.getAttribute('data-title');
+      }
       const allInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
       allInputs.forEach((input) => {
         input.value = element.currentTarget.getAttribute('data-name');
@@ -91,15 +122,15 @@ export default async function createSegmentedMiniPillOptionsSelector(
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.append(miniPillOptionImageContainer, miniPillOptionTextContainer);
-    miniPillSelectorOptionsWrapper.appendChild(miniPillOption);
+    wrapper.appendChild(miniPillOption);
   }
   hiddenSelectInput.value = selectedValue || customizationOptions[0].name;
-  const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
-  selectedMiniPillOptionImageContainer.classList.add('selected');
-  const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  const selectedContainer = containerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
+  selectedContainer.classList.add('selected');
+  const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedContainer.dataset.title);
   if (CTALinkText) {
-    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
-    miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
+    const compareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
+    compareLink.addEventListener('click', async () => {
       await openDrawer(
         customizationOptions,
         labelText,
@@ -109,48 +140,175 @@ export default async function createSegmentedMiniPillOptionsSelector(
         drawerType,
       );
     });
-    miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
+    miniPillSelectorLabelContainer.appendChild(compareLink);
   }
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
 
-  let isClassicCarouselActive = false;
-  let isVividCarouselActive = false;
-  const mediaQuery = window.matchMedia('(max-width: 767px)');
+  const createJSTooltip = (button, tooltipText) => {
+    const tempRef = createTag('button', { class: 'pdpx-mini-pill-image-container' });
+    tempRef.setAttribute('data-title', tooltipText);
+    tempRef.style.cssText = 'position: absolute; left: -9999px; pointer-events: none;';
+    document.body.appendChild(tempRef);
+
+    const tempStyle = createTag('style');
+    const styleText = '.pdpx-mini-pill-image-container::after { opacity: 1 !important; visibility: visible !important; }';
+    tempStyle.textContent = styleText;
+    document.head.appendChild(tempStyle);
+
+    tempRef.offsetHeight;
+
+    const tooltip = createTag('div', { class: 'pdpx-js-tooltip' });
+    tooltip.textContent = tooltipText;
+
+    const refAfter = window.getComputedStyle(tempRef, '::after');
+    const refHeight = refAfter.height;
+    const refFontSize = refAfter.fontSize;
+    const refFontFamily = refAfter.fontFamily;
+    const refFontWeight = refAfter.fontWeight;
+    const refLineHeight = refAfter.lineHeight;
+    const refPaddingTop = refAfter.paddingTop;
+    const refPaddingBottom = refAfter.paddingBottom;
+    const refPaddingLeft = refAfter.paddingLeft;
+    const refPaddingRight = refAfter.paddingRight;
+    const refBackgroundColor = refAfter.backgroundColor;
+    const refColor = refAfter.color;
+    const smoothingProp = '-webkit-font-smoothing';
+    const refFontSmoothing = refAfter.webkitFontSmoothing
+      || refAfter.getPropertyValue(smoothingProp);
+    const refTextRendering = refAfter.textRendering;
+
+    tempStyle.remove();
+    tempRef.remove();
+
+    const tooltipStyles = `position: fixed; background: ${refBackgroundColor}; color: ${refColor}; padding: ${refPaddingTop} ${refPaddingRight} ${refPaddingBottom} ${refPaddingLeft}; border-radius: 6px; font-size: ${refFontSize}; font-family: ${refFontFamily}; font-weight: ${refFontWeight}; line-height: ${refLineHeight}; white-space: nowrap; pointer-events: none; opacity: 0; visibility: hidden; transition: var(--standard-transition-hover-out-opacity); z-index: 200; height: ${refHeight}; -webkit-font-smoothing: ${refFontSmoothing}; text-rendering: ${refTextRendering};`;
+    tooltip.style.cssText = tooltipStyles;
+
+    const arrow = createTag('div', { class: 'pdpx-js-tooltip-arrow' });
+    const arrowStyles = `position: absolute; bottom: -4px; left: 50%; transform: translate(-50%, 0) rotate(45deg); width: 8px; height: 8px; background: ${refBackgroundColor}; pointer-events: none; opacity: 0; visibility: hidden; transition: var(--standard-transition-hover-out-opacity); z-index: -1;`;
+    arrow.style.cssText = arrowStyles;
+    tooltip.insertBefore(arrow, tooltip.firstChild);
+    document.body.appendChild(tooltip);
+    return tooltip;
+  };
+
+  const showJSTooltip = (button, tooltipEl) => {
+    const rect = button.getBoundingClientRect();
+    const arrow = tooltipEl.querySelector('.pdpx-js-tooltip-arrow');
+    const tooltipRect = tooltipEl.getBoundingClientRect();
+    const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    const top = rect.top - tooltipRect.height - 8;
+    const maxLeft = window.innerWidth - tooltipRect.width - 8;
+    tooltipEl.style.left = `${Math.max(8, Math.min(left, maxLeft))}px`;
+    tooltipEl.style.top = `${top}px`;
+
+    tooltipEl.style.visibility = 'visible';
+    tooltipEl.style.opacity = '0';
+    if (arrow) {
+      arrow.style.visibility = 'visible';
+      arrow.style.opacity = '0';
+    }
+
+    tooltipEl.style.transition = 'var(--standard-transition-hover-in-opacity)';
+    if (arrow) {
+      arrow.style.transition = 'var(--standard-transition-hover-in-opacity)';
+    }
+
+    requestAnimationFrame(() => {
+      tooltipEl.style.opacity = '1';
+      if (arrow) {
+        arrow.style.opacity = '1';
+      }
+    });
+  };
+
+  const setupCarouselTooltips = (wrapper) => {
+    const carouselItems = wrapper.querySelectorAll('.simple-carousel-item .pdpx-mini-pill-image-container');
+    carouselItems.forEach((btn) => {
+      const tooltipText = btn.getAttribute('data-title');
+      if (tooltipText) {
+        const tooltipEl = createJSTooltip(btn, tooltipText);
+        tooltipMap.set(btn, tooltipEl);
+
+        const showTooltip = () => showJSTooltip(btn, tooltipEl);
+        const hideTooltip = () => hideJSTooltip(tooltipEl);
+
+        let touchTimeout;
+        btn.addEventListener('mouseenter', showTooltip);
+        btn.addEventListener('mouseleave', hideTooltip);
+        btn.addEventListener('touchstart', () => {
+          touchTimeout = setTimeout(() => {
+            showTooltip();
+          }, 500);
+        });
+        btn.addEventListener('touchend', () => {
+          clearTimeout(touchTimeout);
+        });
+        btn.addEventListener('touchmove', () => {
+          clearTimeout(touchTimeout);
+          hideTooltip();
+        });
+        btn.addEventListener('click', () => {
+          hideTooltip();
+        });
+      }
+    });
+  };
+
+  const cleanupCarouselTooltips = () => {
+    tooltipMap.forEach((tooltipEl) => {
+      tooltipEl.remove();
+    });
+    tooltipMap.clear();
+  };
 
   const initCarousels = async () => {
     if (classicOptions.length > 0
-      && miniPillSelectorOptionsWrapperClassic.children.length > 0
+      && classicWrapper.children.length > 0
       && !isClassicCarouselActive) {
-      await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
+      await createSimpleCarousel('.pdpx-mini-pill-container', classicWrapper, {
         ariaLabel: 'Classic printing color options',
         centerActive: true,
         activeClass: 'selected',
       });
-      const platformClassic = miniPillSelectorOptionsWrapperClassic.querySelector('.simple-carousel-platform');
+      const platformClassic = classicWrapper.querySelector('.simple-carousel-platform');
       if (platformClassic) {
         platformClassic.style.overflowY = 'visible';
       }
+      requestAnimationFrame(() => {
+        setupCarouselTooltips(classicWrapper);
+      });
       isClassicCarouselActive = true;
     }
 
     if (vividOptions.length > 0
-      && miniPillSelectorOptionsWrapperVivid.children.length > 0
+      && vividWrapper.children.length > 0
       && !isVividCarouselActive) {
-      await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
+      await createSimpleCarousel('.pdpx-mini-pill-container', vividWrapper, {
         ariaLabel: 'Vivid printing color options',
         centerActive: true,
         activeClass: 'selected',
       });
-      const platformVivid = miniPillSelectorOptionsWrapperVivid.querySelector('.simple-carousel-platform');
+      const platformVivid = vividWrapper.querySelector('.simple-carousel-platform');
       if (platformVivid) {
         platformVivid.style.overflowY = 'visible';
       }
+      requestAnimationFrame(() => {
+        setupCarouselTooltips(vividWrapper);
+      });
       isVividCarouselActive = true;
     }
   };
 
   const destroyCarousel = (wrapper, isActive) => {
     if (isActive) {
+      const carouselItems = wrapper.querySelectorAll('.simple-carousel-item .pdpx-mini-pill-image-container');
+      carouselItems.forEach((btn) => {
+        const tooltipEl = tooltipMap.get(btn);
+        if (tooltipEl) {
+          tooltipEl.remove();
+          tooltipMap.delete(btn);
+        }
+      });
       const carouselContainer = wrapper.querySelector('.simple-carousel-container');
       const faderLeft = wrapper.querySelector('.simple-carousel-fader-left');
       const faderRight = wrapper.querySelector('.simple-carousel-fader-right');
@@ -176,14 +334,8 @@ export default async function createSegmentedMiniPillOptionsSelector(
   };
 
   const destroyCarousels = () => {
-    isClassicCarouselActive = destroyCarousel(
-      miniPillSelectorOptionsWrapperClassic,
-      isClassicCarouselActive,
-    );
-    isVividCarouselActive = destroyCarousel(
-      miniPillSelectorOptionsWrapperVivid,
-      isVividCarouselActive,
-    );
+    isClassicCarouselActive = destroyCarousel(classicWrapper, isClassicCarouselActive);
+    isVividCarouselActive = destroyCarousel(vividWrapper, isVividCarouselActive);
   };
 
   const handleResize = async () => {
@@ -204,9 +356,10 @@ export default async function createSegmentedMiniPillOptionsSelector(
   miniPillSelectorContainer.cleanupCarousel = () => {
     mediaQuery.removeEventListener('change', handleResize);
     window.removeEventListener('orientationchange', handleResize);
+    cleanupCarouselTooltips();
     destroyCarousels();
   };
 
-  miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
+  miniPillSelectorContainer.append(containerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;
 }

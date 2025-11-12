@@ -1,9 +1,8 @@
 import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
-import { formatDeliveryEstimateDateRange } from './utility-functions.js';
+import { formatDeliveryEstimateDateRange, convertImageSize, createHeroImageSrcset } from './utility-functions.js';
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createCustomizationInputs from '../createComponents/customizationInputs/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
-import createDrawerContentPaperType from '../createComponents/drawerContent/createDrawerContentPaperType.js';
 import { createCheckoutButtonHref } from '../createComponents/createProductDetailsSection.js';
 import { createPriceLockup } from '../createComponents/createProductInfoHeadingSection.js';
 
@@ -29,7 +28,13 @@ async function updateProductPrice(productDetails) {
 }
 
 async function updateProductImages(productDetails) {
+  if (!productDetails?.realViews || Object.keys(productDetails.realViews).length === 0) {
+    return;
+  }
+
   const heroImg = document.getElementById('pdpx-product-hero-image');
+  if (!heroImg) return;
+
   const firstImageType = Object.keys(productDetails.realViews)[0];
   let imageType;
   if (productDetails.realViews[heroImg.dataset.imageType]) {
@@ -39,16 +44,31 @@ async function updateProductImages(productDetails) {
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
 
-  heroImg.src = newHeroImgSrc;
-  heroImg.dataset.imageType = imageType;
+  if (newHeroImgSrc) {
+    const currentSrc = heroImg.src;
+    const newSrc = convertImageSize(newHeroImgSrc, '500');
+    const newSrcset = createHeroImageSrcset(newHeroImgSrc);
 
+    // Only update if the image URL has changed
+    if (currentSrc !== newSrc || heroImg.srcset !== newSrcset) {
+      heroImg.srcset = newSrcset;
+      heroImg.src = newSrc;
+      heroImg.dataset.imageType = imageType;
+    }
+  }
+
+  // Update all thumbnails with new data
   const thumbnailButtons = document.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
   thumbnailButtons.forEach((button) => {
     const btnImageType = button.dataset.imageType;
     if (productDetails.realViews[btnImageType]) {
       const img = button.querySelector('.pdpx-image-thumbnail-carousel-item-image');
       if (img) {
-        img.src = productDetails.realViews[btnImageType];
+        const newThumbnailSrc = convertImageSize(productDetails.realViews[btnImageType], '100');
+        // Only update if the image URL has changed
+        if (img.src !== newThumbnailSrc) {
+          img.src = newThumbnailSrc;
+        }
       }
       button.removeAttribute('data-skeleton');
     }
@@ -84,6 +104,20 @@ async function updatePillTextValues(productDetails) {
       }
     }
   });
+
+  const selectedPills = document.querySelectorAll('.pdpx-pill-container.selected[data-name], .pdpx-mini-pill-image-container.selected[data-name]');
+  selectedPills.forEach((selectedPill) => {
+    const { title: pillTitle } = selectedPill.dataset;
+
+    // Find the pill selector container this pill belongs to
+    const pillSelectorContainer = selectedPill.closest('.pdpx-pill-selector-container');
+    if (pillSelectorContainer) {
+      const labelNameElement = pillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
+      if (labelNameElement && pillTitle) {
+        labelNameElement.textContent = pillTitle;
+      }
+    }
+  });
 }
 
 async function updateCheckoutButton(productDetails, formDataObject) {
@@ -103,8 +137,121 @@ async function updateDrawerContent(productDetails, formDataObject) {
   }
   if (productDetails.productType === 'zazzle_businesscard') {
     const mediaValue = productDetails.attributes.media.find((v) => v.name === formDataObject.media);
-    drawer.innerHTML = '';
-    await createDrawerContentPaperType(productDetails.attributes.media, 'Paper Type', 'media', productDetails, mediaValue.name, 'paperType', drawer);
+    const mediaOptions = productDetails.attributes.media;
+
+    if (!mediaValue) return;
+
+    const {
+      thumbnail,
+      title,
+      name,
+      description: descText,
+      priceAdjustment,
+      thickness,
+      weight,
+      gsm,
+    } = mediaValue;
+
+    const heroImage = drawer.querySelector('.pdpx-drawer-hero-image');
+    const drawerTitle = drawer.querySelector('.pdpx-drawer-title');
+    const pillsContainer = drawer.querySelector('.pdpx-drawer-pills-container');
+    const description = drawer.querySelector('.pdpx-drawer-description');
+    const footInfoName = drawer.querySelector('.pdpx-drawer-foot-info-name'); // eslint-disable-line prefer-destructuring
+    const footInfoPrice = drawer.querySelector('.pdpx-drawer-foot-info-price');
+    const footInfoImage = drawer.querySelector('.pdpx-drawer-foot-info-container img');
+    const paperTypeSelector = drawer.querySelector('.pdpx-pill-selector-container');
+
+    if (heroImage) {
+      const defaultValueImageSrc = new URL(thumbnail);
+      defaultValueImageSrc.searchParams.set('max_dim', '1000');
+      heroImage.src = defaultValueImageSrc.toString();
+      heroImage.alt = title;
+    }
+
+    if (drawerTitle) {
+      drawerTitle.textContent = title;
+      const titleRow = drawerTitle.parentElement;
+      const existingBadge = titleRow.querySelector('.pdpx-recommended-badge');
+      if (name === '175ptmatte' && !existingBadge) {
+        const { getLibs } = await import('../../../scripts/utils.js');
+        const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+        titleRow.appendChild(createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended'));
+      } else if (name !== '175ptmatte' && existingBadge) {
+        existingBadge.remove();
+      }
+    }
+
+    if (pillsContainer) {
+      pillsContainer.innerHTML = '';
+      const specs = [thickness, weight, gsm].filter(Boolean);
+      const { getLibs, getIconElementDeprecated } = await import('../../../scripts/utils.js');
+      const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+      specs.forEach((spec) => {
+        const pill = createTag('div', { class: 'pdpx-drawer-pill' });
+        pill.append(
+          getIconElementDeprecated('circle-check-mark'),
+          createTag('span', { class: 'pdpx-drawer-pill-text' }, spec),
+        );
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    if (description) {
+      description.textContent = descText;
+    }
+
+    if (footInfoName) {
+      footInfoName.textContent = title;
+    }
+
+    if (footInfoPrice) {
+      footInfoPrice.textContent = priceAdjustment;
+    }
+
+    if (footInfoImage) {
+      footInfoImage.src = thumbnail;
+      footInfoImage.alt = title;
+    }
+
+    if (paperTypeSelector) {
+      const pillContainers = paperTypeSelector.querySelectorAll('.pdpx-mini-pill-container');
+      const hiddenSelect = paperTypeSelector.querySelector('.pdpx-hidden-select-input');
+
+      if (hiddenSelect) {
+        hiddenSelect.value = name;
+      }
+
+      pillContainers.forEach((pillContainer) => {
+        const pillButton = pillContainer.querySelector('.pdpx-mini-pill-image-container');
+        const pillImage = pillContainer.querySelector('.pdpx-mini-pill-image');
+        const pillPrice = pillContainer.querySelector('.pdpx-mini-pill-price');
+
+        if (pillButton && pillButton.dataset.name === name) {
+          pillButton.classList.add('selected');
+          const labelName = paperTypeSelector.querySelector('.pdpx-pill-selector-label-name');
+          if (labelName) {
+            labelName.textContent = title;
+          }
+        } else if (pillButton) {
+          pillButton.classList.remove('selected');
+        }
+
+        const matchingOption = mediaOptions.find((opt) => opt.name === pillButton?.dataset.name);
+        if (matchingOption) {
+          if (pillImage && pillImage.src !== matchingOption.thumbnail) {
+            pillImage.src = matchingOption.thumbnail;
+            pillImage.alt = `${matchingOption.title} Option Image Thumbnail`;
+          }
+          if (pillPrice && pillPrice.textContent !== matchingOption.priceAdjustment) {
+            pillPrice.textContent = matchingOption.priceAdjustment;
+          }
+          if (pillButton && pillButton.dataset.title !== matchingOption.title) {
+            pillButton.dataset.title = matchingOption.title;
+            pillButton.setAttribute('data-title', matchingOption.title);
+          }
+        }
+      });
+    }
   }
 }
 
