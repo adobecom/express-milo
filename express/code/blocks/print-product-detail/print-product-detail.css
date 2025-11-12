@@ -1083,11 +1083,6 @@ main .section .pdpx-drawer-description {
 .pdpx-drawer-body .simple-carousel-platform {
   overflow: visible;
 }
-/* Disable tooltips in drawer (overflow clipping makes them unusable) */
-.pdpx-drawer-body .pdpx-mini-pill-image-container::after,
-.pdpx-drawer-body .pdpx-mini-pill-image-container::before {
-  display: none;
-}
 /* Allow tooltips to show on main page - overflow handled by mobile media query */
 .pdpx-customization-inputs-container .simple-carousel-container {
   overflow: visible;

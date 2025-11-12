@@ -73,10 +73,14 @@ export default async function createMiniPillOptionsSelector(
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
+      const btnCenterX = rect.left + (rect.width / 2);
+      const tooltipText = btn.getAttribute('data-title') || '';
+      const estimatedTooltipWidth = (tooltipText.length * 8) + 24;
+      const tooltipHalfWidth = estimatedTooltipWidth / 2;
       btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
-      if (rect.left < 150) {
+      if (btnCenterX - tooltipHalfWidth < 16) {
         btn.classList.add('tooltip-left-edge');
-      } else if (rect.right > viewportWidth - 150) {
+      } else if (btnCenterX + tooltipHalfWidth > viewportWidth - 16) {
         btn.classList.add('tooltip-right-edge');
       }
     });
