@@ -77,7 +77,7 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     }
   });
 
-  const observerOptions = { threshold: 0, root: container };
+  const observerOptions = { threshold: 0.5, root: container, rootMargin: '0px' };
   const slideObserver = new IntersectionObserver(onSlideIntersect, observerOptions);
   slideObserver.observe(leftTrigger);
   slideObserver.observe(rightTrigger);

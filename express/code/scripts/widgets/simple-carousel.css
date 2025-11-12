@@ -27,8 +27,8 @@
 .simple-carousel-left-trigger,
 .simple-carousel-right-trigger {
   flex-shrink: 0;
-  width: 1px;
-  height: 1px;
+  width: 2px;
+  height: 2px;
   visibility: hidden;
 }
 
