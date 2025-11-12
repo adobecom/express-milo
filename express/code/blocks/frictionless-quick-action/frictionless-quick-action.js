@@ -253,13 +253,11 @@ async function setupUploadUI(block) {
 }
 
 /* c8 ignore next 13 */
-async function uploadAssetToStorage(file) {
+async function uploadAssetToStorage(file, quickAction) {
+  const uploadStartTime = Date.now();
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS);
 
-  // Capture start time immediately before the actual upload call so
-  // the measured duration reflects the upload transfer time only.
-  const timeStarted = Date.now();
   const { asset } = await service.uploadAsset({
     file,
     fileName: file.name,
@@ -270,17 +268,14 @@ async function uploadAssetToStorage(file) {
 
   // Log video upload success for analytics
   if (file.type.startsWith('video/')) {
+    const uploadDuration = Date.now() - uploadStartTime;
     window.lana?.log('Video upload successful', {
       tags: 'frictionless-video-upload-success',
       assetId: asset.assetId,
       fileSize: file.size,
       fileType: file.type,
-    });
-
-    window.lana?.log('Video upload time taken', {
-      tags: 'frictionless-video-upload-success',
-      assetId: asset.assetId,
-      timeTaken: Date.now() - timeStarted,
+      quickAction,
+      uploadDuration,
     });
   }
 
@@ -288,57 +283,18 @@ async function uploadAssetToStorage(file) {
 }
 
 /* c8 ignore next 14 */
-async function performStorageUpload(files, block) {
-  const beforeUnloadHandler = () => {
-    try {
-      // Only log unload interruptions for video files
-      if (files[0] && files[0].type && files[0].type.startsWith('video/')) {
-        window.lana?.log('Video upload interrupted', {
-          tags: 'frictionless-video-upload-interrupted',
-          fileName: files[0].name,
-          fileSize: files[0].size,
-          fileType: files[0].type,
-        });
-      }
-    } catch (err) {
-      // swallow any errors from logging
-    }
-  };
-
+async function performStorageUpload(files, block, quickAction) {
   try {
     progressBar = await setupUploadUI(block);
-    // Attach beforeunload to detect user navigation/refresh during upload and log it to Lana
-    window.addEventListener('beforeunload', beforeUnloadHandler);
-    return await uploadAssetToStorage(files[0]);
+    return await uploadAssetToStorage(files[0], quickAction);
   } catch (error) {
-    // For user-facing errors, prefer a localized message when available
-    if (error?.code === 'UPLOAD_FAILED') {
+    if (error.code === 'UPLOAD_FAILED') {
       const message = await replaceKey('upload-media-error', getConfig());
       showErrorToast(block, message);
     } else {
-      showErrorToast(block, error?.message || 'Upload failed');
+      showErrorToast(block, error.message);
     }
-
-    // Always log video upload failures to Lana with error details so we can
-    // triage issues even when the error shape varies.
-    try {
-      if (files[0] && files[0].type && files[0].type.startsWith('video/')) {
-        window.lana?.log('Video upload failed', {
-          tags: 'frictionless-video-upload-failed',
-          fileSize: files[0].size,
-          fileType: files[0].type,
-          errorCode: error?.code,
-          errorMessage: error?.message,
-        });
-      }
-    } catch (err) {
-      // swallow any errors from logging
-    }
-
     return null;
-  } finally {
-    // Ensure we always remove the handler once upload finishes/errors
-    window.removeEventListener('beforeunload', beforeUnloadHandler);
   }
 }
 
@@ -505,7 +461,7 @@ async function performUploadAction(files, block, quickAction) {
   const initialDecodeController = new AbortController();
 
   const initialDecodePromise = startAssetDecoding(files[0], initialDecodeController);
-  const uploadPromise = performStorageUpload(files, block);
+  const uploadPromise = performStorageUpload(files, block, quickAction);
 
   const firstToComplete = await raceUploadAndDecode(uploadPromise, initialDecodePromise);
 
