@@ -253,8 +253,7 @@ async function setupUploadUI(block) {
 }
 
 /* c8 ignore next 13 */
-async function uploadAssetToStorage(file, quickAction) {
-  const uploadStartTime = Date.now();
+async function uploadAssetToStorage(file, quickAction, uploadStartTime) {
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS);
 
@@ -284,9 +283,11 @@ async function uploadAssetToStorage(file, quickAction) {
 
 /* c8 ignore next 14 */
 async function performStorageUpload(files, block, quickAction) {
+  const file = files[0];
+  const uploadStartTime = Date.now();
   try {
     progressBar = await setupUploadUI(block);
-    return await uploadAssetToStorage(files[0], quickAction);
+    return await uploadAssetToStorage(file, quickAction, uploadStartTime);
   } catch (error) {
     if (error.code === 'UPLOAD_FAILED') {
       const message = await replaceKey('upload-media-error', getConfig());
@@ -294,6 +295,21 @@ async function performStorageUpload(files, block, quickAction) {
     } else {
       showErrorToast(block, error.message);
     }
+
+    // Log video upload failure for analytics
+    if (file && file.type.startsWith('video/')) {
+      const uploadDuration = Date.now() - uploadStartTime;
+      window.lana?.log('Video upload failed', {
+        tags: 'frictionless-video-upload-failed',
+        fileSize: file.size,
+        fileType: file.type,
+        quickAction,
+        uploadDuration,
+        errorCode: error.code,
+        errorMessage: error.message,
+      });
+    }
+
     return null;
   }
 }
