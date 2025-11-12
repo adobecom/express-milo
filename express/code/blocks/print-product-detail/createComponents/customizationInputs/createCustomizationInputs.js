@@ -102,7 +102,6 @@ function createPillOptionsSelector(
       hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
-    // Smart tooltip edge detection - check against container edges, not viewport
     pillContainer.addEventListener('mouseenter', (e) => {
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();

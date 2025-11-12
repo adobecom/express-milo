@@ -76,7 +76,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
       updateAllDynamicElements(productId);
     });
-    // Smart tooltip edge detection - check against container edges, not viewport
     miniPillOptionImageContainer.addEventListener('mouseenter', (e) => {
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();
@@ -127,7 +126,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
         centerActive: true,
         activeClass: 'selected',
       });
-      // Force overflow-y visible for tooltips
       const platformClassic = miniPillSelectorOptionsWrapperClassic.querySelector('.simple-carousel-platform');
       if (platformClassic) {
         platformClassic.style.overflowY = 'visible';
@@ -143,7 +141,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
         centerActive: true,
         activeClass: 'selected',
       });
-      // Force overflow-y visible for tooltips
       const platformVivid = miniPillSelectorOptionsWrapperVivid.querySelector('.simple-carousel-platform');
       if (platformVivid) {
         platformVivid.style.overflowY = 'visible';
