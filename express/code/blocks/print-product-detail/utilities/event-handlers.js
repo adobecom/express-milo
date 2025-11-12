@@ -78,7 +78,10 @@ async function updateProductImages(productDetails) {
 async function updateProductDeliveryEstimate(productDetails) {
   const dateElement = document.getElementById('pdpx-delivery-estimate-pill-date');
   if (dateElement) {
-    dateElement.textContent = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+    dateElement.textContent = formatDeliveryEstimateDateRange(
+      productDetails.deliveryEstimateMinDate,
+      productDetails.deliveryEstimateMaxDate,
+    );
   }
 }
 
@@ -88,7 +91,43 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
 }
 
 async function updatePillTextValues(productDetails) {
-  const pillButtons = document.querySelectorAll('.pdpx-pill-container[data-name], .pdpx-mini-pill-container .pdpx-mini-pill-image-container[data-name]');
+  const form = document.querySelector('#pdpx-customization-inputs-form');
+  const formData = new FormData(form);
+  const formDataObject = Object.fromEntries(formData.entries());
+  const pillButtons = document.querySelectorAll(
+    '.pdpx-pill-container[data-name], .pdpx-mini-pill-container .pdpx-mini-pill-image-container[data-name]',
+  );
+
+  const pillSelectorContainers = new Set();
+  pillButtons.forEach((pill) => {
+    const pillSelectorContainer = pill.closest('.pdpx-pill-selector-container');
+    if (pillSelectorContainer) {
+      pillSelectorContainers.add(pillSelectorContainer);
+    }
+  });
+
+  pillSelectorContainers.forEach((pillSelectorContainer) => {
+    const hiddenSelectInput = pillSelectorContainer.querySelector('.pdpx-hidden-select-input');
+    if (!hiddenSelectInput) return;
+    const inputName = hiddenSelectInput.name;
+    const selectedValue = formDataObject[inputName] || hiddenSelectInput.value;
+    const pillContainer = pillSelectorContainer.querySelector('.pdpx-pill-selector-options-container');
+
+    if (pillContainer && selectedValue) {
+      pillContainer.querySelectorAll('.pdpx-pill-container, .pdpx-mini-pill-image-container').forEach((p) => {
+        p.classList.remove('selected');
+        p.removeAttribute('aria-current');
+        p.setAttribute('aria-checked', 'false');
+      });
+
+      const selectedPill = pillContainer.querySelector(`[data-name="${selectedValue}"]`);
+      if (selectedPill) {
+        selectedPill.classList.add('selected');
+        selectedPill.setAttribute('aria-current', 'true');
+        selectedPill.setAttribute('aria-checked', 'true');
+      }
+    }
+  });
 
   pillButtons.forEach((pill) => {
     const pillName = pill.dataset.name;
@@ -112,7 +151,6 @@ async function updatePillTextValues(productDetails) {
   selectedPills.forEach((selectedPill) => {
     const { title: pillTitle } = selectedPill.dataset;
 
-    // Find the pill selector container this pill belongs to
     const pillSelectorContainer = selectedPill.closest('.pdpx-pill-selector-container');
     if (pillSelectorContainer) {
       const labelNameElement = pillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
@@ -346,7 +384,7 @@ export default async function updateAllDynamicElements(productId) {
   await updateDrawerContent(normalizedProductDetails, formDataObject);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
-    productDetails,
+    attributes: productDetails.product.attributes,
     formData: formDataObject,
   });
 }

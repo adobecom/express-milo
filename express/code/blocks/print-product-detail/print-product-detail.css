@@ -432,10 +432,6 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   padding: 0px;
   cursor: pointer;
 }
-.pdpx-pill-container:focus {
-  outline: 2px solid var(--color-background-accent-default);
-  outline-offset: 2px;
-}
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
@@ -925,8 +921,8 @@ main .section .pdpx-drawer-description {
   transform: translate(0, -4px) rotate(45deg);
 }
 
-.pdpx-pill-container:hover::after,
-.pdpx-pill-container:hover::before {
+.pdpx-pill-container:hover:not(.selected)::after,
+.pdpx-pill-container:hover:not(.selected)::before {
   opacity: 1;
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);

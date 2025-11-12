@@ -87,7 +87,7 @@ export default async function createMiniPillOptionsSelector(
         pill.classList.remove('selected');
         pill.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
       });
-      element.currentTarget.classList.toggle('selected');
+      element.currentTarget.classList.add('selected');
       miniPillSelectorOptionsWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((p) => {
         p.removeAttribute('aria-current');
       });
