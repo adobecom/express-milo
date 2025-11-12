@@ -205,7 +205,7 @@ async function buildEdu(el, locale, imsClientId, noRedirect) {
   const variant = 'edu-express';
   const destURL = await getDestURL(redirectUrl);
   const params = buildSUSIParams({
-    client_id, variant, destURL, locale, title, popup: true,
+    client_id, variant, destURL, locale, title,
   });
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
