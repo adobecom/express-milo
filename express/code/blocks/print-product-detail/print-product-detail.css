@@ -38,6 +38,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  order: 3;
 
   .pdpx-product-info-section {
     width: 100%;
