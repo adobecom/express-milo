@@ -38,6 +38,7 @@ let fqaContainer;
 let uploadEvents;
 let frictionlessTargetBaseUrl;
 let progressBar;
+let uploadInProgress = null; // Tracks active upload: { file, startTime, quickAction }
 
 function frictionlessQAExperiment(
   quickAction,
@@ -265,6 +266,9 @@ async function uploadAssetToStorage(file, quickAction, uploadStartTime) {
 
   progressBar.setProgress(100);
 
+  // Clear upload state on success
+  uploadInProgress = null;
+
   // Log video upload success for analytics
   if (file.type.startsWith('video/')) {
     const uploadDuration = Date.now() - uploadStartTime;
@@ -285,6 +289,7 @@ async function uploadAssetToStorage(file, quickAction, uploadStartTime) {
 async function performStorageUpload(files, block, quickAction) {
   const file = files[0];
   const uploadStartTime = Date.now();
+  uploadInProgress = { file, startTime: uploadStartTime, quickAction };
   try {
     progressBar = await setupUploadUI(block);
     return await uploadAssetToStorage(file, quickAction, uploadStartTime);
@@ -309,6 +314,9 @@ async function performStorageUpload(files, block, quickAction) {
         errorMessage: error.message,
       });
     }
+
+    // Clear upload state on failure
+    uploadInProgress = null;
 
     return null;
   }
@@ -726,6 +734,19 @@ export default async function decorate(block) {
   dropzone.append(freePlanTags);
 
   window.addEventListener('popstate', (e) => {
+    // Log video upload cancellation if user presses back during active upload
+    if (uploadInProgress && uploadInProgress.file.type.startsWith('video/')) {
+      const uploadDuration = Date.now() - uploadInProgress.startTime;
+      window.lana?.log('Video upload cancelled', {
+        tags: 'frictionless-video-upload-cancelled',
+        fileSize: uploadInProgress.file.size,
+        fileType: uploadInProgress.file.type,
+        quickAction: uploadInProgress.quickAction,
+        uploadDuration,
+      });
+      uploadInProgress = null;
+    }
+
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
     const correctState = e.state?.hideFrictionlessQa;
     const embedElsFound = quickActionContainer || editorModal;
