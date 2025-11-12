@@ -111,8 +111,9 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
   if (centerActive) {
     const centerActiveItem = () => {
       requestAnimationFrame(() => {
-        const activeItem = platform.querySelector(`.${activeClass}`);
-        if (activeItem) {
+        const activeElement = platform.querySelector(`.${activeClass}`);
+        if (activeElement) {
+          const activeItem = activeElement.closest('.simple-carousel-item') || activeElement;
           const itemLeft = activeItem.offsetLeft;
           const itemWidth = activeItem.offsetWidth;
           const containerWidth = platform.offsetWidth;
