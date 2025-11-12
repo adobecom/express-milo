@@ -147,8 +147,8 @@ function updatePageWithUIStrings(productDetails) {
   document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
   const compareValueTooltipContent = document.getElementById('pdpx-info-tooltip-content');
   compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-title').textContent = productDetails.compareValueTooltipTitle;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').textContent = productDetails.compareValueTooltipDescription1;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').textContent = productDetails.compareValueTooltipDescription2;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').innerHTML = productDetails.compareValueTooltipDescription1;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').innerHTML = productDetails.compareValueTooltipDescription2;
 }
 
 export default async function decorate(block) {

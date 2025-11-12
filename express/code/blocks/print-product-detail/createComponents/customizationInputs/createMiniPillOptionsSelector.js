@@ -74,8 +74,7 @@ export default async function createMiniPillOptionsSelector(
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container', 'data-tooltip': customizationOptions[i].title });
     const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
-    const altTextMiniPill = `${labelText} Option Image Thumbnail: ${customizationOptions[i].title}`;
-    const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', alt: altTextMiniPill, src: customizationOptions[i].thumbnail });
+    const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', alt: customizationOptions[i].title, src: customizationOptions[i].thumbnail });
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);

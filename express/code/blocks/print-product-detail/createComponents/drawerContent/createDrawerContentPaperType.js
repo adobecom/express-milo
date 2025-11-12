@@ -31,9 +31,11 @@ export default async function createDrawerContentPaperType(
   const titleRow = createTag('div', { class: 'pdpx-drawer-title-row' });
   const drawerTitle = createTag('span', { class: 'pdpx-drawer-title' }, defaultValueOption.title);
   titleRow.appendChild(drawerTitle);
-  if (defaultValueSafe === '175ptmatte') {
-    titleRow.appendChild(createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended'));
+  const recommendedBadge = createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended');
+  if (defaultValueSafe !== '175ptmatte') {
+    recommendedBadge.style.visibility = 'hidden';
   }
+  titleRow.appendChild(recommendedBadge);
   const pillsContainer = createTag('div', { class: 'pdpx-drawer-pills-container' });
   const specs = [
     defaultValueOption.thickness,
@@ -57,7 +59,8 @@ export default async function createDrawerContentPaperType(
     defaultValue,
     drawerType,
   );
-  const description = createTag('div', { class: 'pdpx-drawer-description' }, defaultValueOption.description);
+  const description = createTag('div', { class: 'pdpx-drawer-description' });
+  description.innerHTML = defaultValueOption.description;
   const infoContainer = createTag('div', { class: 'pdpx-drawer-foot-info-container' });
   const infoText = createTag('div', { class: 'pdpx-drawer-foot-info-text' });
   infoText.append(

@@ -203,22 +203,27 @@ async function updateDrawerContent(productDetails, formDataObject) {
     const paperTypeSelector = drawer.querySelector('.pdpx-pill-selector-container');
 
     if (heroImage) {
+      heroImage.style.opacity = '0';
       const defaultValueImageSrc = new URL(thumbnail);
       defaultValueImageSrc.searchParams.set('max_dim', '1000');
-      heroImage.src = defaultValueImageSrc.toString();
+      const newSrc = defaultValueImageSrc.toString();
+      heroImage.src = newSrc;
       heroImage.alt = title;
+      heroImage.onload = () => {
+        heroImage.style.opacity = '1';
+      };
     }
 
     if (drawerTitle) {
       drawerTitle.textContent = title;
       const titleRow = drawerTitle.parentElement;
       const existingBadge = titleRow.querySelector('.pdpx-recommended-badge');
-      if (name === '175ptmatte' && !existingBadge) {
-        const { getLibs } = await import('../../../scripts/utils.js');
-        const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-        titleRow.appendChild(createTag('span', { class: 'pdpx-recommended-badge' }, 'Recommended'));
-      } else if (name !== '175ptmatte' && existingBadge) {
-        existingBadge.remove();
+      if (existingBadge) {
+        if (name === '175ptmatte') {
+          existingBadge.style.visibility = 'visible';
+        } else {
+          existingBadge.style.visibility = 'hidden';
+        }
       }
     }
 
@@ -238,7 +243,7 @@ async function updateDrawerContent(productDetails, formDataObject) {
     }
 
     if (description) {
-      description.textContent = descText;
+      description.innerHTML = descText;
     }
 
     if (footInfoName) {
@@ -281,7 +286,7 @@ async function updateDrawerContent(productDetails, formDataObject) {
         if (matchingOption) {
           if (pillImage && pillImage.src !== matchingOption.thumbnail) {
             pillImage.src = matchingOption.thumbnail;
-            pillImage.alt = `${matchingOption.title} Option Image Thumbnail`;
+            pillImage.alt = matchingOption.title;
           }
           if (pillPrice && pillPrice.textContent !== matchingOption.priceAdjustment) {
             pillPrice.textContent = matchingOption.priceAdjustment;

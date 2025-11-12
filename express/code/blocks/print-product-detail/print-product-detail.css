@@ -472,6 +472,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-drawer-hero-image-container {
   aspect-ratio: 3 / 2;
   width: 100%;
+  min-height: 200px;
   overflow: hidden;
   flex-shrink: 0;
   margin-bottom: var(--spacing-400);
@@ -481,6 +482,8 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
     object-fit: cover;
     object-position: bottom;
     border-radius: 8px;
+    display: block;
+    transition: opacity 0.2s ease;
   }
 }
 .pdpx-drawer-title-row {
