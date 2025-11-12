@@ -2,6 +2,7 @@
   --susi-modal-width: 370px;
   --susi-tabs-width: 400px;
   --susi-min-height: 462px;
+  --susi-standard-padding: 24px;
 }
 
 .susi-light {
@@ -22,10 +23,10 @@
 .susi-layout .express-logo {
   width: unset;
   height: 24px;
+  padding-bottom: var(--spacing-100);
 }
 
 .susi-layout .title {
-  padding-top: var(--spacing-200);
   max-width: 90%;
   font-size: var(--heading-font-size-s);
   line-height: 28.6px;
@@ -159,8 +160,9 @@
   height: 1rem;
 }
 
-.susi-light.edu .subheading {
+.susi-light .subheading {
   font-size: var(--body-font-size-s);
+  padding: 0 var(--susi-standard-padding);
   line-height: 1.3;
   color: #464646;
 }
