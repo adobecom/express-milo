@@ -97,6 +97,10 @@ export default async function createSegmentedMiniPillOptionsSelector(
         pill.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
       });
       element.currentTarget.classList.toggle('selected');
+      containerWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((p) => {
+        p.removeAttribute('aria-current');
+      });
+      element.currentTarget.setAttribute('aria-current', 'true');
       const labelNameElement = miniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
       if (labelNameElement) {
         labelNameElement.textContent = element.currentTarget.getAttribute('data-title');
@@ -127,6 +131,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
   hiddenSelectInput.value = selectedValue || customizationOptions[0].name;
   const selectedContainer = containerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedContainer.classList.add('selected');
+  selectedContainer.setAttribute('aria-current', 'true');
   const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedContainer.dataset.title);
   if (CTALinkText) {
     const compareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);

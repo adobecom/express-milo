@@ -98,27 +98,35 @@ function createPillOptionsSelector(
     );
     pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    pillContainer.addEventListener('click', async (element) => {
-      hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
-    });
-    pillContainer.addEventListener('mouseenter', (e) => {
-      const btn = e.currentTarget;
-      const rect = btn.getBoundingClientRect();
-      const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
-      const containerRect = container.getBoundingClientRect();
-      const threshold = 150;
-      btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
-      if (rect.left - containerRect.left < threshold) {
-        btn.classList.add('tooltip-left-edge');
-      } else if (containerRect.right - rect.right < threshold) {
-        btn.classList.add('tooltip-right-edge');
-      }
-    });
+           pillContainer.addEventListener('click', async (element) => {
+             pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((p) => {
+               p.removeAttribute('aria-current');
+             });
+             element.currentTarget.setAttribute('aria-current', 'true');
+             hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
+             updateAllDynamicElements(productId);
+           });
+           pillContainer.addEventListener('mouseenter', (e) => {
+             const btn = e.currentTarget;
+             const btnRect = btn.getBoundingClientRect();
+             const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
+             const containerRect = container.getBoundingClientRect();
+             const threshold = 150;
+             btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+             if (btnRect.left - containerRect.left < threshold) {
+               btn.classList.add('tooltip-left-edge');
+             } else if (containerRect.right - btnRect.right < threshold) {
+               btn.classList.add('tooltip-right-edge');
+             }
+           });
   }
-  hiddenSelectInput.value = defaultValue;
-  pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
-  return pillSelectorContainer;
+         hiddenSelectInput.value = defaultValue;
+         const selectedPill = pillSelectorOptionsContainer.querySelector(`.pdpx-pill-container[data-name="${defaultValue}"]`);
+         if (selectedPill) {
+           selectedPill.setAttribute('aria-current', 'true');
+         }
+         pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
+         return pillSelectorContainer;
 }
 
 export async function createBusinessCardInputs(container, productDetails, formDataObject = {}) {

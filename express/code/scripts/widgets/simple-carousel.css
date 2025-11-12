@@ -55,11 +55,21 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  padding: 0;
+  margin: 0;
+  border: none;
   background: var(--color-white);
   border-radius: 50%;
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: background 0.2s ease;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  text-decoration: none;
+  overflow: visible;
 }
 
 .simple-carousel-arrow:hover {
@@ -73,10 +83,12 @@
 
 .simple-carousel-arrow::before {
   content: '';
+  display: block;
   width: 10px;
   height: 10px;
   border-top: 2px solid var(--color-black);
   border-right: 2px solid var(--color-black);
+  flex-shrink: 0;
 }
 
 .simple-carousel-arrow-left::before {

@@ -88,7 +88,11 @@ export default async function createMiniPillOptionsSelector(
         pill.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
       });
       element.currentTarget.classList.toggle('selected');
-      miniPillSelectorLabelName.innerHTML = element.currentTarget.getAttribute('data-title');
+      miniPillSelectorOptionsWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((p) => {
+        p.removeAttribute('aria-current');
+      });
+      element.currentTarget.setAttribute('aria-current', 'true');
+      miniPillSelectorLabelName.textContent = element.currentTarget.getAttribute('data-title');
       const allInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
       allInputs.forEach((input) => {
         input.value = element.currentTarget.getAttribute('data-name');
@@ -115,6 +119,7 @@ export default async function createMiniPillOptionsSelector(
   hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedMiniPillOptionImageContainer.classList.add('selected');
+  selectedMiniPillOptionImageContainer.setAttribute('aria-current', 'true');
   miniPillSelectorLabelName.textContent = selectedMiniPillOptionImageContainer.dataset.title;
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);

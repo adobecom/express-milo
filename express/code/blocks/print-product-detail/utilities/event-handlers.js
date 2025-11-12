@@ -76,7 +76,10 @@ async function updateProductImages(productDetails) {
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
-  document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+  const dateElement = document.getElementById('pdpx-delivery-estimate-pill-date');
+  if (dateElement) {
+    dateElement.textContent = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+  }
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {

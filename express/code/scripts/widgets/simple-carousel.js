@@ -24,17 +24,15 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
   const faderLeft = createTag('div', { class: 'simple-carousel-fader-left arrow-hidden' });
   const faderRight = createTag('div', { class: 'simple-carousel-fader-right arrow-hidden' });
 
-  const arrowLeft = createTag('a', {
+  const arrowLeft = createTag('button', {
     class: 'button simple-carousel-arrow simple-carousel-arrow-left',
     'aria-label': 'Scroll left',
-    tabindex: '0',
-    role: 'button',
+    type: 'button',
   });
-  const arrowRight = createTag('a', {
+  const arrowRight = createTag('button', {
     class: 'button simple-carousel-arrow simple-carousel-arrow-right',
     'aria-label': 'Scroll right',
-    tabindex: '0',
-    role: 'button',
+    type: 'button',
   });
 
   carouselContent.forEach((el, index) => {
@@ -42,6 +40,9 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'group');
     el.setAttribute('aria-label', `Item ${index + 1} of ${carouselContent.length}`);
+    if (el.classList.contains(activeClass)) {
+      el.setAttribute('aria-current', 'true');
+    }
   });
 
   platform.append(...carouselContent);
@@ -68,12 +69,10 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     }, 50);
   };
 
-  container.appendChild(platform);
-  faderLeft.appendChild(arrowLeft);
-  faderRight.appendChild(arrowRight);
-  parent.appendChild(container);
-  parent.appendChild(faderLeft);
-  parent.appendChild(faderRight);
+  container.append(platform);
+  faderLeft.append(arrowLeft);
+  faderRight.append(arrowRight);
+  parent.append(container, faderLeft, faderRight);
 
   platform.addEventListener('scroll', throttledUpdate, { passive: true });
   window.addEventListener('resize', throttledUpdate, { passive: true });
@@ -114,6 +113,7 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     });
   });
 
+  let activeObserver;
   if (centerActive) {
     let isScrolling = false;
     let lastScrollTo = null;
@@ -153,7 +153,7 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
       });
     };
 
-    const activeObserver = new MutationObserver((mutations) => {
+    activeObserver = new MutationObserver((mutations) => {
       const hasSelectedChange = mutations.some((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
           const { target } = mutation;
@@ -199,10 +199,19 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     }
   });
 
+  const cleanup = () => {
+    platform.removeEventListener('scroll', throttledUpdate);
+    window.removeEventListener('resize', throttledUpdate);
+    if (centerActive && activeObserver) {
+      activeObserver.disconnect();
+    }
+  };
+
   return {
     container,
     platform,
     items: carouselContent,
+    cleanup,
     scrollTo: (index) => {
       if (index >= 0 && index < carouselContent.length) {
         carouselContent[index].scrollIntoView({
