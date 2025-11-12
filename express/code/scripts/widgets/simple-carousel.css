@@ -22,6 +22,7 @@
 .simple-carousel-item {
   flex-shrink: 0;
   scroll-snap-align: start;
+  overflow: visible;
 }
 
 
