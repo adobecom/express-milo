@@ -24,6 +24,14 @@ const onError = (e) => {
   window.lana?.log('on error:', e);
 };
 
+const onToken = (e) => {
+  window.lana?.log('on token:', e);
+};
+
+const onAuthFailed = (e) => {
+  window.lana?.log('on auth failed:');
+  window.lana?.log(e?.detail);
+};
 // easier to mock in unit test
 export const SUSIUtils = {
   loadSUSIScripts: () => {
@@ -94,12 +102,14 @@ function createSUSIComponent({
   config,
   authParams,
   destURL,
+  popup,
 }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL.toString();
   susi.authParams.dctx_id = isStage ? DCTX_ID_STAGE : DCTX_ID_PROD;
   susi.config = config;
+  susi.popup = popup;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
 
@@ -110,6 +120,8 @@ function createSUSIComponent({
   susi.addEventListener('redirect', onRedirect);
   susi.addEventListener('on-error', onError);
   susi.addEventListener('on-analytics', onAnalytics);
+  susi.addEventListener('on-token', onToken);
+  susi.addEventListener('on-auth-failed', onAuthFailed);
   return susi;
 }
 
@@ -138,11 +150,13 @@ function buildSUSIParams({
   title,
   hideIcon,
   layout,
+  popup,
+  dt,
 }) {
   const params = {
     variant,
     authParams: {
-      dt: false,
+      dt: dt || false,
       locale,
       response_type: 'code',
       client_id,
@@ -153,6 +167,7 @@ function buildSUSIParams({
       consentProfile: 'free',
       fullWidth: true,
     },
+    popup: popup || false,
   };
   // '' for no title
   if (title !== undefined) {
@@ -190,7 +205,7 @@ async function buildEdu(el, locale, imsClientId, noRedirect) {
   const variant = 'edu-express';
   const destURL = await getDestURL(redirectUrl);
   const params = buildSUSIParams({
-    client_id, variant, destURL, locale, title,
+    client_id, variant, destURL, locale, title, popup: true,
   });
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
@@ -369,6 +384,26 @@ async function buildSUSITabs(el, locale, imsClientId, noRedirect) {
   return layout;
 }
 
+async function buildSimplifiedSusi(el, locale, imsClientId, noRedirect) {
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const variant = 'standard';
+  const destURL = await getDestURL(redirectUrl);
+  const params = buildSUSIParams({
+    client_id, variant, destURL, locale, title, popup: true,
+  });
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  await SUSIUtils.loadSUSIScripts();
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
+  const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, susiWrapper]);
+  return layout;
+}
+
 export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
@@ -380,6 +415,7 @@ export default async function init(el) {
     { cls: 'b2b', build: buildB2B },
     { cls: 'tabs', build: buildSUSITabs },
     { cls: 'student', build: buildStudent },
+    { cls: 'simplified', build: buildSimplifiedSusi },
   ].find(({ cls }) => el.classList.contains(cls));
 
   const susi = await (match?.build || buildEdu)(el, locale, imsClientId, noRedirect);
