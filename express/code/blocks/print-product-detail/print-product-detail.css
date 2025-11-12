@@ -26,7 +26,7 @@
 }
 
 .pdpx-global-container {
-  max-width: 1440px;
+  max-width: var(--block-wd-max-width);
   margin: 0 auto;
   padding: var(--spacing-400);
   display: flex;
@@ -57,7 +57,7 @@
 }
 
 .pdpx-customization-inputs-container {
-  padding-bottom: 24px;
+  padding-bottom: var(--spacing-400);
 }
 
 .pdpx-product-title {
@@ -95,7 +95,7 @@
       cursor: pointer;
       width: max-content;
       .pdpx-compare-price-info-icon {
-        width: 12px;
+        width: var(--spacing-200);
       }
     }
     .pdpx-info-tooltip-content {
@@ -175,13 +175,13 @@
   .pdpx-product-hero-image-container {
     margin-bottom: var(--spacing-100);
     aspect-ratio: 1/1;
-    border-radius: 12px;
+    border-radius: var(--spacing-200);
     overflow: hidden;
     object-fit: contain;
     object-position: center;
     .pdpx-product-hero-image {
       width: 100%;
-      border-radius: 12px;
+      border-radius: var(--spacing-200);
     }
   }
   .pdpx-image-thumbnail-carousel-wrapper {
@@ -787,7 +787,7 @@ main .section .pdpx-drawer-description {
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
-  left: 12px;
+  left: var(--spacing-200);
   bottom: 100%;
   transform: translate(0, -4px) rotate(45deg);
   width: 8px;
@@ -834,7 +834,7 @@ main .section .pdpx-drawer-description {
 .pdpx-standard-selector-label {
   display: inline-block;
   color: var(--color-dark-gray);
-  margin-right: 12px;
+  margin-right: var(--spacing-200);
 }
 .pdpx-standard-selector {
   padding: var(--spacing-100);
