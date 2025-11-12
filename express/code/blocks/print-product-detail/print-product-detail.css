@@ -408,13 +408,15 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-100);
+  overflow: visible;
 }
 .pdpx-pill-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   min-width: 150px;
   background-color: white;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 8px;
   border: 1px solid var(--color-gray-300-variant);
   padding: 0px;
@@ -599,9 +601,11 @@ main .section .pdpx-drawer-description {
 
 /* MINI PILL SELECTOR */
 .pdpx-mini-pill-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0px;
+  overflow: visible;
 }
 .pdpx-pill-selector-label-compare-link {
   background: transparent;
@@ -623,6 +627,7 @@ main .section .pdpx-drawer-description {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-75);
+  overflow: visible;
 }
 
 .pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) .pdpx-mini-pill-container {
@@ -634,6 +639,7 @@ main .section .pdpx-drawer-description {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-75);
+  overflow: visible;
 }
 
 @media (max-width: 767px) {
@@ -642,12 +648,13 @@ main .section .pdpx-drawer-description {
     .simple-carousel-container {
       position: relative;
       width: 100%;
-      overflow: hidden;
+      overflow: visible;
     }
     .simple-carousel-platform {
       display: flex;
       gap: var(--spacing-75);
       overflow-x: auto;
+      overflow-y: visible;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -ms-overflow-style: none;
@@ -744,6 +751,7 @@ main .section .pdpx-drawer-description {
     object-fit: cover;
     object-position: center;
     display: block;
+    pointer-events: none;
   }
 }
 .pdpx-mini-pill-price {
@@ -756,15 +764,15 @@ main .section .pdpx-drawer-description {
   border-color: var(--color-black);
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* TOOLTIP CONTENT - Left-aligned to prevent clipping at viewport edges */
+/* TOOLTIP CONTENT - Center-aligned with smart positioning */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
   position: absolute;
   font-size: 14px;
   padding: 18px 12px;
-  left: 0;
+  left: 50%;
   bottom: 100%;
-  transform: translate(0, -8px);
+  transform: translate(-50%, -8px);
   background: var(--color-gray-800-variant);
   color: var(--color-white);
   border-radius: 6px;
@@ -774,6 +782,7 @@ main .section .pdpx-drawer-description {
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 10000;
+  max-width: 90vw;
 }
 .pdpx-mini-pill-options-section-container {
   margin-bottom: var(--spacing-400);
@@ -783,13 +792,13 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--spacing-100);
 }
 
-/* TOOLTIP ARROW - Aligned with left edge of tooltip */
+/* TOOLTIP ARROW - Centered below tooltip */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
-  left: var(--spacing-200);
+  left: 50%;
   bottom: 100%;
-  transform: translate(0, -4px) rotate(45deg);
+  transform: translate(-50%, -4px) rotate(45deg);
   width: 8px;
   height: 8px;
   background: var(--color-gray-800-variant);
@@ -805,17 +814,50 @@ main .section .pdpx-drawer-description {
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
 }
-/* Right-align tooltips for last items to prevent clipping on right edge */
-.pdpx-mini-pill-container:nth-last-child(-n+6) .pdpx-mini-pill-image-container::after {
-  left: auto;
-  right: 0;
-  transform: translate(0, -8px);
+
+/* REGULAR PILL TOOLTIPS - Center-aligned with smart positioning */
+.pdpx-pill-container::after {
+  content: attr(data-title);
+  position: absolute;
+  font-size: 14px;
+  padding: 18px 12px;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -8px);
+  background: var(--color-gray-800-variant);
+  color: var(--color-white);
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
+  z-index: 10000;
+  max-width: 90vw;
 }
-.pdpx-mini-pill-container:nth-last-child(-n+6) .pdpx-mini-pill-image-container::before {
-  left: auto;
-  right: var(--spacing-200);
-  transform: translate(0, -4px) rotate(45deg);
+
+.pdpx-pill-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -4px) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--color-gray-800-variant);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
 }
+
+.pdpx-pill-container:hover::after,
+.pdpx-pill-container:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transition: var(--standard-transition-hover-in-opacity);
+}
+
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
   border: 1px solid var(--color-background-accent-default);
@@ -969,7 +1011,8 @@ main .section .pdpx-drawer-description {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: visible;
   scrollbar-width: thin;
 }
 .pdpx-drawer-body .pdpx-mini-pill-selector-options-wrapper,
