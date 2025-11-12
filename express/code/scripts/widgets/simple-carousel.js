@@ -46,20 +46,26 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
 
   platform.append(...carouselContent);
 
-  const leftTrigger = createTag('div', { class: 'simple-carousel-left-trigger' });
-  const rightTrigger = createTag('div', { class: 'simple-carousel-right-trigger' });
-  platform.prepend(leftTrigger);
-  platform.append(rightTrigger);
+  const updateArrowVisibility = () => {
+    const hasOverflow = platform.scrollWidth > platform.clientWidth;
+    if (!hasOverflow) {
+      faderLeft.classList.add('arrow-hidden');
+      faderRight.classList.add('arrow-hidden');
+      return;
+    }
+    const isAtStart = platform.scrollLeft <= 1;
+    const isAtEnd = platform.scrollLeft >= (platform.scrollWidth - platform.clientWidth - 1);
+    faderLeft.classList.toggle('arrow-hidden', isAtStart);
+    faderRight.classList.toggle('arrow-hidden', isAtEnd);
+  };
 
-  const onSlideIntersect = (entries) => {
-    entries.forEach((entry) => {
-      if (entry.target === leftTrigger) {
-        faderLeft.classList.toggle('arrow-hidden', entry.isIntersecting);
-      }
-      if (entry.target === rightTrigger) {
-        faderRight.classList.toggle('arrow-hidden', entry.isIntersecting);
-      }
-    });
+  let scrollTimeout;
+  const throttledUpdate = () => {
+    if (scrollTimeout) return;
+    scrollTimeout = setTimeout(() => {
+      updateArrowVisibility();
+      scrollTimeout = null;
+    }, 50);
   };
 
   container.appendChild(platform);
@@ -69,18 +75,14 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
   parent.appendChild(faderLeft);
   parent.appendChild(faderRight);
 
-  requestAnimationFrame(() => {
-    const hasOverflow = platform.scrollWidth > platform.clientWidth;
-    if (!hasOverflow) {
-      faderLeft.classList.add('arrow-hidden');
-      faderRight.classList.add('arrow-hidden');
-    }
-  });
+  platform.addEventListener('scroll', throttledUpdate, { passive: true });
+  window.addEventListener('resize', throttledUpdate, { passive: true });
 
-  const observerOptions = { threshold: 0.5, root: container, rootMargin: '0px' };
-  const slideObserver = new IntersectionObserver(onSlideIntersect, observerOptions);
-  slideObserver.observe(leftTrigger);
-  slideObserver.observe(rightTrigger);
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      updateArrowVisibility();
+    }, 150);
+  });
 
   const moveCarousel = (direction) => {
     const scrollAmount = platform.offsetWidth * 0.75;
@@ -108,14 +110,18 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
 
   if (centerActive) {
     const centerActiveItem = () => {
-      const activeItem = platform.querySelector(`.${activeClass}`);
-      if (activeItem) {
-        const itemLeft = activeItem.offsetLeft;
-        const itemWidth = activeItem.offsetWidth;
-        const containerWidth = platform.offsetWidth;
-        const scrollTo = itemLeft - (containerWidth / 2) + (itemWidth / 2);
-        platform.scrollTo({ left: scrollTo, behavior: 'smooth' });
-      }
+      requestAnimationFrame(() => {
+        const activeItem = platform.querySelector(`.${activeClass}`);
+        if (activeItem) {
+          const itemLeft = activeItem.offsetLeft;
+          const itemWidth = activeItem.offsetWidth;
+          const containerWidth = platform.offsetWidth;
+          const maxScroll = platform.scrollWidth - containerWidth;
+          let scrollTo = itemLeft - (containerWidth / 2) + (itemWidth / 2);
+          scrollTo = Math.max(0, Math.min(scrollTo, maxScroll));
+          platform.scrollTo({ left: scrollTo, behavior: 'smooth' });
+        }
+      });
     };
 
     const activeObserver = new MutationObserver(centerActiveItem);

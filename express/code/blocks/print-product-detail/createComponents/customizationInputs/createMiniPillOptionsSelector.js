@@ -79,19 +79,66 @@ export default async function createMiniPillOptionsSelector(
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);
 
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  if (isMobile && miniPillSelectorOptionsContainer.children.length > 0) {
-    try {
+  let isCarouselActive = false;
+  const mediaQuery = window.matchMedia('(max-width: 767px)');
+
+  const initCarousel = async () => {
+    if (miniPillSelectorOptionsContainer.children.length > 0 && !isCarouselActive) {
       await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapper, {
         ariaLabel: `${labelText} options`,
-        centerActive: false,
+        centerActive: true,
         activeClass: 'selected',
       });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to initialize carousel:', error);
+      isCarouselActive = true;
     }
+  };
+
+  const destroyCarousel = () => {
+    if (isCarouselActive) {
+      const carouselContainer = miniPillSelectorOptionsWrapper.querySelector('.simple-carousel-container');
+      const faderLeft = miniPillSelectorOptionsWrapper.querySelector('.simple-carousel-fader-left');
+      const faderRight = miniPillSelectorOptionsWrapper.querySelector('.simple-carousel-fader-right');
+
+      if (carouselContainer) {
+        const platform = carouselContainer.querySelector('.simple-carousel-platform');
+        if (platform) {
+          const pills = Array.from(platform.querySelectorAll('.pdpx-mini-pill-container'));
+          pills.forEach((pill) => {
+            pill.classList.remove('simple-carousel-item');
+            pill.removeAttribute('tabindex');
+            pill.removeAttribute('role');
+            pill.removeAttribute('aria-label');
+            miniPillSelectorOptionsContainer.appendChild(pill);
+          });
+        }
+        carouselContainer.remove();
+      }
+      if (faderLeft) faderLeft.remove();
+      if (faderRight) faderRight.remove();
+      isCarouselActive = false;
+    }
+  };
+
+  const handleResize = async () => {
+    if (mediaQuery.matches && !isCarouselActive) {
+      await initCarousel();
+    } else if (!mediaQuery.matches && isCarouselActive) {
+      destroyCarousel();
+    }
+  };
+
+  if (mediaQuery.matches) {
+    await initCarousel();
   }
+
+  mediaQuery.addEventListener('change', handleResize);
+  window.addEventListener('orientationchange', handleResize);
+
+  miniPillSelectorContainer._cleanupCarousel = () => {
+    mediaQuery.removeEventListener('change', handleResize);
+    window.removeEventListener('orientationchange', handleResize);
+    destroyCarousel();
+  };
 
   miniPillSelectorContainer.append(miniPillSelectorOptionsWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;

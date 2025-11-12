@@ -100,30 +100,91 @@ export default async function createSegmentedMiniPillOptionsSelector(
   }
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
 
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  let isClassicCarouselActive = false;
+  let isVividCarouselActive = false;
+  const mediaQuery = window.matchMedia('(max-width: 767px)');
 
-  if (isMobile) {
-    try {
-      if (classicOptions.length > 0 && miniPillSelectorOptionsWrapperClassic.children.length > 0) {
-        await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
-          ariaLabel: 'Classic printing color options',
-          centerActive: false,
-          activeClass: 'selected',
-        });
-      }
-
-      if (vividOptions.length > 0 && miniPillSelectorOptionsWrapperVivid.children.length > 0) {
-        await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
-          ariaLabel: 'Vivid printing color options',
-          centerActive: false,
-          activeClass: 'selected',
-        });
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Failed to initialize carousel:', error);
+  const initCarousels = async () => {
+    if (classicOptions.length > 0
+      && miniPillSelectorOptionsWrapperClassic.children.length > 0
+      && !isClassicCarouselActive) {
+      await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperClassic, {
+        ariaLabel: 'Classic printing color options',
+        centerActive: true,
+        activeClass: 'selected',
+      });
+      isClassicCarouselActive = true;
     }
+
+    if (vividOptions.length > 0
+      && miniPillSelectorOptionsWrapperVivid.children.length > 0
+      && !isVividCarouselActive) {
+      await createSimpleCarousel('.pdpx-mini-pill-container', miniPillSelectorOptionsWrapperVivid, {
+        ariaLabel: 'Vivid printing color options',
+        centerActive: true,
+        activeClass: 'selected',
+      });
+      isVividCarouselActive = true;
+    }
+  };
+
+  const destroyCarousel = (wrapper, isActive) => {
+    if (isActive) {
+      const carouselContainer = wrapper.querySelector('.simple-carousel-container');
+      const faderLeft = wrapper.querySelector('.simple-carousel-fader-left');
+      const faderRight = wrapper.querySelector('.simple-carousel-fader-right');
+
+      if (carouselContainer) {
+        const platform = carouselContainer.querySelector('.simple-carousel-platform');
+        if (platform) {
+          const pills = Array.from(platform.querySelectorAll('.pdpx-mini-pill-container'));
+          pills.forEach((pill) => {
+            pill.classList.remove('simple-carousel-item');
+            pill.removeAttribute('tabindex');
+            pill.removeAttribute('role');
+            pill.removeAttribute('aria-label');
+            wrapper.appendChild(pill);
+          });
+        }
+        carouselContainer.remove();
+      }
+      if (faderLeft) faderLeft.remove();
+      if (faderRight) faderRight.remove();
+    }
+    return false;
+  };
+
+  const destroyCarousels = () => {
+    isClassicCarouselActive = destroyCarousel(
+      miniPillSelectorOptionsWrapperClassic,
+      isClassicCarouselActive,
+    );
+    isVividCarouselActive = destroyCarousel(
+      miniPillSelectorOptionsWrapperVivid,
+      isVividCarouselActive,
+    );
+  };
+
+  const handleResize = async () => {
+    if (mediaQuery.matches && !isClassicCarouselActive && !isVividCarouselActive) {
+      await initCarousels();
+    } else if (!mediaQuery.matches && (isClassicCarouselActive || isVividCarouselActive)) {
+      destroyCarousels();
+    }
+  };
+
+  if (mediaQuery.matches) {
+    await initCarousels();
   }
+
+  mediaQuery.addEventListener('change', handleResize);
+  window.addEventListener('orientationchange', handleResize);
+
+  miniPillSelectorContainer._cleanupCarousel = () => {
+    mediaQuery.removeEventListener('change', handleResize);
+    window.removeEventListener('orientationchange', handleResize);
+    destroyCarousels();
+  };
 
   miniPillSelectorContainer.append(miniPillSelectorOptionsContainerWrapper, hiddenSelectInput);
   return miniPillSelectorContainer;

@@ -24,13 +24,6 @@
   scroll-snap-align: start;
 }
 
-.simple-carousel-left-trigger,
-.simple-carousel-right-trigger {
-  flex-shrink: 0;
-  width: 2px;
-  height: 2px;
-  visibility: hidden;
-}
 
 .simple-carousel-fader-left,
 .simple-carousel-fader-right {
