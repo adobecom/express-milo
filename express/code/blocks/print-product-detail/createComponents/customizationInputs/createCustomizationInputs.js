@@ -67,6 +67,42 @@ function createPillOptionsSelector(
     value: defaultValue,
     'aria-hidden': 'true',
   });
+  // Cache DOM query to avoid repeated querySelectorAll calls
+  let cachedAllPillContainers = null;
+  // Create click handler function outside loop to avoid no-loop-func error
+  const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId) => async (element) => {
+    // Use cached query or query once and cache
+    if (!cachedAllPillContainers) {
+      cachedAllPillContainers = currentPillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
+    }
+    const clickedPill = element.currentTarget;
+    cachedAllPillContainers.forEach((p) => {
+      p.classList.remove('selected');
+      p.removeAttribute('aria-current');
+      p.setAttribute('aria-checked', 'false');
+      // Remove tooltip classes instead of dispatching expensive mouseleave event
+      p.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    });
+    clickedPill.classList.add('selected');
+    clickedPill.setAttribute('aria-current', 'true');
+    clickedPill.setAttribute('aria-checked', 'true');
+    currentHiddenSelectInput.value = clickedPill.getAttribute('data-name');
+    updateAllDynamicElements(currentProductId);
+  };
+  // Create mouseenter handler function outside loop
+  const createPillMouseEnterHandler = () => (e) => {
+    const btn = e.currentTarget;
+    const btnRect = btn.getBoundingClientRect();
+    const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
+    const containerRect = container.getBoundingClientRect();
+    const threshold = 150;
+    btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    if (btnRect.left - containerRect.left < threshold) {
+      btn.classList.add('tooltip-left-edge');
+    } else if (containerRect.right - btnRect.right < threshold) {
+      btn.classList.add('tooltip-right-edge');
+    }
+  };
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     const isSelected = customizationOptions[i].name === defaultValue;
@@ -99,32 +135,8 @@ function createPillOptionsSelector(
     );
     pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    pillContainer.addEventListener('click', async (element) => {
-      pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((p) => {
-        p.classList.remove('selected');
-        p.removeAttribute('aria-current');
-        p.setAttribute('aria-checked', 'false');
-        p.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-      });
-      element.currentTarget.classList.add('selected');
-      element.currentTarget.setAttribute('aria-current', 'true');
-      element.currentTarget.setAttribute('aria-checked', 'true');
-      hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
-    });
-    pillContainer.addEventListener('mouseenter', (e) => {
-      const btn = e.currentTarget;
-      const btnRect = btn.getBoundingClientRect();
-      const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
-      const containerRect = container.getBoundingClientRect();
-      const threshold = 150;
-      btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
-      if (btnRect.left - containerRect.left < threshold) {
-        btn.classList.add('tooltip-left-edge');
-      } else if (containerRect.right - btnRect.right < threshold) {
-        btn.classList.add('tooltip-right-edge');
-      }
-    });
+    pillContainer.addEventListener('click', createPillClickHandler(hiddenSelectInput, pillSelectorOptionsContainer, productId));
+    pillContainer.addEventListener('mouseenter', createPillMouseEnterHandler());
   }
   hiddenSelectInput.value = defaultValue;
   const selectedPill = pillSelectorOptionsContainer.querySelector(`.pdpx-pill-container[data-name="${defaultValue}"]`);
@@ -132,6 +144,8 @@ function createPillOptionsSelector(
     selectedPill.setAttribute('aria-current', 'true');
     selectedPill.setAttribute('aria-checked', 'true');
   }
+  // Cache DOM query after all pills are added
+  cachedAllPillContainers = pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
   pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
   return pillSelectorContainer;
 }

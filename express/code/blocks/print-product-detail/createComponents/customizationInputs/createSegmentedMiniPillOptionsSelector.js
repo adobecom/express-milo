@@ -55,6 +55,51 @@ export default async function createSegmentedMiniPillOptionsSelector(
   let isVividCarouselActive = false;
   const mediaQuery = window.matchMedia('(max-width: 767px)');
   const tooltipMap = new Map();
+  // Cache DOM queries to avoid repeated querySelectorAll calls
+  let cachedAllPills = null;
+  let cachedAllInputs = null;
+  let cachedLabelNameElement = null;
+
+  // Create click handler function outside loop to avoid no-loop-func error
+  const createSegmentedMiniPillClickHandler = (
+    currentContainerWrapper,
+    currentMiniPillSelectorContainer,
+    currentHiddenSelectInputName,
+    currentProductId,
+  ) => async (element) => {
+    tooltipMap.forEach((tooltipEl) => {
+      hideJSTooltip(tooltipEl);
+    });
+    // Use cached query or query once and cache
+    if (!cachedAllPills) {
+      cachedAllPills = currentContainerWrapper.querySelectorAll('.pdpx-mini-pill-image-container');
+    }
+    const clickedPill = element.currentTarget;
+    cachedAllPills.forEach((pill) => {
+      pill.classList.remove('selected');
+      pill.removeAttribute('aria-current');
+      // Remove tooltip classes instead of dispatching expensive mouseleave event
+      pill.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    });
+    clickedPill.classList.add('selected');
+    clickedPill.setAttribute('aria-current', 'true');
+    // Cache label element query
+    if (!cachedLabelNameElement) {
+      cachedLabelNameElement = currentMiniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
+    }
+    if (cachedLabelNameElement) {
+      cachedLabelNameElement.textContent = clickedPill.getAttribute('data-title');
+    }
+    // Cache inputs query
+    if (!cachedAllInputs) {
+      cachedAllInputs = document.querySelectorAll(`[name=${currentHiddenSelectInputName}]`);
+    }
+    const pillName = clickedPill.getAttribute('data-name');
+    cachedAllInputs.forEach((input) => {
+      input.value = pillName;
+    });
+    updateAllDynamicElements(currentProductId);
+  };
 
   const hideJSTooltip = (tooltipEl) => {
     const arrow = tooltipEl.querySelector('.pdpx-js-tooltip-arrow');
@@ -88,29 +133,12 @@ export default async function createSegmentedMiniPillOptionsSelector(
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    miniPillOptionImageContainer.addEventListener('click', async (element) => {
-      tooltipMap.forEach((tooltipEl) => {
-        hideJSTooltip(tooltipEl);
-      });
-      containerWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
-        pill.classList.remove('selected');
-        pill.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-      });
-      element.currentTarget.classList.add('selected');
-      containerWrapper.querySelectorAll('.pdpx-mini-pill-image-container').forEach((p) => {
-        p.removeAttribute('aria-current');
-      });
-      element.currentTarget.setAttribute('aria-current', 'true');
-      const labelNameElement = miniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
-      if (labelNameElement) {
-        labelNameElement.textContent = element.currentTarget.getAttribute('data-title');
-      }
-      const allInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
-      allInputs.forEach((input) => {
-        input.value = element.currentTarget.getAttribute('data-name');
-      });
-      updateAllDynamicElements(productId);
-    });
+    miniPillOptionImageContainer.addEventListener('click', createSegmentedMiniPillClickHandler(
+      containerWrapper,
+      miniPillSelectorContainer,
+      hiddenSelectInputName,
+      productId,
+    ));
     miniPillOptionImageContainer.addEventListener('mouseenter', (e) => {
       const btn = e.currentTarget;
       const rect = btn.getBoundingClientRect();
@@ -133,6 +161,10 @@ export default async function createSegmentedMiniPillOptionsSelector(
   selectedContainer.classList.add('selected');
   selectedContainer.setAttribute('aria-current', 'true');
   const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedContainer.dataset.title);
+  // Cache DOM queries after all pills are added
+  cachedAllPills = containerWrapper.querySelectorAll('.pdpx-mini-pill-image-container');
+  cachedAllInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
+  cachedLabelNameElement = miniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
   if (CTALinkText) {
     const compareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
     compareLink.addEventListener('click', async () => {
