@@ -10,6 +10,7 @@
   --status-curr-width: 30px;
   --block-padding: var(--spacing-600);
   --side-padding: 20px;
+  --scroll-offset: 20px;
   padding: var(--block-padding) 0px var(--block-padding) 0px;
 }
 
@@ -137,6 +138,7 @@
     box-sizing: border-box;
     --block-padding: var(--spacing-900);
     --side-padding: var(--spacing-500);
+    --scroll-offset: 32px;
   }
 
   .how-to-cards.cards-count-4 .cards-container ,
@@ -149,6 +151,7 @@
 @media (min-width: 1280px) {
   .how-to-cards{
     --side-padding: var(--spacing-600);
+    --scroll-offset: 40px;
   }
 }
 

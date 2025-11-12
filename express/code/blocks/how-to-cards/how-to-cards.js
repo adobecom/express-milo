@@ -4,7 +4,16 @@ import { throttle, debounce } from '../../scripts/utils/hofs.js';
 
 let createTag;
 
-const scrollPadding = 16;
+const scrollPadding = 40;
+
+const getScrollOffsetPx = (element) => {
+  const rawValue = getComputedStyle(element).getPropertyValue('--scroll-offset').trim();
+  const parsed = Number.parseFloat(rawValue);
+  if (!Number.isNaN(parsed)) return parsed;
+  if (window.innerWidth >= 1280) return 40;
+  if (window.innerWidth >= 768) return 32;
+  return 20;
+};
 
 function createChevronButton(direction, ariaLabel) {
   const button = createTag('button', {
@@ -30,12 +39,25 @@ function createControl(items, container) {
   const intersecting = Array.from(items).fill(false);
 
   const len = items.length;
+  const scrollToTarget = (target) => {
+    const scrollOffset = getScrollOffsetPx(container);
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const targetLeft = target.getBoundingClientRect().left
+      - container.getBoundingClientRect().left
+      + container.scrollLeft;
+    const desired = Math.max(Math.min(targetLeft - scrollOffset, maxScroll), 0);
+    container.scrollTo({
+      left: desired,
+      behavior: 'smooth',
+    });
+  };
+
   const pageInc = throttle((inc) => {
     const first = intersecting.indexOf(true);
     if (first === -1) return; // middle of swapping only page
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
-    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    scrollToTarget(target);
   }, 200);
   let lastRange = { first: 0, last: 0, ready: false };
 
