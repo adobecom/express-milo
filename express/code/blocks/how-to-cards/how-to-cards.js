@@ -37,8 +37,7 @@ function createControl(items, container) {
     const target = items[(first + inc + len) % len];
     target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
   }, 200);
-  prevButton.addEventListener('click', () => pageInc(-1));
-  nextButton.addEventListener('click', () => pageInc(1));
+  let lastRange = { first: 0, last: 0, ready: false };
 
   const dots = items.map(() => {
     const dot = createTag('div', { class: 'dot' });
@@ -46,7 +45,7 @@ function createControl(items, container) {
     return dot;
   });
 
-  const updateDOM = debounce((first, last) => {
+  const applyControlState = (first, last, { skipVisibilityUpdates = false } = {}) => {
     prevButton.disabled = first === 0;
     nextButton.disabled = last === items.length - 1;
     dots.forEach((dot, i) => {
@@ -56,15 +55,45 @@ function createControl(items, container) {
       i > first && i <= last ? dot.classList.add('hide') : dot.classList.remove('hide');
       /* eslint-disable chai-friendly/no-unused-expressions */
     });
-    if (items.length === last - first + 1) {
-      control.classList.add('hide');
-      container.classList.add('gallery--all-displayed');
-    } else {
-      control.classList.remove('hide');
-      container.classList.remove('gallery--all-displayed');
+    if (!skipVisibilityUpdates) {
+      if (items.length === last - first + 1) {
+        control.classList.add('hide');
+        container.classList.add('gallery--all-displayed');
+      } else {
+        control.classList.remove('hide');
+        container.classList.remove('gallery--all-displayed');
+      }
+      control.classList.remove('loading');
     }
-    control.classList.remove('loading');
+    lastRange = { first, last, ready: true };
+  };
+
+  const updateDOM = debounce((first, last) => {
+    applyControlState(first, last);
   }, 300);
+
+  const previewRangeChange = (inc) => {
+    if (!lastRange.ready) return false;
+    const rangeSize = lastRange.last - lastRange.first;
+    const maxFirst = Math.max(0, items.length - (rangeSize + 1));
+    const nextFirst = Math.min(Math.max(lastRange.first + inc, 0), maxFirst);
+    if (nextFirst === lastRange.first) return false;
+    const nextLast = Math.min(items.length - 1, nextFirst + rangeSize);
+    applyControlState(nextFirst, nextLast, { skipVisibilityUpdates: true });
+    return true;
+  };
+
+  const handleButtonClick = (inc) => {
+    const animated = previewRangeChange(inc);
+    if (!animated && lastRange.ready) {
+      // ensure disabled state reflects when we cannot page further
+      applyControlState(lastRange.first, lastRange.last, { skipVisibilityUpdates: true });
+    }
+    pageInc(inc);
+  };
+
+  prevButton.addEventListener('click', () => handleButtonClick(-1));
+  nextButton.addEventListener('click', () => handleButtonClick(1));
 
   const reactToChange = (entries) => {
     entries.forEach((entry) => {
