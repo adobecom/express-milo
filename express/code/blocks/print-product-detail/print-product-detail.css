@@ -805,6 +805,17 @@ main .section .pdpx-drawer-description {
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
 }
+/* Right-align tooltips for last items to prevent clipping on right edge */
+.pdpx-mini-pill-container:nth-last-child(-n+6) .pdpx-mini-pill-image-container::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, -8px);
+}
+.pdpx-mini-pill-container:nth-last-child(-n+6) .pdpx-mini-pill-image-container::before {
+  left: auto;
+  right: var(--spacing-200);
+  transform: translate(0, -4px) rotate(45deg);
+}
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
   border: 1px solid var(--color-background-accent-default);
