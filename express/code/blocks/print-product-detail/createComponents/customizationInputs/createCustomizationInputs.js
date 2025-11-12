@@ -75,6 +75,7 @@ function createPillOptionsSelector(
       class: `pdpx-pill-container ${isSelected ? 'selected' : ''}`,
       type: 'button',
       'data-name': customizationOptions[i].name,
+      'data-title': customizationOptions[i].title,
       role: 'radio',
       'aria-label': customizationOptions[i].title,
       'aria-checked': isSelected ? 'true' : 'false',
@@ -100,6 +101,18 @@ function createPillOptionsSelector(
     pillContainer.addEventListener('click', async (element) => {
       hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
+    });
+    // Smart tooltip edge detection
+    pillContainer.addEventListener('mouseenter', (e) => {
+      const btn = e.currentTarget;
+      const rect = btn.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+      if (rect.left < 150) {
+        btn.classList.add('tooltip-left-edge');
+      } else if (rect.right > viewportWidth - 150) {
+        btn.classList.add('tooltip-right-edge');
+      }
     });
   }
   hiddenSelectInput.value = defaultValue;

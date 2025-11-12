@@ -425,9 +425,18 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
+  overflow: hidden;
+  border-radius: 8px 0 0 8px;
+  flex-shrink: 0;
 }
 .pdpx-pill-image {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pdpx-pill-container:focus {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
 }
 .pdpx-pill-text-container {
   display: flex;
@@ -769,7 +778,6 @@ main .section .pdpx-drawer-description {
   border-color: var(--color-black);
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* TOOLTIP CONTENT - Center-aligned, positioned above pills */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
   display: inline-block;
@@ -794,6 +802,16 @@ main .section .pdpx-drawer-description {
   height: auto;
   min-height: 1px;
 }
+.pdpx-mini-pill-image-container.tooltip-left-edge::after {
+  left: -1px;
+  right: auto;
+  transform: translate(0, -8px);
+}
+.pdpx-mini-pill-image-container.tooltip-right-edge::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, -8px);
+}
 .pdpx-mini-pill-options-section-container {
   margin-bottom: var(--spacing-400);
 }
@@ -802,7 +820,6 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--spacing-100);
 }
 
-/* TOOLTIP ARROW - Centered below tooltip, pointing down */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
@@ -816,6 +833,16 @@ main .section .pdpx-drawer-description {
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+}
+.pdpx-mini-pill-image-container.tooltip-left-edge::before {
+  left: 24px;
+  right: auto;
+  transform: translate(0, -4px) rotate(45deg);
+}
+.pdpx-mini-pill-image-container.tooltip-right-edge::before {
+  left: auto;
+  right: 24px;
+  transform: translate(0, -4px) rotate(45deg);
 }
 .pdpx-mini-pill-image-container:hover::after,
 .pdpx-mini-pill-image-container:hover::before,
@@ -850,6 +877,16 @@ main .section .pdpx-drawer-description {
   height: auto;
   min-height: 1px;
 }
+.pdpx-pill-container.tooltip-left-edge::after {
+  left: -1px;
+  right: auto;
+  transform: translate(0, -8px);
+}
+.pdpx-pill-container.tooltip-right-edge::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, -8px);
+}
 
 .pdpx-pill-container::before {
   content: '';
@@ -864,6 +901,16 @@ main .section .pdpx-drawer-description {
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+}
+.pdpx-pill-container.tooltip-left-edge::before {
+  left: 27px;
+  right: auto;
+  transform: translate(0, -4px) rotate(45deg);
+}
+.pdpx-pill-container.tooltip-right-edge::before {
+  left: auto;
+  right: 27px;
+  transform: translate(0, -4px) rotate(45deg);
 }
 
 .pdpx-pill-container:hover::after,

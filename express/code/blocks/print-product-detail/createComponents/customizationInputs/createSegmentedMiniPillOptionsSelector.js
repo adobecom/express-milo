@@ -76,6 +76,18 @@ export default async function createSegmentedMiniPillOptionsSelector(
       });
       updateAllDynamicElements(productId);
     });
+    // Smart tooltip edge detection
+    miniPillOptionImageContainer.addEventListener('mouseenter', (e) => {
+      const btn = e.currentTarget;
+      const rect = btn.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+      if (rect.left < 150) {
+        btn.classList.add('tooltip-left-edge');
+      } else if (rect.right > viewportWidth - 150) {
+        btn.classList.add('tooltip-right-edge');
+      }
+    });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.append(miniPillOptionImageContainer, miniPillOptionTextContainer);
     miniPillSelectorOptionsWrapper.appendChild(miniPillOption);
