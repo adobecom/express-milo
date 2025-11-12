@@ -367,7 +367,21 @@ export default async function decorate(block) {
 
   /* localize view all */
   const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
-  const viewAllLink = block?.parentElement?.querySelector('.content a');
+  // Look for View All link in multiple possible locations
+  const possibleSelectors = [
+    '.content a',  // Original selector
+    ':scope > div > p > a',  // Common section structure
+    'p > a',  // Simple paragraph link
+  ];
+  
+  let viewAllLink = null;
+  for (const selector of possibleSelectors) {
+    viewAllLink = block?.parentElement?.querySelector(selector);
+    if (viewAllLink && viewAllLink.textContent.toLowerCase().includes('view')) {
+      break;
+    }
+  }
+  
   if (viewAll && viewAllLink) {
     viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
   }
