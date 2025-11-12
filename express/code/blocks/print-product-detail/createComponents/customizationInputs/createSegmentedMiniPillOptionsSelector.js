@@ -58,7 +58,7 @@ export default async function createSegmentedMiniPillOptionsSelector(
       selectedValue = customizationOptions[i].name;
     }
     hiddenSelectInput.appendChild(option);
-    const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
+    const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container', 'data-tooltip': customizationOptions[i].title });
     const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
     const altTextMiniPill = `${labelText} Option Image Thumbnail: ${customizationOptions[i].title}`;
     const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', alt: altTextMiniPill, src: customizationOptions[i].thumbnail });
@@ -113,6 +113,11 @@ export default async function createSegmentedMiniPillOptionsSelector(
         centerActive: true,
         activeClass: 'selected',
       });
+      // Force overflow-y visible for tooltips
+      const platformClassic = miniPillSelectorOptionsWrapperClassic.querySelector('.simple-carousel-platform');
+      if (platformClassic) {
+        platformClassic.style.overflowY = 'visible';
+      }
       isClassicCarouselActive = true;
     }
 
@@ -124,6 +129,11 @@ export default async function createSegmentedMiniPillOptionsSelector(
         centerActive: true,
         activeClass: 'selected',
       });
+      // Force overflow-y visible for tooltips
+      const platformVivid = miniPillSelectorOptionsWrapperVivid.querySelector('.simple-carousel-platform');
+      if (platformVivid) {
+        platformVivid.style.overflowY = 'visible';
+      }
       isVividCarouselActive = true;
     }
   };

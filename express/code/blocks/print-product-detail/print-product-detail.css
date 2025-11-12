@@ -664,6 +664,11 @@ main .section .pdpx-drawer-description {
     .simple-carousel-platform::-webkit-scrollbar {
       display: none;
     }
+    /* Disable tooltips in mobile carousel - overflow-x clips them */
+    .simple-carousel-item .pdpx-mini-pill-image-container::after,
+    .simple-carousel-item .pdpx-mini-pill-image-container::before {
+      display: none;
+    }
     .simple-carousel-fader-left,
     .simple-carousel-fader-right {
       position: absolute;
@@ -764,11 +769,13 @@ main .section .pdpx-drawer-description {
   border-color: var(--color-black);
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* TOOLTIP CONTENT - Center-aligned with smart positioning */
+/* TOOLTIP CONTENT - Center-aligned, positioned above pills */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
+  display: inline-block;
   position: absolute;
   font-size: 14px;
+  line-height: normal;
   padding: 18px 12px;
   left: 50%;
   bottom: 100%;
@@ -783,6 +790,9 @@ main .section .pdpx-drawer-description {
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 10000;
   max-width: 90vw;
+  width: auto;
+  height: auto;
+  min-height: 1px;
 }
 .pdpx-mini-pill-options-section-container {
   margin-bottom: var(--spacing-400);
@@ -792,7 +802,7 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--spacing-100);
 }
 
-/* TOOLTIP ARROW - Centered below tooltip */
+/* TOOLTIP ARROW - Centered below tooltip, pointing down */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
@@ -807,26 +817,21 @@ main .section .pdpx-drawer-description {
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
 }
-/* Show tooltip on hover */
 .pdpx-mini-pill-image-container:hover::after,
-.pdpx-mini-pill-image-container:hover::before {
-  opacity: 1 !important;
-  visibility: visible !important;
+.pdpx-mini-pill-image-container:hover::before,
+.simple-carousel-item:hover .pdpx-mini-pill-image-container::after,
+.simple-carousel-item:hover .pdpx-mini-pill-image-container::before {
+  opacity: 1;
+  visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
 }
 
-/* DEBUG: Force tooltip to always show */
-.simple-carousel-item .pdpx-mini-pill-image-container::after,
-.simple-carousel-item .pdpx-mini-pill-image-container::before {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* REGULAR PILL TOOLTIPS - Center-aligned with smart positioning */
 .pdpx-pill-container::after {
   content: attr(data-title);
+  display: inline-block;
   position: absolute;
   font-size: 14px;
+  line-height: normal;
   padding: 18px 12px;
   left: 50%;
   bottom: 100%;
@@ -841,6 +846,9 @@ main .section .pdpx-drawer-description {
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 10000;
   max-width: 90vw;
+  width: auto;
+  height: auto;
+  min-height: 1px;
 }
 
 .pdpx-pill-container::before {
@@ -1028,12 +1036,16 @@ main .section .pdpx-drawer-description {
 .pdpx-drawer-body .simple-carousel-platform {
   overflow: visible;
 }
-/* Allow tooltips to show above carousel on main page */
+/* Disable tooltips in drawer (overflow clipping makes them unusable) */
+.pdpx-drawer-body .pdpx-mini-pill-image-container::after,
+.pdpx-drawer-body .pdpx-mini-pill-image-container::before {
+  display: none;
+}
+/* Allow tooltips to show on main page - overflow handled by mobile media query */
 .pdpx-customization-inputs-container .simple-carousel-container {
   overflow: visible;
 }
 .pdpx-customization-inputs-container .simple-carousel-platform {
-  overflow-x: auto;
   overflow-y: visible;
 }
 .pdpx-curtain {
