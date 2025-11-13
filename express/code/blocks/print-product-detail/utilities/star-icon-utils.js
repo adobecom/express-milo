@@ -1,12 +1,5 @@
-import { getIconElementDeprecated } from '../../../scripts/utils.js';
-
 export default function createS2StarIcon(starType, createTag) {
-  let iconSrc;
-  if (starType === 'star') {
-    iconSrc = '/express/code/icons/s2-star-filled.svg';
-  } else if (starType === 'star-empty') {
-    iconSrc = '/express/code/icons/s2-star-empty.svg';
-  } else if (starType === 'star-half') {
+  if (starType === 'star-half') {
     const wrapper = createTag('div', {
       class: 'pdpx-star-icon-wrapper pdpx-star-icon-half-wrapper',
     });
@@ -29,9 +22,11 @@ export default function createS2StarIcon(starType, createTag) {
     wrapper.appendChild(filledHalf);
     wrapper.appendChild(emptyHalf);
     return wrapper;
-  } else {
-    return getIconElementDeprecated(starType);
   }
+
+  const iconSrc = starType === 'star'
+    ? '/express/code/icons/s2-star-filled.svg'
+    : '/express/code/icons/s2-star-empty.svg';
 
   const iconImg = createTag('img', {
     class: `pdpx-star-icon pdpx-star-icon-${starType}`,
