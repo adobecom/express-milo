@@ -367,6 +367,9 @@ export default async function decorate(block) {
 
   /* localize view all */
   const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
+  console.log('[blog-posts-v2] View All translation:', viewAll);
+  console.log('[blog-posts-v2] block.parentElement:', block?.parentElement);
+  
   // Look for View All link in multiple possible locations
   const possibleSelectors = [
     '.content a',  // Original selector
@@ -376,14 +379,25 @@ export default async function decorate(block) {
   
   let viewAllLink = null;
   for (const selector of possibleSelectors) {
-    viewAllLink = block?.parentElement?.querySelector(selector);
-    if (viewAllLink && viewAllLink.textContent.toLowerCase().includes('view')) {
+    const found = block?.parentElement?.querySelector(selector);
+    console.log(`[blog-posts-v2] Trying selector "${selector}":`, found);
+    if (found) {
+      console.log(`[blog-posts-v2] Link text:`, found.textContent);
+    }
+    if (found && found.textContent.toLowerCase().includes('view')) {
+      viewAllLink = found;
+      console.log('[blog-posts-v2] ✅ Found View All link with selector:', selector);
       break;
     }
   }
   
+  console.log('[blog-posts-v2] Final viewAllLink:', viewAllLink);
   if (viewAll && viewAllLink) {
-    viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+    const newText = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+    console.log('[blog-posts-v2] Setting link text to:', newText);
+    viewAllLink.textContent = newText;
+  } else {
+    console.warn('[blog-posts-v2] ❌ Could not update View All link. viewAll:', viewAll, 'viewAllLink:', viewAllLink);
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
