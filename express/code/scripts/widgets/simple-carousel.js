@@ -1,4 +1,4 @@
-import { getLibs } from '../utils.js';
+import { getLibs, getIconElementDeprecated } from '../utils.js';
 
 let createTag;
 
@@ -29,14 +29,11 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     'aria-label': 'Scroll left',
     type: 'button',
   });
-  const arrowLeftIcon = createTag('img', {
-    class: 'simple-carousel-arrow-icon',
-    src: '/express/code/icons/s2-chevron-left.svg',
-    width: '18',
-    height: '18',
-    alt: '',
-    'aria-hidden': 'true',
-  });
+  const arrowLeftIcon = getIconElementDeprecated('s2-chevron-left', 18, '', 'simple-carousel-arrow-icon');
+  arrowLeftIcon.setAttribute('width', '18');
+  arrowLeftIcon.setAttribute('height', '18');
+  arrowLeftIcon.setAttribute('alt', '');
+  arrowLeftIcon.setAttribute('aria-hidden', 'true');
   arrowLeft.appendChild(arrowLeftIcon);
 
   const arrowRight = createTag('button', {
@@ -44,14 +41,11 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     'aria-label': 'Scroll right',
     type: 'button',
   });
-  const arrowRightIcon = createTag('img', {
-    class: 'simple-carousel-arrow-icon',
-    src: '/express/code/icons/s2-chevron-right.svg',
-    width: '18',
-    height: '18',
-    alt: '',
-    'aria-hidden': 'true',
-  });
+  const arrowRightIcon = getIconElementDeprecated('s2-chevron-right', 18, '', 'simple-carousel-arrow-icon');
+  arrowRightIcon.setAttribute('width', '18');
+  arrowRightIcon.setAttribute('height', '18');
+  arrowRightIcon.setAttribute('alt', '');
+  arrowRightIcon.setAttribute('aria-hidden', 'true');
   arrowRight.appendChild(arrowRightIcon);
 
   carouselContent.forEach((el, index) => {
