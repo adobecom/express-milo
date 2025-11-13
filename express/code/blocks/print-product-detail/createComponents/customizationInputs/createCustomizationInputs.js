@@ -65,14 +65,9 @@ function createPillOptionsSelector(
     value: defaultValue,
     'aria-hidden': 'true',
   });
-  // Cache DOM queries to avoid repeated querySelectorAll calls
   let cachedAllPillContainers = null;
-  // Create click handler function outside loop to avoid no-loop-func error
   // eslint-disable-next-line max-len
   const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId, currentHiddenSelectInputName) => async (element) => {
-    // Cache for inputs - will be set inside handler
-    let cachedAllInputs = null;
-    // Use cached query or query once and cache
     if (!cachedAllPillContainers) {
       cachedAllPillContainers = currentPillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
     }
@@ -81,13 +76,11 @@ function createPillOptionsSelector(
       p.classList.remove('selected');
       p.removeAttribute('aria-current');
       p.setAttribute('aria-checked', 'false');
-      // Remove tooltip classes instead of dispatching expensive mouseleave event
       p.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
     });
     clickedPill.classList.add('selected');
     clickedPill.setAttribute('aria-current', 'true');
     clickedPill.setAttribute('aria-checked', 'true');
-    // Recalculate tooltip positioning for the selected pill
     const clickedRect = clickedPill.getBoundingClientRect();
     const clickedContainer = clickedPill.closest('.pdpx-customization-inputs-container') || document.body;
     const clickedContainerRect = clickedContainer.getBoundingClientRect();
@@ -99,44 +92,33 @@ function createPillOptionsSelector(
       clickedPill.classList.add('tooltip-right-edge');
     }
     const pillName = clickedPill.getAttribute('data-name');
-    // Update the hidden input in THIS selector container first
-    // Deselect all options first
     currentHiddenSelectInput.querySelectorAll('option').forEach((opt) => {
       opt.selected = false;
     });
-    // Then select the correct option
     const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
     if (optionToSelect) {
       optionToSelect.selected = true;
       currentHiddenSelectInput.value = pillName;
     } else {
-      // Fallback: set value directly if option doesn't exist (shouldn't happen)
       currentHiddenSelectInput.value = pillName;
     }
-    // Then update all other inputs with the same name (for form consistency)
     const allInputs = document.querySelectorAll(`[name="${currentHiddenSelectInputName}"]`);
     allInputs.forEach((input) => {
-      // Skip drawer inputs
       if (input.closest('#pdpx-drawer')) {
         return;
       }
       input.value = pillName;
-      // Also update option selection for select elements
       if (input.tagName === 'SELECT') {
-        // Deselect all options first
         input.querySelectorAll('option').forEach((opt) => {
           opt.selected = false;
         });
-        // Then select the correct option
         const selectOption = input.querySelector(`option[value="${pillName}"]`);
         if (selectOption) {
           selectOption.selected = true;
         }
-        // Force the select to reflect the change
         input.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
-    // Use requestAnimationFrame to ensure DOM updates are complete before reading form
     await new Promise((resolve) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -146,7 +128,6 @@ function createPillOptionsSelector(
     });
     await updateAllDynamicElements(currentProductId);
   };
-  // Create mouseenter handler function outside loop
   const createPillMouseEnterHandler = () => (e) => {
     const btn = e.currentTarget;
     const btnRect = btn.getBoundingClientRect();

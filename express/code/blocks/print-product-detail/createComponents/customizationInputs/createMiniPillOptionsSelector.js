@@ -27,7 +27,6 @@ export default async function createMiniPillOptionsSelector(
   if (CTALinkText) {
     const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
     miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
-      // Get current form value instead of initial defaultValue
       const form = document.querySelector('#pdpx-customization-inputs-form');
       // eslint-disable-next-line max-len
       const currentValue = form ? new FormData(form).get(hiddenSelectInputName) || defaultValue : defaultValue;
@@ -51,7 +50,6 @@ export default async function createMiniPillOptionsSelector(
   let isCarouselActive = false;
   const mediaQuery = window.matchMedia('(max-width: 767px)');
   const tooltipMap = new Map();
-  // Cache DOM queries to avoid repeated querySelectorAll calls
   let cachedAllPills = null;
   let cachedAllInputs = null;
 
@@ -72,7 +70,6 @@ export default async function createMiniPillOptionsSelector(
     }, 300);
   };
 
-  // Create click handler function outside loop to avoid no-loop-func error
   const createMiniPillClickHandler = (
     currentHiddenSelectInput,
     currentMiniPillSelectorOptionsWrapper,
@@ -84,7 +81,6 @@ export default async function createMiniPillOptionsSelector(
     tooltipMap.forEach((tooltip) => {
       hideJSTooltip(tooltip);
     });
-    // Use cached query or query once and cache
     if (!cachedAllPills) {
       cachedAllPills = currentMiniPillSelectorOptionsWrapper.querySelectorAll('.pdpx-mini-pill-image-container');
     }
@@ -93,7 +89,6 @@ export default async function createMiniPillOptionsSelector(
       pill.classList.remove('selected');
       pill.removeAttribute('aria-current');
       pill.setAttribute('aria-checked', 'false');
-      // Remove tooltip classes instead of dispatching expensive mouseleave event
       pill.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
     });
     clickedPill.classList.add('selected');
@@ -101,7 +96,6 @@ export default async function createMiniPillOptionsSelector(
     clickedPill.setAttribute('aria-checked', 'true');
     currentMiniPillSelectorLabelName.textContent = clickedPill.getAttribute('data-title');
     const pillName = clickedPill.getAttribute('data-name');
-    // Recalculate tooltip positioning for the selected pill
     const clickedRect = clickedPill.getBoundingClientRect();
     const clickedContainer = clickedPill.closest('.pdpx-customization-inputs-container') || document.body;
     const clickedContainerRect = clickedContainer.getBoundingClientRect();
@@ -112,20 +106,16 @@ export default async function createMiniPillOptionsSelector(
     } else if (clickedContainerRect.right - clickedRect.right < threshold) {
       clickedPill.classList.add('tooltip-right-edge');
     }
-    // Update the hidden input in THIS selector container first
     currentHiddenSelectInput.value = pillName;
-    // Ensure the selected option is also set
     const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
     if (optionToSelect) {
       optionToSelect.selected = true;
     }
-    // Then update all other inputs with the same name (for form consistency)
     if (!cachedAllInputs) {
       cachedAllInputs = document.querySelectorAll(`[name=${currentHiddenSelectInputName}]`);
     }
     cachedAllInputs.forEach((input) => {
       input.value = pillName;
-      // Also update option selection for select elements
       if (input.tagName === 'SELECT') {
         const selectOption = input.querySelector(`option[value="${pillName}"]`);
         if (selectOption) {
@@ -133,7 +123,6 @@ export default async function createMiniPillOptionsSelector(
         }
       }
     });
-    // Only update page if NOT in drawer (drawer pills should only update on "Select" button)
     const isInDrawer = currentMiniPillSelectorContainer.closest('#pdpx-drawer');
     if (!isInDrawer) {
       updateAllDynamicElements(currentProductId);
@@ -185,7 +174,6 @@ export default async function createMiniPillOptionsSelector(
   miniPillSelectorLabelName.textContent = selectedMiniPillOptionImageContainer.dataset.title;
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorOptionsWrapper.appendChild(miniPillSelectorOptionsContainer);
-  // Cache DOM queries after all pills are added
   cachedAllPills = miniPillSelectorOptionsWrapper.querySelectorAll('.pdpx-mini-pill-image-container');
   cachedAllInputs = document.querySelectorAll(`[name=${hiddenSelectInputName}]`);
 

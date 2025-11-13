@@ -55,7 +55,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
   let isVividCarouselActive = false;
   const mediaQuery = window.matchMedia('(max-width: 767px)');
   const tooltipMap = new Map();
-  // Cache DOM queries to avoid repeated querySelectorAll calls
   let cachedAllPills = null;
   let cachedLabelNameElement = null;
 
@@ -76,7 +75,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
     }, 300);
   };
 
-  // Create click handler function outside loop to avoid no-loop-func error
   const createSegmentedMiniPillClickHandler = (
     currentContainerWrapper,
     currentMiniPillSelectorContainer,
@@ -84,12 +82,9 @@ export default async function createSegmentedMiniPillOptionsSelector(
     currentProductId,
     currentHiddenSelectInput,
   ) => async (element) => {
-    // Cache for inputs - will be set inside handler
-    let cachedAllInputs = null;
     tooltipMap.forEach((tooltipEl) => {
       hideJSTooltip(tooltipEl);
     });
-    // Use cached query or query once and cache
     if (!cachedAllPills) {
       cachedAllPills = currentContainerWrapper.querySelectorAll('.pdpx-mini-pill-image-container');
     }
@@ -97,12 +92,10 @@ export default async function createSegmentedMiniPillOptionsSelector(
     cachedAllPills.forEach((pill) => {
       pill.classList.remove('selected');
       pill.removeAttribute('aria-current');
-      // Remove tooltip classes instead of dispatching expensive mouseleave event
       pill.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
     });
     clickedPill.classList.add('selected');
     clickedPill.setAttribute('aria-current', 'true');
-    // Recalculate tooltip positioning for the selected pill
     const clickedRect = clickedPill.getBoundingClientRect();
     const clickedContainer = clickedPill.closest('.pdpx-customization-inputs-container') || document.body;
     const clickedContainerRect = clickedContainer.getBoundingClientRect();
@@ -113,7 +106,6 @@ export default async function createSegmentedMiniPillOptionsSelector(
     } else if (clickedContainerRect.right - clickedRect.right < threshold) {
       clickedPill.classList.add('tooltip-right-edge');
     }
-    // Cache label element query
     if (!cachedLabelNameElement) {
       cachedLabelNameElement = currentMiniPillSelectorContainer.querySelector('.pdpx-pill-selector-label-name');
     }
@@ -121,13 +113,10 @@ export default async function createSegmentedMiniPillOptionsSelector(
       cachedLabelNameElement.textContent = clickedPill.getAttribute('data-title');
     }
     const pillName = clickedPill.getAttribute('data-name');
-    // Update the hidden input in THIS selector container first
     if (currentHiddenSelectInput) {
-      // Deselect all options first
       currentHiddenSelectInput.querySelectorAll('option').forEach((opt) => {
         opt.selected = false;
       });
-      // Then select the correct option
       const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
       if (optionToSelect) {
         optionToSelect.selected = true;
@@ -136,30 +125,23 @@ export default async function createSegmentedMiniPillOptionsSelector(
         currentHiddenSelectInput.value = pillName;
       }
     }
-    // Then update all other inputs with the same name (for form consistency)
     const allInputs = document.querySelectorAll(`[name="${currentHiddenSelectInputName}"]`);
     allInputs.forEach((input) => {
-      // Skip drawer inputs
       if (input.closest('#pdpx-drawer')) {
         return;
       }
       input.value = pillName;
-      // Also update option selection for select elements
       if (input.tagName === 'SELECT') {
-        // Deselect all options first
         input.querySelectorAll('option').forEach((opt) => {
           opt.selected = false;
         });
-        // Then select the correct option
         const selectOption = input.querySelector(`option[value="${pillName}"]`);
         if (selectOption) {
           selectOption.selected = true;
         }
-        // Force the select to reflect the change
         input.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
-    // Use requestAnimationFrame to ensure DOM updates are complete before reading form
     await new Promise((resolve) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
