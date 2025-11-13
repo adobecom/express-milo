@@ -34,6 +34,13 @@
   gap: var(--spacing-300);
   align-items: flex-start;
 }
+.pdpx-product-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  order: 3;
+}
+
 .pdpx-product-info-section-container {
   display: flex;
   flex-direction: column;
@@ -47,10 +54,14 @@
 }
 
 /* HEADER SECTION CONTENT */
+.pdpx-product-info-heading-section-wrapper {
+  width: 100%;
+  order: 1;
+}
+
 .pdpx-product-info-heading-section-container {
   display: flex;
   flex-direction: column;
-  order: 1;
   gap: var(--spacing-100);
   align-items: baseline;
   margin-bottom: var(--spacing-200);
@@ -699,6 +710,21 @@ main .section .pdpx-drawer-description {
   overflow: visible;
 }
 
+@media (max-width: 599px) {
+  .pdpx-product-info-wrapper {
+    display: contents;
+  }
+  .pdpx-product-info-heading-section-wrapper {
+    order: 1;
+  }
+  .pdpx-product-images-container {
+    order: 2;
+  }
+  .pdpx-product-info-section-container {
+    order: 3;
+  }
+}
+
 @media (max-width: 767px) {
   .pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) {
     overflow: visible;
@@ -1289,11 +1315,13 @@ main .section .pdpx-drawer-description {
   }
   .pdpx-product-images-container {
     order: 1;
+    width: calc(50% - 8px);
   }
-  .pdpx-product-info-section-container {
+  .pdpx-product-info-wrapper {
+    order: 2;
+    width: calc(50% - 8px);
     display: flex;
     flex-direction: column;
-    order: 2;
     flex: 1 1 auto;
     height: 90vh;
     overflow-x: visible;
@@ -1301,16 +1329,20 @@ main .section .pdpx-drawer-description {
     scrollbar-gutter: stable;
     padding-right: var(--spacing-400);
   }
+  .pdpx-product-info-heading-section-wrapper {
+    order: 1;
+  }
+  .pdpx-product-info-section-container {
+    display: flex;
+    flex-direction: column;
+    order: 2;
+  }
   .pdpx-product-info-heading-section-container {
     flex-direction: column;
     order: 1;
   }
   .pdpx-product-info-section {
     order: 2;
-  }
-  .pdpx-product-images-container,
-  .pdpx-product-info-section-container {
-    width: calc(50% - 8px);
   }
   .pdpx-checkout-button-subhead {
     display: flex;
@@ -1344,7 +1376,7 @@ main .section .pdpx-drawer-description {
     max-width: 64%;
   }
   .pdpx-product-images-container,
-  .pdpx-product-info-section-container {
+  .pdpx-product-info-wrapper {
     width: calc(50% - 12px);
   }
   .pdpx-savings-text {
