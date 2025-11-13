@@ -1,0 +1,103 @@
+.simple-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.simple-carousel-platform {
+  display: flex;
+  gap: var(--spacing-100);
+  overflow-x: scroll;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.simple-carousel-platform::-webkit-scrollbar {
+  display: none;
+}
+
+.simple-carousel-item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  overflow: visible;
+}
+
+
+.simple-carousel-fader-left,
+.simple-carousel-fader-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.simple-carousel-fader-left {
+  left: 0;
+}
+
+.simple-carousel-fader-right {
+  right: 0;
+}
+
+.simple-carousel-fader-left.arrow-hidden,
+.simple-carousel-fader-right.arrow-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.simple-carousel-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: var(--color-white);
+  border-radius: 50%;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  text-decoration: none;
+  overflow: visible;
+}
+
+.simple-carousel-arrow:hover {
+  background: var(--color-gray-100);
+}
+
+.simple-carousel-arrow:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.simple-carousel-arrow::before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--color-black);
+  border-right: 2px solid var(--color-black);
+  flex-shrink: 0;
+}
+
+.simple-carousel-arrow-left::before {
+  transform: rotate(-135deg);
+  margin-left: 2px;
+}
+
+.simple-carousel-arrow-right::before {
+  transform: rotate(45deg);
+  margin-right: 2px;
+}
+

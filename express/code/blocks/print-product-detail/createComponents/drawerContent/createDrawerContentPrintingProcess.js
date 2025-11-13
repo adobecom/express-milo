@@ -6,7 +6,7 @@ let createTag;
 export default async function createDrawerContentPrintingProcess(productDetails, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Printing Process');
-  const drawerBody = createTag('div', { class: 'drawer-body' });
+  const drawerBody = createTag('div', { class: 'pdpx-drawer-body' });
 
   const printingProcessOptionsContainer = createTag('div', { class: 'pdpx-printing-process-options-container' });
   const classicPrintingOptionsContainer = createTag('div', { class: 'pdpx-printing-process-option-container' });
