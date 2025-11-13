@@ -5,7 +5,7 @@
       "tcid": "0",
       "name": "@blog-posts-v2-view-more-placeholder",
       "selector": "div.blog-posts-v2",
-      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-more-placeholder",
+      "path": "/drafts/nala/blocks/blog-posts-v2/view-more-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -13,7 +13,7 @@
               "type": "link",
               "selector": ".content a",
               "nth": 0,
-              "text": "Mehr anzeigen",
+              "text": "View more",
               "href": null,
               "ariaLabel": null,
               "rel": null,
@@ -27,14 +27,14 @@
         "@blog-posts-v2",
         "@view-more",
         "@placeholder",
-        "@german"
+        "@english"
       ]
     },
     {
       "tcid": "1",
       "name": "@blog-posts-v2-view-all-space-placeholder",
       "selector": "div.blog-posts-v2",
-      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-space-placeholder",
+      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-space-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -42,7 +42,7 @@
               "type": "link",
               "selector": ".content a",
               "nth": 0,
-              "text": "Alle anzeigen",
+              "text": "View all",
               "href": null,
               "ariaLabel": null,
               "rel": null,
@@ -56,14 +56,14 @@
         "@blog-posts-v2",
         "@view-all",
         "@placeholder-space",
-        "@german"
+        "@english"
       ]
     },
     {
       "tcid": "2",
       "name": "@blog-posts-v2-view-all-hyphen-placeholder-invalid",
       "selector": "div.blog-posts-v2",
-      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
+      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -85,14 +85,14 @@
         "@blog-posts-v2",
         "@view-all-hyphen",
         "@placeholder-invalid",
-        "@german"
+        "@english"
       ]
     },
     {
       "tcid": "3",
       "name": "@blog-posts-v2-plain-text",
       "selector": "div.blog-posts-v2",
-      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-plain-text",
+      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-plain-text",
       "data": {
         "semantic": {
           "interactives": [
@@ -100,7 +100,7 @@
               "type": "link",
               "selector": ".content a",
               "nth": 0,
-              "text": "Alle anzeigen",
+              "text": "View all",
               "href": null,
               "ariaLabel": null,
               "rel": null,
@@ -114,7 +114,7 @@
         "@blog-posts-v2",
         "@view-all",
         "@plain-text",
-        "@german"
+        "@english"
       ]
     }
   ]
