@@ -29,11 +29,30 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     'aria-label': 'Scroll left',
     type: 'button',
   });
+  const arrowLeftIcon = createTag('img', {
+    class: 'simple-carousel-arrow-icon',
+    src: '/express/code/icons/s2-chevron-left.svg',
+    width: '18',
+    height: '18',
+    alt: '',
+    'aria-hidden': 'true',
+  });
+  arrowLeft.appendChild(arrowLeftIcon);
+
   const arrowRight = createTag('button', {
     class: 'button simple-carousel-arrow simple-carousel-arrow-right',
     'aria-label': 'Scroll right',
     type: 'button',
   });
+  const arrowRightIcon = createTag('img', {
+    class: 'simple-carousel-arrow-icon',
+    src: '/express/code/icons/s2-chevron-right.svg',
+    width: '18',
+    height: '18',
+    alt: '',
+    'aria-hidden': 'true',
+  });
+  arrowRight.appendChild(arrowRightIcon);
 
   carouselContent.forEach((el, index) => {
     el.classList.add('simple-carousel-item');
