@@ -56,7 +56,7 @@
 }
 .collapsible-row-sub-header:not([class*='heading-']):not([class*='body-']):not([class*='detail-']) {
     font-size: var(--body-font-size-m);
-    font-weight: 700;
+    font-weight: var(--ax-body-weight-bold);
     line-height: 130%;
 }
 .collapsible-rows .collapsible-row-toggle-btn {
@@ -120,7 +120,7 @@
 }
 .collapsible-row-header.expandable:not([class*='heading-']):not([class*='body-']):not([class*='detail-']) {
     font-size: var(--body-font-size-m);
-    font-weight: 700;
+    font-weight: var(--ax-body-weight-bold);
 }
 .collapsible-row-accordion.expandable .toggle-icon {
     width: 12px;
@@ -133,7 +133,7 @@
 }
 .collapsible-row-sub-header.expandable:not([class*='heading-']):not([class*='body-']):not([class*='detail-']) {
     font-size: var(--body-font-size-m);
-    font-weight: 400;
+    font-weight: var(--ax-body-weight);
 }
 .collapsible-row-accordion.title {
     font-size: 32px;
