@@ -5,7 +5,7 @@ import {
   useState,
   useMemo,
   useEffect,
-} from '../vendor/htm-preact.js';
+} from '../../../scripts/vendors/htm-preact.js';
 
 const DrawerContext = createContext(null);
 

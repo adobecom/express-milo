@@ -1,4 +1,4 @@
-import { useEffect } from '../vendor/htm-preact.js';
+import { useEffect } from '../../../scripts/vendors/htm-preact.js';
 import {
   getCanonicalUrl,
   upsertTitleAndDescriptionRespectingAuthored,
@@ -31,7 +31,7 @@ function mapStateToSeoPayload(state, templateId) {
   };
 }
 
-export function useSeo(templateId) {
+export default function useSeo(templateId) {
   const { state } = useStore();
 
   useEffect(() => {

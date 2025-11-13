@@ -1,7 +1,7 @@
 import {
   html,
   useState,
-} from '../vendor/htm-preact.js';
+} from '../../../scripts/vendors/htm-preact.js';
 import { useStore } from './store-context.js';
 import { formatLargeNumberToK } from '../utilities/utility-functions.js';
 

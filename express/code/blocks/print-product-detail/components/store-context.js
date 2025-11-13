@@ -1,41 +1,21 @@
-import { html, createContext, useContext, useState, useEffect, useMemo } from '../vendor/htm-preact.js';
+import { html, createContext, useContext, useMemo, useSyncExternalStore } from '../../../scripts/vendors/htm-preact.js';
 
 export const StoreContext = createContext(null);
 
 export function StoreProvider({ children, sdkStore }) {
-  const [state, setState] = useState(sdkStore.getSnapshot());
+  const state = useSyncExternalStore(
+    sdkStore.subscribe.bind(sdkStore),
+    sdkStore.getSnapshot.bind(sdkStore),
+  );
 
-  useEffect(() => {
-    // Subscribe to SDK store changes and update local state
-    const unsubscribe = sdkStore.subscribe(() => {
-      setState(sdkStore.getSnapshot());
-    });
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [sdkStore]);
-
-  // Wrap actions to trigger state updates
-  const actions = useMemo(() => {
-    const call = (fn) => async (...args) => {
-      try {
-        return await fn(...args);
-      } finally {
-        setState(sdkStore.getSnapshot());
-      }
-    };
-
-    return {
-      fetchProduct: call(sdkStore.fetchProduct.bind(sdkStore)),
-      fetchSizeChart: call(sdkStore.fetchSizeChart.bind(sdkStore)),
-      selectOption: call(sdkStore.selectOption.bind(sdkStore)),
-      selectQuantity: call(sdkStore.selectQuantity.bind(sdkStore)),
-      selectRealview: call(sdkStore.selectRealview.bind(sdkStore)),
-    };
-  }, [sdkStore]);
+  // No need to wrap actions - the SDK handles subscription notifications automatically
+  const actions = useMemo(() => ({
+    fetchProduct: sdkStore.fetchProduct.bind(sdkStore),
+    fetchSizeChart: sdkStore.fetchSizeChart.bind(sdkStore),
+    selectOption: sdkStore.selectOption.bind(sdkStore),
+    selectQuantity: sdkStore.selectQuantity.bind(sdkStore),
+    selectRealview: sdkStore.selectRealview.bind(sdkStore),
+  }), [sdkStore]);
 
   const value = useMemo(() => ({
     state,

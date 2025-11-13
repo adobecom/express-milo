@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'plugin:react-hooks/recommended'],
   env: { browser: true, mocha: true },
   parser: '@babel/eslint-parser',
   parserOptions: {
@@ -21,6 +21,9 @@ module.exports = {
     'import/no-cycle': 1,
     'import/no-extraneous-dependencies': 0,
     'no-restricted-syntax': 0,
+    indent: ['error', 2, {
+      ignoredNodes: ['TemplateLiteral *'],
+    }],
   },
   overrides: [
     {

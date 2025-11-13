@@ -2,7 +2,7 @@ import {
   html,
   useEffect,
   useRef,
-} from '../vendor/htm-preact.js';
+} from '../../../scripts/vendors/htm-preact.js';
 import { useStore } from './store-context.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 

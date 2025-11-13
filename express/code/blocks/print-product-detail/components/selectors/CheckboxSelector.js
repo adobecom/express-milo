@@ -1,4 +1,4 @@
-import { html } from '../../vendor/htm-preact.js';
+import { html } from '../../../../scripts/vendors/htm-preact.js';
 import { useStore } from '../store-context.js';
 
 export function CheckboxSelector({ attribute }) {

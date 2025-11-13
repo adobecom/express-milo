@@ -2,7 +2,8 @@ import {
   html,
   useEffect,
   useState,
-} from '../vendor/htm-preact.js';
+  Fragment,
+} from '../../../scripts/vendors/htm-preact.js';
 import { useDrawer } from './drawer-context.js';
 import { useStore } from './store-context.js';
 
@@ -13,6 +14,16 @@ function SizeChartTable({ sizeChart }) {
 
   const { measurementTypes = [], attributeValues = [] } = sizeChart.sizeChart;
 
+  const rows = attributeValues.map((row) => html`
+    <tr key="${row.attributeValueId}">
+      <td>${row.attributeValueLabel}</td>
+      ${measurementTypes.map((type) => {
+        const measurement = row.measurements?.find((entry) => entry.key === type.key);
+        return html`<td key="${type.key}">${measurement?.displayValue || '—'}</td>`;
+      })}
+    </tr>
+`);
+
   return html`
     <table class="pdpx-size-chart-table">
       <thead>
@@ -22,21 +33,13 @@ function SizeChartTable({ sizeChart }) {
         </tr>
       </thead>
       <tbody>
-        ${attributeValues.map((row) => html`
-          <tr key="${row.attributeValueId}">
-            <td>${row.attributeValueLabel}</td>
-            ${measurementTypes.map((type) => {
-              const measurement = row.measurements?.find((entry) => entry.key === type.key);
-              return html`<td key="${type.key}">${measurement?.displayValue || '—'}</td>`;
-            })}
-          </tr>
-        `)}
+        ${rows}
       </tbody>
     </table>
   `;
 }
 
-function SizeChartContent({ onClose, payload }) {
+function SizeChartContent({ onClose }) {
   const { actions } = useStore();
   const [chart, setChart] = useState(null);
   const [error, setError] = useState(null);
@@ -96,11 +99,11 @@ function SizeChartContent({ onClose, payload }) {
   `;
 }
 
-export function Drawer() {
+export default function Drawer() {
   const { state, closeDrawer } = useDrawer();
 
   return html`
-    <div>
+    <${Fragment}>
       <div
         class="pdp-curtain ${state.open ? '' : 'hidden'}"
         onClick=${closeDrawer}
@@ -120,7 +123,6 @@ export function Drawer() {
           `}
         </div>
       </aside>
-    </div>
+    </${Fragment}>
   `;
 }
-
