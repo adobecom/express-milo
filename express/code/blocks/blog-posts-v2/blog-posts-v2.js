@@ -367,19 +367,38 @@ export default async function decorate(block) {
 
   /* localize view all */
   const viewAllLink = block?.parentElement?.querySelector('.content a');
-  console.log('[blog-posts-v2] 1. Link BEFORE our code runs:', viewAllLink?.textContent);
   
-  const viewAll = await replaceKey('view all', getConfig()) || 'view all';
-  console.log('[blog-posts-v2] 2. replaceKey("view all") returned:', viewAll);
-  console.log('[blog-posts-v2] 3. viewAllLink exists?', !!viewAllLink);
-  
-  if (viewAll && viewAllLink) {
-    const newText = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
-    console.log('[blog-posts-v2] 4. Will replace with:', newText);
-    viewAllLink.textContent = newText;
-    console.log('[blog-posts-v2] 5. Link AFTER our code runs:', viewAllLink.textContent);
-  } else {
-    console.log('[blog-posts-v2] 4. NOT replacing (viewAll:', viewAll, 'viewAllLink:', !!viewAllLink, ')');
+  if (viewAllLink) {
+    const linkText = viewAllLink.textContent;
+    console.log('[blog-posts-v2] Link text BEFORE:', linkText);
+    
+    // Check if link text contains a placeholder token like ((view-more)) or ((view-all))
+    const placeholderMatch = linkText.match(/\(\((.*?)\)\)/);
+    
+    if (placeholderMatch) {
+      // Extract the placeholder key and fetch its translation
+      const placeholderKey = placeholderMatch[1];
+      console.log('[blog-posts-v2] Found placeholder token:', placeholderKey);
+      
+      const translation = await replaceKey(placeholderKey, getConfig());
+      console.log('[blog-posts-v2] Translation for', placeholderKey, ':', translation);
+      
+      if (translation) {
+        viewAllLink.textContent = `${translation.charAt(0).toUpperCase()}${translation.slice(1)}`;
+        console.log('[blog-posts-v2] ✅ Replaced with translation:', viewAllLink.textContent);
+      }
+    } else if (linkText.toLowerCase().includes('view')) {
+      // Plain text like "view all" - translate it
+      const viewAll = await replaceKey('view all', getConfig());
+      console.log('[blog-posts-v2] Plain text - replaceKey("view all"):', viewAll);
+      
+      if (viewAll) {
+        viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+        console.log('[blog-posts-v2] ✅ Replaced with translation:', viewAllLink.textContent);
+      }
+    } else {
+      console.log('[blog-posts-v2] Link already translated, leaving it alone');
+    }
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
