@@ -3,9 +3,9 @@
   "variants": [
     {
       "tcid": "0",
-      "name": "@blog-posts-v2-view-more-placeholder",
+      "name": "@blog-posts-v2-german-translation",
       "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-more-placeholder",
+      "path": "/de/express/discover/how-to/postcard/marketing",
       "data": {
         "semantic": {
           "interactives": [
@@ -13,8 +13,8 @@
               "type": "link",
               "selector": ".content a",
               "nth": 0,
-              "text": "View more",
-              "href": null,
+              "text": "Mehr anzeigen",
+              "href": "/de/express/learn/blog",
               "ariaLabel": null,
               "rel": null,
               "title": null,
@@ -25,98 +25,10 @@
       },
       "tags": [
         "@blog-posts-v2",
-        "@view-more",
-        "@placeholder",
-        "@english"
-      ]
-    },
-    {
-      "tcid": "1",
-      "name": "@blog-posts-v2-view-all-space-placeholder",
-      "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-space-placeholder",
-      "data": {
-        "semantic": {
-          "interactives": [
-            {
-              "type": "link",
-              "selector": ".content a",
-              "nth": 0,
-              "text": "View all",
-              "href": null,
-              "ariaLabel": null,
-              "rel": null,
-              "title": null,
-              "target": null
-            }
-          ]
-        }
-      },
-      "tags": [
-        "@blog-posts-v2",
-        "@view-all",
-        "@placeholder-space",
-        "@english"
-      ]
-    },
-    {
-      "tcid": "2",
-      "name": "@blog-posts-v2-view-all-hyphen-placeholder-invalid",
-      "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
-      "data": {
-        "semantic": {
-          "interactives": [
-            {
-              "type": "link",
-              "selector": ".content a",
-              "nth": 0,
-              "text": "((view-all))",
-              "href": null,
-              "ariaLabel": null,
-              "rel": null,
-              "title": null,
-              "target": null
-            }
-          ]
-        }
-      },
-      "tags": [
-        "@blog-posts-v2",
-        "@view-all-hyphen",
-        "@placeholder-invalid",
-        "@english"
-      ]
-    },
-    {
-      "tcid": "3",
-      "name": "@blog-posts-v2-plain-text",
-      "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-plain-text",
-      "data": {
-        "semantic": {
-          "interactives": [
-            {
-              "type": "link",
-              "selector": ".content a",
-              "nth": 0,
-              "text": "View all",
-              "href": null,
-              "ariaLabel": null,
-              "rel": null,
-              "title": null,
-              "target": null
-            }
-          ]
-        }
-      },
-      "tags": [
-        "@blog-posts-v2",
-        "@view-all",
-        "@plain-text",
-        "@english"
+        "@german",
+        "@translation",
+        "@production"
       ]
     }
   ]
 }
-
