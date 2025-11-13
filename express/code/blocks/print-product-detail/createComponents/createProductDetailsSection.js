@@ -149,7 +149,7 @@ export async function createCheckoutButton(productDetails) {
     checkoutButtonSubheadText,
   );
   if (buttonDisabled) {
-    debugger;
+ 
     const stickyPromoBarContent = createTag('div', {
       class: 'sticky-promo-bar rounded',
     });
