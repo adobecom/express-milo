@@ -366,10 +366,6 @@ export default async function decorate(block) {
   });
 
   /* localize view all */
-  const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
-  console.log('[blog-posts-v2] View All translation:', viewAll);
-  console.log('[blog-posts-v2] block.parentElement:', block?.parentElement);
-  
   // Look for View All link in multiple possible locations
   const possibleSelectors = [
     '.content a',  // Original selector
@@ -380,24 +376,33 @@ export default async function decorate(block) {
   let viewAllLink = null;
   for (const selector of possibleSelectors) {
     const found = block?.parentElement?.querySelector(selector);
-    console.log(`[blog-posts-v2] Trying selector "${selector}":`, found);
     if (found) {
-      console.log(`[blog-posts-v2] Link text:`, found.textContent);
-    }
-    if (found && found.textContent.toLowerCase().includes('view')) {
-      viewAllLink = found;
-      console.log('[blog-posts-v2] ✅ Found View All link with selector:', selector);
-      break;
+      const linkText = found.textContent.toLowerCase();
+      // Check for placeholder tokens or "view" text
+      if (linkText.includes('view') || linkText.includes('((')) {
+        viewAllLink = found;
+        break;
+      }
     }
   }
   
-  console.log('[blog-posts-v2] Final viewAllLink:', viewAllLink);
-  if (viewAll && viewAllLink) {
-    const newText = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
-    console.log('[blog-posts-v2] Setting link text to:', newText);
-    viewAllLink.textContent = newText;
-  } else {
-    console.warn('[blog-posts-v2] ❌ Could not update View All link. viewAll:', viewAll, 'viewAllLink:', viewAllLink);
+  if (viewAllLink) {
+    const linkText = viewAllLink.textContent;
+    // Check if it's a placeholder token like ((view-more)) or ((view-all))
+    const placeholderMatch = linkText.match(/\(\((.*?)\)\)/);
+    
+    if (placeholderMatch) {
+      // Replace the placeholder token with its translation
+      const placeholderKey = placeholderMatch[1];
+      const translation = await replaceKey(placeholderKey, getConfig());
+      if (translation) {
+        viewAllLink.textContent = `${translation.charAt(0).toUpperCase()}${translation.slice(1)}`;
+      }
+    } else {
+      // No placeholder token, try translating based on common keys
+      const viewAll = await replaceKey('view-all', getConfig()) || await replaceKey('view all', getConfig()) || 'view all';
+      viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+    }
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
