@@ -434,7 +434,6 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 }
 .pdpx-pill-image-container {
   width: 54px;
-  height: 54px;
   overflow: hidden;
   border-radius: 8px 0 0 8px;
   flex-shrink: 0;

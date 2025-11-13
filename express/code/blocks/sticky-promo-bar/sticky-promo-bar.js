@@ -30,6 +30,7 @@ function initScrollInteraction(block) {
 }
 
 export default async function decorate(block) {
+  debugger;
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const close = createTag('button', {
     class: 'close',
