@@ -95,7 +95,7 @@ export async function createCheckoutButton(productDetails) {
   await new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/blocks/sticky-promo-bar/sticky-promo-bar.css`, resolve);
   });
-
+  const defaultURL = `https://new.express.adobe.com/design-remix/template/${productDetails.templateId}`;
   const validRegions = ['en-US', 'en-GB'];
   const outOfRegion = !validRegions.includes(productDetails.region);
   const isMobile = detectMobile();
@@ -117,7 +117,8 @@ export async function createCheckoutButton(productDetails) {
   const checkoutButton = createTag('a', {
     class: 'pdpx-checkout-button',
     id: 'pdpx-checkout-button',
-    href: `https://new.express.adobe.com/design-remix/template/${productDetails.templateId}` });
+    href: defaultURL,
+  });
   const CTAIcon = createTag('img', {
     class: 'pdpx-checkout-button-icon',
     src: '/express/code/icons/print-icon.svg',
@@ -146,7 +147,7 @@ export async function createCheckoutButton(productDetails) {
     checkoutButtonSubheadText,
   );
   if (buttonDisabled) {
-    const exampleBlockContainer = createTag('div', {
+    const stickyPromoBarContent = createTag('div', {
       class: 'sticky-promo-bar rounded',
     });
     const stickyPromoBarTextContainer = createTag('div');
@@ -155,8 +156,9 @@ export async function createCheckoutButton(productDetails) {
         rel: 'nofollow',
         target: '_self',
       });
+      mobileCTA.id = 'pdpx-checkout-button-mobile-cta';
       mobileCTA.textContent = 'Start designing on mobile.';
-      mobileCTA.href = 'https://adobesparkpost.app.link/GJrBPFUWBBb';
+      mobileCTA.href = defaultURL;
       mobileCTA.classList.add('quick-link');
       mobileCTA.ref = 'nofollow';
       stickyPromoBarTextContainer.appendChild(mobileCTA);
@@ -164,10 +166,9 @@ export async function createCheckoutButton(productDetails) {
     } else {
       stickyPromoBarTextContainer.appendChild(CTATextContainer);
     }
-    exampleBlockContainer.appendChild(stickyPromoBarTextContainer);
-    await stickyPromoBar(exampleBlockContainer);
-    checkoutButtonContainer.appendChild(exampleBlockContainer);
-    checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
+    stickyPromoBarContent.appendChild(stickyPromoBarTextContainer);
+    await stickyPromoBar(stickyPromoBarContent);
+    checkoutButtonContainer.appendChild(stickyPromoBarContent);
   } else {
     checkoutButtonContainer.append(checkoutButton, checkoutButtonSubhead);
   }
