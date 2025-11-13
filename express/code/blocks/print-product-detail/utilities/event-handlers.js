@@ -83,6 +83,22 @@ async function updateProductDeliveryEstimate(productDetails) {
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
   const oldContainer = document.getElementById('pdpx-customization-inputs-container');
+  const { activeElement } = document;
+  const isActiveInContainer = oldContainer && activeElement && oldContainer.contains(activeElement);
+
+  let focusTarget = null;
+  if (isActiveInContainer) {
+    const elementName = activeElement.name || activeElement.getAttribute('name');
+    const elementDataName = activeElement.getAttribute('data-name');
+    if (elementName) {
+      focusTarget = { type: 'name', value: elementName };
+    } else if (elementDataName) {
+      const container = activeElement.closest('.pdpx-pill-selector-container, .pdpx-mini-pill-selector-container');
+      const parentInput = container?.querySelector('.pdpx-hidden-select-input[name]');
+      focusTarget = { type: 'data-name', value: elementDataName, parentName: parentInput?.name || null };
+    }
+  }
+
   const oldPickers = oldContainer?.querySelectorAll('.picker-container');
   if (oldPickers) {
     oldPickers.forEach((picker) => {
@@ -93,6 +109,46 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
   }
   const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
   oldContainer.replaceWith(newCustomizationInputs);
+
+  if (focusTarget) {
+    const restoreFocus = () => {
+      let elementToFocus = null;
+      if (focusTarget.type === 'name') {
+        elementToFocus = newCustomizationInputs.querySelector(`[name="${focusTarget.value}"]`);
+      } else if (focusTarget.type === 'data-name') {
+        if (focusTarget.parentName) {
+          const parentInput = newCustomizationInputs.querySelector(`[name="${focusTarget.parentName}"]`);
+          if (parentInput) {
+            const container = parentInput.closest('.pdpx-pill-selector-container, .pdpx-mini-pill-selector-container');
+            if (container) {
+              elementToFocus = container.querySelector(`[data-name="${focusTarget.value}"]`);
+            }
+          }
+        }
+        if (!elementToFocus) {
+          elementToFocus = newCustomizationInputs.querySelector(`[data-name="${focusTarget.value}"]`);
+        }
+      }
+
+      if (elementToFocus && (elementToFocus.tagName === 'BUTTON' || elementToFocus.tagName === 'SELECT' || elementToFocus.type === 'text')) {
+        elementToFocus.focus();
+        return true;
+      }
+      return false;
+    };
+
+    if (!restoreFocus()) {
+      const focusObserver = new MutationObserver(() => {
+        if (restoreFocus()) {
+          focusObserver.disconnect();
+        }
+      });
+      focusObserver.observe(newCustomizationInputs, { childList: true, subtree: true });
+      setTimeout(() => {
+        focusObserver.disconnect();
+      }, 1000);
+    }
+  }
 }
 
 async function updatePillTextValues(productDetails) {
@@ -343,6 +399,45 @@ function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formData
   return selectedValuesObject;
 }
 
+function hasStyleChanged(existingForm, currentStyle) {
+  if (!existingForm || !currentStyle) return false;
+  const styleInput = existingForm.querySelector('[name="style"]');
+  if (!styleInput) return false;
+  const existingStyle = styleInput.tagName === 'SELECT'
+    ? styleInput.value
+    : styleInput.parentElement?.querySelector('.pdpx-pill-selector-options-container .pdpx-pill-container.selected[data-name]')?.dataset.name;
+  return existingStyle && existingStyle !== currentStyle;
+}
+
+function getExistingOptionNames(existingForm, attributeName) {
+  const hiddenInput = existingForm?.querySelector(`[name="${attributeName}"]`);
+  if (!hiddenInput) return new Set();
+
+  const optionNames = new Set();
+  const container = hiddenInput.closest('.pdpx-pill-selector-container, .pdpx-mini-pill-selector-container');
+  if (container) {
+    container.querySelectorAll('[data-name]').forEach((pill) => {
+      if (pill.dataset.name) optionNames.add(pill.dataset.name);
+    });
+  }
+  if (hiddenInput.tagName === 'SELECT') {
+    hiddenInput.querySelectorAll('option').forEach((option) => {
+      if (option.value) optionNames.add(option.value);
+    });
+  }
+  return optionNames;
+}
+
+function hasOptionsChanged(existingForm, currentAttributes) {
+  if (!existingForm) return false;
+  return Object.keys(currentAttributes || {}).some((key) => {
+    const currentOptionNames = new Set(currentAttributes[key].map((opt) => opt.name));
+    const existingOptionNames = getExistingOptionNames(existingForm, key);
+    return existingOptionNames.size !== currentOptionNames.size
+      || ![...currentOptionNames].every((name) => existingOptionNames.has(name));
+  });
+}
+
 export default async function updateAllDynamicElements(productId) {
   const { templateId } = document.querySelector('.pdpx-global-container').dataset;
   const form = document.querySelector('#pdpx-customization-inputs-form');
@@ -377,14 +472,12 @@ export default async function updateAllDynamicElements(productId) {
   );
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
   const [
-    productDetails,
     productPrice,
     productReviews,
     productRenditions,
     productShippingEstimates,
     UIStrings,
   ] = await Promise.all([
-    fetchAPIData(productId, updatedParameters, 'getproduct'),
     fetchAPIData(productId, updatedParameters, 'getproductpricing'),
     fetchAPIData(productId, null, 'getreviews'),
     fetchAPIData(productId, updatedParameters, 'getproductrenditions'),
@@ -430,8 +523,13 @@ export default async function updateAllDynamicElements(productId) {
   const currentAttributeKeys = Object.keys(normalizedProductDetails.attributes || {}).sort().join(',');
   const existingForm = document.querySelector('#pdpx-customization-inputs-form');
   const existingAttributeKeys = existingForm ? existingForm.dataset.attributeKeys || '' : '';
+  const sameAttributeKeys = currentAttributeKeys === existingAttributeKeys;
 
-  if (currentAttributeKeys !== existingAttributeKeys) {
+  const shouldRecreateInputs = !sameAttributeKeys
+    || hasStyleChanged(existingForm, formDataObject.style)
+    || (sameAttributeKeys && hasOptionsChanged(existingForm, normalizedProductDetails.attributes));
+
+  if (shouldRecreateInputs) {
     await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   } else {
     await updatePillTextValues(normalizedProductDetails);
@@ -440,9 +538,8 @@ export default async function updateAllDynamicElements(productId) {
   await updateProductPrice(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateDrawerContent(normalizedProductDetails, formDataObject);
-  // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
-    attributes: productDetails.product.attributes,
+    attributes: updatedConfigurationOptions.product.attributes,
     formData: formDataObject,
   });
 }
