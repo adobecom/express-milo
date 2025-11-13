@@ -55,6 +55,23 @@ export default async function createMiniPillOptionsSelector(
   let cachedAllPills = null;
   let cachedAllInputs = null;
 
+  const hideJSTooltip = (tooltip) => {
+    const arrow = tooltip.querySelector('.pdpx-js-tooltip-arrow');
+
+    tooltip.style.transition = 'var(--standard-transition-hover-out-opacity)';
+    tooltip.style.opacity = '0';
+    if (arrow) {
+      arrow.style.transition = 'var(--standard-transition-hover-out-opacity)';
+      arrow.style.opacity = '0';
+    }
+    setTimeout(() => {
+      tooltip.style.visibility = 'hidden';
+      if (arrow) {
+        arrow.style.visibility = 'hidden';
+      }
+    }, 300);
+  };
+
   // Create click handler function outside loop to avoid no-loop-func error
   const createMiniPillClickHandler = (
     currentHiddenSelectInput,
@@ -121,24 +138,6 @@ export default async function createMiniPillOptionsSelector(
     if (!isInDrawer) {
       updateAllDynamicElements(currentProductId);
     }
-  };
-
-  const hideJSTooltip = (tooltip) => {
-    const arrow = tooltip.querySelector('.pdpx-js-tooltip-arrow');
-
-    tooltip.style.transition = 'var(--standard-transition-hover-out-opacity)';
-    tooltip.style.opacity = '0';
-    if (arrow) {
-      arrow.style.transition = 'var(--standard-transition-hover-out-opacity)';
-      arrow.style.opacity = '0';
-    }
-
-    setTimeout(() => {
-      tooltip.style.visibility = 'hidden';
-      if (arrow) {
-        arrow.style.visibility = 'hidden';
-      }
-    }, 300);
   };
 
   for (let i = 0; i < customizationOptions.length; i += 1) {

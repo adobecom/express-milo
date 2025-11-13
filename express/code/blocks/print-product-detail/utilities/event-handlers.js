@@ -37,7 +37,7 @@ async function updateProductImages(productDetails) {
 
   const firstImageType = Object.keys(productDetails.realViews)[0];
   let imageType;
-  if (productDetails.realViews[heroImg.dataset.imageType]) {
+  if (heroImg.dataset.imageType && productDetails.realViews[heroImg.dataset.imageType]) {
     imageType = heroImg.dataset.imageType;
   } else {
     imageType = firstImageType;
@@ -45,16 +45,13 @@ async function updateProductImages(productDetails) {
   const newHeroImgSrc = productDetails.realViews[imageType];
 
   if (newHeroImgSrc) {
-    const currentSrc = heroImg.src;
     const newSrc = convertImageSize(newHeroImgSrc, '500');
     const newSrcset = createHeroImageSrcset(newHeroImgSrc);
 
-    // Only update if the image URL has changed
-    if (currentSrc !== newSrc || heroImg.srcset !== newSrcset) {
-      heroImg.srcset = newSrcset;
-      heroImg.src = newSrc;
-      heroImg.dataset.imageType = imageType;
-    }
+    // Always update to ensure images refresh (URLs may have query params that change)
+    heroImg.srcset = newSrcset;
+    heroImg.src = newSrc;
+    heroImg.dataset.imageType = imageType;
   }
 
   // Update all thumbnails with new data
@@ -65,10 +62,9 @@ async function updateProductImages(productDetails) {
       const img = button.querySelector('.pdpx-image-thumbnail-carousel-item-image');
       if (img) {
         const newThumbnailSrc = convertImageSize(productDetails.realViews[btnImageType], '100');
-        // Only update if the image URL has changed
-        if (img.src !== newThumbnailSrc) {
-          img.src = newThumbnailSrc;
-        }
+        // Always update to ensure images refresh
+        img.src = newThumbnailSrc;
+        img.setAttribute('data-image-type', btnImageType);
       }
       button.removeAttribute('data-skeleton');
     }
@@ -341,8 +337,27 @@ function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formData
 export default async function updateAllDynamicElements(productId) {
   const { templateId } = document.querySelector('.pdpx-global-container').dataset;
   const form = document.querySelector('#pdpx-customization-inputs-form');
-  const formData = new FormData(form);
-  const formDataObject = Object.fromEntries(formData.entries());
+
+  // Read form values directly from inputs to ensure we get the latest values
+  // FormData can sometimes read stale values, especially for select elements
+  const formDataObject = {};
+  const formInputs = form.querySelectorAll('input, select');
+  formInputs.forEach((input) => {
+    // Skip drawer inputs
+    if (input.closest('#pdpx-drawer')) {
+      return;
+    }
+    if (input.type === 'radio' || input.type === 'checkbox') {
+      if (input.checked) {
+        formDataObject[input.name] = input.value;
+      }
+    } else if (input.tagName === 'SELECT') {
+      // For select elements, read the value directly
+      formDataObject[input.name] = input.value;
+    } else {
+      formDataObject[input.name] = input.value;
+    }
+  });
   const quantity = formDataObject.qty;
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
@@ -393,8 +408,8 @@ export default async function updateAllDynamicElements(productId) {
         const correctedValue = normalizedProductDetails.attributes[key][0].name;
         formDataObject[key] = correctedValue;
         // Update the actual form inputs to match the corrected value
-        const formInputs = form.querySelectorAll(`[name="${key}"]`);
-        formInputs.forEach((input) => {
+        const correctedInputs = form.querySelectorAll(`[name="${key}"]`);
+        correctedInputs.forEach((input) => {
           input.value = correctedValue;
         });
       }
