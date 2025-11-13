@@ -73,12 +73,12 @@
 }
 
 .simple-carousel-arrow:hover {
-  background: #d5d5d5;
+  background: var(--color-gray-325);
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 6px 0px rgba(0, 0, 0, 0.04), 0px 4px 12px 0px rgba(0, 0, 0, 0.08);
 }
 
 .simple-carousel-arrow:active {
-  background: #b1b1b1;
+  background: var(--color-gray-350-variant);
 }
 
 .simple-carousel-arrow:focus {
@@ -86,7 +86,7 @@
 }
 
 .simple-carousel-arrow:focus-visible {
-  outline: 2px solid #4b75ff;
+  outline: 2px solid var(--color-background-accent-default);
   outline-offset: -4px;
   border-radius: 100px;
 }
