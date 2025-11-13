@@ -3,10 +3,11 @@ import updateAllDynamicElements from '../../utilities/event-handlers.js';
 import openDrawer from '../drawerContent/openDrawer.js';
 import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
 import createMiniPillOptionsSelector from './createMiniPillOptionsSelector.js';
+import { createPicker } from '../../../../scripts/widgets/picker.js';
 
 let createTag;
 
-function createStandardSelector(
+async function createStandardSelector(
   customizationOptions,
   labelText,
   hiddenSelectInputName,
@@ -14,42 +15,37 @@ function createStandardSelector(
   formDataObject,
   CTAText,
 ) {
-  let defaultValue = formDataObject[hiddenSelectInputName];
-  const isDefaultValueAnOptionName = customizationOptions
-    .some((option) => option.name === defaultValue);
-  if (isDefaultValueAnOptionName) {
-    defaultValue = customizationOptions.find((option) => option.name === defaultValue).name;
-  }
-  const selectedOption = defaultValue || customizationOptions[0].name;
-  const productId = productDetails.id;
-  const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
-  const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label', for: `pdpx-standard-selector-${hiddenSelectInputName}` }, labelText);
-  standardSelectorContainer.appendChild(standardSelectorLabel);
-  const standardSelectorInputContainer = createTag('div', { class: 'pdpx-standard-selector-input-container' });
-  const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName, id: `pdpx-standard-selector-${hiddenSelectInputName}` });
-  for (let i = 0; i < customizationOptions.length; i += 1) {
-    const optionLabel = customizationOptions[i].title;
-    const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
-    standardSelectorInput.appendChild(standardOption);
-  }
-  standardSelectorInput.addEventListener('change', () => {
-    updateAllDynamicElements(productId);
+  const options = customizationOptions.map((option) => ({
+    value: option.name,
+    text: option.title,
+  }));
+  const defaultValue = formDataObject[hiddenSelectInputName] || customizationOptions[0].name;
+  const pickerContainer = await createPicker({
+    id: `pdpx-picker-${hiddenSelectInputName}`,
+    name: hiddenSelectInputName,
+    label: labelText,
+    labelPosition: 'side',
+    options,
+    defaultValue,
+    onChange: () => {
+      updateAllDynamicElements(productDetails.id);
+    },
   });
-  standardSelectorInput.value = selectedOption;
-  standardSelectorInputContainer.appendChild(standardSelectorInput);
-  standardSelectorContainer.appendChild(standardSelectorInputContainer);
   let isTriBlend = false;
   if (productDetails.productType === 'zazzle_shirt') {
     isTriBlend = formDataObject.style === 'triblend_shortsleeve3413';
   }
   if (CTAText && isTriBlend) {
-    const standardSelectorCTA = createTag('button', { class: 'pdpx-standard-selector-cta', type: 'button' }, CTAText);
+    const wrapper = createTag('div', { class: 'picker-with-link' });
+    wrapper.appendChild(pickerContainer);
+    const standardSelectorCTA = createTag('button', { class: 'picker-link', type: 'button' }, CTAText);
     standardSelectorCTA.addEventListener('click', async () => {
-      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, CTAText, productDetails, defaultValue, 'sizeChart');
+      await openDrawer(customizationOptions, labelText, hiddenSelectInputName, productDetails, defaultValue, 'sizeChart');
     });
-    standardSelectorInputContainer.appendChild(standardSelectorCTA);
+    wrapper.appendChild(standardSelectorCTA);
+    return wrapper;
   }
-  return standardSelectorContainer;
+  return pickerContainer;
 }
 
 function createPillOptionsSelector(
@@ -59,41 +55,137 @@ function createPillOptionsSelector(
   productId,
   defaultValue,
 ) {
-  const hiddenSelectInputId = `pdpx-hidden-input-${hiddenSelectInputName}`;
-  const selectedPillOption = defaultValue || customizationOptions[0].name;
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
   pillSelectorContainer.appendChild(pillSelectorContainerLabel);
   const pillSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputId });
+  const hiddenSelectInput = createTag('select', {
+    class: 'pdpx-hidden-select-input',
+    name: hiddenSelectInputName,
+    id: `pdpx-hidden-input-${hiddenSelectInputName}`,
+    value: defaultValue,
+    'aria-hidden': 'true',
+  });
+  let cachedAllPillContainers = null;
+  // eslint-disable-next-line max-len
+  const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId, currentHiddenSelectInputName) => async (element) => {
+    if (!cachedAllPillContainers) {
+      cachedAllPillContainers = currentPillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
+    }
+    const clickedPill = element.currentTarget;
+    cachedAllPillContainers.forEach((p) => {
+      p.classList.remove('selected');
+      p.removeAttribute('aria-current');
+      p.setAttribute('aria-checked', 'false');
+      p.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    });
+    clickedPill.classList.add('selected');
+    clickedPill.setAttribute('aria-current', 'true');
+    clickedPill.setAttribute('aria-checked', 'true');
+    const clickedRect = clickedPill.getBoundingClientRect();
+    const clickedContainer = clickedPill.closest('.pdpx-customization-inputs-container') || document.body;
+    const clickedContainerRect = clickedContainer.getBoundingClientRect();
+    const threshold = 150;
+    clickedPill.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    if (clickedRect.left - clickedContainerRect.left < threshold) {
+      clickedPill.classList.add('tooltip-left-edge');
+    } else if (clickedContainerRect.right - clickedRect.right < threshold) {
+      clickedPill.classList.add('tooltip-right-edge');
+    }
+    const pillName = clickedPill.getAttribute('data-name');
+    currentHiddenSelectInput.querySelectorAll('option').forEach((opt) => {
+      opt.selected = false;
+    });
+    const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
+    if (optionToSelect) {
+      optionToSelect.selected = true;
+      currentHiddenSelectInput.value = pillName;
+    } else {
+      currentHiddenSelectInput.value = pillName;
+    }
+    const allInputs = document.querySelectorAll(`[name="${currentHiddenSelectInputName}"]`);
+    allInputs.forEach((input) => {
+      if (input.closest('#pdpx-drawer')) {
+        return;
+      }
+      input.value = pillName;
+      if (input.tagName === 'SELECT') {
+        input.querySelectorAll('option').forEach((opt) => {
+          opt.selected = false;
+        });
+        const selectOption = input.querySelector(`option[value="${pillName}"]`);
+        if (selectOption) {
+          selectOption.selected = true;
+        }
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          resolve();
+        });
+      });
+    });
+    await updateAllDynamicElements(currentProductId);
+  };
+  const createPillMouseEnterHandler = () => (e) => {
+    const btn = e.currentTarget;
+    const btnRect = btn.getBoundingClientRect();
+    const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
+    const containerRect = container.getBoundingClientRect();
+    const threshold = 150;
+    btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    if (btnRect.left - containerRect.left < threshold) {
+      btn.classList.add('tooltip-left-edge');
+    } else if (containerRect.right - btnRect.right < threshold) {
+      btn.classList.add('tooltip-right-edge');
+    }
+  };
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
-    const isSelected = customizationOptions[i].name === selectedPillOption;
+    const isSelected = customizationOptions[i].name === defaultValue;
     hiddenSelectInput.appendChild(option);
-    const pillContainer = createTag('button', { class: isSelected ? 'pdpx-pill-container selected' : 'pdpx-pill-container', type: 'button', 'data-name': customizationOptions[i].name });
+    const ariaChecked = isSelected ? 'true' : 'false';
+    const pillContainer = createTag('button', {
+      class: `pdpx-pill-container ${isSelected ? 'selected' : ''}`,
+      type: 'button',
+      'data-name': customizationOptions[i].name,
+      'data-title': customizationOptions[i].title,
+      role: 'radio',
+      'aria-label': customizationOptions[i].title,
+      'aria-checked': ariaChecked,
+    });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
-    const inputPillImage = createTag('img', { class: 'pdpx-pill-image', src: customizationOptions[i].thumbnail });
+    const inputPillImage = createTag('img', {
+      class: 'pdpx-pill-image',
+      src: customizationOptions[i].thumbnail,
+      width: '54',
+      height: '54',
+      alt: `${labelText}: ${customizationOptions[i].title}`,
+      decoding: 'async',
+      'aria-hidden': 'true',
+    });
     inputPillImageContainer.appendChild(inputPillImage);
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
-    const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title);
-    const inputPillOptionPrice = createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment);
-    inputPillTextContainer.appendChild(inputPillOptionName);
-    inputPillTextContainer.appendChild(inputPillOptionPrice);
-    pillContainer.appendChild(inputPillImageContainer);
-    pillContainer.appendChild(inputPillTextContainer);
+    inputPillTextContainer.append(
+      createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title),
+      createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment),
+    );
+    pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    pillContainer.addEventListener('click', async (element) => {
-      pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
-        pill.classList.remove('selected');
-      });
-      element.currentTarget.classList.toggle('selected');
-      hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
-    });
+    pillContainer.addEventListener('click', createPillClickHandler(hiddenSelectInput, pillSelectorOptionsContainer, productId, hiddenSelectInputName));
+    pillContainer.addEventListener('mouseenter', createPillMouseEnterHandler());
   }
-  hiddenSelectInput.value = selectedPillOption;
-  pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
-  pillSelectorContainer.appendChild(hiddenSelectInput);
+  hiddenSelectInput.value = defaultValue;
+  const selectedPill = pillSelectorOptionsContainer.querySelector(`.pdpx-pill-container[data-name="${defaultValue}"]`);
+  if (selectedPill) {
+    selectedPill.setAttribute('aria-current', 'true');
+    selectedPill.setAttribute('aria-checked', 'true');
+  }
+  // Cache DOM query after all pills are added
+  cachedAllPillContainers = pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
+  pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
   return pillSelectorContainer;
 }
 
@@ -101,7 +193,7 @@ export async function createBusinessCardInputs(container, productDetails, formDa
   const paperTypeSelectorContainer = await createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type', 'media', 'Compare Paper Types', productDetails, formDataObject?.media, 'paperType');
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
+  const quantitySelectorContainer = await createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
   container.append(
     paperTypeSelectorContainer,
     cornerStyleSelectorContainer,
@@ -113,17 +205,17 @@ export async function createBusinessCardInputs(container, productDetails, formDa
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
   const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails, formDataObject?.color, 'printingProcess');
-  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
-  const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
+  const quantitySelectorContainer = await createStandardSelector(productDetails.attributes.qty, 'Quantity', 'qty', productDetails, formDataObject, null);
+  const sizeSelectorContainer = await createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails, formDataObject, 'Size chart');
+
+  const pickerGroup = createTag('div', { class: 'picker-group' });
+  pickerGroup.append(quantitySelectorContainer, sizeSelectorContainer);
+
   container.append(
     styleSelectorContainer,
     colorSelectorContainer,
-    quantitySelectorContainer,
-    sizeSelectorContainer,
+    pickerGroup,
   );
-}
-function createDefaultInputs(container) {
-  return container;
 }
 
 export default async function createCustomizationInputs(productDetails, formDataObject = {}) {
@@ -134,10 +226,14 @@ export default async function createCustomizationInputs(productDetails, formData
     }
   }
   const customizationInputsContainer = createTag('div', { class: 'pdpx-customization-inputs-container', id: 'pdpx-customization-inputs-container' });
-  const customizationInputsForm = createTag('form', { class: 'pdpx-customization-inputs-form', id: 'pdpx-customization-inputs-form' });
+  const attributeKeys = Object.keys(productDetails.attributes || {}).sort().join(',');
+  const customizationInputsForm = createTag('form', {
+    class: 'pdpx-customization-inputs-form',
+    id: 'pdpx-customization-inputs-form',
+    'data-attribute-keys': attributeKeys,
+  });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
-    ['default', createDefaultInputs],
     ['zazzle_businesscard', createBusinessCardInputs],
     ['zazzle_shirt', createTShirtInputs],
   ]);
