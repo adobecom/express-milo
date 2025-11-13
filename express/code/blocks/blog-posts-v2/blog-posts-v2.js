@@ -366,43 +366,23 @@ export default async function decorate(block) {
   });
 
   /* localize view all */
-  // Look for View All link in multiple possible locations
-  const possibleSelectors = [
-    '.content a',  // Original selector
-    ':scope > div > p > a',  // Common section structure
-    'p > a',  // Simple paragraph link
-  ];
+  // Test both keys to see which one works
+  const viewAllHyphen = await replaceKey('view-all', getConfig());
+  const viewAllSpace = await replaceKey('view all', getConfig());
   
-  let viewAllLink = null;
-  for (const selector of possibleSelectors) {
-    const found = block?.parentElement?.querySelector(selector);
-    if (found) {
-      const linkText = found.textContent.toLowerCase();
-      // Check for placeholder tokens or "view" text
-      if (linkText.includes('view') || linkText.includes('((')) {
-        viewAllLink = found;
-        break;
-      }
-    }
-  }
+  console.log('[blog-posts-v2] replaceKey("view-all") returns:', viewAllHyphen);
+  console.log('[blog-posts-v2] replaceKey("view all") returns:', viewAllSpace);
   
-  if (viewAllLink) {
-    const linkText = viewAllLink.textContent;
-    // Check if it's a placeholder token like ((view-more)) or ((view-all))
-    const placeholderMatch = linkText.match(/\(\((.*?)\)\)/);
-    
-    if (placeholderMatch) {
-      // Replace the placeholder token with its translation
-      const placeholderKey = placeholderMatch[1];
-      const translation = await replaceKey(placeholderKey, getConfig());
-      if (translation) {
-        viewAllLink.textContent = `${translation.charAt(0).toUpperCase()}${translation.slice(1)}`;
-      }
-    } else {
-      // No placeholder token, try translating based on common keys
-      const viewAll = await replaceKey('view-all', getConfig()) || await replaceKey('view all', getConfig()) || 'view all';
-      viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
-    }
+  const viewAll = viewAllSpace || viewAllHyphen || 'view all';
+  console.log('[blog-posts-v2] Final viewAll value:', viewAll);
+  
+  const viewAllLink = block?.parentElement?.querySelector('.content a');
+  console.log('[blog-posts-v2] viewAllLink found:', viewAllLink);
+  console.log('[blog-posts-v2] viewAllLink text:', viewAllLink?.textContent);
+  
+  if (viewAll && viewAllLink) {
+    viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+    console.log('[blog-posts-v2] ✅ Updated link text to:', viewAllLink.textContent);
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
