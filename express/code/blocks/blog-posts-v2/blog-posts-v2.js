@@ -366,23 +366,20 @@ export default async function decorate(block) {
   });
 
   /* localize view all */
-  // Test both keys to see which one works
-  const viewAllHyphen = await replaceKey('view-all', getConfig());
-  const viewAllSpace = await replaceKey('view all', getConfig());
-  
-  console.log('[blog-posts-v2] replaceKey("view-all") returns:', viewAllHyphen);
-  console.log('[blog-posts-v2] replaceKey("view all") returns:', viewAllSpace);
-  
-  const viewAll = viewAllSpace || viewAllHyphen || 'view all';
-  console.log('[blog-posts-v2] Final viewAll value:', viewAll);
-  
   const viewAllLink = block?.parentElement?.querySelector('.content a');
-  console.log('[blog-posts-v2] viewAllLink found:', viewAllLink);
-  console.log('[blog-posts-v2] viewAllLink text:', viewAllLink?.textContent);
+  console.log('[blog-posts-v2] 1. Link BEFORE our code runs:', viewAllLink?.textContent);
+  
+  const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
+  console.log('[blog-posts-v2] 2. replaceKey("view-all") returned:', viewAll);
+  console.log('[blog-posts-v2] 3. viewAllLink exists?', !!viewAllLink);
   
   if (viewAll && viewAllLink) {
-    viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
-    console.log('[blog-posts-v2] ✅ Updated link text to:', viewAllLink.textContent);
+    const newText = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+    console.log('[blog-posts-v2] 4. Will replace with:', newText);
+    viewAllLink.textContent = newText;
+    console.log('[blog-posts-v2] 5. Link AFTER our code runs:', viewAllLink.textContent);
+  } else {
+    console.log('[blog-posts-v2] 4. NOT replacing (viewAll:', viewAll, 'viewAllLink:', !!viewAllLink, ')');
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
