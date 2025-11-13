@@ -6,4 +6,3 @@ module.exports = class BlogPostsV2Block {
     this.blogCards = this.block.locator('.blog-cards');
   }
 };
-

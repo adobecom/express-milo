@@ -14,13 +14,13 @@ test.describe('BlogPostsV2Block Test Suite', () => {
 
       await test.step('step-1: Navigate to page', async () => {
         const response = await page.goto(testUrl);
-        
+
         // Graceful degradation: Skip test if page is 404
         if (response && response.status() === 404) {
           test.skip(true, `Test page not found (404): ${testUrl}`);
           return;
         }
-        
+
         await page.waitForLoadState('domcontentloaded');
         await expect(page).toHaveURL(testUrl);
       });
@@ -33,28 +33,27 @@ test.describe('BlogPostsV2Block Test Suite', () => {
         if (sem.interactives) {
           for (const iEl of sem.interactives) {
             const locator = page.locator(iEl.selector).nth(iEl.nth || 0);
-            
+
             // Graceful degradation: Check if element exists before asserting
             const elementCount = await locator.count();
             if (elementCount === 0) {
               console.warn(`[Warning] Element not found: ${iEl.selector}`);
-              continue;
-            }
-            
-            await expect(locator).toBeVisible({ timeout: 8000 });
-            
-            if (iEl.text) {
-              await expect(locator).toContainText(iEl.text);
-            }
-            
-            if (iEl.type === 'link' && iEl.href) {
-              const href = await locator.getAttribute('href');
-              if (href && /^(tel:|mailto:|sms:|ftp:|[+]?[\d])/i.test(iEl.href)) {
-                await expect(href).toBe(iEl.href);
-              } else if (href) {
-                const expectedPath = new URL(iEl.href, 'https://dummy.base').pathname;
-                const actualPath = new URL(href, 'https://dummy.base').pathname;
-                await expect(actualPath).toBe(expectedPath);
+            } else {
+              await expect(locator).toBeVisible({ timeout: 8000 });
+
+              if (iEl.text) {
+                await expect(locator).toContainText(iEl.text);
+              }
+
+              if (iEl.type === 'link' && iEl.href) {
+                const href = await locator.getAttribute('href');
+                if (href && /^(tel:|mailto:|sms:|ftp:|[+]?[\d])/i.test(iEl.href)) {
+                  await expect(href).toBe(iEl.href);
+                } else if (href) {
+                  const expectedPath = new URL(iEl.href, 'https://dummy.base').pathname;
+                  const actualPath = new URL(href, 'https://dummy.base').pathname;
+                  await expect(actualPath).toBe(expectedPath);
+                }
               }
             }
           }
@@ -71,4 +70,3 @@ test.describe('BlogPostsV2Block Test Suite', () => {
     });
   });
 });
-
