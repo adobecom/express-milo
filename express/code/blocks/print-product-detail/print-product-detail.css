@@ -141,17 +141,34 @@
   .pdpx-star-ratings {
     display: flex;
     align-self: anchor-center;
+    gap: 2px;
+    .pdpx-star-icon {
+      width: 17px;
+      height: 17px;
+      display: block;
+      flex-shrink: 0;
+    }
+    .pdpx-star-icon-wrapper {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
   }
   .pdpx-ratings-number {
+    font-size: 14px;
     font-weight: 700;
+    line-height: 1.5;
+    color: var(--body-color);
   }
   .pdpx-ratings-amount {
     background: transparent;
     font-size: 14px;
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--body-color);
     border: none;
     padding: 0;
     margin: 0;
-    text-decoration-line: underline;
     cursor: default;
   }
 }

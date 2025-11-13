@@ -88,9 +88,58 @@ async function updatePageWithProductPrice(productDetails) {
   priceInfoContainer.querySelector('#pdpx-savings-text').textContent = productDetails.discountString;
 }
 
+function createS2StarIcon(starType) {
+  let iconSrc;
+  if (starType === 'star') {
+    iconSrc = '/express/code/icons/s2-star-filled.svg';
+  } else if (starType === 'star-empty') {
+    iconSrc = '/express/code/icons/s2-star-empty.svg';
+  } else if (starType === 'star-half') {
+    // For half stars, create a wrapper with both filled and empty halves
+    const wrapper = document.createElement('div');
+    wrapper.className = 'pdpx-star-icon-wrapper pdpx-star-icon-half-wrapper';
+    wrapper.style.cssText = 'position: relative; width: 17px; height: 17px; overflow: hidden;';
+    
+    const filledHalf = document.createElement('img');
+    filledHalf.className = 'pdpx-star-icon pdpx-star-icon-star';
+    filledHalf.src = '/express/code/icons/s2-star-filled.svg';
+    filledHalf.width = 17;
+    filledHalf.height = 17;
+    filledHalf.alt = '';
+    filledHalf.setAttribute('aria-hidden', 'true');
+    filledHalf.style.cssText = 'position: absolute; left: 0; top: 0; clip-path: inset(0 50% 0 0); -webkit-clip-path: inset(0 50% 0 0);';
+    
+    const emptyHalf = document.createElement('img');
+    emptyHalf.className = 'pdpx-star-icon pdpx-star-icon-star-empty';
+    emptyHalf.src = '/express/code/icons/s2-star-empty.svg';
+    emptyHalf.width = 17;
+    emptyHalf.height = 17;
+    emptyHalf.alt = '';
+    emptyHalf.setAttribute('aria-hidden', 'true');
+    emptyHalf.style.cssText = 'position: absolute; left: 0; top: 0; clip-path: inset(0 0 0 50%); -webkit-clip-path: inset(0 0 0 50%);';
+    
+    wrapper.appendChild(filledHalf);
+    wrapper.appendChild(emptyHalf);
+    return wrapper;
+  } else {
+    // Fallback to old system for other types
+    return getIconElementDeprecated(starType);
+  }
+
+  const iconImg = document.createElement('img');
+  iconImg.className = `pdpx-star-icon pdpx-star-icon-${starType}`;
+  iconImg.src = iconSrc;
+  iconImg.width = 17;
+  iconImg.height = 17;
+  iconImg.alt = '';
+  iconImg.setAttribute('aria-hidden', 'true');
+
+  return iconImg;
+}
+
 function populateStars(count, starType, parent) {
   for (let i = 0; i < count; i += 1) {
-    parent.appendChild(getIconElementDeprecated(starType));
+    parent.appendChild(createS2StarIcon(starType));
   }
 }
 
