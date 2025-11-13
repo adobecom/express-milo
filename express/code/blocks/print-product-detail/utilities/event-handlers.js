@@ -5,6 +5,7 @@ import createCustomizationInputs from '../createComponents/customizationInputs/c
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import { createCheckoutButtonHref } from '../createComponents/createProductDetailsSection.js';
 import { createPriceLockup } from '../createComponents/createProductInfoHeadingSection.js';
+import { createProductThumbnailCarousel } from '../createComponents/createProductImagesContainer.js';
 
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
@@ -54,21 +55,18 @@ async function updateProductImages(productDetails) {
     heroImg.dataset.imageType = imageType;
   }
 
-  // Update all thumbnails with new data
-  const thumbnailButtons = document.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
-  thumbnailButtons.forEach((button) => {
-    const btnImageType = button.dataset.imageType;
-    if (productDetails.realViews[btnImageType]) {
-      const img = button.querySelector('.pdpx-image-thumbnail-carousel-item-image');
-      if (img) {
-        const newThumbnailSrc = convertImageSize(productDetails.realViews[btnImageType], '100');
-        // Always update to ensure images refresh
-        img.src = newThumbnailSrc;
-        img.setAttribute('data-image-type', btnImageType);
-      }
-      button.removeAttribute('data-skeleton');
-    }
-  });
+  // Replace entire carousel to handle adding/removing items
+  const imageThumbnailCarouselWrapper = document.getElementById('pdpx-image-thumbnail-carousel-wrapper');
+  if (imageThumbnailCarouselWrapper) {
+    const newImageThumbnailCarouselWrapper = await createProductThumbnailCarousel(
+      productDetails.realViews,
+      imageType,
+      heroImg,
+    );
+    const carouselItems = newImageThumbnailCarouselWrapper.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
+    carouselItems.forEach((item) => item.removeAttribute('data-skeleton'));
+    imageThumbnailCarouselWrapper.replaceWith(newImageThumbnailCarouselWrapper);
+  }
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
