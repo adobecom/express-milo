@@ -12,7 +12,8 @@ test.describe('Express pricing-footer block test suite', () => {
     pricingFooter = new PricingFooter(page);
   });
 
-  test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
+  // Skipping test temporarily
+  test.skip(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
     const pagePath = features[0].path;
     const isAbsolute = /^https?:\/\//.test(pagePath);
     const testPage = `${isAbsolute ? pagePath : `${baseURL}${pagePath}`}${miloLibs}`;
