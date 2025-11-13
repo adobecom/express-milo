@@ -82,8 +82,17 @@ async function updateProductDeliveryEstimate(productDetails) {
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
+  const oldContainer = document.getElementById('pdpx-customization-inputs-container');
+  const oldPickers = oldContainer?.querySelectorAll('.picker-container');
+  if (oldPickers) {
+    oldPickers.forEach((picker) => {
+      if (picker.destroy && typeof picker.destroy === 'function') {
+        picker.destroy();
+      }
+    });
+  }
   const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
-  document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
+  oldContainer.replaceWith(newCustomizationInputs);
 }
 
 async function updatePillTextValues(productDetails) {
