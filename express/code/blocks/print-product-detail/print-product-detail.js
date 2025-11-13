@@ -66,20 +66,19 @@ async function updatePageWithProductDetails(productDetails, globalContainer) {
   checkoutButton.href = checkoutButtonHref;
 }
 
-function updatePageWithProductImages(productDetails) {
+async function updatePageWithProductImages(productDetails) {
   const productImagesContainer = document.getElementById('pdpx-product-images-container');
-  const imageThumbnailCarouselContainer = productImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container');
+  const imageThumbnailCarouselWrapper = productImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-wrapper');
   const heroProductImage = productImagesContainer.querySelector('#pdpx-product-hero-image');
-  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
+  const newImageThumbnailCarouselWrapper = await createProductThumbnailCarousel(
     productDetails.realViews,
     'Front',
     heroProductImage,
   );
-  imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
-  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
-  newImageThumbnailCarouselContainer
-    .removeAttribute('data-skeleton');
-  return imageThumbnailCarouselContainer;
+  imageThumbnailCarouselWrapper.replaceWith(newImageThumbnailCarouselWrapper);
+  const carouselItems = newImageThumbnailCarouselWrapper.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
+  carouselItems.forEach((item) => item.removeAttribute('data-skeleton'));
+  return newImageThumbnailCarouselWrapper;
 }
 
 async function updatePageWithProductPrice(productDetails) {
@@ -148,8 +147,8 @@ function updatePageWithUIStrings(productDetails) {
   document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
   const compareValueTooltipContent = document.getElementById('pdpx-info-tooltip-content');
   compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-title').textContent = productDetails.compareValueTooltipTitle;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').textContent = productDetails.compareValueTooltipDescription1;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').textContent = productDetails.compareValueTooltipDescription2;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').innerHTML = productDetails.compareValueTooltipDescription1;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').innerHTML = productDetails.compareValueTooltipDescription2;
 }
 
 export default async function decorate(block) {
@@ -190,9 +189,9 @@ export default async function decorate(block) {
     if (breadcrumbsLd) upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbsLd);
     const productId = productDetailsResponse.product.id;
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
-    productRenditions.then((productRenditionsResponse) => {
+    productRenditions.then(async (productRenditionsResponse) => {
       dataObject = updateDataObjectProductRenditions(dataObject, productRenditionsResponse);
-      updatePageWithProductImages(dataObject);
+      await updatePageWithProductImages(dataObject);
     });
     const quantity = 1;
     const productPrice = fetchAPIData(productId, null, 'getproductpricing');

@@ -15,21 +15,19 @@ async function createStandardSelector(
   formDataObject,
   CTAText,
 ) {
-  const defaultValue = formDataObject[hiddenSelectInputName];
-  const productId = productDetails.id;
   const options = customizationOptions.map((option) => ({
     value: option.name,
-    text: option.title,
+    label: option.title,
   }));
+  const defaultValue = formDataObject[hiddenSelectInputName] || customizationOptions[0].name;
   const pickerContainer = await createPicker({
-    id: `pdpx-standard-selector-${hiddenSelectInputName}`,
     name: hiddenSelectInputName,
     label: labelText,
     labelPosition: 'side',
     options,
     defaultValue,
     onChange: () => {
-      updateAllDynamicElements(productId);
+      updateAllDynamicElements(productDetails.id);
     },
   });
   let isTriBlend = false;
@@ -67,17 +65,114 @@ function createPillOptionsSelector(
     value: defaultValue,
     'aria-hidden': 'true',
   });
+  // Cache DOM queries to avoid repeated querySelectorAll calls
+  let cachedAllPillContainers = null;
+  // Create click handler function outside loop to avoid no-loop-func error
+  // eslint-disable-next-line max-len
+  const createPillClickHandler = (currentHiddenSelectInput, currentPillSelectorOptionsContainer, currentProductId, currentHiddenSelectInputName) => async (element) => {
+    // Cache for inputs - will be set inside handler
+    let cachedAllInputs = null;
+    // Use cached query or query once and cache
+    if (!cachedAllPillContainers) {
+      cachedAllPillContainers = currentPillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
+    }
+    const clickedPill = element.currentTarget;
+    cachedAllPillContainers.forEach((p) => {
+      p.classList.remove('selected');
+      p.removeAttribute('aria-current');
+      p.setAttribute('aria-checked', 'false');
+      // Remove tooltip classes instead of dispatching expensive mouseleave event
+      p.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    });
+    clickedPill.classList.add('selected');
+    clickedPill.setAttribute('aria-current', 'true');
+    clickedPill.setAttribute('aria-checked', 'true');
+    // Recalculate tooltip positioning for the selected pill
+    const clickedRect = clickedPill.getBoundingClientRect();
+    const clickedContainer = clickedPill.closest('.pdpx-customization-inputs-container') || document.body;
+    const clickedContainerRect = clickedContainer.getBoundingClientRect();
+    const threshold = 150;
+    clickedPill.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    if (clickedRect.left - clickedContainerRect.left < threshold) {
+      clickedPill.classList.add('tooltip-left-edge');
+    } else if (clickedContainerRect.right - clickedRect.right < threshold) {
+      clickedPill.classList.add('tooltip-right-edge');
+    }
+    const pillName = clickedPill.getAttribute('data-name');
+    // Update the hidden input in THIS selector container first
+    // Deselect all options first
+    currentHiddenSelectInput.querySelectorAll('option').forEach((opt) => {
+      opt.selected = false;
+    });
+    // Then select the correct option
+    const optionToSelect = currentHiddenSelectInput.querySelector(`option[value="${pillName}"]`);
+    if (optionToSelect) {
+      optionToSelect.selected = true;
+      currentHiddenSelectInput.value = pillName;
+    } else {
+      // Fallback: set value directly if option doesn't exist (shouldn't happen)
+      currentHiddenSelectInput.value = pillName;
+    }
+    // Then update all other inputs with the same name (for form consistency)
+    const allInputs = document.querySelectorAll(`[name="${currentHiddenSelectInputName}"]`);
+    allInputs.forEach((input) => {
+      // Skip drawer inputs
+      if (input.closest('#pdpx-drawer')) {
+        return;
+      }
+      input.value = pillName;
+      // Also update option selection for select elements
+      if (input.tagName === 'SELECT') {
+        // Deselect all options first
+        input.querySelectorAll('option').forEach((opt) => {
+          opt.selected = false;
+        });
+        // Then select the correct option
+        const selectOption = input.querySelector(`option[value="${pillName}"]`);
+        if (selectOption) {
+          selectOption.selected = true;
+        }
+        // Force the select to reflect the change
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+    // Use requestAnimationFrame to ensure DOM updates are complete before reading form
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          resolve();
+        });
+      });
+    });
+    await updateAllDynamicElements(currentProductId);
+  };
+  // Create mouseenter handler function outside loop
+  const createPillMouseEnterHandler = () => (e) => {
+    const btn = e.currentTarget;
+    const btnRect = btn.getBoundingClientRect();
+    const container = btn.closest('.pdpx-customization-inputs-container') || document.body;
+    const containerRect = container.getBoundingClientRect();
+    const threshold = 150;
+    btn.classList.remove('tooltip-left-edge', 'tooltip-right-edge');
+    if (btnRect.left - containerRect.left < threshold) {
+      btn.classList.add('tooltip-left-edge');
+    } else if (containerRect.right - btnRect.right < threshold) {
+      btn.classList.add('tooltip-right-edge');
+    }
+  };
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     const isSelected = customizationOptions[i].name === defaultValue;
     hiddenSelectInput.appendChild(option);
+    const ariaChecked = isSelected ? 'true' : 'false';
     const pillContainer = createTag('button', {
       class: `pdpx-pill-container ${isSelected ? 'selected' : ''}`,
       type: 'button',
       'data-name': customizationOptions[i].name,
+      'data-title': customizationOptions[i].title,
       role: 'radio',
       'aria-label': customizationOptions[i].title,
-      'aria-checked': isSelected ? 'true' : 'false',
+      'aria-checked': ariaChecked,
     });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
     const inputPillImage = createTag('img', {
@@ -97,12 +192,17 @@ function createPillOptionsSelector(
     );
     pillContainer.append(inputPillImageContainer, inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    pillContainer.addEventListener('click', async (element) => {
-      hiddenSelectInput.value = element.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
-    });
+    pillContainer.addEventListener('click', createPillClickHandler(hiddenSelectInput, pillSelectorOptionsContainer, productId, hiddenSelectInputName));
+    pillContainer.addEventListener('mouseenter', createPillMouseEnterHandler());
   }
   hiddenSelectInput.value = defaultValue;
+  const selectedPill = pillSelectorOptionsContainer.querySelector(`.pdpx-pill-container[data-name="${defaultValue}"]`);
+  if (selectedPill) {
+    selectedPill.setAttribute('aria-current', 'true');
+    selectedPill.setAttribute('aria-checked', 'true');
+  }
+  // Cache DOM query after all pills are added
+  cachedAllPillContainers = pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container');
   pillSelectorContainer.append(pillSelectorOptionsContainer, hiddenSelectInput);
   return pillSelectorContainer;
 }
@@ -135,9 +235,6 @@ export async function createTShirtInputs(container, productDetails, formDataObje
     pickerGroup,
   );
 }
-function createDefaultInputs(container) {
-  return container;
-}
 
 export default async function createCustomizationInputs(productDetails, formDataObject = {}) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
@@ -147,10 +244,14 @@ export default async function createCustomizationInputs(productDetails, formData
     }
   }
   const customizationInputsContainer = createTag('div', { class: 'pdpx-customization-inputs-container', id: 'pdpx-customization-inputs-container' });
-  const customizationInputsForm = createTag('form', { class: 'pdpx-customization-inputs-form', id: 'pdpx-customization-inputs-form' });
+  const attributeKeys = Object.keys(productDetails.attributes || {}).sort().join(',');
+  const customizationInputsForm = createTag('form', {
+    class: 'pdpx-customization-inputs-form',
+    id: 'pdpx-customization-inputs-form',
+    'data-attribute-keys': attributeKeys,
+  });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
-    ['default', createDefaultInputs],
     ['zazzle_businesscard', createBusinessCardInputs],
     ['zazzle_shirt', createTShirtInputs],
   ]);

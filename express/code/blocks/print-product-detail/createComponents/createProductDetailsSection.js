@@ -28,7 +28,8 @@ export default async function createProductDetailsSection(productDescriptions) {
     qty: null,
   };
   BlockMediator.subscribe('product:updated', (e) => {
-    const { attributes, formData } = e.newValue;
+    const { attributes, formData } = e.newValue || {};
+    if (!attributes || !formData) return;
     const oldFormData = e.oldValue?.formData || {};
     let changedField = null;
     Object.keys(formData).forEach((key) => {

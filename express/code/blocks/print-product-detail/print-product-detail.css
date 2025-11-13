@@ -26,17 +26,20 @@
 }
 
 .pdpx-global-container {
-  max-width: 1440px;
+  max-width: var(--block-wd-max-width);
   margin: 0 auto;
-  padding: var(--spacing-300);
+  padding: var(--spacing-400);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-300);
   align-items: flex-start;
 }
 .pdpx-product-info-section-container {
-  display: contents;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  order: 3;
+
   .pdpx-product-info-section {
     width: 100%;
     order: 3;
@@ -54,7 +57,7 @@
 }
 
 .pdpx-customization-inputs-container {
-  padding-bottom: 24px;
+  padding-bottom: var(--spacing-400);
 }
 
 .pdpx-product-title {
@@ -92,9 +95,7 @@
       cursor: pointer;
       width: max-content;
       .pdpx-compare-price-info-icon {
-        width: 12px;
-        height: 12px;
-        aspect-ratio: 1/1;
+        width: var(--spacing-200);
       }
     }
     .pdpx-info-tooltip-content {
@@ -132,40 +133,26 @@
 .pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
+  align-items: baseline;
   gap: var(--spacing-75);
   .pdpx-product-info-header-ratings-star {
     width: 17px;
-    height: 17px;
-    aspect-ratio: 1/1;
   }
   .pdpx-star-ratings {
     display: flex;
-    align-items: center;
-    gap: var(--figma-spacing-50);
-  }
-  .pdpx-star-ratings svg {
-    width: 17px;
-    height: 17px;
-    flex-shrink: 0;
-  }
-  .pdpx-star-ratings .icon-star {
-    color: var(--color-black);
-  }
-  .pdpx-star-ratings .icon-star-half {
-    color: var(--color-black);
-  }
-  .pdpx-star-ratings .icon-star-empty {
-    color: var(--color-dark-gray);
+    align-self: anchor-center;
   }
   .pdpx-ratings-number {
-    font-size: var(--body-font-size-s);
     font-weight: 700;
   }
   .pdpx-ratings-amount {
-    font-size: var(--body-font-size-s);
-    font-weight: 400;
-    line-height: 20px;
-    color: var(--color-dark-gray);
+    background: transparent;
+    font-size: 14px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-decoration-line: underline;
+    cursor: default;
   }
 }
 .pdpx-delivery-estimate-pill {
@@ -178,11 +165,6 @@
   padding: var(--spacing-100);
   gap: var(--spacing-75);
   margin-bottom: 0;
-  .pdpx-delivery-estimate-pill-icon {
-    width: 32px;
-    height: 17px;
-    aspect-ratio: 32/17;
-  }
 }
 /* END HEADER SECTION CONTENT */
 
@@ -191,44 +173,134 @@
   width: 100%;
   order: 2;
   .pdpx-product-hero-image-container {
-    margin-bottom: var(--spacing-200);
+    margin-bottom: var(--spacing-100);
     aspect-ratio: 1/1;
-    border-radius: 12px;
+    border-radius: var(--spacing-200);
     overflow: hidden;
     object-fit: contain;
     object-position: center;
     .pdpx-product-hero-image {
       width: 100%;
-      border-radius: 12px;
+      border-radius: var(--spacing-200);
     }
   }
-  .pdpx-image-thumbnail-carousel-container {
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
-    gap: var(--spacing-100);
-    .pdpx-image-thumbnail-carousel-item {
-      border-radius: 8px;
+  .pdpx-image-thumbnail-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    .simple-carousel-container {
+      position: relative;
+      width: 100%;
       overflow: hidden;
-      flex-shrink: 0;
-      width: 76px;
-      height: 76px;
-      border: 1px solid transparent;
-      background-color: transparent;
+    }
+    .simple-carousel-platform {
+      display: flex;
+      gap: var(--spacing-75);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      width: 100%;
+    }
+    .simple-carousel-platform::-webkit-scrollbar {
+      display: none;
+    }
+    .simple-carousel-fader-left,
+    .simple-carousel-fader-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      width: 88px;
+    }
+    .simple-carousel-fader-left {
+      left: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      justify-content: flex-start;
+      padding-left: 0;
+    }
+    .simple-carousel-fader-right {
+      right: 0;
+      background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      justify-content: flex-end;
+      padding-right: var(--spacing-100);
+    }
+    .simple-carousel-fader-left.arrow-hidden,
+    .simple-carousel-fader-right.arrow-hidden {
+      display: none;
+    }
+    .simple-carousel-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--spacing-500);
+      height: var(--spacing-500);
       padding: 0;
+      margin: 0;
+      border: none;
+      background: var(--color-white);
+      border-radius: 50%;
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
       cursor: pointer;
-      .pdpx-image-thumbnail-carousel-item-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        aspect-ratio: 1/1;
-      }
+      transition: background 0.2s ease;
+      pointer-events: auto;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: 1;
+      appearance: none;
+      -webkit-appearance: none;
+      text-decoration: none;
+      overflow: visible;
     }
-    .pdpx-image-thumbnail-carousel-item.selected {
-      border: 1px solid var(--color-background-accent-default);
+    .simple-carousel-arrow:hover {
+      background: var(--color-gray-100);
     }
+    .simple-carousel-arrow:focus {
+      outline: 2px solid var(--color-background-accent-default);
+      outline-offset: 2px;
+    }
+    .simple-carousel-arrow::before {
+      content: '';
+      width: var(--spacing-100);
+      height: var(--spacing-100);
+      border-top: 2.5px solid var(--color-black);
+      border-right: 2.5px solid var(--color-black);
+    }
+    .simple-carousel-arrow-left::before {
+      transform: rotate(-135deg);
+      margin-left: 3px;
+    }
+    .simple-carousel-arrow-right::before {
+      transform: rotate(45deg);
+      margin-right: 3px;
+    }
+  }
+  .pdpx-image-thumbnail-carousel-item {
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    width: var(--spacing-700);
+    height: var(--spacing-700);
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  .pdpx-image-thumbnail-carousel-item:hover {
+    border-color: var(--color-gray-300);
+  }
+  .pdpx-image-thumbnail-carousel-item.selected {
+    border: 1px solid var(--color-background-accent-default);
+  }
+  .pdpx-image-thumbnail-carousel-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 /* END PRODUCT IMAGES SECTION CONTENT */
@@ -280,7 +352,6 @@
 }
 .pdpx-checkout-button-subhead-image {
   margin-bottom: 1px;
-  aspect-ratio: 123/14;
 }
 main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   white-space: nowrap;
@@ -291,11 +362,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-checkout-button-subhead-text {
   text-align: right;
 }
-.pdpx-checkout-button-icon {
-  aspect-ratio: 1/1;
-  width: 22px;
-  height: 22px;
-}
+
 .pdpx-checkout-button-disabled a.pdpx-checkout-button {
   background-color: var(--color-dark-gray);
   border-radius: 10px;
@@ -323,9 +390,6 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
     gap: var(--spacing-100);
     width: 50%;
     justify-content: center;
-    .pdpx-assurance-lockup-item-text {
-      white-space: nowrap;
-    }
   }
 }
 /* END CHECKOUT BUTTON */
@@ -333,6 +397,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 /* PILL SELECTOR */
 .pdpx-pill-selector-container {
   margin-bottom: var(--spacing-400);
+  overflow: visible;
   .pdpx-pill-selector-label-container {
     display: flex;
     flex-direction: row;
@@ -353,13 +418,15 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-100);
+  overflow: visible;
 }
 .pdpx-pill-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   min-width: 150px;
   background-color: white;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 8px;
   border: 1px solid var(--color-gray-300-variant);
   padding: 0px;
@@ -368,10 +435,14 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
-  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 8px 0 0 8px;
+  flex-shrink: 0;
 }
 .pdpx-pill-image {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .pdpx-pill-text-container {
   display: flex;
@@ -401,6 +472,7 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
 .pdpx-drawer-hero-image-container {
   aspect-ratio: 3 / 2;
   width: 100%;
+  min-height: 200px;
   overflow: hidden;
   flex-shrink: 0;
   margin-bottom: var(--spacing-400);
@@ -410,6 +482,8 @@ main .pdpx-checkout-button-subhead a.pdpx-checkout-button-subhead-link {
     object-fit: cover;
     object-position: bottom;
     border-radius: 8px;
+    display: block;
+    transition: opacity 0.2s ease;
   }
 }
 .pdpx-drawer-title-row {
@@ -545,12 +619,13 @@ main .section .pdpx-drawer-description {
 
 /* MINI PILL SELECTOR */
 .pdpx-mini-pill-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0px;
+  overflow: visible;
 }
 .pdpx-pill-selector-label-compare-link {
-  font-family: var(--body-font-family);
   background: transparent;
   font-size: 14px;
   font-weight: 500;
@@ -560,11 +635,133 @@ main .section .pdpx-drawer-description {
   text-decoration: underline;
   cursor: pointer;
 }
+.pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) {
+  position: relative;
+  width: 100%;
+}
+
+.pdpx-mini-pill-selector-options-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-75);
+  overflow: visible;
+}
+
+.pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) .pdpx-mini-pill-container {
+  position: relative;
+}
+
 .pdpx-mini-pill-selector-options-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: var(--spacing-75);
+  overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .pdpx-mini-pill-selector-options-wrapper:has(.simple-carousel-container) {
+    overflow: visible;
+    .simple-carousel-container {
+      position: relative;
+      width: 100%;
+      overflow: visible;
+    }
+    .simple-carousel-platform {
+      display: flex;
+      gap: var(--spacing-75);
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      flex-wrap: nowrap;
+    }
+    .simple-carousel-platform::-webkit-scrollbar {
+      display: none;
+    }
+    .simple-carousel-item .pdpx-mini-pill-image-container::after,
+    .simple-carousel-item .pdpx-mini-pill-image-container::before {
+      display: none;
+    }
+    .simple-carousel-fader-left,
+    .simple-carousel-fader-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      width: 64px;
+    }
+    .simple-carousel-fader-left.arrow-hidden,
+    .simple-carousel-fader-right.arrow-hidden {
+      display: none;
+    }
+    .simple-carousel-fader-left {
+      left: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      justify-content: flex-start;
+    }
+    .simple-carousel-fader-right {
+      right: 0;
+      background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      justify-content: flex-end;
+      padding-right: var(--spacing-75);
+    }
+    .simple-carousel-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: var(--color-white);
+      border-radius: 50%;
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      transition: background 0.2s ease;
+      pointer-events: auto;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: 1;
+      appearance: none;
+      -webkit-appearance: none;
+      text-decoration: none;
+      overflow: visible;
+    }
+    .simple-carousel-arrow:hover {
+      background: var(--color-gray-100);
+    }
+    .simple-carousel-arrow:focus {
+      outline: 2px solid var(--color-background-accent-default);
+      outline-offset: 2px;
+    }
+    .simple-carousel-arrow::before {
+      content: '';
+      width: var(--spacing-100);
+      height: var(--spacing-100);
+      border-top: 2.5px solid var(--color-black);
+      border-right: 2.5px solid var(--color-black);
+    }
+    .simple-carousel-arrow-left::before {
+      transform: rotate(-135deg);
+      margin-left: 3px;
+    }
+    .simple-carousel-arrow-right::before {
+      transform: rotate(45deg);
+      margin-right: 3px;
+    }
+  }
+  .pdpx-mini-pill-selector-options-container {
+    flex-wrap: nowrap;
+  }
 }
 .pdpx-mini-pill-image-container {
   border-radius: 4px;
@@ -579,14 +776,17 @@ main .section .pdpx-drawer-description {
   line-height: 0;
   cursor: pointer;
   transition: var(--standard-transition-hover-out-border-color);
+  font-family: var(--body-font-family);
+  font-weight: 400;
+  font-size: 14px;
   .pdpx-mini-pill-image {
     border-radius: 4px;
-    aspect-ratio: 1/1;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
+    pointer-events: none;
   }
 }
 .pdpx-mini-pill-price {
@@ -599,7 +799,6 @@ main .section .pdpx-drawer-description {
   border-color: var(--color-black);
   transition: var(--standard-transition-hover-in-border-color);
 }
-/* TOOLTIP CONTENT */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
   position: absolute;
@@ -608,7 +807,7 @@ main .section .pdpx-drawer-description {
   left: 50%;
   bottom: 100%;
   transform: translate(-50%, -8px);
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   color: var(--color-white);
   border-radius: 6px;
   white-space: nowrap;
@@ -616,7 +815,17 @@ main .section .pdpx-drawer-description {
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
-  z-index: 1000;
+  z-index: 200;
+}
+.pdpx-mini-pill-image-container.tooltip-left-edge::after {
+  left: -1px;
+  right: auto;
+  transform: translate(0, -8px);
+}
+.pdpx-mini-pill-image-container.tooltip-right-edge::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, -8px);
 }
 .pdpx-mini-pill-options-section-container {
   margin-bottom: var(--spacing-400);
@@ -626,7 +835,6 @@ main .section .pdpx-drawer-description {
   margin-bottom: var(--spacing-100);
 }
 
-/* TOOLTIP ARROW */
 .pdpx-mini-pill-image-container::before {
   content: '';
   position: absolute;
@@ -635,19 +843,94 @@ main .section .pdpx-drawer-description {
   transform: translate(-50%, -4px) rotate(45deg);
   width: 8px;
   height: 8px;
-  background: var(--color-gray-800-variant);
+  background: var(--color-gray-800);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+  z-index: 199;
 }
-/* Show tooltip on hover */
+.pdpx-mini-pill-image-container.tooltip-left-edge::before {
+  left: 24px;
+  right: auto;
+  transform: translate(0, -4px) rotate(45deg);
+}
+.pdpx-mini-pill-image-container.tooltip-right-edge::before {
+  left: auto;
+  right: 24px;
+  transform: translate(0, -4px) rotate(45deg);
+}
 .pdpx-mini-pill-image-container:hover::after,
-.pdpx-mini-pill-image-container:hover::before {
+.pdpx-mini-pill-image-container:hover::before,
+.simple-carousel-item:hover .pdpx-mini-pill-image-container::after,
+.simple-carousel-item:hover .pdpx-mini-pill-image-container::before {
   opacity: 1;
   visibility: visible;
   transition: var(--standard-transition-hover-in-opacity);
 }
+
+.pdpx-pill-container::after {
+  content: attr(data-title);
+  position: absolute;
+  font-size: 14px;
+  padding: 18px 12px;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -8px);
+  background: var(--color-gray-800);
+  color: var(--color-white);
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
+  z-index: 200;
+}
+.pdpx-pill-container.tooltip-left-edge::after {
+  left: -1px;
+  right: auto;
+  transform: translate(0, -8px);
+}
+.pdpx-pill-container.tooltip-right-edge::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, -8px);
+}
+
+.pdpx-pill-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -4px) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--color-gray-800);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
+  z-index: 199;
+}
+.pdpx-pill-container.tooltip-left-edge::before {
+  left: 27px;
+  right: auto;
+  transform: translate(0, -4px) rotate(45deg);
+}
+.pdpx-pill-container.tooltip-right-edge::before {
+  left: auto;
+  right: 27px;
+  transform: translate(0, -4px) rotate(45deg);
+}
+
+.pdpx-pill-container:hover:not(.selected)::after,
+.pdpx-pill-container:hover:not(.selected)::before {
+  opacity: 1;
+  visibility: visible;
+  transition: var(--standard-transition-hover-in-opacity);
+}
+
 .pdpx-pill-container.selected,
 .pdpx-mini-pill-image-container.selected {
   border: 1px solid var(--color-background-accent-default);
@@ -677,7 +960,7 @@ main .section .pdpx-drawer-description {
 .pdpx-standard-selector-label {
   display: inline-block;
   color: var(--color-dark-gray);
-  margin-right: 12px;
+  margin-right: var(--spacing-200);
 }
 .pdpx-standard-selector {
   padding: var(--spacing-100);
@@ -781,6 +1064,7 @@ main .section .pdpx-drawer-description {
   display: flex;
   position: sticky;
   top: 0;
+  z-index: 1;
   justify-content: space-between;
   border-radius: 16px 16px 0 0;
   border-bottom: 1px solid var(--color-gray-325);
@@ -800,8 +1084,21 @@ main .section .pdpx-drawer-description {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: visible;
   scrollbar-width: thin;
+}
+.pdpx-drawer-body .pdpx-mini-pill-selector-options-wrapper,
+.pdpx-drawer-body .pdpx-mini-pill-selector-options-container,
+.pdpx-drawer-body .simple-carousel-container,
+.pdpx-drawer-body .simple-carousel-platform {
+  overflow: visible;
+}
+.pdpx-customization-inputs-container .simple-carousel-container {
+  overflow: visible;
+}
+.pdpx-customization-inputs-container .simple-carousel-platform {
+  overflow-y: visible;
 }
 .pdpx-curtain {
   z-index: 101;
@@ -816,6 +1113,7 @@ main .section .pdpx-drawer-description {
   display: none;
 }
 /*END DRAWER*/
+
 
 /* SIZE CHART */
 .pdpx-drawer-body--size-chart {
@@ -940,11 +1238,11 @@ main .section .pdpx-drawer-description {
 }
 /*END SIZE CHART*/
 
+
 /*TABLET*/
 @media (min-width: 600px) {
   .pdpx-global-container {
     flex-direction: row;
-    padding: var(--spacing-400);
   }
   .pdpx-product-images-container {
     order: 1;
@@ -1027,5 +1325,12 @@ main .section .pdpx-drawer-description {
   }
   .pdpx-assurance-lockup-container {
     flex-direction: row;
+  }
+  .pdpx-product-images-container .pdpx-product-hero-image-container {
+    margin-bottom: var(--spacing-200);
+  }
+  .pdpx-product-images-container .pdpx-image-thumbnail-carousel-item {
+    width: 76px;
+    height: 76px;
   }
 }
