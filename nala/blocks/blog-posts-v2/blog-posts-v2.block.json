@@ -61,7 +61,7 @@
     },
     {
       "tcid": "2",
-      "name": "@blog-posts-v2-view-all-hyphen-placeholder",
+      "name": "@blog-posts-v2-view-all-hyphen-placeholder-invalid",
       "selector": "div.blog-posts-v2",
       "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
       "data": {
@@ -71,7 +71,7 @@
               "type": "link",
               "selector": ".content a",
               "nth": 0,
-              "text": "Alle anzeigen",
+              "text": "((view-all))",
               "href": null,
               "ariaLabel": null,
               "rel": null,
@@ -83,8 +83,8 @@
       },
       "tags": [
         "@blog-posts-v2",
-        "@view-all",
-        "@placeholder-hyphen",
+        "@view-all-hyphen",
+        "@placeholder-invalid",
         "@german"
       ]
     },
