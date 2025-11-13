@@ -6,13 +6,12 @@ export default async function openDrawer(
   customizationOptions,
   labelText,
   hiddenSelectInputName,
-  CTALinkText,
   productDetails,
   defaultValue,
   drawerType,
 ) {
-  const curtain = document.querySelector('.pdp-curtain');
-  const drawer = document.querySelector('.drawer');
+  const curtain = document.querySelector('.pdpx-curtain');
+  const drawer = document.querySelector('#pdpx-drawer');
   drawer.innerHTML = '';
   if (drawerType === 'sizeChart') {
     await createDrawerContentSizeChart(productDetails, drawer);
@@ -23,7 +22,6 @@ export default async function openDrawer(
       customizationOptions,
       labelText,
       hiddenSelectInputName,
-      CTALinkText,
       productDetails,
       defaultValue,
       drawerType,
