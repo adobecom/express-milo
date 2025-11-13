@@ -369,8 +369,8 @@ export default async function decorate(block) {
   const viewAllLink = block?.parentElement?.querySelector('.content a');
   console.log('[blog-posts-v2] 1. Link BEFORE our code runs:', viewAllLink?.textContent);
   
-  const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
-  console.log('[blog-posts-v2] 2. replaceKey("view-all") returned:', viewAll);
+  const viewAll = await replaceKey('view all', getConfig()) || 'view all';
+  console.log('[blog-posts-v2] 2. replaceKey("view all") returned:', viewAll);
   console.log('[blog-posts-v2] 3. viewAllLink exists?', !!viewAllLink);
   
   if (viewAll && viewAllLink) {
