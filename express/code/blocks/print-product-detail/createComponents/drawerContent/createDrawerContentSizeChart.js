@@ -6,7 +6,7 @@ let createTag;
 export default async function createDrawerContentSizeChart(productDetails, drawerContainer) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const drawerHead = createDrawerHead('Printing Process');
-  const drawerBody = createTag('div', { class: 'drawer-body' });
+  const drawerBody = createTag('div', { class: 'pdpx-drawer-body' });
   const sizeChartContainer = createTag('div', { class: 'pdpx-size-chart-container drawer-body--size-chart' });
   sizeChartContainer.innerHTML = `<h2 class="size-chart-product-name">Bella+Canvas Tri-blend T-Shirt</h2><div class="size-chart-table-container"><div class="size-chart-tables"><div class="size-chart-table-section"><table class="size-chart-table">
     <thead>
