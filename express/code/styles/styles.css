@@ -111,10 +111,15 @@
   --block-wd-max-width: 1440px;
 
   /* Spacing */
+  --spacing-0: 0px;
+  --spacing-50: 2px;
+  --spacing-75: 4px;
+  --spacing-80: 6px;
   --spacing-100: 8px;
   --spacing-200: 12px;
   --spacing-250: 14px;
   --spacing-300: 16px;
+  --spacing-325: 18px;
   --spacing-350: 20px;
   --spacing-400: 24px;
   --spacing-500: 32px;
@@ -202,6 +207,7 @@
   --ax-detail-transform: uppercase;
 
   --color-dark-gray: #505050;
+  --color-error-red: #d7373f;
   --color-default-font: #131313;
   --color-light-gray-2: #e1e1e1;
 
@@ -1761,4 +1767,16 @@ main .section.zero-margin:not([data-padding='none']) .content:first-child {
 .ax-detail-s {
   font-size: var(--ax-detail-s-size);
   line-height: var(--ax-detail-s-lh);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-empty */
 /* eslint-disable no-continue */
+/* eslint-disable import/no-unresolved */
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
