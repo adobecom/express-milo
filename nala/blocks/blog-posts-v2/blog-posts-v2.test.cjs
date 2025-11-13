@@ -32,7 +32,7 @@ test.describe('BlogPostsV2Block Test Suite', () => {
         // Verify interactive elements (View All link)
         if (sem.interactives) {
           for (const iEl of sem.interactives) {
-            const locator = block.block.locator(iEl.selector).nth(iEl.nth || 0);
+            const locator = page.locator(iEl.selector).nth(iEl.nth || 0);
             
             // Graceful degradation: Check if element exists before asserting
             const elementCount = await locator.count();

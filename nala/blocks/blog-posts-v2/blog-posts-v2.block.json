@@ -11,7 +11,7 @@
           "interactives": [
             {
               "type": "link",
-              "selector": ".content a",
+              "selector": ".ax-blog-posts-container .content a",
               "nth": 0,
               "text": "Mehr anzeigen",
               "href": "/de/express/learn/blog",
