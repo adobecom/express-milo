@@ -100,7 +100,7 @@ export async function createCheckoutButton(productDetails) {
   const outOfRegion = !validRegions.includes(productDetails.region);
   const isMobile = detectMobile();
   let CTAText;
-  const CTATextMobile = ' Print available on desktop only.';
+  const CTATextMobile = 'Create in Adobe Express now, open on desktop to order print';
   const CTATextDesktop = 'Customize and print it';
   const CTATextOutOfRegion = 'Print with Adobe Express isn’t available yet in your region. Check back soon!';
   if (outOfRegion) {
@@ -149,25 +149,13 @@ export async function createCheckoutButton(productDetails) {
     checkoutButtonSubheadText,
   );
   if (buttonDisabled) {
+    debugger;
     const stickyPromoBarContent = createTag('div', {
       class: 'sticky-promo-bar rounded',
     });
     const stickyPromoBarTextContainer = createTag('div');
-    if (isMobile) {
-      const mobileCTA = document.createElement('a', {
-        rel: 'nofollow',
-        target: '_self',
-      });
-      mobileCTA.id = 'pdpx-checkout-button-mobile-cta';
-      mobileCTA.textContent = 'Start designing on mobile.';
-      mobileCTA.href = defaultURL;
-      mobileCTA.classList.add('quick-link');
-      mobileCTA.ref = 'nofollow';
-      stickyPromoBarTextContainer.appendChild(mobileCTA);
-      stickyPromoBarTextContainer.appendChild(CTATextContainer);
-    } else {
-      stickyPromoBarTextContainer.appendChild(CTATextContainer);
-    }
+
+    stickyPromoBarTextContainer.appendChild(CTATextContainer);
     stickyPromoBarContent.appendChild(stickyPromoBarTextContainer);
     await stickyPromoBar(stickyPromoBarContent);
     checkoutButtonContainer.appendChild(stickyPromoBarContent);
