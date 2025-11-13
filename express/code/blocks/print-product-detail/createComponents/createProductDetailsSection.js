@@ -100,7 +100,7 @@ export async function createCheckoutButton(productDetails) {
   const outOfRegion = !validRegions.includes(productDetails.region);
   const isMobile = detectMobile();
   let CTAText;
-  const CTATextMobile = 'Create in Adobe Express now, open on desktop to order print';
+  const CTATextMobile = "Print with Adobe Express isn't available on mobile. Open on desktop to get started.";
   const CTATextDesktop = 'Customize and print it';
   const CTATextOutOfRegion = 'Print with Adobe Express isn’t available yet in your region. Check back soon!';
   if (outOfRegion) {
@@ -149,7 +149,6 @@ export async function createCheckoutButton(productDetails) {
     checkoutButtonSubheadText,
   );
   if (buttonDisabled) {
-    debugger;
     const stickyPromoBarContent = createTag('div', {
       class: 'sticky-promo-bar rounded',
     });
