@@ -272,14 +272,18 @@ async function uploadAssetToStorage(file, quickAction, uploadStartTime) {
   // Log video upload success for analytics
   if (file.type.startsWith('video/')) {
     const uploadDuration = Date.now() - uploadStartTime;
-    window.lana?.log('Video upload successful', {
-      tags: 'frictionless-video-upload-success',
-      assetId: asset.assetId,
-      fileSize: file.size,
-      fileType: file.type,
-      quickAction,
-      uploadDuration,
-    });
+    window.lana?.log(
+      'Video upload successful '
+        + `id:${asset.assetId} `
+        + `size:${file.size} `
+        + `type:${file.type} `
+        + `quickAction:${quickAction} `
+        + `uploadDuration:${uploadDuration}`,
+      {
+        clientId: 'express',
+        tags: 'frictionless-video-upload-success',
+      },
+    );
   }
 
   return asset.assetId;
@@ -304,15 +308,19 @@ async function performStorageUpload(files, block, quickAction) {
     // Log video upload failure for analytics
     if (file && file.type.startsWith('video/')) {
       const uploadDuration = Date.now() - uploadStartTime;
-      window.lana?.log('Video upload failed', {
-        tags: 'frictionless-video-upload-failed',
-        fileSize: file.size,
-        fileType: file.type,
-        quickAction,
-        uploadDuration,
-        errorCode: error.code,
-        errorMessage: error.message,
-      });
+      window.lana?.log(
+        'Video upload failed '
+          + `size:${file.size} `
+          + `type:${file.type} `
+          + `quickAction:${quickAction} `
+          + `uploadDuration:${uploadDuration} `
+          + `errorCode:${error.code} `
+          + `errorMessage:${error.message}`,
+        {
+          clientId: 'express',
+          tags: 'frictionless-video-upload-failed',
+        },
+      );
     }
 
     // Clear upload state on failure
@@ -328,8 +336,10 @@ async function startAssetDecoding(file, controller) {
   return decodeWithTimeout(getAssetDimensions(file, {
     signal: controller.signal,
   }).catch((error) => {
-    window.lana?.log('Asset decode failed');
-    window.lana?.log(error);
+    window.lana?.log(
+      `Asset decode failed error:${error.message || error}`,
+      { clientId: 'express', tags: 'frictionless-asset-decode-failed' },
+    );
     return null;
   }), 5000);
 }
@@ -737,13 +747,17 @@ export default async function decorate(block) {
     // Log video upload cancellation if user presses back during active upload
     if (uploadInProgress && uploadInProgress.file.type.startsWith('video/')) {
       const uploadDuration = Date.now() - uploadInProgress.startTime;
-      window.lana?.log('Video upload cancelled', {
-        tags: 'frictionless-video-upload-cancelled',
-        fileSize: uploadInProgress.file.size,
-        fileType: uploadInProgress.file.type,
-        quickAction: uploadInProgress.quickAction,
-        uploadDuration,
-      });
+      window.lana?.log(
+        'Video upload cancelled '
+          + `size:${uploadInProgress.file.size} `
+          + `type:${uploadInProgress.file.type} `
+          + `quickAction:${uploadInProgress.quickAction} `
+          + `uploadDuration:${uploadDuration}`,
+        {
+          clientId: 'express',
+          tags: 'frictionless-video-upload-cancelled',
+        },
+      );
       uploadInProgress = null;
     }
 
