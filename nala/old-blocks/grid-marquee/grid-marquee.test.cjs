@@ -71,9 +71,14 @@ test.describe('grid-marquee test suite', () => {
 
       await test.step('validate drawer operations ', async () => {
         if (cardCount) {
-          await expect(gridMarquee.cardImage.nth(0)).toBeVisible();
+          // Wait for card image to load (lazy loading)
+          await gridMarquee.cardImage.nth(0).waitFor({ state: 'attached', timeout: 10000 });
+          await gridMarquee.card.nth(0).scrollIntoViewIfNeeded();
+          await page.waitForTimeout(500); // Allow time for lazy load
+
+          await expect(gridMarquee.cardImage.nth(0)).toBeVisible({ timeout: 5000 });
           await gridMarquee.cardImage.nth(0).hover();
-          await expect(gridMarquee.cardDrawer.nth(0)).toBeVisible();
+          await expect(gridMarquee.cardDrawer.nth(0)).toBeVisible({ timeout: 2000 });
         }
 
         await gridMarquee.cardImage.nth(0).hover();
