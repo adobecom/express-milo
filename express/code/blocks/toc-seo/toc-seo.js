@@ -202,11 +202,6 @@ function scrollToHeader(headerText, toc) {
         top: scrollDistance,
         behavior: 'smooth',
       });
-
-      // Close TOC after scroll (both mobile and tablet)
-      setTimeout(() => {
-        toc.classList.remove('open');
-      }, 100);
     }
   }
 }
@@ -256,6 +251,11 @@ function preventOverlapWithFooter(position, tocElement) {
 function applyPositionToElement(tocElement, topPosition) {
   tocElement.style.setProperty('--toc-top-position', `${topPosition + 45}px`);
   tocElement.classList.add('toc-desktop');
+
+  // Check if this TOC needs scrolling (simple one-time check)
+  if (tocElement.dataset.needsScrolling === 'true') {
+    tocElement.classList.add('toc-scrollable');
+  }
 }
 
 /**
@@ -300,7 +300,7 @@ function handleDesktopPositioning(tocElement) {
  */
 function cleanupDesktopPositioning(tocElement) {
   if (!isDesktopViewport() && tocElement) {
-    tocElement.classList.remove('toc-desktop');
+    tocElement.classList.remove('toc-desktop', 'toc-scrollable');
     tocElement.style.removeProperty('--toc-top-position');
   }
 }
@@ -388,21 +388,6 @@ function updateActiveTOCLink(toc) {
       if (visibleHeaders.length > 0) {
         activeHeader = visibleHeaders[visibleHeaders.length - 1].element;
       }
-    }
-  }
-
-  // Remove active class from all links
-  tocLinks.forEach((link) => {
-    link.classList.remove('active');
-  });
-
-  // Add active class to corresponding link
-  if (activeHeader) {
-    const headerText = activeHeader.textContent.trim();
-    const activeLink = Array.from(tocLinks).find((link) => link.textContent.trim().includes(headerText.replace('...', '').trim()));
-
-    if (activeLink) {
-      activeLink.classList.add('active');
     }
   }
 }
@@ -760,14 +745,7 @@ function handleMobileSticky(tocElement) {
     tocElement.classList.add('toc-mobile-fixed');
     tocElement.style.setProperty('--mobile-nav-height', `${navHeight}px`);
 
-    // Close TOC when it becomes sticky
-    tocElement.classList.remove('open');
-    const titleButton = tocElement.querySelector('.toc-title');
-    if (titleButton) {
-      titleButton.setAttribute('aria-expanded', 'false');
-    }
-
-    // Update placeholder height to match closed TOC
+    // Update placeholder height to match current TOC state
     const placeholder = tocElement.nextElementSibling;
     if (placeholder && placeholder.classList.contains('toc-placeholder')) {
       placeholder.style.height = `${tocElement.offsetHeight}px`;
@@ -855,9 +833,29 @@ function setupEventHandlers(tocElement) {
       // Desktop: remove mobile/tablet sticky, add desktop positioning
       tocElement.classList.remove('toc-mobile-fixed');
       tocElement.classList.add('toc-desktop');
+
+      // Recalculate scrolling need on resize
+      const tocHeight = tocElement.offsetHeight;
+      const maxAvailableHeight = window.innerHeight - CONFIG.positioning.fixedTopDistance - 100;
+      if (tocHeight > maxAvailableHeight) {
+        tocElement.dataset.needsScrolling = 'true';
+      } else {
+        tocElement.dataset.needsScrolling = 'false';
+        tocElement.classList.remove('toc-scrollable');
+      }
     } else {
       // Mobile/Tablet: remove desktop positioning
-      tocElement.classList.remove('toc-desktop');
+      tocElement.classList.remove('toc-desktop', 'toc-scrollable');
+      tocElement.dataset.needsScrolling = 'false';
+
+      // Set TOC to open by default on mobile and tablet
+      if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
+        tocElement.classList.add('open');
+        const titleButton = tocElement.querySelector('.toc-title');
+        if (titleButton) {
+          titleButton.setAttribute('aria-expanded', 'true');
+        }
+      }
     }
 
     // Remove placeholder if it exists
@@ -991,6 +989,16 @@ export default async function decorate(block) {
     if (highlightElement) {
       // Insert after the highlight element
       highlightElement.insertAdjacentElement('afterend', toc);
+
+      // Check if TOC needs scrolling (simple one-time check after insertion)
+      if (window.innerWidth >= 1024) {
+        const tocHeight = toc.offsetHeight;
+        const maxAvailableHeight = window.innerHeight - CONFIG.positioning.fixedTopDistance - 100;
+        if (tocHeight > maxAvailableHeight) {
+          toc.dataset.needsScrolling = 'true';
+        }
+      }
+
       // Hide the original block after successful TOC creation
       block.style.display = 'none';
     } else {
