@@ -153,7 +153,6 @@ export async function createCheckoutButton(productDetails) {
       class: 'sticky-promo-bar rounded',
     });
     const stickyPromoBarTextContainer = createTag('div');
-
     stickyPromoBarTextContainer.appendChild(CTATextContainer);
     stickyPromoBarContent.appendChild(stickyPromoBarTextContainer);
     await stickyPromoBar(stickyPromoBarContent);
