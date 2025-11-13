@@ -5,7 +5,7 @@
       "tcid": "0",
       "name": "@blog-posts-v2-view-more-placeholder",
       "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-more-placeholder",
+      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-more-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -34,7 +34,7 @@
       "tcid": "1",
       "name": "@blog-posts-v2-view-all-space-placeholder",
       "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-space-placeholder",
+      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-space-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -63,7 +63,7 @@
       "tcid": "2",
       "name": "@blog-posts-v2-view-all-hyphen-placeholder-invalid",
       "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
+      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-hyphen-placeholder",
       "data": {
         "semantic": {
           "interactives": [
@@ -92,7 +92,7 @@
       "tcid": "3",
       "name": "@blog-posts-v2-plain-text",
       "selector": "div.blog-posts-v2",
-      "path": "/drafts/nala/blocks/blog-posts-v2/view-all-plain-text",
+      "path": "/de/drafts/nala/blocks/blog-posts-v2/view-all-plain-text",
       "data": {
         "semantic": {
           "interactives": [
