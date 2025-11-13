@@ -26,8 +26,11 @@ const onError = (e) => {
 
 // easier to mock in unit test
 export const SUSIUtils = {
-  loadSUSIScripts: () => {
+  loadSUSIScripts: async () => {
     const CDN_URL = `https://auth-light.identity${isStage ? '-stage' : ''}.adobe.com/sentry/wrapper.js`;
+    if (!loadScript) {
+      ({ loadScript } = await import(`${getLibs()}/utils/utils.js`));
+    }
     return loadScript(CDN_URL);
   },
 };
