@@ -1,0 +1,94 @@
+{
+  "block": "cta-cards",
+  "variants": [
+    {
+      "tcid": "0",
+      "name": "@cta-cards-default",
+      "selector": "div.cta-cards",
+      "path": "/drafts/nala/test-gen/ax-panels/ax-panels",
+      "data": {
+        "semantic": {
+          "texts": [
+            {
+              "selector": "h2",
+              "nth": 0,
+              "tag": "h2",
+              "text": "Imagine and create from a text prompt.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 0,
+              "tag": "p",
+              "text": "Your imagination is your only limitation. You type it. Adobe Express generates it.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 1,
+              "tag": "p",
+              "text": "Generate image",
+              "markup": "strong"
+            },
+            {
+              "selector": "p",
+              "nth": 2,
+              "tag": "p",
+              "text": "Type a description to bring an image to life.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 3,
+              "tag": "p",
+              "text": "Generative templates",
+              "markup": "strong"
+            },
+            {
+              "selector": "p",
+              "nth": 4,
+              "tag": "p",
+              "text": "Create templates from a text prompt.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 5,
+              "tag": "p",
+              "text": "Generate text effects",
+              "markup": "strong"
+            },
+            {
+              "selector": "p",
+              "nth": 6,
+              "tag": "p",
+              "text": "Type a prompt to apply styles or textures to letters.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 7,
+              "tag": "p",
+              "text": "Generative Fill",
+              "markup": "strong"
+            },
+            {
+              "selector": "p",
+              "nth": 8,
+              "tag": "p",
+              "text": "Describe what you’d like to add or remove.",
+              "markup": null
+            }
+          ],
+          "media": [],
+          "interactives": []
+        }
+      },
+      "tags": [
+        "@cta-cards",
+        "@default",
+        "@express"
+      ]
+    }
+  ]
+}

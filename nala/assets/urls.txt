@@ -1,6 +1,24 @@
 
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-banner/ax-banner-default
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-banner/ax-banner-light
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-banner/ax-banner-standout
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-banner/ax-banner-cool
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/blog-posts/blog-posts
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-category/ax-browse-by-category-default
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-category/ax-browse-by-category-card
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-category/ax-browse-by-category-fullwidth
+
+
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-columns/ax-columns-fullsize
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-columns/ax-columns-numbered
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-default
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-dark
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-short
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-narrow
 
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/faq/faq
 
@@ -25,3 +43,5 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-how-to-car
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/cards-dark
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/card-half-card
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/ax-cards-default
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-ratings/ratings

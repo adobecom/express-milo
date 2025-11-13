@@ -1,0 +1,59 @@
+{
+  "block": "hover-cards",
+  "variants": [
+    {
+      "tcid": "0",
+      "name": "@hover-cards-default",
+      "selector": "div.hover-cards",
+      "path": "/drafts/nala/test-gen/ax-panels/ax-panels",
+      "data": {
+        "semantic": {
+          "texts": [
+            {
+              "selector": "h2",
+              "nth": 0,
+              "tag": "h2",
+              "text": "Start from our amazing collection of stock content.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 0,
+              "tag": "p",
+              "text": "You can start your project from the Adobe Stock royalty-free photo, video, or audio collection.",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 1,
+              "tag": "p",
+              "text": "Start with Video",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 2,
+              "tag": "p",
+              "text": "Start with Photo",
+              "markup": null
+            },
+            {
+              "selector": "p",
+              "nth": 3,
+              "tag": "p",
+              "text": "Start with Audio",
+              "markup": null
+            }
+          ],
+          "media": [],
+          "interactives": []
+        }
+      },
+      "tags": [
+        "@hover-cards",
+        "@default",
+        "@express"
+      ]
+    }
+  ]
+}
