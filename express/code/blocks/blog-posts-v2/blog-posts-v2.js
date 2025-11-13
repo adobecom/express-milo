@@ -370,7 +370,6 @@ export default async function decorate(block) {
   
   if (viewAllLink) {
     const linkText = viewAllLink.textContent;
-    console.log('[blog-posts-v2] Link text BEFORE:', linkText);
     
     // Check if link text contains a placeholder token like ((view-more)) or ((view-all))
     const placeholderMatch = linkText.match(/\(\((.*?)\)\)/);
@@ -378,26 +377,18 @@ export default async function decorate(block) {
     if (placeholderMatch) {
       // Extract the placeholder key and fetch its translation
       const placeholderKey = placeholderMatch[1];
-      console.log('[blog-posts-v2] Found placeholder token:', placeholderKey);
-      
       const translation = await replaceKey(placeholderKey, getConfig());
-      console.log('[blog-posts-v2] Translation for', placeholderKey, ':', translation);
       
       if (translation) {
         viewAllLink.textContent = `${translation.charAt(0).toUpperCase()}${translation.slice(1)}`;
-        console.log('[blog-posts-v2] ✅ Replaced with translation:', viewAllLink.textContent);
       }
     } else if (linkText.toLowerCase().includes('view')) {
       // Plain text like "view all" - translate it
       const viewAll = await replaceKey('view all', getConfig());
-      console.log('[blog-posts-v2] Plain text - replaceKey("view all"):', viewAll);
       
       if (viewAll) {
         viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
-        console.log('[blog-posts-v2] ✅ Replaced with translation:', viewAllLink.textContent);
       }
-    } else {
-      console.log('[blog-posts-v2] Link already translated, leaving it alone');
     }
   }
 
