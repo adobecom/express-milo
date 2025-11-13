@@ -356,7 +356,9 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
 
   switch (pathname) {
     case EXPRESS_ROUTE_PATHS.focusedEditor: {
+      const { locale: { ietf } } = getConfig();
       routeSpecificParams = {
+        locale: ietf,
         skipUploadStep: true,
       };
       break;
