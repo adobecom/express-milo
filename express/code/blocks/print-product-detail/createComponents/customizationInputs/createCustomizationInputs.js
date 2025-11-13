@@ -17,10 +17,11 @@ async function createStandardSelector(
 ) {
   const options = customizationOptions.map((option) => ({
     value: option.name,
-    label: option.title,
+    text: option.title,
   }));
   const defaultValue = formDataObject[hiddenSelectInputName] || customizationOptions[0].name;
   const pickerContainer = await createPicker({
+    id: `pdpx-picker-${hiddenSelectInputName}`,
     name: hiddenSelectInputName,
     label: labelText,
     labelPosition: 'side',
