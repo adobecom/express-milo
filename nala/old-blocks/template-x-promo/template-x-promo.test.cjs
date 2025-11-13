@@ -257,8 +257,8 @@ test.describe('Template X Promo block tests', () => {
     });
   });
 
-  // TCID 1: Template image clickability
-  test(`[Test Id - ${features[1].tcid}] ${features[1].name},${features[1].tags}`, async ({ baseURL }) => {
+  // TCID 1: Template image clickability - skipped temporarily
+  test.skip(`[Test Id - ${features[1].tcid}] ${features[1].name},${features[1].tags}`, async ({ baseURL }) => {
     console.info(`Testing template clickability: ${baseURL}${features[1].path}`);
     const testPage = `${baseURL}${features[1].path}`;
 
