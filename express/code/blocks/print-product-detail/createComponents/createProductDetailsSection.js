@@ -152,12 +152,13 @@ export async function createCheckoutButton(productDetails) {
     const stickyPromoBarTextContainer = createTag('div');
     if (isMobile) {
       const mobileCTA = document.createElement('a', {
-        class: 'quick-link',
-        href: 'https://adobesparkpost.app.link/GJrBPFUWBBb',
         rel: 'nofollow',
         target: '_self',
       });
       mobileCTA.textContent = 'Start designing on mobile.';
+      mobileCTA.href = 'https://adobesparkpost.app.link/GJrBPFUWBBb';
+      mobileCTA.classList.add('quick-link');
+      mobileCTA.ref = 'nofollow';
       stickyPromoBarTextContainer.appendChild(mobileCTA);
       stickyPromoBarTextContainer.appendChild(CTATextContainer);
     } else {

@@ -46,8 +46,7 @@ body[data-device="mobile"] main .sticky-promo-bar.loadinbody {
     box-sizing: border-box;
 }
 
-main .sticky-promo-bar:not(.rounded) a:any-link,
-main .sticky-promo-bar:not(.rounded) a {
+main .sticky-promo-bar:not(.rounded) a:any-link {
     color: white;
     border: 2px solid white;
     border-radius: var(--spacing-350);
