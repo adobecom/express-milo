@@ -153,16 +153,34 @@
       height: 17px;
       flex-shrink: 0;
     }
+    .pdpx-star-icon-half-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+    .pdpx-star-icon-half-filled {
+      position: absolute;
+      left: 0;
+      top: 0;
+      clip-path: inset(0 50% 0 0);
+      -webkit-clip-path: inset(0 50% 0 0);
+    }
+    .pdpx-star-icon-half-empty {
+      position: absolute;
+      left: 0;
+      top: 0;
+      clip-path: inset(0 0 0 50%);
+      -webkit-clip-path: inset(0 0 0 50%);
+    }
   }
   .pdpx-ratings-number {
-    font-size: 14px;
+    font-size: var(--ax-body-xs-size);
     font-weight: 700;
     line-height: 1.5;
     color: var(--body-color);
   }
   .pdpx-ratings-amount {
     background: transparent;
-    font-size: 14px;
+    font-size: var(--ax-body-xs-size);
     line-height: 1.5;
     font-weight: 400;
     color: var(--body-color);
@@ -254,9 +272,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      padding: 6px;
+      width: var(--spacing-500);
+      height: var(--spacing-500);
+      padding: var(--spacing-80);
       margin: 0;
       border: none;
       background: var(--color-white);
@@ -294,8 +312,8 @@
       opacity: 0.5;
     }
     .simple-carousel-arrow-icon {
-      width: 18px;
-      height: 18px;
+      width: var(--spacing-325);
+      height: var(--spacing-325);
       display: block;
       flex-shrink: 0;
     }
@@ -738,9 +756,9 @@ main .section .pdpx-drawer-description {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      padding: 6px;
+      width: var(--spacing-500);
+      height: var(--spacing-500);
+      padding: var(--spacing-80);
       margin: 0;
       border: none;
       background: var(--color-white);
@@ -778,8 +796,8 @@ main .section .pdpx-drawer-description {
       opacity: 0.5;
     }
     .simple-carousel-arrow-icon {
-      width: 18px;
-      height: 18px;
+      width: var(--spacing-325);
+      height: var(--spacing-325);
       display: block;
       flex-shrink: 0;
     }

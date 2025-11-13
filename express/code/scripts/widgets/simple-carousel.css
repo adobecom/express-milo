@@ -53,9 +53,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 6px;
+  width: var(--spacing-500);
+  height: var(--spacing-500);
+  padding: var(--spacing-80);
   margin: 0;
   border: none;
   background: var(--color-white);
@@ -98,8 +98,8 @@
 }
 
 .simple-carousel-arrow-icon {
-  width: 18px;
-  height: 18px;
+  width: var(--spacing-325);
+  height: var(--spacing-325);
   display: block;
   flex-shrink: 0;
 }
