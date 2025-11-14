@@ -431,7 +431,7 @@ async function buildSimplifiedSusi(el, locale, imsClientId, noRedirect) {
   const titleDiv = createTag('div', { class: 'title' }, title);
   const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent({
     ...params,
-    onSuccessfulToken: () => redirectIfLoggedIn(destURL),
+    onSuccessfulToken: () => window.location.assign(destURL.toString()),
   }));
   const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, susiWrapper]);
   return layout;
