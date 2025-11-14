@@ -106,6 +106,7 @@ function createSUSIComponent({
   authParams,
   destURL,
   popup,
+  onSuccessfulToken,
 }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
@@ -123,7 +124,7 @@ function createSUSIComponent({
   susi.addEventListener('redirect', onRedirect);
   susi.addEventListener('on-error', onError);
   susi.addEventListener('on-analytics', onAnalytics);
-  susi.addEventListener('on-token', onToken);
+  susi.addEventListener('on-token', onSuccessfulToken || onToken);
   susi.addEventListener('on-auth-failed', onAuthFailed);
   return susi;
 }
@@ -428,7 +429,10 @@ async function buildSimplifiedSusi(el, locale, imsClientId, noRedirect) {
   }
   await SUSIUtils.loadSUSIScripts();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent({
+    ...params,
+    onSuccessfulToken: () => redirectIfLoggedIn(destURL),
+  }));
   const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, susiWrapper]);
   return layout;
 }
