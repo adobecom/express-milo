@@ -1314,7 +1314,14 @@ main .section .pdpx-drawer-description {
   .pdpx-global-container {
     flex-direction: row;
   }
-
+  .pdpx-price-info-container {
+    .pdpx-compare-price-info-icon-container {
+      .pdpx-info-tooltip-content {
+        right: 0px;
+        width: 175px;
+      }
+    }
+  }
   
   .pdpx-product-images-container {
     order: 1;
@@ -1371,6 +1378,7 @@ main .section .pdpx-drawer-description {
     .pdpx-compare-price-info-icon-container {
       .pdpx-info-tooltip-content {
         right: 0;
+        width: 250px;
       }
     }
   }
