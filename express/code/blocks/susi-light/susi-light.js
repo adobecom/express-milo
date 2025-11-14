@@ -155,13 +155,14 @@ function buildSUSIParams({
   layout,
   popup,
   dt,
+  responseType,
 }) {
   const params = {
     variant,
     authParams: {
       dt: dt || false,
       locale,
-      response_type: 'code',
+      response_type: responseType || 'code',
       client_id,
       scope: 'AdobeID,openid',
     },
@@ -420,7 +421,7 @@ async function buildSimplifiedSusi(el, locale, imsClientId, noRedirect) {
   const variant = 'standard';
   const destURL = await getDestURL(redirectUrl);
   const params = buildSUSIParams({
-    client_id, variant, destURL, locale, title, popup,
+    client_id, variant, destURL, locale, title, popup, responseType: 'token',
   });
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
