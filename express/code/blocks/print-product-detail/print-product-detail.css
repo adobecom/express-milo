@@ -1314,13 +1314,6 @@ main .section .pdpx-drawer-description {
   .pdpx-global-container {
     flex-direction: row;
   }
-  .pdpx-price-info-container {
-    .pdpx-compare-price-info-icon-container {
-      .pdpx-info-tooltip-content {
-        right: 0;
-      }
-    }
-  }
 
   
   .pdpx-product-images-container {
@@ -1373,6 +1366,13 @@ main .section .pdpx-drawer-description {
 @media (min-width: 1200px) {
   .pdpx-global-container {
     gap: var(--spacing-400);
+  }
+  .pdpx-price-info-container {
+    .pdpx-compare-price-info-icon-container {
+      .pdpx-info-tooltip-content {
+        right: 0;
+      }
+    }
   }
   .pdpx-product-info-heading-section-container {
     flex-direction: row;
