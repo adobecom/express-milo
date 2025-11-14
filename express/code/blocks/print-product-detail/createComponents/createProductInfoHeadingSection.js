@@ -66,8 +66,8 @@ function createProductTitleAndRatingsContainer(productDetails) {
 function createInfoTooltipContent(productDetails) {
   const infoTooltipContent = createTag('div', { class: 'pdpx-info-tooltip-content', id: 'pdpx-info-tooltip-content', role: 'tooltip' });
   const infoTooltipContentTitle = createTag('h6', { class: 'pdpx-info-tooltip-content-title', id: 'pdpx-info-tooltip-content-title' }, productDetails.compareValueTooltipTitle);
-  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-1' }, productDetails.tooltipDescription1);
-  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-2' }, productDetails.tooltipDescription2);
+  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-1' }, productDetails.compareValueTooltipDescription1);
+  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-2' }, productDetails.compareValueTooltipDescription2);
   infoTooltipContent.append(
     infoTooltipContentTitle,
     infoTooltipContentDescription1,
@@ -89,10 +89,10 @@ export async function createPriceLockup(productDetails) {
   function toggleTooltip() {
     infoTooltipContent.style.display = infoTooltipContent.style.display === 'block' ? 'none' : 'block';
   }
-  ['click', 'mouseenter'].forEach((eventType) => {
+  ['focus', 'mouseenter'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
-  ['mouseleave'].forEach((eventType) => {
+  ['blur', 'mouseleave'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
   comparePriceInfoIconButton.appendChild(createTag('img', {
