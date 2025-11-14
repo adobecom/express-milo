@@ -305,6 +305,13 @@ export default async function createMiniPillOptionsSelector(
       if (platform) {
         platform.style.overflowY = 'visible';
       }
+      const carouselItems = miniPillSelectorOptionsWrapper.querySelectorAll('.pdpx-mini-pill-container.simple-carousel-item');
+      carouselItems.forEach((item) => {
+        const focusableChild = item.querySelector('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableChild) {
+          item.removeAttribute('tabindex');
+        }
+      });
       requestAnimationFrame(() => {
         setupCarouselTooltips();
       });
