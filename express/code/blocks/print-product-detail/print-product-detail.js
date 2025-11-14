@@ -1,12 +1,13 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from './fetchData/fetchProductDetails.js';
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/customizationInputs/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize, createHeroImageSrcset } from './utilities/utility-functions.js';
+import { populateStars } from './utilities/star-icon-utils.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
 
 let createTag;
@@ -14,11 +15,9 @@ let createTag;
 async function createProductInfoContainer(productDetails, drawer) {
   const productInfoSectionContainer = createTag('div', { class: 'pdpx-product-info-section-container' });
   const productInfoSection = createTag('div', { class: 'pdpx-product-info-section', id: 'pdpx-product-info-section' });
-  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   const checkoutButton = await createCheckoutButton(productDetails);
   productInfoSectionContainer.append(
     drawer,
-    productInfoHeadingSection,
     productInfoSection,
     checkoutButton,
   );
@@ -27,21 +26,24 @@ async function createProductInfoContainer(productDetails, drawer) {
 
 async function createGlobalContainer(productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container', id: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
-  const { curtain, drawer } = await createDrawer(productDetails);
+  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   const productImagesContainer = await createProductImagesContainer(
     productDetails.realViews,
     productDetails.heroImage,
   );
+  const { curtain, drawer } = await createDrawer(productDetails);
   const productInfoSection = await createProductInfoContainer(productDetails, drawer);
-  globalContainer.append(productImagesContainer, productInfoSection);
+  const productInfoWrapper = createTag('div', { class: 'pdpx-product-info-wrapper' });
+  productInfoWrapper.append(productInfoHeadingSection, productInfoSection);
+  globalContainer.append(productImagesContainer, productInfoWrapper);
   document.body.append(curtain);
   return globalContainer;
 }
 
-async function updatePageWithProductDetails(productDetails) {
-  const globalContainer = document.getElementById('pdpx-global-container');
+async function updatePageWithProductDetails(productDetails, globalContainer) {
   const productHeroImage = globalContainer.querySelector('#pdpx-product-hero-image');
-  productHeroImage.src = productDetails.heroImage;
+  productHeroImage.srcset = createHeroImageSrcset(productDetails.heroImage);
+  productHeroImage.src = convertImageSize(productDetails.heroImage, '500');
   productHeroImage.removeAttribute('data-skeleton');
   const productTitle = globalContainer.querySelector('#pdpx-product-title');
   productTitle.textContent = productDetails.productTitle;
@@ -63,23 +65,24 @@ async function updatePageWithProductDetails(productDetails) {
     formDataObject,
     productDetails.productType,
   );
-  checkoutButton.href = checkoutButtonHref;
+  if (checkoutButton) {
+    checkoutButton.href = checkoutButtonHref;
+  }
 }
 
-function updatePageWithProductImages(productDetails) {
+async function updatePageWithProductImages(productDetails) {
   const productImagesContainer = document.getElementById('pdpx-product-images-container');
-  const imageThumbnailCarouselContainer = productImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container');
+  const imageThumbnailCarouselWrapper = productImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-wrapper');
   const heroProductImage = productImagesContainer.querySelector('#pdpx-product-hero-image');
-  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
+  const newImageThumbnailCarouselWrapper = await createProductThumbnailCarousel(
     productDetails.realViews,
     'Front',
     heroProductImage,
   );
-  imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
-  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
-  newImageThumbnailCarouselContainer
-    .removeAttribute('data-skeleton');
-  return imageThumbnailCarouselContainer;
+  imageThumbnailCarouselWrapper.replaceWith(newImageThumbnailCarouselWrapper);
+  const carouselItems = newImageThumbnailCarouselWrapper.querySelectorAll('.pdpx-image-thumbnail-carousel-item');
+  carouselItems.forEach((item) => item.removeAttribute('data-skeleton'));
+  return newImageThumbnailCarouselWrapper;
 }
 
 async function updatePageWithProductPrice(productDetails) {
@@ -89,10 +92,43 @@ async function updatePageWithProductPrice(productDetails) {
   priceInfoContainer.querySelector('#pdpx-savings-text').textContent = productDetails.discountString;
 }
 
+function updateStarRating(rating) {
+  const starRatingsContainer = document.querySelector('#pdpx-product-ratings-lockup-container .pdpx-star-ratings');
+  if (!starRatingsContainer) return;
+
+  // Clear existing stars
+  starRatingsContainer.innerHTML = '';
+
+  // Calculate partial stars based on rating (rounded to nearest 0.5)
+  const ratingValue = Math.round(rating * 10) / 10;
+  const ratingRoundedHalf = Math.round(ratingValue * 2) / 2;
+  const filledStars = Math.floor(ratingRoundedHalf);
+  const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
+  const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
+
+  // Populate stars with filled, half, and empty
+  populateStars(filledStars, 'star', starRatingsContainer, createTag);
+  populateStars(halfStars, 'star-half', starRatingsContainer, createTag);
+  populateStars(emptyStars, 'star-empty', starRatingsContainer, createTag);
+}
+
 function updatePageWithProductReviews(productDetails) {
   const productRatingsLockupContainer = document.getElementById('pdpx-product-ratings-lockup-container');
-  productRatingsLockupContainer.querySelector('#pdpx-ratings-number').textContent = Math.round(productDetails.averageRating * 10) / 10;
-  productRatingsLockupContainer.querySelector('#pdpx-ratings-amount').textContent = formatLargeNumberToK(productDetails.totalReviews);
+  const ratingsNumberEl = productRatingsLockupContainer.querySelector('#pdpx-ratings-number');
+  const ratingsAmountEl = productRatingsLockupContainer.querySelector('#pdpx-ratings-amount');
+  const starRatingsEl = productRatingsLockupContainer.querySelector('.pdpx-star-ratings');
+
+  const ratingValue = Math.round(productDetails.averageRating * 10) / 10;
+  ratingsNumberEl.textContent = ratingValue;
+  ratingsNumberEl.setAttribute('aria-label', `${ratingValue} out of 5`);
+
+  ratingsAmountEl.textContent = `${formatLargeNumberToK(productDetails.totalReviews)} ratings`;
+  ratingsAmountEl.setAttribute('aria-label', `${productDetails.totalReviews.toLocaleString()} ratings`);
+
+  starRatingsEl.setAttribute('aria-label', `${ratingValue} out of 5 stars`);
+
+  // Update stars with actual rating
+  updateStarRating(productDetails.averageRating);
 }
 
 function updatePageWithProductShippingEstimates(productDetails) {
@@ -109,8 +145,8 @@ function updatePageWithUIStrings(productDetails) {
   document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
   const compareValueTooltipContent = document.getElementById('pdpx-info-tooltip-content');
   compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-title').textContent = productDetails.compareValueTooltipTitle;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').textContent = productDetails.compareValueTooltipDescription1;
-  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').textContent = productDetails.compareValueTooltipDescription2;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-1').innerHTML = productDetails.compareValueTooltipDescription1;
+  compareValueTooltipContent.querySelector('#pdpx-info-tooltip-content-description-2').innerHTML = productDetails.compareValueTooltipDescription2;
 }
 
 export default async function decorate(block) {
@@ -123,10 +159,23 @@ export default async function decorate(block) {
   let dataObject = createEmptyDataObject(templateId, ietf);
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
-  const productDetails = fetchProductDetails(templateId);
+  const productDetails = fetchAPIData(templateId, null, 'getproductfromtemplate', 'templateId');
   productDetails.then(async (productDetailsResponse) => {
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    updatePageWithProductDetails(dataObject);
+    try {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = convertImageSize(dataObject.heroImage, '750');
+      link.fetchPriority = 'high';
+      link.setAttribute('imagesrcset', createHeroImageSrcset(dataObject.heroImage));
+      link.setAttribute('imagesizes', '(max-width: 600px) 100vw, 50vw');
+      head.appendChild(link);
+    } catch (e) {
+      /* no-op */
+    }
+    updatePageWithProductDetails(dataObject, globalContainer);
     // SEO: title/description (respect authored), initial Product JSON-LD
     // (updated later when price arrives)
     const canonicalUrl = getCanonicalUrl();
@@ -138,9 +187,9 @@ export default async function decorate(block) {
     if (breadcrumbsLd) upsertLdJson('pdp-breadcrumbs-jsonld', breadcrumbsLd);
     const productId = productDetailsResponse.product.id;
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
-    productRenditions.then((productRenditionsResponse) => {
+    productRenditions.then(async (productRenditionsResponse) => {
       dataObject = updateDataObjectProductRenditions(dataObject, productRenditionsResponse);
-      updatePageWithProductImages(dataObject);
+      await updatePageWithProductImages(dataObject);
     });
     const quantity = 1;
     const productPrice = fetchAPIData(productId, null, 'getproductpricing');
