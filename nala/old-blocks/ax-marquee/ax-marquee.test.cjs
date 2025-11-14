@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { expect, test } from '@playwright/test';
-import { features } from './ax-marquee.spec.js';
-import AxMarquee from './ax-marquee.page.js';
+import { features } from './ax-marquee.spec.cjs';
+import AxMarquee from './ax-marquee.page.cjs';
 
 let axMarquee;
 
@@ -80,6 +80,57 @@ test.describe('ax-marquee test suite', () => {
           await axMarquee.reduceMotionPauseVideoBtn.click();
           await page.waitForLoadState();
           await expect(axMarquee.reduceMotionPlayVideoBtn).toBeVisible();
+        }
+      });
+
+      await test.step('validate video controls keyboard accessibility', async () => {
+        // Animation not loading in Chrome for test script.
+        if (browserName !== 'chromium') {
+          const videoControlsButton = page.locator('.video-controls-wrapper');
+          await expect(videoControlsButton).toBeAttached();
+
+          // Verify button has correct ARIA attributes
+          await expect(videoControlsButton).toHaveAttribute('type', 'button');
+          const ariaPressed = await videoControlsButton.getAttribute('aria-pressed');
+          expect(ariaPressed).toBeTruthy();
+          const ariaLabel = await videoControlsButton.getAttribute('aria-label');
+          expect(ariaLabel).toBeTruthy();
+
+          // Get initial video state
+          const { video } = axMarquee;
+          const initialPaused = await video.evaluate((v) => v.paused);
+
+          // Tab to video button and verify focus
+          await page.keyboard.press('Tab');
+          await videoControlsButton.focus();
+          const isFocused = await videoControlsButton.evaluate((el) => document.activeElement === el);
+          expect(isFocused).toBeTruthy();
+          console.log('✅ Video button is keyboard focusable');
+
+          // Test spacebar toggles video once (not twice - this is the bug fix!)
+          await page.keyboard.press('Space');
+          await page.waitForTimeout(500); // Wait for video state to update
+
+          const afterSpacePaused = await video.evaluate((v) => v.paused);
+          expect(afterSpacePaused).not.toBe(initialPaused);
+          console.log('✅ Spacebar toggles video once (spacebar trap fixed)');
+
+          // Verify ARIA state updated
+          const updatedAriaPressed = await videoControlsButton.getAttribute('aria-pressed');
+          expect(updatedAriaPressed).not.toBe(ariaPressed);
+
+          // Test Enter key also works
+          await page.keyboard.press('Enter');
+          await page.waitForTimeout(500);
+
+          const afterEnterPaused = await video.evaluate((v) => v.paused);
+          expect(afterEnterPaused).toBe(initialPaused);
+          console.log('✅ Enter key toggles video');
+
+          // Verify video element itself is NOT focusable (no tabindex)
+          const videoTabIndex = await video.evaluate((v) => v.getAttribute('tabindex'));
+          expect(videoTabIndex).toBeNull();
+          console.log('✅ Video element is not focusable (no tabindex)');
         }
       });
     });

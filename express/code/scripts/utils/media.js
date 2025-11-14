@@ -107,13 +107,13 @@ export async function createAccessibilityVideoControls(videoElement) {
   videoContainer.appendChild(videoElement);
   videoContainer.appendChild(controlsWrapper);
   videoAnimation.appendChild(videoContainer);
-  
+
   // Add click handler directly for button element
   // Don't use addAnimationToggle - it has keypress with preventDefault for div compatibility
   controlsWrapper.addEventListener('click', () => {
     toggleVideo(controlsWrapper);
   });
-  
+
   return videoElement;
 }
 
