@@ -38,15 +38,12 @@ function PDPContent({ templateId }) {
   useSeo(templateId);
 
   useEffect(() => {
-    if (!templateId) {
-      return;
-    }
-    if (lastFetchedTemplateIdRef.current === templateId && state) {
+    if (!templateId || lastFetchedTemplateIdRef.current === templateId) {
       return;
     }
     lastFetchedTemplateIdRef.current = templateId;
     actions.fetchProduct(templateId);
-  }, [templateId, actions, state]);
+  }, [templateId, actions]);
 
   const handleDrawerRequest = (request) => {
     if (!request) {

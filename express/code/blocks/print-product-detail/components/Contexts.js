@@ -8,7 +8,6 @@ export function StoreProvider({ children, sdkStore }) {
     sdkStore.getSnapshot.bind(sdkStore),
   );
 
-  // No need to wrap actions - the SDK handles subscription notifications automatically
   const actions = useMemo(() => ({
     fetchProduct: sdkStore.fetchProduct.bind(sdkStore),
     fetchSizeChart: sdkStore.fetchSizeChart.bind(sdkStore),
