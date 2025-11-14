@@ -83,7 +83,7 @@ export async function createPriceLockup(productDetails) {
   const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, await formatPriceZazzle(productDetails.strikethroughPrice));
   const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label', id: 'pdpx-compare-price-info-label' }, productDetails.compareValueInfoIconLabel);
   const comparePriceInfoIconContainer = createTag('div', { class: 'pdpx-compare-price-info-icon-container' });
-  const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.tooltipTitle, 'aria-expanded': 'false' });
+  const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.compareValueTooltipTitle, 'aria-expanded': 'false' });
   const infoTooltipContent = createInfoTooltipContent(productDetails);
   const savingsText = createTag('span', { class: 'pdpx-savings-text', id: 'pdpx-savings-text' }, productDetails.discountString);
   function toggleTooltip() {
