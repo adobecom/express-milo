@@ -85,6 +85,7 @@ export function formatStringSnakeCase(string) {
   return formattedString;
 }
 
+// TODO: it can be too late now, perform this in scripts.js
 export async function addPrefetchLinks() {
   const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   const { ietf } = getConfig().locale;

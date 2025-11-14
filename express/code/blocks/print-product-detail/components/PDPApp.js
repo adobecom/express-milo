@@ -4,13 +4,9 @@ import {
   useRef,
   Fragment,
 } from '../../../scripts/vendors/htm-preact.js';
-import { StoreProvider, useStore } from './store-context.js';
-import { DrawerProvider, useDrawer } from './drawer-context.js';
-import { ProductImages } from './ProductImages.js';
-import { ProductHeader } from './ProductHeader.js';
+import { StoreProvider, useStore, DrawerProvider, useDrawer } from './Contexts.js';
+import { ProductImages, ProductDetails, ProductHeader, CheckoutButton } from './ProductComponents.js';
 import { CustomizationInputs } from './CustomizationInputs.js';
-import { ProductDetails } from './ProductDetails.js';
-import { CheckoutButton } from './CheckoutButton.js';
 import Drawer from './Drawer.js';
 import useSeo from './useSeo.js';
 
@@ -35,7 +31,7 @@ function LoadingSkeleton() {
 
 function PDPContent({ templateId }) {
   const store = useStore();
-  const { state, actions, hasState } = store;
+  const { state, actions } = store;
   const { openDrawer } = useDrawer();
   const lastFetchedTemplateIdRef = useRef(null);
 
@@ -61,7 +57,7 @@ function PDPContent({ templateId }) {
     }
   };
 
-  if (!hasState || !state) {
+  if (!state) {
     return html`
       <${Fragment}>
         <${LoadingSkeleton} />

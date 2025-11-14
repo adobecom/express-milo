@@ -4,8 +4,7 @@ import {
   useState,
   Fragment,
 } from '../../../scripts/vendors/htm-preact.js';
-import { useDrawer } from './drawer-context.js';
-import { useStore } from './store-context.js';
+import { useDrawer, useStore } from './Contexts.js';
 
 function SizeChartTable({ sizeChart }) {
   if (!sizeChart?.sizeChart) {
