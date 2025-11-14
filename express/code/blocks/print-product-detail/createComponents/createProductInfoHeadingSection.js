@@ -89,7 +89,7 @@ export async function createPriceLockup(productDetails) {
   function toggleTooltip() {
     infoTooltipContent.style.display = infoTooltipContent.style.display === 'block' ? 'none' : 'block';
   }
-  ['focus', 'mouseenter'].forEach((eventType) => {
+  ['click', 'focus', 'mouseenter'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
   ['blur', 'mouseleave'].forEach((eventType) => {
