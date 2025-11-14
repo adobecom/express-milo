@@ -43,7 +43,7 @@ export function detectMobileWithBrowserWidth() {
 }
 
 export function detectMobile() {
-  return isMobileDevice() || detectMobileWithUAData();
+  return isMobileDevice() || detectMobileWithUAData() || detectMobileWithBrowserWidth();
 }
 
 export function formatPaperThickness(thickness) {

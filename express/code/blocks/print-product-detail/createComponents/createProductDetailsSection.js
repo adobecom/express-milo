@@ -3,8 +3,11 @@ import { formatProductDescriptions } from '../utilities/data-formatting.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 import { detectMobile } from '../utilities/utility-functions.js';
+import stickyPromoBar from '../../sticky-promo-bar/sticky-promo-bar.js';
 
 let createTag;
+let loadStyle;
+let getConfig;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
@@ -85,12 +88,19 @@ export function createCheckoutButtonHref(templateId, parameters, productType) {
 }
 
 export async function createCheckoutButton(productDetails) {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
+    ({ createTag, getConfig, loadStyle } = utils);
+  });
+  const config = getConfig();
+  await new Promise((resolve) => {
+    loadStyle(`${config.codeRoot}/blocks/sticky-promo-bar/sticky-promo-bar.css`, resolve);
+  });
+  const defaultURL = `https://new.express.adobe.com/design-remix/template/${productDetails.templateId}`;
   const validRegions = ['en-US', 'en-GB'];
   const outOfRegion = !validRegions.includes(productDetails.region);
   const isMobile = detectMobile();
   let CTAText;
-  const CTATextMobile = 'Create in Adobe Express now, open on desktop to order print';
+  const CTATextMobile = "Print with Adobe Express isn't available on mobile. Open on desktop to get started.";
   const CTATextDesktop = 'Customize and print it';
   const CTATextOutOfRegion = 'Print with Adobe Express isn’t available yet in your region. Check back soon!';
   if (outOfRegion) {
@@ -100,12 +110,14 @@ export async function createCheckoutButton(productDetails) {
   } else {
     CTAText = CTATextDesktop;
   }
+  const CTATextContainer = createTag('span', { class: 'pdpx-checkout-button-cta-text-container' }, CTAText);
   const buttonDisabled = outOfRegion || isMobile;
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
   const checkoutButton = createTag('a', {
     class: 'pdpx-checkout-button',
     id: 'pdpx-checkout-button',
-    href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
+    href: defaultURL,
+  });
   if (buttonDisabled) {
     checkoutButtonContainer.classList.add('pdpx-checkout-button-disabled');
   }
@@ -136,6 +148,17 @@ export async function createCheckoutButton(productDetails) {
     checkoutButtonSubheadLink,
     checkoutButtonSubheadText,
   );
-  checkoutButtonContainer.append(checkoutButton, checkoutButtonSubhead);
+  if (buttonDisabled) {
+    const stickyPromoBarContent = createTag('div', {
+      class: 'sticky-promo-bar rounded',
+    });
+    const stickyPromoBarTextContainer = createTag('div');
+    stickyPromoBarTextContainer.appendChild(CTATextContainer);
+    stickyPromoBarContent.appendChild(stickyPromoBarTextContainer);
+    await stickyPromoBar(stickyPromoBarContent);
+    checkoutButtonContainer.appendChild(stickyPromoBarContent);
+  } else {
+    checkoutButtonContainer.append(checkoutButton, checkoutButtonSubhead);
+  }
   return checkoutButtonContainer;
 }

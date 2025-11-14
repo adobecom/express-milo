@@ -65,7 +65,9 @@ async function updatePageWithProductDetails(productDetails, globalContainer) {
     formDataObject,
     productDetails.productType,
   );
-  checkoutButton.href = checkoutButtonHref;
+  if (checkoutButton) {
+    checkoutButton.href = checkoutButtonHref;
+  }
 }
 
 async function updatePageWithProductImages(productDetails) {
