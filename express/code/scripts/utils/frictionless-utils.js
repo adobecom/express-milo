@@ -185,7 +185,7 @@ export function createMergeVideosDocConfig(data) {
   };
 }
 
-function getWebBrowser() {
+export function getWebBrowser() {
   const { userAgent } = navigator;
 
   if (/SamsungBrowser/.test(userAgent)) {
@@ -232,8 +232,8 @@ export function createContainerConfig(quickAction) {
   };
 }
 
-const browserType = getWebBrowser();
-const isSafariBrowser = browserType === 'Safari';
+// Check if device is iOS (iPhone, iPad, iPod) - covers all browsers on iOS
+const isIOSDevice = /iPhone|iPad|iPod/.test(navigator.userAgent);
 
 export function createDefaultExportConfig() {
   return [
@@ -241,29 +241,23 @@ export function createDefaultExportConfig() {
       id: 'downloadExportOption',
       // label: 'Download',
       action: { target: 'download' },
-      style: {
-        uiType: 'button',
-        variant: isSafariBrowser ? 'accent' : 'secondary',
-      },
+      style: { uiType: 'button' },
       buttonStyle: {
         treatment: 'fill',
         size: 'xl',
       },
     },
-    ...(isSafariBrowser
-      ? []
-      : [{
-        id: 'edit-in-express',
-        // label: 'Edit in Adobe Express for free',
-        action: { target: 'express' },
-        style: { uiType: 'button' },
-        buttonStyle: {
-          variant: 'primary',
-          treatment: 'fill',
-          size: 'xl',
-        },
-      }]
-    ),
+    {
+      id: 'edit-in-express',
+      // label: 'Edit in Adobe Express for free',
+      action: { target: 'express' },
+      style: { uiType: 'button' },
+      buttonStyle: {
+        variant: 'primary',
+        treatment: 'fill',
+        size: 'xl',
+      },
+    },
   ];
 }
 
@@ -272,21 +266,35 @@ export async function createMobileExportConfig(
   downloadText,
   editText,
 ) {
-  const exportConfig = createDefaultExportConfig();
+  const isVideoQA = QA_CONFIGS[quickAction].group === 'video';
   const result = [
     {
-      ...exportConfig[0],
-      ...(QA_CONFIGS[quickAction].group === 'video'
-        ? {}
-        : { label: downloadText }),
+      id: 'downloadExportOption',
+      ...(isVideoQA ? {} : { label: downloadText }),
+      action: { target: 'download' },
+      style: {
+        uiType: 'button',
+        variant: isIOSDevice ? 'accent' : 'secondary',
+      },
+      buttonStyle: {
+        treatment: 'fill',
+        size: 'xl',
+      },
     },
   ];
 
-  // Only add the edit option if it exists (not Safari browser)
-  if (exportConfig[1]) {
+  // Only add the edit option if not iOS device
+  if (!isIOSDevice) {
     result.push({
-      ...exportConfig[1],
-      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
+      id: 'edit-in-express',
+      ...(isVideoQA ? {} : { label: editText }),
+      action: { target: 'express' },
+      style: { uiType: 'button' },
+      buttonStyle: {
+        variant: 'primary',
+        treatment: 'fill',
+        size: 'xl',
+      },
     });
   }
 
