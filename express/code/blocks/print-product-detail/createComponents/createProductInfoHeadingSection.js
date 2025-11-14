@@ -1,5 +1,6 @@
-import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
+import { getLibs } from '../../../scripts/utils.js';
 import { formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from '../utilities/utility-functions.js';
+import { populateStars } from '../utilities/star-icon-utils.js';
 
 let createTag;
 
@@ -8,12 +9,6 @@ function createProductTitle(productDetails) {
   const productTitle = createTag('h1', { class: 'pdpx-product-title', id: 'pdpx-product-title', 'data-skeleton': 'true' }, productDetails.productTitle);
   productTitleContainer.appendChild(productTitle);
   return productTitleContainer;
-}
-
-function populateStars(count, starType, parent) {
-  for (let i = 0; i < count; i += 1) {
-    parent.appendChild(getIconElementDeprecated(starType));
-  }
 }
 
 function createProductRatingsLockup(productDetails) {
@@ -38,9 +33,9 @@ function createProductRatingsLockup(productDetails) {
   const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
 
   // Populate stars with filled, half, and empty
-  populateStars(filledStars, 'star', starRatings);
-  populateStars(halfStars, 'star-half', starRatings);
-  populateStars(emptyStars, 'star-empty', starRatings);
+  populateStars(filledStars, 'star', starRatings, createTag);
+  populateStars(halfStars, 'star-half', starRatings, createTag);
+  populateStars(emptyStars, 'star-empty', starRatings, createTag);
 
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
   const ratingsNumber = createTag('span', {
