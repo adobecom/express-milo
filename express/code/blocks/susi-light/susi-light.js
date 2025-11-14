@@ -24,10 +24,6 @@ const onError = (e) => {
   window.lana?.log('on error:', e);
 };
 
-const onToken = (e) => {
-  window.lana?.log('on token:', e);
-};
-
 const onAuthFailed = (e) => {
   window.lana?.log('on auth failed:');
   window.lana?.log(e?.detail);
@@ -124,7 +120,9 @@ function createSUSIComponent({
   susi.addEventListener('redirect', onRedirect);
   susi.addEventListener('on-error', onError);
   susi.addEventListener('on-analytics', onAnalytics);
-  susi.addEventListener('on-token', onSuccessfulToken || onToken);
+  if (onSuccessfulToken) {
+    susi.addEventListener('on-token', onSuccessfulToken);
+  }
   susi.addEventListener('on-auth-failed', onAuthFailed);
   return susi;
 }
