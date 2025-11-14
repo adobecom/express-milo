@@ -107,7 +107,13 @@ export async function createAccessibilityVideoControls(videoElement) {
   videoContainer.appendChild(videoElement);
   videoContainer.appendChild(controlsWrapper);
   videoAnimation.appendChild(videoContainer);
-  addAnimationToggle(controlsWrapper);
+  
+  // Add click handler directly for button element
+  // Don't use addAnimationToggle - it has keypress with preventDefault for div compatibility
+  controlsWrapper.addEventListener('click', () => {
+    toggleVideo(controlsWrapper);
+  });
+  
   return videoElement;
 }
 
@@ -167,7 +173,7 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
     const $innerDiv = $a.closest('div');
     $innerDiv.prepend($video);
     $innerDiv.classList.add('hero-animation-overlay');
-    $video.setAttribute('tabindex', 0);
+    // Don't make video focusable - accessibility controls button handles interaction
     $a.replaceWith($video);
 
     // autoplay animation
