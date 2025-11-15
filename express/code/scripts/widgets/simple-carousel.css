@@ -53,16 +53,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
+  width: var(--spacing-500);
+  height: var(--spacing-500);
+  padding: var(--spacing-80);
   margin: 0;
   border: none;
   background: var(--color-white);
-  border-radius: 50%;
-  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 100px;
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.08), 0px 1px 4px 0px rgba(0, 0, 0, 0.04), 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 150ms ease-out, box-shadow 150ms ease-out;
   font-family: inherit;
   font-size: inherit;
   line-height: 1;
@@ -73,31 +73,34 @@
 }
 
 .simple-carousel-arrow:hover {
-  background: var(--color-gray-100);
+  background: var(--color-gray-325);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 6px 0px rgba(0, 0, 0, 0.04), 0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+}
+
+.simple-carousel-arrow:active {
+  background: var(--color-gray-350-variant);
 }
 
 .simple-carousel-arrow:focus {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: none;
 }
 
-.simple-carousel-arrow::before {
-  content: '';
+.simple-carousel-arrow:focus-visible {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: -4px;
+  border-radius: 100px;
+}
+
+.simple-carousel-arrow:disabled {
+  background: var(--color-white);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.simple-carousel-arrow-icon {
+  width: var(--spacing-325);
+  height: var(--spacing-325);
   display: block;
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid var(--color-black);
-  border-right: 2px solid var(--color-black);
   flex-shrink: 0;
-}
-
-.simple-carousel-arrow-left::before {
-  transform: rotate(-135deg);
-  margin-left: 2px;
-}
-
-.simple-carousel-arrow-right::before {
-  transform: rotate(45deg);
-  margin-right: 2px;
 }
 

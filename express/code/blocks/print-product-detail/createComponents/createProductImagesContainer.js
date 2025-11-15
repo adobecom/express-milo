@@ -80,6 +80,13 @@ export async function createProductThumbnailCarousel(realViews, heroImageType, p
     activeClass: 'selected',
   });
 
+  const carouselItems = carouselWrapper.querySelectorAll('.pdpx-image-thumbnail-carousel-item.simple-carousel-item');
+  carouselItems.forEach((item) => {
+    if (item.tagName === 'BUTTON' || item.tagName === 'A') {
+      item.removeAttribute('tabindex');
+    }
+  });
+
   return carouselWrapper;
 }
 
