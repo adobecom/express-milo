@@ -92,12 +92,7 @@
   text-decoration: none;
   font-size: 16px;
   line-height: 1.4;
-  border-bottom: 1px solid #f0f0f0;
   transition: color 0.2s ease, padding-left 0.2s ease;
-}
-
-.toc-v2-link:last-of-type {
-  border-bottom: none;
 }
 
 .toc-v2-link:hover {
