@@ -1,43 +1,102 @@
-import { getLibs } from '../../scripts/utils.js';
-import { addPrefetchLinks, extractTemplateId } from './utilities/utility-functions.js';
+import { createZazzleStore, extractTemplateId } from './utilities/utility-functions.js';
+import {
+  html,
+  render,
+  useEffect,
+  useRef,
+  Fragment,
+} from '../../scripts/vendors/htm-preact.js';
+import { StoreProvider, useStore, DrawerProvider, useDrawer } from './components/Contexts.js';
+import { ProductImages, ProductDetails, ProductHeader, CheckoutButton } from './components/ProductComponents.js';
+import { CustomizationInputs } from './components/CustomizationInputs.js';
+import Drawer from './components/Drawer.js';
+import useSeo from './components/useSeo.js';
 
-function normalizeLocale(ietf) {
-  const SUPPORTED_REGIONS = new Set(['at', 'br', 'us', 'au', 'ca', 'gb', 'nz', 'de', 'ch', 'es', 'fr', 'be', 'jp', 'kr', 'nl', 'pt', 'se']);
-  const SUPPORTED_LANGUAGES = new Set(['en', 'de', 'es', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv']);
-  if (!ietf) {
-    return { language: 'en', region: 'us' };
-  }
-
-  const [languageRaw = 'en', regionRaw = 'us'] = ietf.split('-');
-  const language = languageRaw.toLowerCase();
-  const region = regionRaw.toLowerCase();
-
-  return {
-    language: SUPPORTED_LANGUAGES.has(language) ? language : 'en',
-    region: SUPPORTED_REGIONS.has(region) ? region : 'us',
-  };
+function LoadingSkeleton() {
+  return html`
+    <div class="pdpx-global-container">
+      <div class="pdpx-product-images-container">
+        <div class="pdpx-product-hero-image-container" data-skeleton="true" style="height: 400px;"></div>
+      </div>
+      <div class="pdpx-product-info-section-wrapper-container">
+        <div class="pdpx-product-info-heading-section-container">
+          <h1 class="pdpx-product-title" data-skeleton="true" style="height: 32px; width: 60%;"></h1>
+          <div class="pdpx-price-info-container" data-skeleton="true" style="height: 40px; width: 40%; margin-top: 16px;"></div>
+        </div>
+        <div class="pdpx-product-info-section-wrapper">
+          <div class="pdpx-customization-inputs-container" data-skeleton="true" style="height: 300px; margin-top: 24px;"></div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-async function createZazzleStore() {
-  const { createZazzlePDPStore } = await import('./sdk/index.js');
+function PDPContent({ templateId }) {
+  const store = useStore();
+  const { state, actions } = store;
+  const { openDrawer } = useDrawer();
+  const lastFetchedTemplateIdRef = useRef(null);
 
-  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-  const { locale } = getConfig();
-  const { language, region } = normalizeLocale(locale?.ietf);
+  useSeo(templateId);
 
-  const sdkStore = createZazzlePDPStore({ language, region });
+  useEffect(() => {
+    if (!templateId || lastFetchedTemplateIdRef.current === templateId) {
+      return;
+    }
+    lastFetchedTemplateIdRef.current = templateId;
+    actions.fetchProduct(templateId);
+  }, [templateId, actions]);
 
-  return {
-    env: sdkStore.env,
-    sdk: sdkStore,
+  const handleDrawerRequest = (request) => {
+    if (!request) {
+      return;
+    }
+    if (request.type === 'sizeChart') {
+      openDrawer({ type: 'sizeChart', payload: request.payload });
+    }
   };
+
+  if (!state) {
+    return html`
+      <${Fragment}>
+        <${LoadingSkeleton} />
+        <${Drawer} />
+      </${Fragment}>
+    `;
+  }
+
+  return html`
+    <${Fragment}>
+      <div class="pdpx-global-container" data-template-id="${templateId}">
+        <${ProductImages} />
+        <div class="pdpx-product-info-section-wrapper-container">
+          <${ProductHeader} />
+          <div class="pdpx-product-info-section-wrapper">
+            <div class="pdpx-product-info-container" id="pdpx-product-info-container">
+              <${CustomizationInputs} onRequestDrawer=${handleDrawerRequest} />
+              <${ProductDetails} />
+            </div>
+            <${CheckoutButton} templateId=${templateId} />
+          </div>
+        </div>
+      </div>
+      <${Drawer} />
+    </${Fragment}>
+  `;
+}
+
+export function PDPApp({ sdkStore, templateId }) {
+  return html`
+    <${StoreProvider} sdkStore=${sdkStore}>
+      <${DrawerProvider}>
+        <${PDPContent} templateId=${templateId} />
+      </${DrawerProvider}>
+    </${StoreProvider}>
+  `;
 }
 
 export default async function decorate(block) {
-  await addPrefetchLinks();
-
   const templateId = extractTemplateId(block);
-
   if (!templateId) {
     // eslint-disable-next-line no-console
     console.error('print-product-detail: No template ID found in block');
@@ -49,11 +108,6 @@ export default async function decorate(block) {
   const mountPoint = document.createElement('div');
   block.append(mountPoint);
 
-  const [{ html, render }, { default: PDPApp }, store] = await Promise.all([
-    import('../../scripts/vendors/htm-preact.js'),
-    import('./components/PDPApp.js'),
-    createZazzleStore(),
-  ]);
-
+  const store = await createZazzleStore();
   render(html`<${PDPApp} sdkStore=${store.sdk} templateId=${templateId} />`, mountPoint);
 }

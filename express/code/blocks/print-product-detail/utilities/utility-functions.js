@@ -85,7 +85,6 @@ export function formatStringSnakeCase(string) {
   return formattedString;
 }
 
-// TODO: it can be too late now, perform this in scripts.js
 export async function addPrefetchLinks() {
   const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   const { ietf } = getConfig().locale;
@@ -111,4 +110,43 @@ export async function addPrefetchLinks() {
   document.head.appendChild(prefetchLink2);
   document.head.appendChild(preconnectLink1);
   document.head.appendChild(preconnectLink2);
+}
+
+function normalizeLocale(ietf) {
+  const SUPPORTED_REGIONS = new Set(['at', 'br', 'us', 'au', 'ca', 'gb', 'nz', 'de', 'ch', 'es', 'fr', 'be', 'jp', 'kr', 'nl', 'pt', 'se']);
+  const SUPPORTED_LANGUAGES = new Set(['en', 'de', 'es', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv']);
+  if (!ietf) {
+    return { language: 'en', region: 'us' };
+  }
+
+  const [languageRaw = 'en', regionRaw = 'us'] = ietf.split('-');
+  const language = languageRaw.toLowerCase();
+  const region = regionRaw.toLowerCase();
+
+  return {
+    language: SUPPORTED_LANGUAGES.has(language) ? language : 'en',
+    region: SUPPORTED_REGIONS.has(region) ? region : 'us',
+  };
+}
+
+let storePromise = null;
+export async function createZazzleStore() {
+  if (storePromise) return storePromise;
+  storePromise = (async () => {
+    const [{ createZazzlePDPStore }, { getConfig }] = await Promise.all([
+      import('../sdk/index.js'),
+      import(`${getLibs()}/utils/utils.js`),
+    ]);
+
+    const { locale } = getConfig();
+    const { language, region } = normalizeLocale(locale?.ietf);
+
+    const store = createZazzlePDPStore({ language, region });
+
+    return {
+      env: store.env,
+      sdk: store,
+    };
+  })();
+  return storePromise;
 }

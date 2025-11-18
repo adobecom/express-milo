@@ -403,6 +403,14 @@ const listenAlloy = () => {
     }
   });
 
+  // prefetch+preload pdp
+  if (document.querySelector('.print-product-detail')) {
+    import('../blocks/print-product-detail/utilities/utility-functions.js').then(({ addPrefetchLinks, createZazzleStore }) => {
+      addPrefetchLinks();
+      createZazzleStore();
+    });
+  }
+
   await loadArea();
 
   const { fixIcons } = await import('./utils.js');
