@@ -39,7 +39,7 @@
 }
 
 .toc-v2-title:focus {
-  outline: 2px solid #1473e6;
+  outline: 2px solid #5258E4;
   outline-offset: -2px;
 }
 
@@ -81,28 +81,29 @@ main .toc-v2-container.open .toc-v2-chevron {
    NAVIGATION LINKS
    ============================================================================ */
 
-.toc-v2-link {
+main .toc-v2-content .toc-v2-link {
   display: block;
   padding: var(--spacing-200) 0;
-  color: var(--color-dark-gray);
+  color: var(--color-background-accent-default);
   text-decoration: none;
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.4;
   transition: color 0.2s ease;
 }
 
-.toc-v2-link:hover {
-  color: #1473e6;
+main .toc-v2-content .toc-v2-link:hover {
+  color: var(--color-background-accent-default);
 }
 
-.toc-v2-link:focus {
-  outline: 2px solid #1473e6;
+main .toc-v2-content .toc-v2-link:focus {
+  outline: 2px solid var(--color-background-accent-default);
   outline-offset: 2px;
-  color: #1473e6;
+  color: var(--color-background-accent-default);
 }
 
 /* Remove focus outline when not using keyboard */
-.toc-v2-link:focus:not(:focus-visible) {
+main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -130,7 +131,7 @@ main .toc-v2-container.open .toc-v2-chevron {
 }
 
 .toc-v2-social-icons a:focus {
-  outline: 2px solid #1473e6;
+  outline: 2px solid #5258E4;
   outline-offset: 2px;
 }
 
