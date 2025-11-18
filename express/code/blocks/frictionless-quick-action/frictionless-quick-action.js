@@ -50,7 +50,9 @@ function frictionlessQAExperiment(
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
-  const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant]) ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant] : EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
+  const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant])
+    ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant]
+    : EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
   appConfig.metaData.variant = variant;
   appConfig.metaData.promoid = promoid;
   appConfig.metaData.mv = 'other';
@@ -384,7 +386,9 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
 
   if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
     const isAuth = window.adobeIMS?.isSignedInUser();
-    const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction]) ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction] : EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction]; 
+    const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction])
+      ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction]
+      : EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction];
     pageSpecificParams = {
       variant: quickAction,
       promoid,
