@@ -88,12 +88,11 @@ main .toc-v2-container.open .toc-v2-chevron {
   text-decoration: none;
   font-size: 16px;
   line-height: 1.4;
-  transition: color 0.2s ease, padding-left 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .toc-v2-link:hover {
   color: #1473e6;
-  padding-left:  var(--spacing-100);
 }
 
 .toc-v2-link:focus {
