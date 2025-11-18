@@ -13,6 +13,7 @@ const CONFIG = {
     highlight: '.section div.highlight',
     section: 'main .section',
     headers: 'main .section.long-form .content h2, main .section.long-form .content h3, main .section.long-form .content h4',
+    navigation: '.global-navigation, header',
   },
   scrollOffset: {
     mobile: 75,
@@ -249,13 +250,27 @@ function createFloatingButton() {
 }
 
 /**
- * Scrolls back to the TOC position
+ * Scrolls back to the TOC position relative to navigation header
  * @param {HTMLElement} tocContainer - TOC container element
  */
 function scrollToTOC(tocContainer) {
   const tocRect = tocContainer.getBoundingClientRect();
-  // Use smaller offset for scrolling back to TOC (20px from top)
-  const scrollDistance = tocRect.top + window.pageYOffset - 40;
+  const tocAbsoluteTop = window.pageYOffset + tocRect.top;
+
+  // Find the navigation header to calculate proper offset
+  const navElement = document.querySelector(CONFIG.selectors.navigation);
+
+  let offset = 20; // Default small offset if no nav found
+
+  if (navElement) {
+    // Get the height of the navigation header
+    const navRect = navElement.getBoundingClientRect();
+    const navHeight = navRect.height;
+    // Position TOC just below the nav with small buffer
+    offset = navHeight + 10;
+  }
+
+  const scrollDistance = tocAbsoluteTop - offset;
 
   window.scrollTo({
     top: Math.max(0, scrollDistance),
