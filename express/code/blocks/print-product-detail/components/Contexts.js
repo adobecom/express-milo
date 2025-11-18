@@ -1,4 +1,4 @@
-import { html, createContext, useContext, useMemo, useSyncExternalStore, useEffect, useState } from '../../../scripts/vendors/htm-preact.js';
+import { html, createContext, useContext, useMemo, useSyncExternalStore, useEffect, useCallback, useState } from '../../../scripts/vendors/htm-preact.js';
 
 export const StoreContext = createContext(null);
 
@@ -8,13 +8,7 @@ export function StoreProvider({ children, sdkStore }) {
     sdkStore.getSnapshot.bind(sdkStore),
   );
 
-  const actions = useMemo(() => ({
-    fetchProduct: sdkStore.fetchProduct.bind(sdkStore),
-    fetchSizeChart: sdkStore.fetchSizeChart.bind(sdkStore),
-    selectOption: sdkStore.selectOption.bind(sdkStore),
-    selectQuantity: sdkStore.selectQuantity.bind(sdkStore),
-    selectRealview: sdkStore.selectRealview.bind(sdkStore),
-  }), [sdkStore]);
+  const actions = useMemo(() => sdkStore, [sdkStore]);
 
   const value = useMemo(() => ({
     state,
@@ -43,17 +37,21 @@ const DrawerContext = createContext(null);
 export function DrawerProvider({ children }) {
   const [drawerState, setDrawerState] = useState({ open: false, type: null, payload: null });
 
+  const openDrawer = useCallback((nextState) => {
+    setDrawerState({ open: true, ...nextState });
+    document.body.classList.add('disable-scroll');
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerState({ open: false, type: null, payload: null });
+    document.body.classList.remove('disable-scroll');
+  }, []);
+
   const value = useMemo(() => ({
     state: drawerState,
-    openDrawer: (nextState) => {
-      setDrawerState({ open: true, ...nextState });
-      document.body.classList.add('disable-scroll');
-    },
-    closeDrawer: () => {
-      setDrawerState({ open: false, type: null, payload: null });
-      document.body.classList.remove('disable-scroll');
-    },
-  }), [drawerState]);
+    openDrawer,
+    closeDrawer,
+  }), [drawerState, openDrawer, closeDrawer]);
 
   useEffect(() => () => {
     document.body.classList.remove('disable-scroll');

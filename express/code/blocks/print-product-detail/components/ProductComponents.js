@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   Fragment,
+  useCallback,
 } from '../../../scripts/vendors/htm-preact.js';
 import { useStore, useDrawer } from './Contexts.js';
 import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
@@ -76,6 +77,8 @@ export function ProductDetails() {
 export function ProductHeader() {
   const { state } = useStore();
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const showTooltip = useCallback(() => setTooltipVisible(true), []);
+  const hideTooltip = useCallback(() => setTooltipVisible(false), []);
 
   if (!state) {
     return null;
@@ -86,9 +89,6 @@ export function ProductHeader() {
   const reviewsRating = reviewsStats?.rating || 0;
   const formattedRating = reviewsRating ? Math.round(reviewsRating * 10) / 10 : '';
   const formattedCount = reviewsCount ? formatLargeNumberToK(reviewsCount) : '';
-
-  const showTooltip = () => setTooltipVisible(true);
-  const hideTooltip = () => setTooltipVisible(false);
 
   return html`
     <div class="pdpx-product-info-heading-section-wrapper">
@@ -315,10 +315,10 @@ function SizeChartContent({ onClose }) {
   const { actions } = useStore();
   const [chart, setChart] = useState(null);
   const [error, setError] = useState(null);
-
+  const { fetchSizeChart } = actions;
   useEffect(() => {
     let active = true;
-    actions.fetchSizeChart()
+    fetchSizeChart()
       .then((data) => {
         if (active) {
           setChart(data);
@@ -333,7 +333,7 @@ function SizeChartContent({ onClose }) {
     return () => {
       active = false;
     };
-  }, [actions]);
+  }, [fetchSizeChart]);
 
   if (error) {
     return html`<div class="pdpx-size-chart-error">Unable to load size chart. Please try again later.</div>`;

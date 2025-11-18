@@ -3,7 +3,6 @@ import {
   html,
   render,
   useEffect,
-  useRef,
   Fragment,
 } from '../../scripts/vendors/htm-preact.js';
 import { StoreProvider, useStore, DrawerProvider, useDrawer } from './components/Contexts.js';
@@ -34,17 +33,16 @@ function PDPContent({ templateId }) {
   const store = useStore();
   const { state, actions } = store;
   const { openDrawer } = useDrawer();
-  const lastFetchedTemplateIdRef = useRef(null);
+  const { fetchProduct } = actions;
 
   useSeo(templateId);
 
   useEffect(() => {
-    if (!templateId || lastFetchedTemplateIdRef.current === templateId) {
+    if (!templateId) {
       return;
     }
-    lastFetchedTemplateIdRef.current = templateId;
-    actions.fetchProduct(templateId);
-  }, [templateId, actions]);
+    fetchProduct(templateId);
+  }, [templateId, fetchProduct]);
 
   const handleDrawerRequest = (request) => {
     if (!request) {

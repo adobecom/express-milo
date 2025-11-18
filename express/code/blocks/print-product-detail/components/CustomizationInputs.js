@@ -142,6 +142,7 @@ function flattenOptionGroups(selector) {
 export function ThumbnailSelector({ attribute, onRequestDrawer }) {
   const { actions } = useStore();
   const { selector, selectedOptionValue, title, helpLink } = attribute;
+
   const allOptions = flattenOptionGroups(selector);
   const selectedOption = allOptions
     .find((option) => option.value === selectedOptionValue) || allOptions[0];

@@ -404,6 +404,7 @@ const listenAlloy = () => {
   });
 
   // prefetch+preload pdp
+  // TODO: use authoring metadata
   if (document.querySelector('.print-product-detail')) {
     import('../blocks/ax-accordion/ax-accordion.js');
     import('./utils/hofs.js');
