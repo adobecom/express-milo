@@ -12,11 +12,6 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
-}
-
-.toc-v2-container:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================================================================
@@ -162,7 +157,6 @@
   background-color: #1473e6;
   border-color: #1473e6;
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(20, 115, 230, 0.3);
 }
 
 .toc-v2-social-icons a:hover svg {
@@ -286,14 +280,8 @@
    DESKTOP (≥ 1024px) - PHASE 2
    ============================================================================ */
 
-@media (min-width: 1024px) {
-  /* TODO: Desktop sticky positioning and layout */
-  /* Will be added in Phase 2 after mobile/tablet is tested */
-  
-  .toc-v2-container {
-    /* Desktop styles here */
-  }
-}
+/* TODO: Desktop sticky positioning and layout */
+/* Will be added in Phase 2 after mobile/tablet is tested */
 
 /* ============================================================================
    PRINT STYLES
