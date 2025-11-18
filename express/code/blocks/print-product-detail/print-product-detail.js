@@ -7,9 +7,8 @@ import {
   Fragment,
 } from '../../scripts/vendors/htm-preact.js';
 import { StoreProvider, useStore, DrawerProvider, useDrawer } from './components/Contexts.js';
-import { ProductImages, ProductDetails, ProductHeader, CheckoutButton } from './components/ProductComponents.js';
+import { ProductImages, ProductDetails, ProductHeader, CheckoutButton, Drawer } from './components/ProductComponents.js';
 import { CustomizationInputs } from './components/CustomizationInputs.js';
-import Drawer from './components/Drawer.js';
 import useSeo from './components/useSeo.js';
 
 function LoadingSkeleton() {

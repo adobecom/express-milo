@@ -405,6 +405,9 @@ const listenAlloy = () => {
 
   // prefetch+preload pdp
   if (document.querySelector('.print-product-detail')) {
+    import('../blocks/ax-accordion/ax-accordion.js');
+    import('./utils/hofs.js');
+    import('./vendors/htm-preact.js');
     import('../blocks/print-product-detail/utilities/utility-functions.js').then(({ addPrefetchLinks, createZazzleStore }) => {
       addPrefetchLinks();
       createZazzleStore();
