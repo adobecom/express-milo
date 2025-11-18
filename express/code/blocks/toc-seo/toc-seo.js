@@ -15,8 +15,8 @@ const CONFIG = {
     headers: 'main .section.long-form .content h2, main .section.long-form .content h3, main .section.long-form .content h4',
   },
   scrollOffset: {
-    mobile: 140,
-    tablet: 140,
+    mobile: 75,
+    tablet: 75,
   },
   aria: {
     navigation: 'Table of Contents',
