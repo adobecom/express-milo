@@ -51,7 +51,7 @@
    CHEVRON ICON
    ============================================================================ */
 
-.toc-v2-chevron {
+main .toc-v2-chevron {
   width: 15px;
   height: 15px;
   transition: transform 0.3s ease;
@@ -59,7 +59,7 @@
   margin-left: var(--spacing-200);
 }
 
-.toc-v2-container.open .toc-v2-chevron {
+main .toc-v2-container.open .toc-v2-chevron {
   transform: rotate(180deg);
 }
 
