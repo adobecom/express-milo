@@ -52,8 +52,8 @@
    ============================================================================ */
 
 .toc-v2-chevron {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   transition: transform 0.3s ease;
   flex-shrink: 0;
   margin-left: var(--spacing-200);
