@@ -118,7 +118,6 @@
   display: flex;
   gap: var(--spacing-300);
   padding: var(--spacing-300) var(--spacing-350);
-  border-top: 1px solid #e0e0e0;
   opacity: 1;
   max-height: 100px;
   transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
@@ -136,24 +135,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--color-white);
-  border: 1px solid #e0e0e0;
   cursor: pointer;
-  transition: all 0.2s ease;
   position: relative;
-}
-
-.toc-v2-social-icons a:hover {
-  background-color: #1473e6;
-  border-color: #1473e6;
-  transform: translateY(-2px);
-}
-
-.toc-v2-social-icons a:hover svg {
-  fill: var(--color-white);
 }
 
 .toc-v2-social-icons a:focus {
@@ -196,22 +179,12 @@
   100% { opacity: 0; transform: translateX(-50%) translateY(-5px); }
 }
 
-.toc-v2-social-icons a.copy-success {
-  background-color: #2d9d78;
-  border-color: #2d9d78;
-}
-
 .toc-v2-social-icons a.copy-success svg {
-  fill: var(--color-white);
-}
-
-.toc-v2-social-icons a.copy-failure {
-  background-color: #e34850;
-  border-color: #e34850;
+  fill: #2d9d78;
 }
 
 .toc-v2-social-icons a.copy-failure svg {
-  fill: var(--color-white);
+  fill: #e34850;
 }
 
 /* ============================================================================
@@ -256,11 +229,6 @@
   .toc-v2-social-icons {
     padding: var(--spacing-325) var(--spacing-400);
     gap: var(--spacing-350);
-  }
-
-  .toc-v2-social-icons a {
-    width: 44px;
-    height: 44px;
   }
 
   .toc-v2-social-icons svg {
