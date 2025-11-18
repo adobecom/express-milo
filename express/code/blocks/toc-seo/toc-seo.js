@@ -128,7 +128,7 @@ function createTitleBar(titleText) {
   const titleSpan = createTag('span', { class: 'toc-v2-title-text' });
   titleSpan.textContent = titleText;
 
-  const chevron = getIconElementDeprecated('chevron-down-outline');
+  const chevron = getIconElementDeprecated('chevron');
   chevron.classList.add('toc-v2-chevron');
 
   titleBar.appendChild(titleSpan);
