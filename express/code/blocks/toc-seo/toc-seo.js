@@ -7,7 +7,6 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 const CONFIG = {
   breakpoints: {
-    mobile: 768,
     desktop: 1024,
   },
   selectors: {
@@ -30,14 +29,6 @@ const CONFIG = {
 
 let createTag;
 let getMetadata;
-
-/**
- * Checks if current viewport is mobile
- * @returns {boolean} True if mobile viewport (< 768px)
- */
-function isMobile() {
-  return window.innerWidth < CONFIG.breakpoints.mobile;
-}
 
 /**
  * Checks if current viewport is desktop
@@ -273,14 +264,14 @@ function scrollToTOC(tocContainer) {
 }
 
 /**
- * Sets up floating button behavior for mobile only
+ * Sets up floating button behavior for mobile and tablet
  * @param {HTMLElement} floatingButton - Floating button element
  * @param {HTMLElement} tocContainer - TOC container element
  */
 function setupFloatingButton(floatingButton, tocContainer) {
   // Show/hide button based on scroll position
   const handleScroll = () => {
-    if (isMobile()) {
+    if (!isDesktop()) {
       const tocRect = tocContainer.getBoundingClientRect();
       // Show button when TOC is scrolled out of view (above viewport)
       if (tocRect.bottom < 0) {
@@ -289,7 +280,7 @@ function setupFloatingButton(floatingButton, tocContainer) {
         floatingButton.classList.remove('visible');
       }
     } else {
-      // Hide on tablet and desktop
+      // Hide on desktop only
       floatingButton.classList.remove('visible');
     }
   };

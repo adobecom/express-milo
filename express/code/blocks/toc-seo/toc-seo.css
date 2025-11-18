@@ -174,7 +174,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 }
 
 /* ============================================================================
-   FLOATING BACK TO TOC BUTTON (Mobile Only < 768px)
+   FLOATING BACK TO TOC BUTTON (Mobile & Tablet < 1024px)
    ============================================================================ */
 
 .toc-v2-floating-button {
@@ -218,8 +218,8 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   flex-shrink: 0;
 }
 
-/* Hide floating button on tablet and desktop */
-@media (min-width: 768px) {
+/* Hide floating button on desktop only */
+@media (min-width: 1024px) {
   .toc-v2-floating-button {
     display: none;
   }
