@@ -263,7 +263,8 @@ function createFloatingButton() {
  */
 function scrollToTOC(tocContainer) {
   const tocRect = tocContainer.getBoundingClientRect();
-  const scrollDistance = tocRect.top + window.pageYOffset - CONFIG.scrollOffset.mobile;
+  // Use smaller offset for scrolling back to TOC (20px from top)
+  const scrollDistance = tocRect.top + window.pageYOffset - 40;
 
   window.scrollTo({
     top: Math.max(0, scrollDistance),
