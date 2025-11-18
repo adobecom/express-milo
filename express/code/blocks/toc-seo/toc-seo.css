@@ -119,7 +119,6 @@
   gap: var(--spacing-300);
   padding: var(--spacing-300) var(--spacing-350);
   border-top: 1px solid #e0e0e0;
-  background-color: #fafafa;
   opacity: 1;
   max-height: 100px;
   transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
