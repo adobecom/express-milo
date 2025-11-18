@@ -4,22 +4,19 @@
 
 import { h, Component, createContext, createRef, render, Fragment } from 'preact';
 import {
-  useState, useReducer, useEffect, useLayoutEffect, useRef, useImperativeHandle, useMemo, useCallback, useContext, useDebugValue, useErrorBoundary, useId,
+  useState, useReducer, useEffect, useLayoutEffect, useRef, useMemo, useCallback, useContext, useDebugValue, useErrorBoundary, useId,
 } from 'preact/hooks';
 import htm from 'htm';
 
 function useSyncExternalStore(subscribe, getSnapshot) {
   const [state, setState] = useState(() => getSnapshot());
 
-  const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
-
-  useIsoLayoutEffect(() => {
+  useLayoutEffect(() => {
     function checkForUpdates() {
       const next = getSnapshot();
       setState((prev) => (Object.is(prev, next) ? prev : next));
     }
 
-    // In case store changed between render and effect
     checkForUpdates();
 
     const unsubscribe = subscribe(checkForUpdates);
@@ -33,5 +30,5 @@ function useSyncExternalStore(subscribe, getSnapshot) {
 const html = htm.bind(h);
 
 export {
-  h, html, render, Component, createContext, createRef, useState, useReducer, useEffect, useLayoutEffect, useRef, useImperativeHandle, useMemo, useCallback, useContext, useDebugValue, useErrorBoundary, useId, useSyncExternalStore, Fragment,
+  h, html, render, Component, createContext, createRef, useState, useReducer, useEffect, useLayoutEffect, useRef, useMemo, useCallback, useContext, useDebugValue, useErrorBoundary, useId, useSyncExternalStore, Fragment,
 };
