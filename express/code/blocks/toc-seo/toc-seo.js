@@ -7,6 +7,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 const CONFIG = {
   breakpoints: {
+    mobile: 768,
     desktop: 1024,
   },
   selectors: {
@@ -29,6 +30,14 @@ const CONFIG = {
 
 let createTag;
 let getMetadata;
+
+/**
+ * Checks if current viewport is mobile
+ * @returns {boolean} True if mobile viewport (< 768px)
+ */
+function isMobile() {
+  return window.innerWidth < CONFIG.breakpoints.mobile;
+}
 
 /**
  * Checks if current viewport is desktop
@@ -223,6 +232,79 @@ function createSocialIcons() {
 // ============================================================================
 // MOBILE/TABLET BEHAVIOR (< 1024px)
 // ============================================================================
+
+/**
+ * Creates floating "back to TOC" button for mobile
+ * @returns {HTMLElement} Floating button element
+ */
+function createFloatingButton() {
+  const button = createTag('button', {
+    class: 'toc-v2-floating-button',
+    'aria-label': 'Back to Table of Contents',
+  });
+
+  // Load arrow SVG from img folder
+  const img = createTag('img', {
+    src: '/express/code/blocks/toc-seo/img/arrow-up.svg',
+    alt: '',
+    class: 'toc-v2-floating-icon',
+    width: '26',
+    height: '26',
+  });
+
+  button.appendChild(img);
+
+  return button;
+}
+
+/**
+ * Scrolls back to the TOC position
+ * @param {HTMLElement} tocContainer - TOC container element
+ */
+function scrollToTOC(tocContainer) {
+  const tocRect = tocContainer.getBoundingClientRect();
+  const scrollDistance = tocRect.top + window.pageYOffset - CONFIG.scrollOffset.mobile;
+
+  window.scrollTo({
+    top: Math.max(0, scrollDistance),
+    behavior: 'smooth',
+  });
+}
+
+/**
+ * Sets up floating button behavior for mobile only
+ * @param {HTMLElement} floatingButton - Floating button element
+ * @param {HTMLElement} tocContainer - TOC container element
+ */
+function setupFloatingButton(floatingButton, tocContainer) {
+  // Show/hide button based on scroll position
+  const handleScroll = () => {
+    if (isMobile()) {
+      const tocRect = tocContainer.getBoundingClientRect();
+      // Show button when TOC is scrolled out of view (above viewport)
+      if (tocRect.bottom < 0) {
+        floatingButton.classList.add('visible');
+      } else {
+        floatingButton.classList.remove('visible');
+      }
+    } else {
+      // Hide on tablet and desktop
+      floatingButton.classList.remove('visible');
+    }
+  };
+
+  // Click handler
+  floatingButton.addEventListener('click', () => {
+    scrollToTOC(tocContainer);
+  });
+
+  // Scroll listener
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', handleScroll);
+
+  // Initial check
+  handleScroll();
+}
 
 /**
  * Scrolls to target header with proper offset for mobile/tablet
@@ -436,6 +518,7 @@ export default async function decorate(block) {
     const titleBar = createTitleBar(config.title);
     const content = createContentList(config);
     const socialIcons = createSocialIcons();
+    const floatingButton = createFloatingButton();
 
     // Phase 4: Assemble TOC
     container.appendChild(titleBar);
@@ -456,6 +539,10 @@ export default async function decorate(block) {
     } else {
       window.lana?.log('TOC-V2: No highlight element found');
     }
+
+    // Phase 7: Insert floating button and setup behavior
+    document.body.appendChild(floatingButton);
+    setupFloatingButton(floatingButton, container);
 
     // Hide original block
     block.style.display = 'none';
