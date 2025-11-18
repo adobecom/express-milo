@@ -64,20 +64,17 @@
 }
 
 /* ============================================================================
-   CONTENT - Expand/Collapse Animation
+   CONTENT - Expand/Collapse
    ============================================================================ */
 
 .toc-v2-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
+  display: none;
   padding: 0 var(--spacing-350);
 }
 
 .toc-v2-container.open .toc-v2-content {
-  max-height: 2000px; /* Large enough for all content */
+  display: block;
   padding: 0 var(--spacing-350) var(--spacing-300) var(--spacing-350);
-  transition: max-height 0.5s ease-in;
 }
 
 /* ============================================================================
@@ -118,17 +115,11 @@
   display: flex;
   gap: var(--spacing-300);
   padding: var(--spacing-300) var(--spacing-350);
-  opacity: 1;
-  max-height: 100px;
-  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
 }
 
 /* Hide social icons when collapsed */
 .toc-v2-container:not(.open) .toc-v2-social-icons {
-  opacity: 0;
-  max-height: 0;
-  padding: 0 var(--spacing-350);
-  overflow: hidden;
+  display: none;
 }
 
 .toc-v2-social-icons a {
