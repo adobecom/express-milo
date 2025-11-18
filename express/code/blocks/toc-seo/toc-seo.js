@@ -526,10 +526,12 @@ export default async function decorate(block) {
     container.appendChild(content);
     container.appendChild(socialIcons);
 
-    // Phase 5: Setup behaviors (mobile/tablet only for now)
+    // Phase 5: Setup behaviors
+    // Toggle: Mobile and Tablet (< 1024px)
     if (!isDesktop()) {
       setupToggle(container, titleBar, content);
     }
+    // Navigation and Social: All viewports
     setupNavigation(content);
     setupSocialSharing(socialIcons);
 

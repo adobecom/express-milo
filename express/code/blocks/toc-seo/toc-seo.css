@@ -276,11 +276,15 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 }
 
 /* ============================================================================
-   DESKTOP (≥ 1024px) - PHASE 2
+   DESKTOP (≥ 1024px) - TO BE IMPLEMENTED
    ============================================================================ */
 
-/* TODO: Desktop sticky positioning and layout */
-/* Will be added in Phase 2 after mobile/tablet is tested */
+/* TODO: Desktop implementation will include:
+   - Sticky/fixed positioning
+   - Active link tracking on scroll
+   - Different layout (sidebar style)
+   - Always expanded (no toggle)
+*/
 
 /* ============================================================================
    PRINT STYLES
