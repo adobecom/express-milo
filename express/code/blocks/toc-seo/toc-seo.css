@@ -290,7 +290,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
     width: var(--ax-grid-3-col-width);
     margin: 0;
     padding-left: var(--spacing-600);
-    background: transparent;
+    background: var(--color-gray-100);
     border: none;
     overflow: visible;
     z-index: 1;
