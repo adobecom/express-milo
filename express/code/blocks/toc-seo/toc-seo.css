@@ -34,6 +34,12 @@
     text-align: left;
     outline: none;
     user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .toc-v2-title * {
+    pointer-events: none;
   }
   
   .toc-v2-title:focus-visible {

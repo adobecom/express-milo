@@ -325,25 +325,20 @@ function scrollToHeader(fullText) {
  * @param {HTMLElement} content - Content element
  */
 function setupToggle(container, titleBar, content) {
-  const toggle = (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  // Click handler - simple and direct
+  titleBar.addEventListener('click', () => {
     const isOpen = container.classList.toggle('open');
     titleBar.setAttribute('aria-expanded', isOpen.toString());
     content.setAttribute('aria-hidden', (!isOpen).toString());
-  };
-
-  // Click handler
-  titleBar.addEventListener('click', toggle, true);
+  });
 
   // Keyboard accessibility
   titleBar.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      e.stopPropagation();
-      toggle();
+      const isOpen = container.classList.toggle('open');
+      titleBar.setAttribute('aria-expanded', isOpen.toString());
+      content.setAttribute('aria-hidden', (!isOpen).toString());
     }
   });
 }
