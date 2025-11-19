@@ -31,9 +31,10 @@
   font-weight: 700;
   color: #2c2c2c;
   text-align: left;
+  outline: none;
 }
 
-.toc-v2-title:focus {
+.toc-v2-title:focus-visible {
   outline: 2px solid #5258E4;
   outline-offset: -2px;
 }
