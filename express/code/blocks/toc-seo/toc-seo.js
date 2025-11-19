@@ -18,6 +18,7 @@ const CONFIG = {
   scrollOffset: {
     mobile: 75,
     tablet: 75,
+    desktop: 120,
   },
   aria: {
     navigation: 'Table of Contents',
@@ -321,7 +322,8 @@ function scrollToHeader(fullText) {
 
   if (targetHeader) {
     const headerRect = targetHeader.getBoundingClientRect();
-    const offset = CONFIG.scrollOffset.mobile;
+    // Use desktop offset on desktop, mobile/tablet offset otherwise
+    const offset = isDesktop() ? CONFIG.scrollOffset.desktop : CONFIG.scrollOffset.mobile;
     const scrollDistance = headerRect.top + window.pageYOffset - offset;
 
     window.scrollTo({
