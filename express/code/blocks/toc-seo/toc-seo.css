@@ -33,6 +33,7 @@
     color: #2c2c2c;
     text-align: left;
     outline: none;
+    user-select: none;
   }
   
   .toc-v2-title:focus-visible {
@@ -42,6 +43,7 @@
   
   .toc-v2-title-text {
     flex: 1;
+    pointer-events: none;
   }
   
   /* ============================================================================
@@ -54,6 +56,11 @@
     transition: transform 0.3s ease;
     flex-shrink: 0;
     margin-left: var(--spacing-200);
+    pointer-events: none;
+  }
+
+  main .toc-v2-chevron * {
+    pointer-events: none;
   }
   
   main .toc-v2-container.open .toc-v2-chevron {

@@ -107,6 +107,7 @@ function createContainer(ariaLabel) {
 function createTitleBar(titleText) {
   const titleBar = createTag('button', {
     class: 'toc-v2-title',
+    type: 'button',
     'aria-expanded': 'true',
     'aria-controls': 'toc-v2-content',
   });
@@ -324,19 +325,24 @@ function scrollToHeader(fullText) {
  * @param {HTMLElement} content - Content element
  */
 function setupToggle(container, titleBar, content) {
-  const toggle = () => {
+  const toggle = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const isOpen = container.classList.toggle('open');
     titleBar.setAttribute('aria-expanded', isOpen.toString());
     content.setAttribute('aria-hidden', (!isOpen).toString());
   };
 
   // Click handler
-  titleBar.addEventListener('click', toggle);
+  titleBar.addEventListener('click', toggle, true);
 
   // Keyboard accessibility
   titleBar.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
+      e.stopPropagation();
       toggle();
     }
   });
