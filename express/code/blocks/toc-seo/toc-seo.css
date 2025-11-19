@@ -317,9 +317,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 
   main .toc-v2-content .toc-v2-link {
     padding: var(--spacing-100) 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
     position: relative;
   }
 
