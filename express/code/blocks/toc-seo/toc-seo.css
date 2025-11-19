@@ -323,17 +323,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
     position: relative;
   }
 
-  /* Active link indicator */
-  main .toc-v2-content .toc-v2-link.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 4px;
-    height: 100%;
-    background-color: var(--color-background-accent-default);
-  }
-
+  /* Active link styling - bold only, no border */
   main .toc-v2-content .toc-v2-link.active {
     font-weight: 700;
   }
