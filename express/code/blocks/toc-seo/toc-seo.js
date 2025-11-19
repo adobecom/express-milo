@@ -482,8 +482,114 @@ function setupSocialSharing(socialContainer) {
 // DESKTOP BEHAVIOR (≥ 1024px)
 // ============================================================================
 
-// TODO: Phase 2 - Desktop sticky positioning and active link tracking
-// Will be added after mobile/tablet implementation is tested and approved
+/**
+ * Calculates and sets the desktop TOC position based on highlight element
+ * @param {HTMLElement} tocContainer - TOC container element
+ */
+function updateDesktopPosition(tocContainer) {
+  if (!isDesktop()) return;
+
+  const highlightElement = document.querySelector(CONFIG.selectors.highlight);
+  if (!highlightElement) return;
+
+  const highlightRect = highlightElement.getBoundingClientRect();
+  const highlightBottom = window.pageYOffset + highlightRect.bottom;
+
+  // Position TOC below highlight element
+  let topPosition = highlightBottom;
+
+  // Ensure minimum distance from top
+  topPosition = Math.max(topPosition, 100);
+
+  // Apply position
+  tocContainer.style.setProperty('--toc-top-position', `${topPosition}px`);
+  tocContainer.classList.add('toc-desktop');
+}
+
+/**
+ * Updates active link based on current scroll position
+ * @param {HTMLElement} tocContainer - TOC container element
+ */
+function updateActiveLink(tocContainer) {
+  if (!isDesktop()) return;
+
+  const headers = document.querySelectorAll(CONFIG.selectors.headers);
+  const tocLinks = tocContainer.querySelectorAll('.toc-v2-link');
+
+  if (!headers.length || !tocLinks.length) return;
+
+  // Get TOC title position for offset
+  const tocTitle = tocContainer.querySelector('.toc-v2-title');
+  const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect() : { top: 200 };
+  const offset = tocTitleRect.top + 20;
+
+  let activeHeader = null;
+  let minDistance = Infinity;
+
+  // Find the header closest to the offset position
+  headers.forEach((header) => {
+    const rect = header.getBoundingClientRect();
+    const distance = Math.abs(rect.top - offset);
+
+    if (rect.top <= offset && distance < minDistance) {
+      minDistance = distance;
+      activeHeader = header;
+    }
+  });
+
+  // Remove active class from all links
+  tocLinks.forEach((link) => link.classList.remove('active'));
+
+  // Add active class to matching link
+  if (activeHeader) {
+    const headerText = activeHeader.textContent.trim();
+    const activeLink = Array.from(tocLinks).find((link) => {
+      const fullText = link.dataset.fullText || link.textContent.trim();
+      return fullText.includes(headerText) || headerText.includes(fullText.replace('...', '').trim());
+    });
+
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+  }
+}
+
+/**
+ * Sets up desktop positioning and active link tracking
+ * @param {HTMLElement} tocContainer - TOC container element
+ */
+function setupDesktop(tocContainer) {
+  if (!isDesktop()) return;
+
+  // Initial position
+  updateDesktopPosition(tocContainer);
+
+  // Update on scroll (with throttling)
+  let scrollTimeout;
+  const handleScroll = () => {
+    if (scrollTimeout) return;
+    scrollTimeout = setTimeout(() => {
+      updateActiveLink(tocContainer);
+      scrollTimeout = null;
+    }, 100);
+  };
+
+  window.addEventListener('scroll', handleScroll);
+
+  // Update on resize
+  window.addEventListener('resize', () => {
+    if (isDesktop()) {
+      updateDesktopPosition(tocContainer);
+      updateActiveLink(tocContainer);
+    } else {
+      tocContainer.classList.remove('toc-desktop');
+      tocContainer.style.removeProperty('--toc-top-position');
+    }
+  });
+
+  // Initial active link
+  updateActiveLink(tocContainer);
+}
 
 // ============================================================================
 // INITIALIZATION
@@ -549,9 +655,14 @@ export default async function decorate(block) {
       window.lana?.log('TOC-V2: No highlight element found');
     }
 
-    // Phase 7: Insert floating button and setup behavior
+    // Phase 7: Insert floating button and setup behavior (mobile/tablet only)
     document.body.appendChild(floatingButton);
     setupFloatingButton(floatingButton, container);
+
+    // Phase 8: Setup desktop positioning and active link tracking
+    if (isDesktop()) {
+      setupDesktop(container);
+    }
 
     // Hide original block
     block.style.display = 'none';

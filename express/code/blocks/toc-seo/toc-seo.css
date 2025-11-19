@@ -279,15 +279,70 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 }
 
 /* ============================================================================
-   DESKTOP (≥ 1024px) - TO BE IMPLEMENTED
+   DESKTOP (≥ 1024px)
    ============================================================================ */
 
-/* TODO: Desktop implementation will include:
-   - Sticky/fixed positioning
-   - Active link tracking on scroll
-   - Different layout (sidebar style)
-   - Always expanded (no toggle)
-*/
+@media (min-width: 1024px) {
+  .toc-v2-container {
+    position: fixed;
+    top: var(--toc-top-position, 200px);
+    left: 0;
+    width: var(--ax-grid-3-col-width);
+    margin: 0;
+    padding-left: var(--spacing-600);
+    background: transparent;
+    border: none;
+    overflow: visible;
+    z-index: 1;
+  }
+
+  /* Always show content on desktop - no toggle */
+  .toc-v2-content {
+    display: block;
+    padding: 0;
+    max-height: 375px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Hide chevron on desktop */
+  main .toc-v2-chevron {
+    display: none;
+  }
+
+  .toc-v2-title {
+    padding: 0 0 var(--spacing-200) 0;
+    cursor: default;
+  }
+
+  main .toc-v2-content .toc-v2-link {
+    padding: var(--spacing-100) var(--spacing-400);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  /* Active link indicator */
+  main .toc-v2-content .toc-v2-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--color-background-accent-default);
+  }
+
+  main .toc-v2-content .toc-v2-link.active {
+    font-weight: 700;
+  }
+
+  .toc-v2-social-icons {
+    padding: var(--spacing-300) 0;
+    border-top: 1px solid #e0e0e0;
+  }
+}
 
 /* ============================================================================
    PRINT STYLES
@@ -300,8 +355,8 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   }
 
   .toc-v2-content {
-    max-height: none !important;
-    display: block !important;
+    max-height: none;
+    display: block;
   }
 
   .toc-v2-social-icons {
