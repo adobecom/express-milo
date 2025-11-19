@@ -1,10 +1,6 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
-
 const CONFIG = {
   breakpoints: {
     desktop: 1024,
@@ -25,10 +21,6 @@ const CONFIG = {
   },
 };
 
-// ============================================================================
-// UTILITIES
-// ============================================================================
-
 let createTag;
 let getMetadata;
 
@@ -39,10 +31,6 @@ let getMetadata;
 function isDesktop() {
   return window.innerWidth >= CONFIG.breakpoints.desktop;
 }
-
-// ============================================================================
-// DATA LAYER
-// ============================================================================
 
 /**
  * Builds configuration object from block HTML structure
@@ -97,10 +85,6 @@ function buildBlockConfig(block) {
     ...el,
   }), { title, ariaLabel });
 }
-
-// ============================================================================
-// DOM CREATION
-// ============================================================================
 
 /**
  * Creates the main TOC container
@@ -498,8 +482,8 @@ function updateDesktopPosition(tocContainer) {
   const initialTop = parseFloat(tocContainer.dataset.initialTop);
   const scrollY = window.pageYOffset;
 
-  // Calculate desired top position (100px from viewport top when fixed)
-  const fixedTopPosition = 100;
+  // Calculate desired top position (115px from viewport top when fixed)
+  const fixedTopPosition = 115;
 
   // Calculate the current top position:
   // Before scrolling past the initial position, TOC should appear to stay with content

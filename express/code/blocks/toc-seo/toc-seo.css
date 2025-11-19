@@ -282,19 +282,19 @@
      DESKTOP (≥ 1024px)
      ============================================================================ */
   
-  @media (min-width: 1024px) {
-    .toc-v2-container {
-      position: fixed;
-      top: var(--toc-top-position, 100px);
-      left: var(--spacing-600);
-      width: var(--ax-grid-3-col-width);
-      margin: 0;
-      background: var(--color-gray-100);
-      border: none;
-      border-radius: 8px;
-      overflow: visible;
-      z-index: 1;
-    }
+   @media (min-width: 1024px) {
+     .toc-v2-container {
+       position: fixed;
+       top: var(--toc-top-position, 115px);
+       left: var(--spacing-600);
+       width: var(--ax-grid-3-col-width);
+       margin: 0;
+       background: var(--color-gray-100);
+       border: none;
+       border-radius: 8px;
+       overflow: visible;
+       z-index: 1;
+     }
   
     /* Always show content on desktop - no toggle */
     .toc-v2-content {
