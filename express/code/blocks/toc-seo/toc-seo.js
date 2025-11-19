@@ -491,7 +491,7 @@ function updateDesktopPosition(tocContainer) {
   // Calculate and cache the initial absolute position if not already stored
   if (!tocContainer.dataset.initialTop) {
     const highlightRect = highlightElement.getBoundingClientRect();
-    const highlightBottom = window.pageYOffset + highlightRect.bottom;
+    const highlightBottom = window.pageYOffset + highlightRect.bottom + 40; // 50px below highlight
     tocContainer.dataset.initialTop = highlightBottom;
   }
 
