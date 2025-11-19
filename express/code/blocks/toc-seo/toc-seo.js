@@ -477,7 +477,7 @@ function setupSocialSharing(socialContainer) {
 // ============================================================================
 
 /**
- * Calculates and sets the desktop TOC position based on highlight element
+ * Calculates and sets the desktop TOC position based on highlight element and scroll
  * @param {HTMLElement} tocContainer - TOC container element
  */
 function updateDesktopPosition(tocContainer) {
@@ -486,16 +486,31 @@ function updateDesktopPosition(tocContainer) {
   const highlightElement = document.querySelector(CONFIG.selectors.highlight);
   if (!highlightElement) return;
 
-  const highlightRect = highlightElement.getBoundingClientRect();
-  const highlightBottom = window.pageYOffset + highlightRect.bottom;
+  // Calculate and cache the initial absolute position if not already stored
+  if (!tocContainer.dataset.initialTop) {
+    const highlightRect = highlightElement.getBoundingClientRect();
+    const highlightBottom = window.pageYOffset + highlightRect.bottom;
+    tocContainer.dataset.initialTop = highlightBottom;
+  }
 
-  // Position TOC below highlight element
-  let topPosition = highlightBottom;
+  const initialTop = parseFloat(tocContainer.dataset.initialTop);
+  const scrollY = window.pageYOffset;
 
-  // Ensure minimum distance from top
-  topPosition = Math.max(topPosition, 100);
+  // Calculate desired top position (100px from viewport top when fixed)
+  const fixedTopPosition = 100;
 
-  // Apply position
+  // Calculate the current top position:
+  // Before scrolling past the initial position, TOC should appear to stay with content
+  // After scrolling past, it should stick to the viewport
+  let topPosition;
+  if (scrollY >= initialTop - fixedTopPosition) {
+    // Scrolled past: stick to viewport
+    topPosition = fixedTopPosition;
+  } else {
+    // Not scrolled past yet: calculate position relative to viewport
+    topPosition = initialTop - scrollY;
+  }
+
   tocContainer.style.setProperty('--toc-top-position', `${topPosition}px`);
   tocContainer.classList.add('toc-desktop');
 }
@@ -567,13 +582,19 @@ function setupDesktop(tocContainer) {
 
   // Return update functions
   return {
-    onScroll: () => updateActiveLink(tocContainer),
+    onScroll: () => {
+      updateDesktopPosition(tocContainer); // Update position on scroll
+      updateActiveLink(tocContainer);
+    },
     onResize: () => {
       if (isDesktop()) {
+        // Reset cached position on resize
+        delete tocContainer.dataset.initialTop;
         updateDesktopPosition(tocContainer);
         updateActiveLink(tocContainer);
       } else {
         tocContainer.classList.remove('toc-desktop');
+        tocContainer.classList.remove('toc-desktop-fixed');
         tocContainer.style.removeProperty('--toc-top-position');
       }
     },

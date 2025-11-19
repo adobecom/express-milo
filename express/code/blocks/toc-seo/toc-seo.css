@@ -285,7 +285,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 @media (min-width: 1024px) {
   .toc-v2-container {
     position: fixed;
-    top: var(--toc-top-position, 200px);
+    top: var(--toc-top-position, 100px);
     left: 0;
     width: var(--ax-grid-3-col-width);
     margin: 0;
