@@ -286,10 +286,9 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   .toc-v2-container {
     position: fixed;
     top: var(--toc-top-position, 100px);
-    left: 0;
+    left: var(--spacing-600);
     width: var(--ax-grid-3-col-width);
     margin: 0;
-    padding-left: var(--spacing-600);
     background: var(--color-gray-100);
     border: none;
     border-radius: 8px;
@@ -323,7 +322,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   }
 
   .toc-v2-social-icons {
-    padding: var(--spacing-300) var(--spacing-300);
+    padding: var(--spacing-300);
   }
 }
 
