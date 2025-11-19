@@ -323,11 +323,6 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
     position: relative;
   }
 
-  /* Active link styling - bold only, no border */
-  main .toc-v2-content .toc-v2-link.active {
-    font-weight: 700;
-  }
-
   .toc-v2-social-icons {
     padding: var(--spacing-300) 0;
     border-top: 1px solid #e0e0e0;
