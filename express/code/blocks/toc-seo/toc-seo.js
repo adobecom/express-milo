@@ -10,6 +10,7 @@ const CONFIG = {
     section: 'main .section',
     headers: 'main .section.long-form .content h2, main .section.long-form .content h3, main .section.long-form .content h4',
     navigation: '.global-navigation, header',
+    stopElement: '.ax-link-list-v2-container',
   },
   scrollOffset: {
     mobile: 75,
@@ -501,6 +502,23 @@ function updateDesktopPosition(tocContainer) {
 
   // Ensure we never position higher than the minimum
   topPosition = Math.max(topPosition, minTopPosition);
+
+  // Check if there's a stop element we shouldn't scroll past
+  const stopElement = document.querySelector(CONFIG.selectors.stopElement);
+  if (stopElement) {
+    const stopRect = stopElement.getBoundingClientRect();
+    const stopTop = stopRect.top; // Position relative to viewport
+    const tocHeight = tocContainer.offsetHeight;
+
+    // If the TOC would overlap with the stop element, limit its position
+    // We want: topPosition + tocHeight <= stopTop
+    // So: topPosition <= stopTop - tocHeight
+    const maxTopPosition = stopTop - tocHeight - 20; // 20px buffer
+
+    if (topPosition > maxTopPosition) {
+      topPosition = maxTopPosition;
+    }
+  }
 
   tocContainer.style.setProperty('--toc-top-position', `${topPosition}px`);
   tocContainer.classList.add('toc-desktop');
