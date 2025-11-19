@@ -299,7 +299,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   /* Always show content on desktop - no toggle */
   .toc-v2-content {
     display: block;
-    padding: 0;
+    padding: var(--spacing-300);
     max-height: 500px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -311,12 +311,12 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   }
 
   .toc-v2-title {
-    padding: 0 0 var(--spacing-200) 0;
+    padding: var(--spacing-300) var(--spacing-300) var(--spacing-200) var(--spacing-300);
     cursor: default;
   }
 
   main .toc-v2-content .toc-v2-link {
-    padding: var(--spacing-100) var(--spacing-400);
+    padding: var(--spacing-100) 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -324,7 +324,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   }
 
   .toc-v2-social-icons {
-    padding: var(--spacing-300) 0;
+    padding: var(--spacing-300) var(--spacing-300);
     border-top: 1px solid #e0e0e0;
   }
 }
