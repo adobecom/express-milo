@@ -282,10 +282,16 @@ function scrollToTOC(tocContainer) {
  * Sets up floating button behavior for mobile and tablet
  * @param {HTMLElement} floatingButton - Floating button element
  * @param {HTMLElement} tocContainer - TOC container element
+ * @returns {Function} Update function for consolidated scroll handler
  */
 function setupFloatingButton(floatingButton, tocContainer) {
-  // Show/hide button based on scroll position
-  const handleScroll = () => {
+  // Click handler
+  floatingButton.addEventListener('click', () => {
+    scrollToTOC(tocContainer);
+  });
+
+  // Return update function to be called by consolidated scroll handler
+  return () => {
     if (!isDesktop()) {
       const tocRect = tocContainer.getBoundingClientRect();
       // Show button when TOC is scrolled out of view (above viewport)
@@ -299,18 +305,6 @@ function setupFloatingButton(floatingButton, tocContainer) {
       floatingButton.classList.remove('visible');
     }
   };
-
-  // Click handler
-  floatingButton.addEventListener('click', () => {
-    scrollToTOC(tocContainer);
-  });
-
-  // Scroll listener
-  window.addEventListener('scroll', handleScroll);
-  window.addEventListener('resize', handleScroll);
-
-  // Initial check
-  handleScroll();
 }
 
 /**
@@ -513,13 +507,18 @@ function updateDesktopPosition(tocContainer) {
 function updateActiveLink(tocContainer) {
   if (!isDesktop()) return;
 
-  const headers = document.querySelectorAll(CONFIG.selectors.headers);
-  const tocLinks = tocContainer.querySelectorAll('.toc-v2-link');
+  // Cache these queries (they don't change after page load)
+  if (!updateActiveLink.headers) {
+    updateActiveLink.headers = document.querySelectorAll(CONFIG.selectors.headers);
+    updateActiveLink.tocLinks = tocContainer.querySelectorAll('.toc-v2-link');
+    updateActiveLink.tocTitle = tocContainer.querySelector('.toc-v2-title');
+  }
+
+  const { headers, tocLinks, tocTitle } = updateActiveLink;
 
   if (!headers.length || !tocLinks.length) return;
 
   // Get TOC title position for offset
-  const tocTitle = tocContainer.querySelector('.toc-v2-title');
   const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect() : { top: 200 };
   const offset = tocTitleRect.top + 20;
 
@@ -557,38 +556,74 @@ function updateActiveLink(tocContainer) {
 /**
  * Sets up desktop positioning and active link tracking
  * @param {HTMLElement} tocContainer - TOC container element
+ * @returns {Object} Update functions for consolidated handlers
  */
 function setupDesktop(tocContainer) {
-  if (!isDesktop()) return;
+  if (!isDesktop()) return null;
 
   // Initial position
   updateDesktopPosition(tocContainer);
+  updateActiveLink(tocContainer);
 
-  // Update on scroll (with throttling)
-  let scrollTimeout;
+  // Return update functions
+  return {
+    onScroll: () => updateActiveLink(tocContainer),
+    onResize: () => {
+      if (isDesktop()) {
+        updateDesktopPosition(tocContainer);
+        updateActiveLink(tocContainer);
+      } else {
+        tocContainer.classList.remove('toc-desktop');
+        tocContainer.style.removeProperty('--toc-top-position');
+      }
+    },
+  };
+}
+
+// ============================================================================
+// PERFORMANCE - CONSOLIDATED EVENT HANDLERS
+// ============================================================================
+
+/**
+ * Creates a consolidated, optimized scroll/resize handler
+ * @param {Array} updateFunctions - Array of update functions to call
+ * @returns {Object} Cleanup functions
+ */
+function setupConsolidatedHandlers(updateFunctions) {
+  let scrollTicking = false;
+  let resizeTicking = false;
+
+  // RAF-throttled scroll handler
   const handleScroll = () => {
-    if (scrollTimeout) return;
-    scrollTimeout = setTimeout(() => {
-      updateActiveLink(tocContainer);
-      scrollTimeout = null;
-    }, 100);
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateFunctions.forEach((fn) => fn && fn.onScroll && fn.onScroll());
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
   };
 
-  window.addEventListener('scroll', handleScroll);
-
-  // Update on resize
-  window.addEventListener('resize', () => {
-    if (isDesktop()) {
-      updateDesktopPosition(tocContainer);
-      updateActiveLink(tocContainer);
-    } else {
-      tocContainer.classList.remove('toc-desktop');
-      tocContainer.style.removeProperty('--toc-top-position');
+  // RAF-throttled resize handler
+  const handleResize = () => {
+    if (!resizeTicking) {
+      requestAnimationFrame(() => {
+        updateFunctions.forEach((fn) => fn && fn.onResize && fn.onResize());
+        resizeTicking = false;
+      });
+      resizeTicking = true;
     }
-  });
+  };
 
-  // Initial active link
-  updateActiveLink(tocContainer);
+  // Add passive listeners for better scroll performance
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('resize', handleResize, { passive: true });
+
+  // Return cleanup function (for potential future use)
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', handleResize);
+  };
 }
 
 // ============================================================================
@@ -657,12 +692,23 @@ export default async function decorate(block) {
 
     // Phase 7: Insert floating button and setup behavior (mobile/tablet only)
     document.body.appendChild(floatingButton);
-    setupFloatingButton(floatingButton, container);
+    const floatingButtonUpdate = setupFloatingButton(floatingButton, container);
 
     // Phase 8: Setup desktop positioning and active link tracking
-    if (isDesktop()) {
-      setupDesktop(container);
-    }
+    const desktopHandlers = isDesktop() ? setupDesktop(container) : null;
+
+    // Phase 9: Setup consolidated, optimized event handlers
+    const updateFunctions = [
+      // Floating button update (has onScroll and onResize)
+      { onScroll: floatingButtonUpdate, onResize: floatingButtonUpdate },
+      // Desktop handlers (has onScroll and onResize)
+      desktopHandlers,
+    ];
+
+    setupConsolidatedHandlers(updateFunctions);
+
+    // Initial call for floating button
+    floatingButtonUpdate();
 
     // Hide original block
     block.style.display = 'none';
