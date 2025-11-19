@@ -1,0 +1,353 @@
+/* ============================================================================
+   TOC SEO V2 - Mobile First Styles
+   ============================================================================ */
+
+/* ============================================================================
+   CONTAINER - Mobile/Tablet (< 1024px)
+   ============================================================================ */
+
+   .toc-v2-container {
+    margin: var(--spacing-350) 0;
+    background-color: var(--color-white);
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    overflow: hidden;
+  }
+  
+  /* ============================================================================
+     TITLE BAR
+     ============================================================================ */
+  
+  .toc-v2-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-300) var(--spacing-350);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2c2c;
+    text-align: left;
+    outline: none;
+  }
+  
+  .toc-v2-title:focus-visible {
+    outline: 2px solid #5258E4;
+    outline-offset: -2px;
+  }
+  
+  .toc-v2-title-text {
+    flex: 1;
+  }
+  
+  /* ============================================================================
+     CHEVRON ICON
+     ============================================================================ */
+  
+  main .toc-v2-chevron {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: var(--spacing-200);
+  }
+  
+  main .toc-v2-container.open .toc-v2-chevron {
+    transform: rotate(180deg);
+  }
+  
+  /* ============================================================================
+     CONTENT - Expand/Collapse
+     ============================================================================ */
+  
+  .toc-v2-content {
+    display: none;
+    padding: 0 var(--spacing-350);
+  }
+  
+  .toc-v2-container.open .toc-v2-content {
+    display: block;
+    padding: 0 var(--spacing-350) var(--spacing-300) var(--spacing-350);
+  }
+  
+  /* ============================================================================
+     NAVIGATION LINKS
+     ============================================================================ */
+  
+  main .toc-v2-content .toc-v2-link {
+    display: block;
+    padding: var(--spacing-200) 0;
+    color: var(--color-background-accent-default);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+  
+  main .toc-v2-content .toc-v2-link:hover {
+    color: var(--color-background-accent-default);
+  }
+  
+  main .toc-v2-content .toc-v2-link:focus {
+    outline: 2px solid var(--color-background-accent-default);
+    outline-offset: 2px;
+    color: var(--color-background-accent-default);
+  }
+  
+  /* Remove focus outline when not using keyboard */
+  main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
+    outline: none;
+  }
+  
+  /* ============================================================================
+     SOCIAL ICONS
+     ============================================================================ */
+  
+  .toc-v2-social-icons {
+    display: flex;
+    gap: var(--spacing-300);
+    padding: var(--spacing-300) var(--spacing-350);
+  }
+  
+  /* Hide social icons when collapsed */
+  .toc-v2-container:not(.open) .toc-v2-social-icons {
+    display: none;
+  }
+  
+  .toc-v2-social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .toc-v2-social-icons a:focus {
+    outline: 2px solid #5258E4;
+    outline-offset: 2px;
+  }
+  
+  .toc-v2-social-icons svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-dark-gray);
+    transition: fill 0.2s ease;
+  }
+  
+  /* ============================================================================
+     COPY TO CLIPBOARD TOOLTIP
+     ============================================================================ */
+  
+  .toc-v2-copied-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: var(--spacing-100);
+    padding: var(--spacing-80) var(--spacing-200);
+    background-color: #2c2c2c;
+    color: var(--color-white);
+    font-size: 12px;
+    white-space: nowrap;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInOut 3s ease-in-out;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(5px); }
+    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+  }
+  
+  .toc-v2-social-icons a.copy-success svg {
+    fill: #2d9d78;
+  }
+  
+  .toc-v2-social-icons a.copy-failure svg {
+    fill: #e34850;
+  }
+  
+  /* ============================================================================
+     FLOATING BACK TO TOC BUTTON (Mobile & Tablet < 1024px)
+     ============================================================================ */
+  
+  .toc-v2-floating-button {
+    position: fixed;
+    bottom: var(--spacing-350);
+    right: var(--spacing-350);
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-black);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    padding: 11px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    z-index: 1000;
+  }
+  
+  .toc-v2-floating-button.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+  
+  .toc-v2-floating-button:hover {
+    background-color: #333;
+  }
+  
+  .toc-v2-floating-button:active {
+    transform: scale(0.95);
+  }
+  
+  .toc-v2-floating-icon {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  
+  /* Hide floating button on desktop only */
+  @media (min-width: 1024px) {
+    .toc-v2-floating-button {
+      display: none;
+    }
+  }
+  
+  /* ============================================================================
+     ACCESSIBILITY
+     ============================================================================ */
+  
+  .sr-only {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  
+  /* ============================================================================
+     TABLET ADJUSTMENTS (768px - 1023px)
+     ============================================================================ */
+  
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .toc-v2-container {
+      margin: var(--spacing-400) auto;
+      max-width: var(--ax-grid-7-col-width);
+    }
+  
+    .toc-v2-title {
+      font-size: 20px;
+      padding: var(--spacing-325) var(--spacing-400);
+    }
+  
+    .toc-v2-content {
+      padding: 0 var(--spacing-400);
+    }
+  
+    .toc-v2-container.open .toc-v2-content {
+      padding: 0 var(--spacing-400) var(--spacing-350) var(--spacing-400);
+    }
+  
+    .toc-v2-link {
+      font-size: 17px;
+      padding: var(--spacing-250) 0;
+    }
+  
+    .toc-v2-social-icons {
+      padding: var(--spacing-325) var(--spacing-400);
+      gap: var(--spacing-350);
+    }
+  
+    .toc-v2-social-icons svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+  
+  /* ============================================================================
+     DESKTOP (≥ 1024px)
+     ============================================================================ */
+  
+  @media (min-width: 1024px) {
+    .toc-v2-container {
+      position: fixed;
+      top: var(--toc-top-position, 100px);
+      left: var(--spacing-600);
+      width: var(--ax-grid-3-col-width);
+      margin: 0;
+      background: var(--color-gray-100);
+      border: none;
+      border-radius: 8px;
+      overflow: visible;
+      z-index: 1;
+    }
+  
+    /* Always show content on desktop - no toggle */
+    .toc-v2-content {
+      display: block;
+      padding: var(--spacing-300);
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  
+    /* Hide chevron on desktop */
+    main .toc-v2-chevron {
+      display: none;
+    }
+  
+    .toc-v2-title {
+      padding: var(--spacing-300) var(--spacing-300) var(--spacing-200) var(--spacing-300);
+      cursor: default;
+    }
+  
+    main .toc-v2-content .toc-v2-link {
+      padding: var(--spacing-100) 0;
+      white-space: normal;
+      position: relative;
+    }
+  
+    .toc-v2-social-icons {
+      padding: var(--spacing-300);
+    }
+  }
+  
+  /* ============================================================================
+     PRINT STYLES
+     ============================================================================ */
+  
+  @media print {
+    .toc-v2-container {
+      border: 1px solid #ccc;
+      page-break-inside: avoid;
+    }
+  
+    .toc-v2-content {
+      max-height: none;
+      display: block;
+    }
+  
+    .toc-v2-social-icons {
+      display: none;
+    }
+  
+    .toc-v2-chevron {
+      display: none;
+    }
+  }
+  
+  
