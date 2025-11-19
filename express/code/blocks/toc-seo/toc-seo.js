@@ -481,7 +481,7 @@ function updateDesktopPosition(tocContainer) {
   // Calculate and cache the initial absolute position if not already stored
   if (!tocContainer.dataset.initialTop) {
     const highlightRect = highlightElement.getBoundingClientRect();
-    const highlightBottom = window.pageYOffset + highlightRect.bottom + 40; // 50px below highlight
+    const highlightBottom = window.pageYOffset + highlightRect.bottom + 40; // 40px below highlight
     tocContainer.dataset.initialTop = highlightBottom;
   }
 
@@ -490,6 +490,7 @@ function updateDesktopPosition(tocContainer) {
 
   // Calculate desired top position (115px from viewport top when fixed)
   const fixedTopPosition = 115;
+  const minTopPosition = 115; // Never position higher than this
 
   // Calculate the current top position:
   // Before scrolling past the initial position, TOC should appear to stay with content
@@ -502,6 +503,9 @@ function updateDesktopPosition(tocContainer) {
     // Not scrolled past yet: calculate position relative to viewport
     topPosition = initialTop - scrollY;
   }
+
+  // Ensure we never position higher than the minimum
+  topPosition = Math.max(topPosition, minTopPosition);
 
   tocContainer.style.setProperty('--toc-top-position', `${topPosition}px`);
   tocContainer.classList.add('toc-desktop');
@@ -566,22 +570,25 @@ function updateActiveLink(tocContainer) {
  * @returns {Object} Update functions for consolidated handlers
  */
 function setupDesktop(tocContainer) {
-  if (!isDesktop()) return null;
+  // Initial position (only if already on desktop)
+  if (isDesktop()) {
+    updateDesktopPosition(tocContainer);
+    updateActiveLink(tocContainer);
+  }
 
-  // Initial position
-  updateDesktopPosition(tocContainer);
-  updateActiveLink(tocContainer);
-
-  // Return update functions
+  // Always return handlers, they check viewport internally
   return {
     onScroll: () => {
-      updateDesktopPosition(tocContainer); // Update position on scroll
-      updateActiveLink(tocContainer);
+      if (isDesktop()) {
+        updateDesktopPosition(tocContainer);
+        updateActiveLink(tocContainer);
+      }
     },
     onResize: () => {
+      // Always reset cached position on resize to ensure correct positioning
+      delete tocContainer.dataset.initialTop;
+
       if (isDesktop()) {
-        // Reset cached position on resize
-        delete tocContainer.dataset.initialTop;
         updateDesktopPosition(tocContainer);
         updateActiveLink(tocContainer);
       } else {
@@ -708,7 +715,7 @@ export default async function decorate(block) {
     const floatingButtonUpdate = setupFloatingButton(floatingButton, container);
 
     // Phase 8: Setup desktop positioning and active link tracking
-    const desktopHandlers = isDesktop() ? setupDesktop(container) : null;
+    const desktopHandlers = setupDesktop(container);
 
     // Phase 9: Setup consolidated, optimized event handlers
     const updateFunctions = [
