@@ -300,7 +300,7 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
   .toc-v2-content {
     display: block;
     padding: 0;
-    max-height: 375px;
+    max-height: 500px;
     overflow-y: auto;
     overflow-x: hidden;
   }
