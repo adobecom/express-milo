@@ -24,7 +24,7 @@ import {
   EXPERIMENTAL_VARIANTS_PROMOID_MAP,
 } from '../../scripts/utils/frictionless-utils.js';
 
-import { EasyUploadVariants, EasyUploadVariantsPromoidMap } from '../../scripts/utils/easy-upload-utils.js';
+import { EasyUploadControls, EasyUploadVariants, EasyUploadVariantsPromoidMap } from '../../scripts/utils/easy-upload-utils.js';
 
 let createTag;
 let getConfig;
@@ -104,6 +104,16 @@ function easyUploadExperiment(quickActionId, docConfig, appConfig, exportConfig,
     case EasyUploadVariants.cropImageEasyUploadVariant:
       ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
       break;
+    case EasyUploadVariants.convertToJPEGEasyUploadVariant:
+      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadVariants.convertToPNGEasyUploadVariant:
+      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadVariants.convertToSVGEasyUploadVariant:
+      exportConfig.pop();
+      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
+      break;
     case EasyUploadControls.removeBackgroundEasyUploadControl:
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
@@ -112,6 +122,16 @@ function easyUploadExperiment(quickActionId, docConfig, appConfig, exportConfig,
       break;
     case EasyUploadControls.cropImageEasyUploadControl:
       ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.convertToJPEGEasyUploadControl:
+      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.convertToPNGEasyUploadControl:
+      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case EasyUploadControls.convertToSVGEasyUploadControl:
+      exportConfig.pop();
+      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
       break;
     default:
       break;
@@ -467,7 +487,7 @@ export function applySearchParamsToUrl(url, searchParams) {
 async function buildEditorUrl(quickAction, assetId, dimensions) {
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
   let url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
-  const isImageEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor;
+  const isImageEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.editImageVariant || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.editImageControl;
 
   if (isImageEditor && url.pathname === EXPRESS_ROUTE_PATHS.focusedEditor) {
     url = new URL(frictionlessTargetBaseUrl);
@@ -738,7 +758,7 @@ export default async function decorate(block) {
         if (!uploadService) {
           throw new Error('Upload service not initialized');
         }
-        const easyUpload = new EasyUpload(
+        window.easyUpload = new EasyUpload(
           uploadService,
           env.name,
           quickAction,
@@ -747,7 +767,7 @@ export default async function decorate(block) {
           createTag,
           showErrorToast
         );
-        await easyUpload.setupQRCodeInterface();
+        await window.easyUpload.setupQRCodeInterface();
       } catch (error) {
         console.error('Failed to load QR code library:', error);
       }

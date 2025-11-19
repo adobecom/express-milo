@@ -35,12 +35,20 @@ export const EasyUploadVariants = {
     removeBackgroundEasyUploadVariant: 'remove-background-easy-upload-variant',
     resizeImageEasyUploadVariant: 'resize-image-easy-upload-variant',
     cropImageEasyUploadVariant: 'crop-image-easy-upload-variant',
+    convertToJPEGEasyUploadVariant: 'convert-to-jpeg-easy-upload-variant',
+    convertToPNGEasyUploadVariant: 'convert-to-png-easy-upload-variant',
+    convertToSVGEasyUploadVariant: 'convert-to-svg-easy-upload-variant',
+    editImageEasyUploadVariant: 'edit-image-easy-upload-variant',
 };
 
 export const EasyUploadControls = {
     removeBackgroundEasyUploadControl: 'remove-background-easy-upload-control',
     resizeImageEasyUploadControl: 'resize-image-easy-upload-control',
     cropImageEasyUploadControl: 'crop-image-easy-upload-control',
+    convertToJPEGEasyUploadControl: 'convert-to-jpeg-easy-upload-control',
+    convertToPNGEasyUploadControl: 'convert-to-png-easy-upload-control',
+    convertToSVGEasyUploadControl: 'convert-to-svg-easy-upload-control',
+    editImageEasyUploadControl: 'edit-image-easy-upload-control',
 };
 
 export const EasyUploadVariantsPromoidMap = {
@@ -50,6 +58,14 @@ export const EasyUploadVariantsPromoidMap = {
     [EasyUploadControls.removeBackgroundEasyUploadControl]: '<To be added>',
     [EasyUploadControls.resizeImageEasyUploadControl]: '<To be added>',
     [EasyUploadControls.cropImageEasyUploadControl]: '<To be added>',
+    [EasyUploadControls.convertToJPEGEasyUploadControl]: '<To be added>',
+    [EasyUploadControls.convertToPNGEasyUploadControl]: '<To be added>',
+    [EasyUploadControls.convertToSVGEasyUploadControl]: '<To be added>',
+    [EasyUploadVariants.convertToJPEGEasyUploadVariant]: '<To be added>',
+    [EasyUploadVariants.convertToPNGEasyUploadVariant]: '<To be added>',
+    [EasyUploadVariants.convertToSVGEasyUploadVariant]: '<To be added>',
+    [EasyUploadControls.editImageEasyUploadControl]: '<To be added>',
+    [EasyUploadVariants.editImageEasyUploadVariant]: '<To be added>',
 };
 
 const QR_CODE_CDN_URL = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';

@@ -110,9 +110,17 @@ export const QA_CONFIGS = {
   'remove-background-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'resize-image-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
   'crop-image-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'convert-to-jpeg-easy-upload-variant': { ...getBaseImgCfg(PNG, WEBP) },
+  'convert-to-png-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
+  'convert-to-svg-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'edit-image-easy-upload-variant': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
   'remove-background-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'resize-image-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
   'crop-image-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'convert-to-jpeg-easy-upload-control': { ...getBaseImgCfg(PNG, WEBP) },
+  'convert-to-png-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
+  'convert-to-svg-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'edit-image-easy-upload-control': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
 };
 
 // Experimental variants
@@ -135,7 +143,9 @@ export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
   videoEditor: 'edit-video',
   imageEditor: 'edit-image',
   removeBackgroundVariant1: 'qa-in-product-variant1',
-  removeBackgroundVariant2: 'qa-in-product-variant2'
+  removeBackgroundVariant2: 'qa-in-product-variant2',
+  editImageVariant: 'edit-image-easy-upload-variant',
+  editImageControl: 'edit-image-easy-upload-control',
 };
 
 export const EasyUploadVariant = 'qa-easy-upload';
