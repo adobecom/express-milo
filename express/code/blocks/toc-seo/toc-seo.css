@@ -9,7 +9,8 @@
 .toc-v2-container {
   margin: var(--spacing-350) 0;
   background-color: var(--color-white);
-  border: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   overflow: hidden;
 }
 
@@ -244,7 +245,8 @@ main .toc-v2-content .toc-v2-link:focus:not(:focus-visible) {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .toc-v2-container {
-    margin: var(--spacing-400) 0;
+    margin: var(--spacing-400) auto;
+    max-width: var(--ax-grid-7-col-width);
   }
 
   .toc-v2-title {
