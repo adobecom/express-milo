@@ -197,7 +197,7 @@ function checkFile(filePath, colorVars, spacingVars) {
   }
 
   // Find spacing values
-  const spacingRegex = /(margin(?:-top|-right|-bottom|-left|-inline-start|-inline-end)?|padding(?:-top|-right|-bottom|-left|-inline-start|-inline-end)?|gap|top|right|bottom|left|width|height|min-width|max-width|min-height|max-height):\s*([^;]+);/g;
+  const spacingRegex = /(margin(?:-top|-right|-bottom|-left|-inline-start|-inline-end)?|padding(?:-top|-right|-bottom|-left|-inline-start|-inline-end)?|gap|top|right|bottom|left):\s*([^;]+);/g;
   match = spacingRegex.exec(content);
 
   while (match !== null) {
