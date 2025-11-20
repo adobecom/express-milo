@@ -1,17 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
+import { getTextWidth, LONG_TEXT_CUTOFF } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-const LONG_TEXT_CUTOFF = 70;
-
-const getTextWidth = (text, font) => {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  context.font = font;
-  const metrics = context.measureText(text);
-  return metrics.width;
-};
 
 function buildAction(entry, buttonType) {
   const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
