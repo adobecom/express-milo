@@ -8,7 +8,7 @@ main  .floating-button-wrapper.mobile-fork-button, main .mobile-fork-button {
 }
 
 main .mobile-fork-button.long-text {
-    --mfb-font-size: 14px;
+    --mfb-font-size: var(--body-font-size-m);
 }
 
 main .mobile-gating-text {
