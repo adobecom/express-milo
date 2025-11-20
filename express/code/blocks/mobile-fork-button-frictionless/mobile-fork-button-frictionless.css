@@ -4,7 +4,7 @@ main  .floating-button-wrapper.mobile-fork-button-frictionless, main .mobile-for
 }
 
 main .mobile-fork-button-frictionless.long-text {
-    --mfb-font-size: 14px;
+    --mfb-font-size: var(--body-font-size-s);
 }
 
 main .mobile-gating-text {
