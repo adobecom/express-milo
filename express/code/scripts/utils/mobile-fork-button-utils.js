@@ -18,3 +18,14 @@ export const getTextWidth = (text, font) => {
   const metrics = context.measureText(text);
   return metrics.width;
 };
+
+/**
+ * Creates a key-value map of all metadata tags from the document head
+ * @returns {Object} Map of metadata name to content
+ */
+export function createMetadataMap() {
+  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
+    if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
+    return acc;
+  }, {});
+}

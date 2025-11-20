@@ -6,7 +6,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 function buildAction(entry, buttonType) {
   const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
@@ -33,13 +33,6 @@ export async function createMultiFunctionButton(block, data, audience) {
   buttonWrapper.classList.add('multifunction', 'mobile-fork-button-frictionless');
   buildMobileGating(buttonWrapper.querySelector('.floating-button'), data);
   return buttonWrapper;
-}
-
-function createMetadataMap() {
-  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
-    if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
-    return acc;
-  }, {});
 }
 
 function createToolData(metadataMap, index, eligible) {

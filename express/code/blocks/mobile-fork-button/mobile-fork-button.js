@@ -1,6 +1,6 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
 
@@ -39,13 +39,6 @@ export async function createMultiFunctionButton(block, data, audience) {
 function androidCheck() {
   if (getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
   return getMobileOperatingSystem() === 'Android';
-}
-
-function createMetadataMap() {
-  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
-    if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
-    return acc;
-  }, {});
 }
 
 function createToolData(metadataMap, index) {
