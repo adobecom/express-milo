@@ -50,17 +50,37 @@ export function buildAction(createTag, entry, buttonType) {
 }
 
 /**
- * Builds the mobile gating UI with header and action buttons
+ * Creates a multi-function button with mobile gating
  * @param {Function} createTag - Function to create DOM elements
- * @param {HTMLElement} block - The block element to build gating in
- * @param {Object} data - Data object containing forkButtonHeader and tools
+ * @param {Function} createFloatingButton - Function to create floating button
+ * @param {HTMLElement} block - The block element
+ * @param {Object} data - Data object for the button
+ * @param {string} audience - Target audience
+ * @param {string} variantClassName - Variant-specific class name
+ *   ('mobile-fork-button' or 'mobile-fork-button-frictionless')
+ * @returns {Promise<HTMLElement>} The button wrapper element
  */
-export function buildMobileGating(createTag, block, data) {
-  block.children[0].remove();
-  const header = createTag('div', {
-    class:
-      'mobile-gating-header',
-  });
+export async function createMultiFunctionButton(
+  createTag,
+  createFloatingButton,
+  block,
+  data,
+  audience,
+  variantClassName,
+) {
+  const buttonWrapper = await createFloatingButton(block, audience, data);
+  buttonWrapper.classList.add('multifunction', variantClassName);
+
+  // Build mobile gating UI
+  const floatingButton = buttonWrapper.querySelector('.floating-button');
+  floatingButton.children[0].remove();
+  const header = createTag('div', { class: 'mobile-gating-header' });
   header.textContent = data.forkButtonHeader;
-  block.append(header, buildAction(createTag, data.tools[0], 'accent'), buildAction(createTag, data.tools[1], 'outline'));
+  floatingButton.append(
+    header,
+    buildAction(createTag, data.tools[0], 'accent'),
+    buildAction(createTag, data.tools[1], 'outline'),
+  );
+
+  return buttonWrapper;
 }

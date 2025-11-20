@@ -6,14 +6,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildMobileGating } from '../../scripts/utils/mobile-fork-button-utils.js';
-
-export async function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = await createFloatingButton(block, audience, data);
-  buttonWrapper.classList.add('multifunction', 'mobile-fork-button-frictionless');
-  buildMobileGating(createTag, buttonWrapper.querySelector('.floating-button'), data);
-  return buttonWrapper;
-}
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 function createToolData(metadataMap, index, eligible) {
   const prefix = `fork-cta-${index}`;
@@ -88,7 +81,14 @@ export default async function decorate(block) {
   }
 
   const data = collectFloatingButtonData(eligible);
-  const blockWrapper = await createMultiFunctionButton(block, data, audience);
+  const blockWrapper = await createMultiFunctionButton(
+    createTag,
+    createFloatingButton,
+    block,
+    data,
+    audience,
+    'mobile-fork-button-frictionless',
+  );
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });

@@ -1,15 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildMobileGating } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-export async function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = await createFloatingButton(block, audience, data);
-  buttonWrapper.classList.add('multifunction', 'mobile-fork-button');
-  buildMobileGating(createTag, buttonWrapper.querySelector('.floating-button'), data);
-  return buttonWrapper;
-}
 
 // Checks if the device is an android, enables the mobile gating if it is.
 // If there is no metadata check enabled, still enable the gating block in case authors want it.
@@ -91,7 +84,14 @@ export default async function decorate(block) {
     block.closest('.section').remove();
   }
   const data = collectFloatingButtonData();
-  const blockWrapper = await createMultiFunctionButton(block, data, audience);
+  const blockWrapper = await createMultiFunctionButton(
+    createTag,
+    createFloatingButton,
+    block,
+    data,
+    audience,
+    'mobile-fork-button',
+  );
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
