@@ -1,41 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton, androidCheck, createToolData } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { createMultiFunctionButton, androidCheck, collectFloatingButtonData } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-function collectFloatingButtonData() {
-  const metadataMap = createMetadataMap();
-  const getMetadataLocal = (key) => metadataMap[key];
-
-  const data = {
-    scrollState: 'withLottie',
-    showAppStoreBadge: ['on'].includes(getMetadataLocal('show-floating-cta-app-store-badge')?.toLowerCase()),
-    toolsToStash: getMetadataLocal('ctas-above-divider'),
-    delay: getMetadataLocal('floating-cta-drawer-delay') || 0,
-    tools: [],
-    mainCta: {
-      desktopHref: getMetadataLocal('desktop-floating-cta-link'),
-      desktopText: getMetadataLocal('desktop-floating-cta-text'),
-      mobileHref: getMetadataLocal('mobile-floating-cta-link'),
-      mobileText: getMetadataLocal('mobile-floating-cta-text'),
-      href: getMetadataLocal('main-cta-link'),
-      text: getMetadataLocal('main-cta-text'),
-    },
-    bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
-    live: getMetadataLocal('floating-cta-live'),
-    forkButtonHeader: getMetadataLocal('fork-button-header'),
-  };
-  for (let i = 1; i < 3; i += 1) {
-    const toolData = createToolData(createTag, getIconElementDeprecated, metadataMap, i);
-    data.tools.push(toolData);
-    if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
-      data.longText = true;
-    }
-  }
-
-  return data;
-}
 
 export default async function decorate(block) {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
@@ -51,7 +18,7 @@ export default async function decorate(block) {
   if (audience === 'mobile') {
     block.closest('.section').remove();
   }
-  const data = collectFloatingButtonData();
+  const data = collectFloatingButtonData(createTag, getIconElementDeprecated);
   const blockWrapper = await createMultiFunctionButton(
     createTag,
     createFloatingButton,

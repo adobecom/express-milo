@@ -1,44 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton, androidCheck, createToolData } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { createMultiFunctionButton, androidCheck, collectFloatingButtonData, createMetadataMap } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-function collectFloatingButtonData() {
-  const metadataMap = createMetadataMap();
-  const getMetadataLocal = (key) => metadataMap[key];
-
-  const data = {
-    scrollState: 'withLottie',
-    showAppStoreBadge: ['on'].includes(getMetadataLocal('show-floating-cta-app-store-badge')?.toLowerCase()),
-    toolsToStash: getMetadataLocal('ctas-above-divider'),
-    delay: getMetadataLocal('floating-cta-drawer-delay') || 0,
-    tools: [],
-    mainCta: {
-      desktopHref: getMetadataLocal('desktop-floating-cta-link'),
-      desktopText: getMetadataLocal('desktop-floating-cta-text'),
-      mobileHref: getMetadataLocal('mobile-floating-cta-link'),
-      mobileText: getMetadataLocal('mobile-floating-cta-text'),
-      href: getMetadataLocal('main-cta-link'),
-      text: getMetadataLocal('main-cta-text'),
-      forkStickyMobileHref: getMetadataLocal('cta-1-link'),
-      forkStickyMobileText: getMetadataLocal('cta-1-text'),
-    },
-    bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
-    live: getMetadataLocal('floating-cta-live'),
-    forkButtonHeader: getMetadataLocal('fork-button-header'),
-  };
-
-  for (let i = 1; i < 3; i += 1) {
-    const toolData = createToolData(createTag, getIconElementDeprecated, metadataMap, i);
-    data.tools.push(toolData);
-    if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
-      data.longText = true;
-    }
-  }
-
-  return data;
-}
 
 async function mWebStickyCTA() {
   const newBlock = createTag(
@@ -50,7 +14,17 @@ async function mWebStickyCTA() {
   oldBlock.replaceWith(newBlock);
 
   const audience = 'mobile';
-  const data = collectFloatingButtonData();
+  const metadataMap = createMetadataMap();
+  const extraMainCtaProps = {
+    forkStickyMobileHref: metadataMap['cta-1-link'],
+    forkStickyMobileText: metadataMap['cta-1-text'],
+  };
+  const data = collectFloatingButtonData(
+    createTag,
+    getIconElementDeprecated,
+    false,
+    extraMainCtaProps,
+  );
 
   data.mainCta.text = data.mainCta.forkStickyMobileText || data.mainCta.text;
   data.mainCta.href = data.mainCta.forkStickyMobileHref || data.mainCta.href;
@@ -111,7 +85,17 @@ export default async function decorate(block) {
   if (audience === 'mobile') {
     block.closest('.section').remove();
   }
-  const data = collectFloatingButtonData();
+  const metadataMap = createMetadataMap();
+  const extraMainCtaProps = {
+    forkStickyMobileHref: metadataMap['cta-1-link'],
+    forkStickyMobileText: metadataMap['cta-1-text'],
+  };
+  const data = collectFloatingButtonData(
+    createTag,
+    getIconElementDeprecated,
+    false,
+    extraMainCtaProps,
+  );
   const blockWrapper = await createMultiFunctionButton(
     createTag,
     createFloatingButton,

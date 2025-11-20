@@ -113,6 +113,62 @@ export function createToolData(
 }
 
 /**
+ * Collects floating button data from metadata
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {Function} getIconElementDeprecated - Function to get icon elements
+ * @param {boolean} useFrictionless - Whether to use frictionless metadata
+ * @param {Object} extraMainCtaProps - Extra properties to add to mainCta (optional)
+ * @returns {Object} Floating button data
+ */
+export function collectFloatingButtonData(
+  createTag,
+  getIconElementDeprecated,
+  useFrictionless = false,
+  extraMainCtaProps = {},
+) {
+  const metadataMap = createMetadataMap();
+  const getMetadataLocal = (key) => metadataMap[key];
+
+  const data = {
+    scrollState: 'withLottie',
+    showAppStoreBadge: ['on'].includes(getMetadataLocal('show-floating-cta-app-store-badge')?.toLowerCase()),
+    toolsToStash: getMetadataLocal('ctas-above-divider'),
+    delay: getMetadataLocal('floating-cta-drawer-delay') || 0,
+    tools: [],
+    mainCta: {
+      desktopHref: getMetadataLocal('desktop-floating-cta-link'),
+      desktopText: getMetadataLocal('desktop-floating-cta-text'),
+      mobileHref: getMetadataLocal('mobile-floating-cta-link'),
+      mobileText: getMetadataLocal('mobile-floating-cta-text'),
+      href: getMetadataLocal('main-cta-link'),
+      text: getMetadataLocal('main-cta-text'),
+      ...extraMainCtaProps,
+    },
+    bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
+    live: getMetadataLocal('floating-cta-live'),
+    forkButtonHeader: getMetadataLocal('fork-button-header'),
+  };
+
+  for (let i = 1; i < 3; i += 1) {
+    const toolData = createToolData(
+      createTag,
+      getIconElementDeprecated,
+      metadataMap,
+      i,
+      useFrictionless,
+    );
+    if (toolData) {
+      data.tools.push(toolData);
+      if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
+        data.longText = true;
+      }
+    }
+  }
+
+  return data;
+}
+
+/**
  * Creates a multi-function button with mobile gating
  * @param {Function} createTag - Function to create DOM elements
  * @param {Function} createFloatingButton - Function to create floating button
