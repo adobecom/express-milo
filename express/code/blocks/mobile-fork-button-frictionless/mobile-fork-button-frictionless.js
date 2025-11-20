@@ -6,34 +6,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton } from '../../scripts/utils/mobile-fork-button-utils.js';
-
-function createToolData(metadataMap, index, eligible) {
-  const prefix = `fork-cta-${index}`;
-  const iconMetadata = (eligible && metadataMap[`${prefix}-icon-frictionless`]) || metadataMap[`${prefix}-icon`];
-  const iconTextMetadata = (eligible && metadataMap[`${prefix}-icon-text-frictionless`]) || metadataMap[`${prefix}-icon-text`];
-  const hrefMetadata = (eligible && metadataMap[`${prefix}-link-frictionless`]) || metadataMap[`${prefix}-link`] || '';
-  const textMetadata = (eligible && metadataMap[`${prefix}-text-frictionless`]) || metadataMap[`${prefix}-text`] || '';
-
-  const iconElement = !iconMetadata || iconMetadata === 'null'
-    ? createTag('div', { class: 'mobile-gating-icon-empty' })
-    : getIconElementDeprecated(iconMetadata);
-
-  const aTag = createTag('a', { title: textMetadata, href: hrefMetadata });
-  if (hrefMetadata.toLowerCase().trim() === '#mobile-fqa-upload') {
-    aTag.addEventListener('click', (e) => {
-      e.preventDefault();
-      document.getElementById('mobile-fqa-upload').click();
-    });
-  }
-  aTag.textContent = textMetadata;
-
-  return {
-    icon: iconElement,
-    anchor: aTag,
-    iconText: iconTextMetadata || '',
-  };
-}
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton, createToolData } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 function collectFloatingButtonData(eligible) {
   const metadataMap = createMetadataMap();
@@ -58,7 +31,7 @@ function collectFloatingButtonData(eligible) {
   };
 
   for (let i = 1; i < 3; i += 1) {
-    const toolData = createToolData(metadataMap, i, eligible);
+    const toolData = createToolData(createTag, getIconElementDeprecated, metadataMap, i, eligible);
     if (toolData) {
       data.tools.push(toolData);
       if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {

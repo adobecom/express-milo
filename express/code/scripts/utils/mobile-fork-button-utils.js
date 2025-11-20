@@ -62,6 +62,57 @@ export function androidCheck(getMetadata, getMobileOperatingSystem) {
 }
 
 /**
+ * Creates tool data (icon, text, anchor) for a fork button CTA
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {Function} getIconElementDeprecated - Function to get icon elements
+ * @param {Object} metadataMap - Map of metadata
+ * @param {number} index - CTA index (1 or 2)
+ * @param {boolean} useFrictionless - Whether to use frictionless metadata with fallback
+ * @returns {Object} Tool data with icon, iconText, and anchor
+ */
+export function createToolData(
+  createTag,
+  getIconElementDeprecated,
+  metadataMap,
+  index,
+  useFrictionless = false,
+) {
+  const prefix = `fork-cta-${index}`;
+
+  // Metadata lookup with optional frictionless fallback
+  const iconMetadata = (useFrictionless && metadataMap[`${prefix}-icon-frictionless`])
+    || metadataMap[`${prefix}-icon`];
+  const iconTextMetadata = (useFrictionless && metadataMap[`${prefix}-icon-text-frictionless`])
+    || metadataMap[`${prefix}-icon-text`];
+  const hrefMetadata = (useFrictionless && metadataMap[`${prefix}-link-frictionless`])
+    || metadataMap[`${prefix}-link`] || '';
+  const textMetadata = (useFrictionless && metadataMap[`${prefix}-text-frictionless`])
+    || metadataMap[`${prefix}-text`] || '';
+
+  const iconElement = !iconMetadata || iconMetadata === 'null'
+    ? createTag('div', { class: 'mobile-gating-icon-empty' })
+    : getIconElementDeprecated(iconMetadata);
+
+  const aTag = createTag('a', { title: textMetadata, href: hrefMetadata });
+
+  // Special handler for frictionless upload
+  if (useFrictionless && hrefMetadata.toLowerCase().trim() === '#mobile-fqa-upload') {
+    aTag.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('mobile-fqa-upload').click();
+    });
+  }
+
+  aTag.textContent = textMetadata;
+
+  return {
+    icon: iconElement,
+    iconText: iconTextMetadata || '',
+    anchor: aTag,
+  };
+}
+
+/**
  * Creates a multi-function button with mobile gating
  * @param {Function} createTag - Function to create DOM elements
  * @param {Function} createFloatingButton - Function to create floating button
