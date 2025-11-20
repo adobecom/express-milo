@@ -1,15 +1,15 @@
 const { test, expect } = require('@playwright/test');
-const { features } = require('./hover-cards.spec.cjs');
-const HoverCardsBlock = require('./hover-cards.page.cjs');
+const { features } = require('./content-toggle-v2.spec.cjs');
+const ContentToggleV2Block = require('./content-toggle-v2.page.cjs');
 const { runAccessibilityTest } = require('../../libs/accessibility.cjs');
 const { runSeoChecks } = require('../../libs/seo-check.cjs');
 
-test.describe('HoverCardsBlock Test Suite', () => {
-  // Test Id : 0 : @hover-cards-default
+test.describe('ContentToggleV2Block Test Suite', () => {
+  // Test Id : 0 : @content-toggle-v2-padding-20
   test(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}`;
-    const block = new HoverCardsBlock(page, features[0].selector);
+    const block = new ContentToggleV2Block(page, features[0].selector);
     console.info(`[Test Page]: ${testUrl}`);
 
     await test.step('step-1: Navigate to page', async () => {

@@ -6,7 +6,7 @@ const { runSeoChecks } = require('../../libs/seo-check.cjs');
 
 test.describe('CtaCardsBlock Test Suite', () => {
   // Test Id : 0 : @cta-cards-default
-  test.skip(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
+  test(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}`;
     const block = new CtaCardsBlock(page, features[0].selector);

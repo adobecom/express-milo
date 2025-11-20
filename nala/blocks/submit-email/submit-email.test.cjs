@@ -1,15 +1,15 @@
 const { test, expect } = require('@playwright/test');
-const { features } = require('./hover-cards.spec.cjs');
-const HoverCardsBlock = require('./hover-cards.page.cjs');
+const { features } = require('./submit-email.spec.cjs');
+const SubmitEmailBlock = require('./submit-email.page.cjs');
 const { runAccessibilityTest } = require('../../libs/accessibility.cjs');
 const { runSeoChecks } = require('../../libs/seo-check.cjs');
 
-test.describe('HoverCardsBlock Test Suite', () => {
-  // Test Id : 0 : @hover-cards-default
+test.describe('SubmitEmailBlock Test Suite', () => {
+  // Test Id : 0 : @submit-email-default
   test(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}`;
-    const block = new HoverCardsBlock(page, features[0].selector);
+    const block = new SubmitEmailBlock(page, features[0].selector);
     console.info(`[Test Page]: ${testUrl}`);
 
     await test.step('step-1: Navigate to page', async () => {

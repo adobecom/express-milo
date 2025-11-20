@@ -11,7 +11,6 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-category/ax-browse-by-category-card
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-browse-by-category/ax-browse-by-category-fullwidth
 
-
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-columns/ax-columns-fullsize
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-columns/ax-columns-numbered
 
@@ -20,28 +19,63 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-short
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-marquee/ax-marquee-narrow
 
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-table-of-contents/ax-table-of-contents
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/collapsible-cards/collapsible-card
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/content-toggle/content-toggle
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/content-toggle-v2/content-toggle-v2
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/cta-cards/cta-cards
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cta-carousel/cta-carousel-create
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cta-carousel/cta-carousel-quick-action
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cta-carousel/cta-carousel-gen-ai
+https://main--express-milo--adobecom.aem.page/drafts/nala/test-gen/ax-cta-carousel/cta-carousel-quick-action-gen-ai
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cta-carousel/cta-carousel-gen-ai-upload
+
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/faq/faq
 
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-feature-grid/4-cards
 
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-feature-list/feature-list
+
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-fullscreen-marquee/fullscreen-marquee-image
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-fullscreen-marquee/fullscreen-marquee-video
 
-
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-gen-ai-cards/gen-ai-cards
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/hover-cards/hover-cards
 
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-pricing-cards/pricing-cards-1-col
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-pricing-cards/pricing-cards-2-col
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-pricing-cards/pricing-cards-3-col
 
-
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-how-to-cards/how-to-cards
 https://main--express-milo--adobecom.aem.page/drafts/nala/test-gen/ax-how-to-cards/how-to-cards-schema
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-how-to-cards/how-to-cards-center
 
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps-carousel/how-to-steps-carousel-image-schema
 
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/cards-dark
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/card-half-card
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-cards/ax-cards-default
 
 https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-ratings/ratings
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/ax-ribbon-banner/ribbon-banner
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/steps/steps
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/steps/steps-dark
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/steps/steps-highlight
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/steps/steps-schema
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/sticky-promo-bar/sticky-promo-bar
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/sticky-promo-bar/sticky-promo-bar-rounded
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/sticky-promo-bar/sticky-promo-bar-rounded-loadinbody
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/submit-email/submit-email
+
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/susi-light/susi-light
+https://main--express-milo--adobecom.aem.live/drafts/nala/test-gen/susi-light/susi-light-tabs
+

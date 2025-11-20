@@ -1,15 +1,15 @@
 const { test, expect } = require('@playwright/test');
-const { features } = require('./hover-cards.spec.cjs');
-const HoverCardsBlock = require('./hover-cards.page.cjs');
+const { features } = require('./ax-table-of-contents.spec.cjs');
+const AxTableOfContentsBlock = require('./ax-table-of-contents.page.cjs');
 const { runAccessibilityTest } = require('../../libs/accessibility.cjs');
 const { runSeoChecks } = require('../../libs/seo-check.cjs');
 
-test.describe('HoverCardsBlock Test Suite', () => {
-  // Test Id : 0 : @hover-cards-default
+test.describe('AxTableOfContentsBlock Test Suite', () => {
+  // Test Id : 0 : @ax-table-of-contents-default
   test(`[Test Id - ${features[0].tcid}] ${features[0].name} ${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}`;
-    const block = new HoverCardsBlock(page, features[0].selector);
+    const block = new AxTableOfContentsBlock(page, features[0].selector);
     console.info(`[Test Page]: ${testUrl}`);
 
     await test.step('step-1: Navigate to page', async () => {
