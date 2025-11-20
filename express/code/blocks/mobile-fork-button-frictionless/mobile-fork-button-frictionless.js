@@ -6,22 +6,12 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildAction } from '../../scripts/utils/mobile-fork-button-utils.js';
-
-function buildMobileGating(block, data) {
-  block.children[0].remove();
-  const header = createTag('div', {
-    class:
-        'mobile-gating-header',
-  });
-  header.textContent = data.forkButtonHeader;
-  block.append(header, buildAction(createTag, data.tools[0], 'accent'), buildAction(createTag, data.tools[1], 'outline'));
-}
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildMobileGating } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 export async function createMultiFunctionButton(block, data, audience) {
   const buttonWrapper = await createFloatingButton(block, audience, data);
   buttonWrapper.classList.add('multifunction', 'mobile-fork-button-frictionless');
-  buildMobileGating(buttonWrapper.querySelector('.floating-button'), data);
+  buildMobileGating(createTag, buttonWrapper.querySelector('.floating-button'), data);
   return buttonWrapper;
 }
 

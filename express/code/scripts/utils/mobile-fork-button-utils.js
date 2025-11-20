@@ -48,3 +48,19 @@ export function buildAction(createTag, entry, buttonType) {
   }
   return wrapper;
 }
+
+/**
+ * Builds the mobile gating UI with header and action buttons
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {HTMLElement} block - The block element to build gating in
+ * @param {Object} data - Data object containing forkButtonHeader and tools
+ */
+export function buildMobileGating(createTag, block, data) {
+  block.children[0].remove();
+  const header = createTag('div', {
+    class:
+      'mobile-gating-header',
+  });
+  header.textContent = data.forkButtonHeader;
+  block.append(header, buildAction(createTag, data.tools[0], 'accent'), buildAction(createTag, data.tools[1], 'outline'));
+}
