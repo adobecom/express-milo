@@ -29,3 +29,22 @@ export function createMetadataMap() {
     return acc;
   }, {});
 }
+
+/**
+ * Builds a single action row with icon, text, and button
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {Object} entry - Entry object containing icon, iconText, and anchor
+ * @param {string} buttonType - Button type class ('accent' or 'outline')
+ * @returns {HTMLElement} The action row wrapper element
+ */
+export function buildAction(createTag, entry, buttonType) {
+  const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
+  const text = createTag('div', { class: 'mobile-gating-text' });
+  text.textContent = entry?.iconText;
+  const a = entry?.anchor;
+  if (a) {
+    a.classList.add(buttonType, 'button', 'mobile-gating-link');
+    wrapper.append(entry?.icon || null, text, a);
+  }
+  return wrapper;
+}

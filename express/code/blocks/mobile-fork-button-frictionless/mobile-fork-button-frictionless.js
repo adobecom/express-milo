@@ -6,17 +6,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap } from '../../scripts/utils/mobile-fork-button-utils.js';
-
-function buildAction(entry, buttonType) {
-  const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
-  const text = createTag('div', { class: 'mobile-gating-text' });
-  text.textContent = entry.iconText;
-  const a = entry.anchor;
-  a.classList.add(buttonType, 'button', 'mobile-gating-link');
-  wrapper.append(entry.icon, text, a);
-  return wrapper;
-}
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildAction } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 function buildMobileGating(block, data) {
   block.children[0].remove();
@@ -25,7 +15,7 @@ function buildMobileGating(block, data) {
         'mobile-gating-header',
   });
   header.textContent = data.forkButtonHeader;
-  block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
+  block.append(header, buildAction(createTag, data.tools[0], 'accent'), buildAction(createTag, data.tools[1], 'outline'));
 }
 
 export async function createMultiFunctionButton(block, data, audience) {

@@ -1,20 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, buildAction } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-function buildAction(entry, buttonType) {
-  const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
-  const text = createTag('div', { class: 'mobile-gating-text' });
-  text.textContent = entry?.iconText;
-  const a = entry?.anchor;
-  if (a) {
-    a.classList.add(buttonType, 'button', 'mobile-gating-link');
-    wrapper.append(entry?.icon || null, text, a);
-  }
-  return wrapper;
-}
 
 function buildMobileGating(block, data) {
   block.children[0].remove();
@@ -23,7 +11,7 @@ function buildMobileGating(block, data) {
       'mobile-gating-header',
   });
   header.textContent = data.forkButtonHeader;
-  block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
+  block.append(header, buildAction(createTag, data.tools[0], 'accent'), buildAction(createTag, data.tools[1], 'outline'));
 }
 
 export async function createMultiFunctionButton(block, data, audience) {
