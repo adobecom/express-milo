@@ -50,6 +50,18 @@ export function buildAction(createTag, entry, buttonType) {
 }
 
 /**
+ * Checks if the device is an Android, enables the mobile gating if it is.
+ * If there is no metadata check enabled, still enable the gating block in case authors want it.
+ * @param {Function} getMetadata - Function to get metadata
+ * @param {Function} getMobileOperatingSystem - Function to get mobile OS
+ * @returns {boolean} Whether the fork button should be shown
+ */
+export function androidCheck(getMetadata, getMobileOperatingSystem) {
+  if (getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
+  return getMobileOperatingSystem() === 'Android';
+}
+
+/**
  * Creates a multi-function button with mobile gating
  * @param {Function} createTag - Function to create DOM elements
  * @param {Function} createFloatingButton - Function to create floating button

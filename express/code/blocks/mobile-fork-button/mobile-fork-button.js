@@ -1,16 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton } from '../../scripts/utils/mobile-fork-button-utils.js';
+import { getTextWidth, LONG_TEXT_CUTOFF, createMetadataMap, createMultiFunctionButton, androidCheck } from '../../scripts/utils/mobile-fork-button-utils.js';
 
 let createTag; let getMetadata;
-
-// Checks if the device is an android, enables the mobile gating if it is.
-// If there is no metadata check enabled, still enable the gating block in case authors want it.
-
-function androidCheck() {
-  if (getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
-  return getMobileOperatingSystem() === 'Android';
-}
 
 function createToolData(metadataMap, index) {
   const prefix = `fork-cta-${index}`;
@@ -71,7 +63,7 @@ function collectFloatingButtonData() {
 
 export default async function decorate(block) {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
-  if (!androidCheck()) {
+  if (!androidCheck(getMetadata, getMobileOperatingSystem)) {
     const { default: decorateNormal } = await import('../floating-button/floating-button.js');
     decorateNormal(block);
     return;
