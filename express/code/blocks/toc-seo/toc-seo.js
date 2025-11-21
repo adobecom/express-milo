@@ -224,7 +224,7 @@ function createFloatingButton() {
 
   // Load arrow SVG from img folder
   const img = createTag('img', {
-    src: '/express/code/blocks/toc-seo/img/arrow-up.svg',
+    src: '/express/code/icons/arrow-up.svg',
     alt: '',
     class: 'toc-floating-icon',
     width: '26',
