@@ -138,7 +138,7 @@ export function createEmptyDataObject(templateId, region) {
 export async function updateDataObjectProductDetails(dataObject, productDetails) {
   dataObject.id = productDetails.product.id;
   dataObject.heroImage = productDetails.product.initialPrettyPreferredViewUrl;
-  dataObject.productTitle = productDetails.product.title;
+  dataObject.productTitle = productDetails.product.rootRawTitle;
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
