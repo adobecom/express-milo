@@ -435,6 +435,34 @@ async function buildSimplifiedSusi(el, locale, imsClientId, noRedirect) {
   return layout;
 }
 
+function blurModalCurtain() {
+  const updateBlurState = () => {
+    const modalCurtain = document.querySelector('.modal-curtain');
+    const dialogModal = document.querySelector('.dialog-modal');
+    if (modalCurtain && dialogModal) {
+      if (modalCurtain.classList.contains('is-open')) {
+        modalCurtain.classList.add('blurred');
+      } else if (!modalCurtain.classList.contains('is-open')) {
+        modalCurtain.classList.remove('blurred');
+      }
+    }
+  };
+
+  const modalCurtain = document.querySelector('.modal-curtain');
+  if (modalCurtain) {
+    updateBlurState();
+  } else {
+    const observer = new MutationObserver(() => {
+      const curtain = document.querySelector('.modal-curtain');
+      if (curtain) {
+        updateBlurState();
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
 export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
@@ -442,16 +470,23 @@ export default async function init(el) {
   const { imsClientId } = getConfig();
   const noRedirect = el.classList.contains('no-redirect');
 
+  /**
+   * customize can be used to add custom logic to the susi-light component
+    * that we wanna keep separate from the build function.
+   */
   const match = [
     { cls: 'b2b', build: buildB2B },
     { cls: 'tabs', build: buildSUSITabs },
     { cls: 'student', build: buildStudent },
     { cls: 'edu', build: buildEduNew },
-    { cls: 'simplified', build: buildSimplifiedSusi },
+    { cls: 'simplified', build: buildSimplifiedSusi, customize: blurModalCurtain },
   ].find(({ cls }) => el.classList.contains(cls));
 
   // default edu-express variant, TODO: to be deprecated soon
   const susi = await (match?.build || buildEdu)(el, locale, imsClientId, noRedirect);
+  if (match?.customize) {
+    match.customize();
+  }
   el.replaceChildren(susi);
 
   // branchlinks can exist in footers
