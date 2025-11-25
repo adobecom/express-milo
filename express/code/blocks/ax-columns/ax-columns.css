@@ -445,7 +445,7 @@ main .section .ax-columns.enterprise .column h2 {
   float: none;
 }
 
-.ax-columns.marquee .button-container {
+.ax-columns.marquee .button-container.free-plan-container {
   display: none;
 }
 
@@ -898,10 +898,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 :lang(ja) .ax-columns h2.columns-heading-x-long {
   font-size: var(--heading-font-size-m);
-}
-
-.ax-columns.marquee .button-container.free-plan-container {
-  display: none;
 }
 
 .section .ax-columns.marquee {
