@@ -25,8 +25,7 @@ const onError = (e) => {
 };
 
 const onAuthFailed = (e) => {
-  window.lana?.log('on auth failed:');
-  window.lana?.log(e?.detail);
+  window.lana?.log(`on auth failed: ${e.detail}`);
 };
 // easier to mock in unit test
 export const SUSIUtils = {
