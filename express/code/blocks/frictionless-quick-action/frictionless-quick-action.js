@@ -37,6 +37,7 @@ let fqaContainer;
 let uploadEvents;
 let frictionlessTargetBaseUrl;
 let progressBar;
+let uploadInProgress = null; // Tracks active upload: { file, startTime, quickAction }
 
 function frictionlessQAExperiment(
   quickAction,
@@ -252,7 +253,7 @@ async function setupUploadUI(block) {
 }
 
 /* c8 ignore next 13 */
-async function uploadAssetToStorage(file) {
+async function uploadAssetToStorage(file, quickAction, uploadStartTime) {
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS);
 
@@ -263,14 +264,38 @@ async function uploadAssetToStorage(file) {
   });
 
   progressBar.setProgress(100);
+
+  // Clear upload state on success
+  uploadInProgress = null;
+
+  // Log video upload success for analytics
+  if (file.type.startsWith('video/')) {
+    const uploadDuration = Date.now() - uploadStartTime;
+    window.lana?.log(
+      'Video upload successful '
+        + `id:${asset.assetId} `
+        + `size:${file.size} `
+        + `type:${file.type} `
+        + `quickAction:${quickAction} `
+        + `uploadDuration:${uploadDuration}`,
+      {
+        clientId: 'express',
+        tags: 'frictionless-video-upload-success',
+      },
+    );
+  }
+
   return asset.assetId;
 }
 
 /* c8 ignore next 14 */
-async function performStorageUpload(files, block) {
+async function performStorageUpload(files, block, quickAction) {
+  const file = files[0];
+  const uploadStartTime = Date.now();
+  uploadInProgress = { file, startTime: uploadStartTime, quickAction };
   try {
     progressBar = await setupUploadUI(block);
-    return await uploadAssetToStorage(files[0]);
+    return await uploadAssetToStorage(file, quickAction, uploadStartTime);
   } catch (error) {
     if (error.code === 'UPLOAD_FAILED') {
       const message = await replaceKey('upload-media-error', getConfig());
@@ -278,6 +303,28 @@ async function performStorageUpload(files, block) {
     } else {
       showErrorToast(block, error.message);
     }
+
+    // Log video upload failure for analytics
+    if (file && file.type.startsWith('video/')) {
+      const uploadDuration = Date.now() - uploadStartTime;
+      window.lana?.log(
+        'Video upload failed '
+          + `size:${file.size} `
+          + `type:${file.type} `
+          + `quickAction:${quickAction} `
+          + `uploadDuration:${uploadDuration} `
+          + `errorCode:${error.code} `
+          + `errorMessage:${error.message}`,
+        {
+          clientId: 'express',
+          tags: 'frictionless-video-upload-failed',
+        },
+      );
+    }
+
+    // Clear upload state on failure
+    uploadInProgress = null;
+
     return null;
   }
 }
@@ -288,8 +335,10 @@ async function startAssetDecoding(file, controller) {
   return decodeWithTimeout(getAssetDimensions(file, {
     signal: controller.signal,
   }).catch((error) => {
-    window.lana?.log('Asset decode failed');
-    window.lana?.log(error);
+    window.lana?.log(
+      `Asset decode failed error:${error.message || error}`,
+      { clientId: 'express', tags: 'frictionless-asset-decode-failed' },
+    );
     return null;
   }), 5000);
 }
@@ -447,7 +496,7 @@ async function performUploadAction(files, block, quickAction) {
   const initialDecodeController = new AbortController();
 
   const initialDecodePromise = startAssetDecoding(files[0], initialDecodeController);
-  const uploadPromise = performStorageUpload(files, block);
+  const uploadPromise = performStorageUpload(files, block, quickAction);
 
   const firstToComplete = await raceUploadAndDecode(uploadPromise, initialDecodePromise);
 
@@ -695,6 +744,23 @@ export default async function decorate(block) {
   dropzone.append(freePlanTags);
 
   window.addEventListener('popstate', (e) => {
+    // Log video upload cancellation if user presses back during active upload
+    if (uploadInProgress && uploadInProgress.file.type.startsWith('video/')) {
+      const uploadDuration = Date.now() - uploadInProgress.startTime;
+      window.lana?.log(
+        'Video upload cancelled '
+          + `size:${uploadInProgress.file.size} `
+          + `type:${uploadInProgress.file.type} `
+          + `quickAction:${uploadInProgress.quickAction} `
+          + `uploadDuration:${uploadDuration}`,
+        {
+          clientId: 'express',
+          tags: 'frictionless-video-upload-cancelled',
+        },
+      );
+      uploadInProgress = null;
+    }
+
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
     const correctState = e.state?.hideFrictionlessQa;
     const embedElsFound = quickActionContainer || editorModal;
