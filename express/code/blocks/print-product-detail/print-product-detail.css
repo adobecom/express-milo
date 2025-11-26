@@ -1334,7 +1334,7 @@ main .section .pdpx-drawer-description {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    height: 90vh;
+    height: 75vh;
     overflow-x: visible;
     overflow-y: scroll;
     scrollbar-gutter: stable;
