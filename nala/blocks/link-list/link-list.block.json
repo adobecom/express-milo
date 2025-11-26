@@ -1,0 +1,66 @@
+{
+  "block": "link-list",
+  "variants": [
+    {
+      "tcid": "0",
+      "name": "@link-list-square-inline",
+      "selector": "div.link-list.square.inline",
+      "path": "/drafts/nala/test-gen/ax-panels/ax-panels",
+      "data": {
+        "semantic": {
+          "texts": [
+            {
+              "selector": "h3",
+              "nth": 0,
+              "tag": "h3",
+              "text": "Explore more categories in our app",
+              "markup": null
+            },
+            {
+              "selector": "p.button-container.carousel-element",
+              "nth": 0,
+              "tag": "p",
+              "text": "Birthday Cards",
+              "markup": null
+            },
+            {
+              "selector": "p.button-container.carousel-element",
+              "nth": 1,
+              "tag": "p",
+              "text": "Christmas Cards",
+              "markup": null
+            },
+            {
+              "selector": "p.button-container.carousel-element",
+              "nth": 2,
+              "tag": "p",
+              "text": "Thank You Cards",
+              "markup": null
+            },
+            {
+              "selector": "p.button-container.carousel-element",
+              "nth": 3,
+              "tag": "p",
+              "text": "Holiday Cards",
+              "markup": null
+            },
+            {
+              "selector": "p.button-container.carousel-element",
+              "nth": 4,
+              "tag": "p",
+              "text": "Save the Date Cards",
+              "markup": null
+            }
+          ],
+          "media": [],
+          "interactives": []
+        }
+      },
+      "tags": [
+        "@link-list",
+        "@square-inline",
+        "@express"
+      ]
+    }
+  ]
+}
