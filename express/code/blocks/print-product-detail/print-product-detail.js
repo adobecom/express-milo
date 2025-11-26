@@ -1,4 +1,4 @@
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import fetchAPIData, { fetchUIStrings } from './fetchData/fetchProductDetails.js';
 import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
@@ -7,6 +7,7 @@ import createCustomizationInputs from './createComponents/customizationInputs/cr
 import createProductDetailsSection, { createCheckoutButton, createCheckoutButtonHref, createAssuranceLockup } from './createComponents/createProductDetailsSection.js';
 import { createDrawer } from './createComponents/drawerContent/createDrawerContent.js';
 import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId, convertImageSize, createHeroImageSrcset } from './utilities/utility-functions.js';
+import { populateStars } from './utilities/star-icon-utils.js';
 import { getCanonicalUrl, upsertTitleAndDescriptionRespectingAuthored, getAuthoredOverrides, buildProductJsonLd, upsertLdJson, buildBreadcrumbsJsonLdFromDom } from './utilities/seo.js';
 
 let createTag;
@@ -14,11 +15,9 @@ let createTag;
 async function createProductInfoContainer(productDetails, drawer) {
   const productInfoSectionContainer = createTag('div', { class: 'pdpx-product-info-section-container' });
   const productInfoSection = createTag('div', { class: 'pdpx-product-info-section', id: 'pdpx-product-info-section' });
-  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   const checkoutButton = await createCheckoutButton(productDetails);
   productInfoSectionContainer.append(
     drawer,
-    productInfoHeadingSection,
     productInfoSection,
     checkoutButton,
   );
@@ -27,13 +26,16 @@ async function createProductInfoContainer(productDetails, drawer) {
 
 async function createGlobalContainer(productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container', id: 'pdpx-global-container', 'data-template-id': productDetails.templateId });
+  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   const productImagesContainer = await createProductImagesContainer(
     productDetails.realViews,
     productDetails.heroImage,
   );
   const { curtain, drawer } = await createDrawer(productDetails);
   const productInfoSection = await createProductInfoContainer(productDetails, drawer);
-  globalContainer.append(productImagesContainer, productInfoSection);
+  const productInfoWrapper = createTag('div', { class: 'pdpx-product-info-wrapper' });
+  productInfoWrapper.append(productInfoHeadingSection, productInfoSection);
+  globalContainer.append(productImagesContainer, productInfoWrapper);
   document.body.append(curtain);
   return globalContainer;
 }
@@ -63,7 +65,9 @@ async function updatePageWithProductDetails(productDetails, globalContainer) {
     formDataObject,
     productDetails.productType,
   );
-  checkoutButton.href = checkoutButtonHref;
+  if (checkoutButton) {
+    checkoutButton.href = checkoutButtonHref;
+  }
 }
 
 async function updatePageWithProductImages(productDetails) {
@@ -88,12 +92,6 @@ async function updatePageWithProductPrice(productDetails) {
   priceInfoContainer.querySelector('#pdpx-savings-text').textContent = productDetails.discountString;
 }
 
-function populateStars(count, starType, parent) {
-  for (let i = 0; i < count; i += 1) {
-    parent.appendChild(getIconElementDeprecated(starType));
-  }
-}
-
 function updateStarRating(rating) {
   const starRatingsContainer = document.querySelector('#pdpx-product-ratings-lockup-container .pdpx-star-ratings');
   if (!starRatingsContainer) return;
@@ -109,9 +107,9 @@ function updateStarRating(rating) {
   const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
 
   // Populate stars with filled, half, and empty
-  populateStars(filledStars, 'star', starRatingsContainer);
-  populateStars(halfStars, 'star-half', starRatingsContainer);
-  populateStars(emptyStars, 'star-empty', starRatingsContainer);
+  populateStars(filledStars, 'star', starRatingsContainer, createTag);
+  populateStars(halfStars, 'star-half', starRatingsContainer, createTag);
+  populateStars(emptyStars, 'star-empty', starRatingsContainer, createTag);
 }
 
 function updatePageWithProductReviews(productDetails) {

@@ -1,5 +1,6 @@
-import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
+import { getLibs } from '../../../scripts/utils.js';
 import { formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from '../utilities/utility-functions.js';
+import { populateStars } from '../utilities/star-icon-utils.js';
 
 let createTag;
 
@@ -8,12 +9,6 @@ function createProductTitle(productDetails) {
   const productTitle = createTag('h1', { class: 'pdpx-product-title', id: 'pdpx-product-title', 'data-skeleton': 'true' }, productDetails.productTitle);
   productTitleContainer.appendChild(productTitle);
   return productTitleContainer;
-}
-
-function populateStars(count, starType, parent) {
-  for (let i = 0; i < count; i += 1) {
-    parent.appendChild(getIconElementDeprecated(starType));
-  }
 }
 
 function createProductRatingsLockup(productDetails) {
@@ -38,9 +33,9 @@ function createProductRatingsLockup(productDetails) {
   const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
 
   // Populate stars with filled, half, and empty
-  populateStars(filledStars, 'star', starRatings);
-  populateStars(halfStars, 'star-half', starRatings);
-  populateStars(emptyStars, 'star-empty', starRatings);
+  populateStars(filledStars, 'star', starRatings, createTag);
+  populateStars(halfStars, 'star-half', starRatings, createTag);
+  populateStars(emptyStars, 'star-empty', starRatings, createTag);
 
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
   const ratingsNumber = createTag('span', {
@@ -71,8 +66,8 @@ function createProductTitleAndRatingsContainer(productDetails) {
 function createInfoTooltipContent(productDetails) {
   const infoTooltipContent = createTag('div', { class: 'pdpx-info-tooltip-content', id: 'pdpx-info-tooltip-content', role: 'tooltip' });
   const infoTooltipContentTitle = createTag('h6', { class: 'pdpx-info-tooltip-content-title', id: 'pdpx-info-tooltip-content-title' }, productDetails.compareValueTooltipTitle);
-  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-1' }, productDetails.tooltipDescription1);
-  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-2' }, productDetails.tooltipDescription2);
+  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-1' }, productDetails.compareValueTooltipDescription1);
+  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-2' }, productDetails.compareValueTooltipDescription2);
   infoTooltipContent.append(
     infoTooltipContentTitle,
     infoTooltipContentDescription1,
@@ -88,16 +83,16 @@ export async function createPriceLockup(productDetails) {
   const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, await formatPriceZazzle(productDetails.strikethroughPrice));
   const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label', id: 'pdpx-compare-price-info-label' }, productDetails.compareValueInfoIconLabel);
   const comparePriceInfoIconContainer = createTag('div', { class: 'pdpx-compare-price-info-icon-container' });
-  const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.tooltipTitle, 'aria-expanded': 'false' });
+  const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.compareValueTooltipTitle, 'aria-expanded': 'false' });
   const infoTooltipContent = createInfoTooltipContent(productDetails);
   const savingsText = createTag('span', { class: 'pdpx-savings-text', id: 'pdpx-savings-text' }, productDetails.discountString);
   function toggleTooltip() {
     infoTooltipContent.style.display = infoTooltipContent.style.display === 'block' ? 'none' : 'block';
   }
-  ['click', 'mouseenter'].forEach((eventType) => {
+  ['click', 'focus', 'mouseenter'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
-  ['mouseleave'].forEach((eventType) => {
+  ['blur', 'mouseleave'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, toggleTooltip);
   });
   comparePriceInfoIconButton.appendChild(createTag('img', {

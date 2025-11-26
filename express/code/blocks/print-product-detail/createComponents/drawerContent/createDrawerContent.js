@@ -1,6 +1,7 @@
 import { getLibs, getIconElementDeprecated } from '../../../../scripts/utils.js';
 
 let createTag;
+let escapeKeyHandler = null;
 
 export async function closeDrawer() {
   const curtain = document.querySelector('.pdpx-curtain');
@@ -8,6 +9,24 @@ export async function closeDrawer() {
   curtain.classList.add('hidden');
   drawer.classList.add('hidden');
   document.body.classList.remove('disable-scroll');
+
+  if (escapeKeyHandler) {
+    document.removeEventListener('keydown', escapeKeyHandler);
+    escapeKeyHandler = null;
+  }
+}
+
+export function setupEscapeKeyHandler() {
+  if (!escapeKeyHandler) {
+    escapeKeyHandler = (e) => {
+      const drawer = document.querySelector('#pdpx-drawer');
+      if (e.key === 'Escape' && drawer && !drawer.classList.contains('hidden')) {
+        e.preventDefault();
+        closeDrawer();
+      }
+    };
+    document.addEventListener('keydown', escapeKeyHandler);
+  }
 }
 
 export async function createDrawer() {

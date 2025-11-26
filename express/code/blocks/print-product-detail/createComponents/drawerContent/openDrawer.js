@@ -1,6 +1,7 @@
 import createDrawerContentPaperType from './createDrawerContentPaperType.js';
 import createDrawerContentPrintingProcess from './createDrawerContentPrintingProcess.js';
 import createDrawerContentSizeChart from './createDrawerContentSizeChart.js';
+import { setupEscapeKeyHandler } from './createDrawerContent.js';
 
 export default async function openDrawer(
   customizationOptions,
@@ -31,4 +32,5 @@ export default async function openDrawer(
   curtain.classList.remove('hidden');
   drawer.classList.remove('hidden');
   document.body.classList.add('disable-scroll');
+  setupEscapeKeyHandler();
 }

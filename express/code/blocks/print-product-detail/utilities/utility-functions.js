@@ -43,7 +43,7 @@ export function detectMobileWithBrowserWidth() {
 }
 
 export function detectMobile() {
-  return isMobileDevice() || detectMobileWithUAData();
+  return isMobileDevice() || detectMobileWithUAData() || detectMobileWithBrowserWidth();
 }
 
 export function formatPaperThickness(thickness) {
@@ -95,7 +95,10 @@ export function exchangeRegionForTopLevelDomain(region) {
     'en-AU': 'au',
     'en-NZ': 'nz',
   };
-  const topLevelDomain = regionToTopLevelDomainMap[regionFinal];
+  let topLevelDomain = regionToTopLevelDomainMap[regionFinal];
+  if (regionFinal !== 'en-US' && regionFinal !== 'en-GB') {
+    topLevelDomain = 'com';
+  }
   return topLevelDomain;
 }
 

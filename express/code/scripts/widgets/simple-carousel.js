@@ -1,4 +1,4 @@
-import { getLibs } from '../utils.js';
+import { getLibs, getIconElementDeprecated } from '../utils.js';
 
 let createTag;
 
@@ -29,11 +29,24 @@ function initializeSimpleCarousel(selector, parent, options = {}) {
     'aria-label': 'Scroll left',
     type: 'button',
   });
+  const arrowLeftIcon = getIconElementDeprecated('s2-chevron-left', 18, '', 'simple-carousel-arrow-icon');
+  arrowLeftIcon.setAttribute('width', '18');
+  arrowLeftIcon.setAttribute('height', '18');
+  arrowLeftIcon.setAttribute('alt', '');
+  arrowLeftIcon.setAttribute('aria-hidden', 'true');
+  arrowLeft.appendChild(arrowLeftIcon);
+
   const arrowRight = createTag('button', {
     class: 'button simple-carousel-arrow simple-carousel-arrow-right',
     'aria-label': 'Scroll right',
     type: 'button',
   });
+  const arrowRightIcon = getIconElementDeprecated('s2-chevron-right', 18, '', 'simple-carousel-arrow-icon');
+  arrowRightIcon.setAttribute('width', '18');
+  arrowRightIcon.setAttribute('height', '18');
+  arrowRightIcon.setAttribute('alt', '');
+  arrowRightIcon.setAttribute('aria-hidden', 'true');
+  arrowRight.appendChild(arrowRightIcon);
 
   carouselContent.forEach((el, index) => {
     el.classList.add('simple-carousel-item');
