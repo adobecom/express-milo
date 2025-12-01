@@ -16,7 +16,6 @@ test.describe('grid-marquee test suite', () => {
   features[0].path.forEach((path) => {
     test(`[Test Id - ${features[0].tcid}] ${features[0].name}, path: ${path}, test logo and headline`, async ({ page }) => {
       const testPage = `${BASE_URL}${path}`;
-      console.info(`[Test Page]: ${testPage}`);
       await gridMarquee.gotoURL(testPage);
 
       await test.step('validate elements in block', async () => {
@@ -60,7 +59,6 @@ test.describe('grid-marquee test suite', () => {
   features[1].path.forEach((path) => {
     test(`[Test Id - ${features[1].tcid}] ${features[1].name}, path: ${path}, test cards`, async () => {
       const testPage = `${BASE_URL}${path}`;
-      console.info(`[Test Page]: ${testPage}`);
       await gridMarquee.gotoURL(testPage);
 
       let cardCount;
@@ -131,7 +129,6 @@ test.describe('grid-marquee test suite', () => {
   features[3].path.forEach((path) => {
     test(`[Test Id - ${features[3].tcid}] ${features[3].name}, path: ${path}, test z-index fix`, async () => {
       const testPage = `${BASE_URL}${path}`;
-      console.info(`[Test Page]: ${testPage}`);
       await gridMarquee.gotoURL(testPage);
 
       await test.step('validate z-index values for drawer elements', async () => {
