@@ -108,10 +108,17 @@ export async function createAccessibilityVideoControls(videoElement) {
   videoContainer.appendChild(controlsWrapper);
   videoAnimation.appendChild(videoContainer);
 
-  // Add click handler directly for button element
-  // Don't use addAnimationToggle - it has keypress with preventDefault for div compatibility
+  // Add click and keyboard handlers for button element
   controlsWrapper.addEventListener('click', () => {
     toggleVideo(controlsWrapper);
+  });
+
+  // Explicit keyboard handling to ensure Enter/Space work even if parent elements intercept events
+  controlsWrapper.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleVideo(controlsWrapper);
+    }
   });
 
   return videoElement;
