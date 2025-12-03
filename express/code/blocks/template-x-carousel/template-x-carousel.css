@@ -21,6 +21,10 @@
   margin-bottom: var(--spacing-800);
 }
 
+.template-x-carousel.home {
+  --template-height: 300px;
+}
+
 .template-x-carousel .toolbar {
   display: flex;
   flex-direction: column;
