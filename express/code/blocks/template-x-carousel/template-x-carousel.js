@@ -59,25 +59,7 @@ async function createTemplatesContainer(recipe, el) {
   };
 }
 
-function initHomeVariant(el) {
-  const headings = el.querySelectorAll('h1, h2, h3');
-  const headersContainer = createTag('div', { class: 'headers-container' });
-  headersContainer.append(...headings);
-  el.replaceChildren(headersContainer);
-}
-
-async function initDefaultVariant(el) {
-  const [toolbar, recipeRow] = el.children;
-
-  const heading = toolbar.querySelector('h1,h2,h3');
-  if (heading) {
-    heading.classList.add('heading');
-    el.prepend(heading);
-  }
-  toolbar.classList.add('toolbar');
-  const recipe = recipeRow.textContent.trim();
-  recipeRow.remove();
-
+async function renderTemplates(el, recipe, toolbar) {
   try {
     const {
       templatesContainer,
@@ -99,11 +81,42 @@ async function initDefaultVariant(el) {
   }
 }
 
+async function initHomeVariant(el) {
+  const headings = el.querySelectorAll('h1, h2, h3');
+  const rows = el.querySelectorAll(':scope > div');
+  const recipeRow = rows[rows.length - 1];
+  const recipe = recipeRow.textContent.trim();
+
+  const headersContainer = createTag('div', { class: 'headers-container' });
+  headersContainer.append(...headings);
+
+  const toolbar = createTag('div', { class: 'toolbar' });
+
+  el.replaceChildren(headersContainer, toolbar);
+
+  await renderTemplates(el, recipe, toolbar);
+}
+
+async function initDefaultVariant(el) {
+  const [toolbar, recipeRow] = el.children;
+
+  const heading = toolbar.querySelector('h1,h2,h3');
+  if (heading) {
+    heading.classList.add('heading');
+    el.prepend(heading);
+  }
+  toolbar.classList.add('toolbar');
+  const recipe = recipeRow.textContent.trim();
+  recipeRow.remove();
+
+  await renderTemplates(el, recipe, toolbar);
+}
+
 export default async function init(el) {
   [{ createTag, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
 
   if (el.classList.contains('home')) {
-    initHomeVariant(el);
+    await initHomeVariant(el);
   } else {
     await initDefaultVariant(el);
   }
