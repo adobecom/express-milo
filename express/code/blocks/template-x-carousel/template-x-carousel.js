@@ -87,12 +87,15 @@ async function initHomeVariant(el) {
   const recipeRow = rows[rows.length - 1];
   const recipe = recipeRow.textContent.trim();
 
-  const headersContainer = createTag('div', { class: 'headers-container' });
-  headersContainer.append(...headings);
-
   const toolbar = createTag('div', { class: 'toolbar' });
 
-  el.replaceChildren(headersContainer, toolbar);
+  if (headings.length) {
+    const headersContainer = createTag('div', { class: 'headers-container' });
+    headersContainer.append(...headings);
+    el.replaceChildren(headersContainer, toolbar);
+  } else {
+    el.replaceChildren(toolbar);
+  }
 
   await renderTemplates(el, recipe, toolbar);
 }
