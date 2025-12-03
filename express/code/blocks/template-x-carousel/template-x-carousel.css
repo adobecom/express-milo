@@ -51,7 +51,7 @@
   width: 150px;
 }
 
-.template-x-carousel .headers-container {
+.template-x-carousel.home .headers-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,14 +59,14 @@
   padding: 12px 16px;
 }
 
-.template-x-carousel .headers-container h2 {
+.template-x-carousel.home .headers-container h2 {
   font-size: 20px;
   font-weight: 900;
   text-align: center;
   margin: 0;
 }
 
-.template-x-carousel .headers-container h3 {
+.template-x-carousel.home .headers-container h3 {
   font-size: 16px;
   font-weight: 600;
   text-align: center;
@@ -513,7 +513,7 @@
 }
 
 @media (min-width: 900px) {
-  .template-x-carousel .headers-container h2 {
+  .template-x-carousel.home .headers-container h2 {
     font-size: 36px;
   }
 }
