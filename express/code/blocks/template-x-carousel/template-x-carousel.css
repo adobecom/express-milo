@@ -23,6 +23,8 @@
 
 .template-x-carousel.home {
   --template-height: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .template-x-carousel .toolbar {
@@ -69,11 +71,6 @@
   font-weight: 600;
   text-align: center;
   margin: 0;
-}
-
-.template-x-carousel.home {
-  display: flex;
-  flex-direction: column;
 }
 
 .template-x-carousel.home .toolbar {
