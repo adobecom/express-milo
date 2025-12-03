@@ -56,6 +56,7 @@ export function addAnimationToggle(target) {
     toggleVideo(target);
   }, true);
   target.addEventListener('keypress', (e) => {
+    if (e.repeat) return;
     if (e.key !== 'Enter' && e.keyCode !== 32 && e.key !== ' ') {
       return;
     }
@@ -109,12 +110,15 @@ export async function createAccessibilityVideoControls(videoElement) {
   videoAnimation.appendChild(videoContainer);
 
   // Add click and keyboard handlers for button element
-  controlsWrapper.addEventListener('click', () => {
+  controlsWrapper.addEventListener('click', (e) => {
+    // Skip keyboard-triggered clicks (detail === 0) - keydown handler handles those
+    if (e.detail === 0) return;
     toggleVideo(controlsWrapper);
   });
 
   // Explicit keyboard handling to ensure Enter/Space work even if parent elements intercept events
   controlsWrapper.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       toggleVideo(controlsWrapper);
