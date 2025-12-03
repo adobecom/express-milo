@@ -20,8 +20,8 @@ import {
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
   EXPRESS_ROUTE_PATHS,
-  isSafari,
   EXPERIMENTAL_VARIANTS_PROMOID_MAP,
+  AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -46,11 +46,15 @@ function frictionlessQAExperiment(
   exportConfig,
   contConfig,
 ) {
+  const isAuth = window.adobeIMS?.isSignedInUser();
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
+  const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant])
+    ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant]
+    : EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
   appConfig.metaData.variant = variant;
-  appConfig.metaData.promoid = EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
+  appConfig.metaData.promoid = promoid;
   appConfig.metaData.mv = 'other';
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
@@ -356,7 +360,9 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
 
   switch (pathname) {
     case EXPRESS_ROUTE_PATHS.focusedEditor: {
+      const { locale: { ietf } } = getConfig();
       routeSpecificParams = {
+        locale: ietf,
         skipUploadStep: true,
       };
       break;
@@ -379,9 +385,13 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
   }
 
   if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
+    const isAuth = window.adobeIMS?.isSignedInUser();
+    const promoid = (isAuth && AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction])
+      ? AUTH_EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction]
+      : EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction];
     pageSpecificParams = {
       variant: quickAction,
-      promoid: EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction],
+      promoid,
       mv: 'other',
     };
   }
@@ -479,14 +489,13 @@ async function performUploadAction(files, block, quickAction) {
   const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
 
   /**
- * In Safari, due to backward cache, when a user navigates back to the upload page
- * from the editor, the upload UI is not reset. This creates an issue, where the user
- * does not see the upload UI and instead sees the upload progress bar. So we reset
- * the upload UI on safari just before navigating to the editor.
+ * In some backward cache scenarios,
+ * (when the user navigates back to the upload page from the editor),
+ * due to backward cache, the upload UI is not reset. This creates an issue,
+ * where the user does not see the upload UI and instead sees the upload progress bar.
+ * So we reset the upload UI just before navigating to the editor.
  */
-  if (isSafari()) {
-    resetUploadUI();
-  }
+  resetUploadUI();
 
   window.location.href = url.toString();
 }

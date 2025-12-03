@@ -344,6 +344,13 @@ export default async function createSegmentedMiniPillOptionsSelector(
       if (platformClassic) {
         platformClassic.style.overflowY = 'visible';
       }
+      const classicCarouselItems = classicWrapper.querySelectorAll('.pdpx-mini-pill-container.simple-carousel-item');
+      classicCarouselItems.forEach((item) => {
+        const focusableChild = item.querySelector('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableChild) {
+          item.removeAttribute('tabindex');
+        }
+      });
       requestAnimationFrame(() => {
         setupCarouselTooltips(classicWrapper);
       });
@@ -362,6 +369,13 @@ export default async function createSegmentedMiniPillOptionsSelector(
       if (platformVivid) {
         platformVivid.style.overflowY = 'visible';
       }
+      const vividCarouselItems = vividWrapper.querySelectorAll('.pdpx-mini-pill-container.simple-carousel-item');
+      vividCarouselItems.forEach((item) => {
+        const focusableChild = item.querySelector('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableChild) {
+          item.removeAttribute('tabindex');
+        }
+      });
       requestAnimationFrame(() => {
         setupCarouselTooltips(vividWrapper);
       });

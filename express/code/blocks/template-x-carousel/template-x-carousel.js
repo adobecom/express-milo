@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem } from '../../scripts/utils.js';
 import { fetchResults, isValidTemplate } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
@@ -18,14 +18,15 @@ async function createTemplates(recipe, customProperties = null) {
 
 /**
  * Creates a templates container configured for search bar functionality
- * Always includes custom URL config for template redirection
+ * Uses custom URL config for desktop/Android, default links for iOS
  */
 async function createTemplatesContainer(recipe, el) {
   const templatesContainer = createTag('div', { class: 'templates-container search-bar-gallery' });
 
-  // Create custom properties for search bar variant
-  // TODO: Make baseUrl configurable via block config or environment
-  const customProperties = {
+  // Detect iOS - use default template-specific Branch.io links for iOS
+  // Use custom URL config for all other platforms (desktop, Android)
+  const isIOS = getMobileOperatingSystem() === 'iOS';
+  const customProperties = isIOS ? null : {
     customUrlConfig: {
       baseUrl: 'https://adobesparkpost.app.link/8JaoEy0DrSb',
       queryParams: 'source=seo-template',
