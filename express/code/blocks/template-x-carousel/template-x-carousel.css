@@ -67,6 +67,27 @@
   margin: 0;
 }
 
+.template-x-carousel.home {
+  display: flex;
+  flex-direction: column;
+}
+
+.template-x-carousel.home .toolbar {
+  order: 3;
+  align-self: flex-end;
+  padding-right: 16px;
+}
+
+@media (min-width: 400px) {
+  .template-x-carousel.home .toolbar {
+    padding-right: 24px;
+  }
+}
+
+.template-x-carousel.home .templates-container {
+  order: 2;
+}
+
 .template-x-carousel .templates-container {
   grid-column: 1 / -1;
   grid-row: 2;
