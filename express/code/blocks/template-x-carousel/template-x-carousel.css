@@ -45,6 +45,28 @@
   width: 150px;
 }
 
+.template-x-carousel .headers-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.template-x-carousel .headers-container h2 {
+  font-size: 20px;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.template-x-carousel .headers-container h3 {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
 .template-x-carousel .templates-container {
   grid-column: 1 / -1;
   grid-row: 2;
@@ -473,5 +495,6 @@
     font-size: var(--body-font-size-xl);
   }
 }
+
 
 

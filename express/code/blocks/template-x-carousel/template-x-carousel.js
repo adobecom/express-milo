@@ -59,8 +59,14 @@ async function createTemplatesContainer(recipe, el) {
   };
 }
 
-export default async function init(el) {
-  [{ createTag, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
+function initHomeVariant(el) {
+  const headings = el.querySelectorAll('h1, h2, h3');
+  const headersContainer = createTag('div', { class: 'headers-container' });
+  headersContainer.append(...headings);
+  el.replaceChildren(headersContainer);
+}
+
+async function initDefaultVariant(el) {
   const [toolbar, recipeRow] = el.children;
 
   const heading = toolbar.querySelector('h1,h2,h3');
@@ -73,10 +79,10 @@ export default async function init(el) {
   recipeRow.remove();
 
   try {
-    // TODO: lazy load templates
     const {
       templatesContainer,
-      control: galleryControl } = await createTemplatesContainer(recipe, el);
+      control: galleryControl,
+    } = await createTemplatesContainer(recipe, el);
 
     const controlsContainer = createTag('div', { class: 'controls-container' });
     controlsContainer.append(galleryControl);
@@ -90,5 +96,15 @@ export default async function init(el) {
     } else {
       el.textContent = 'Error loading templates, please refresh the page or try again later.';
     }
+  }
+}
+
+export default async function init(el) {
+  [{ createTag, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
+
+  if (el.classList.contains('home')) {
+    initHomeVariant(el);
+  } else {
+    await initDefaultVariant(el);
   }
 }
