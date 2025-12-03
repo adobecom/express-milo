@@ -511,6 +511,12 @@
   }
 }
 
+@media (min-width: 900px) {
+  .template-x-carousel .headers-container h2 {
+    font-size: 36px;
+  }
+}
+
 @media (min-width: 1200px) {
   .template-x-carousel .heading {
     font-size: var(--body-font-size-xl);
