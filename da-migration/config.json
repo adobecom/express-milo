@@ -1,0 +1,393 @@
+{
+  "version": 18,
+  "code": {
+    "owner": "adobecom",
+    "repo": "da-express-milo",
+    "source": {
+      "type": "github",
+      "url": "https://github.com/adobecom/da-express-milo"
+    }
+  },
+  "content": {
+    "contentBusId": "38243aa50dfe987506aac2eb8bc61460b379446c9608bfaa4eae19034f1",
+    "source": {
+      "url": "https://adobe.sharepoint.com/sites/adobecom/DA%20Docs/Forms/AllItems.aspx?id=%2Fsites%2Fadobecom%2FDA%20Docs%2Fda%2Dexpress&viewid=7f818e37%2Dd910%2D4fa4%2Dbfb3%2Dbcb32c06766d&CID=e11d8f14%2D9899%2D423b%2D8ba1%2D73a0d897257b&FolderCTID=0x012000C8551A827ECBCC4E9AFF2C6BE6E64336",
+      "type": "onedrive"
+    },
+    "overlay": {
+      "url": "https://content.da.live/adobecom/da-express-milo/",
+      "type": "markup"
+    }
+  },
+  "folders": {
+    "/express/templates/": "/express/templates/default",
+    "/br/express/templates/": "/br/express/templates/default",
+    "/de/express/templates/": "/de/express/templates/default",
+    "/es/express/templates/": "/es/express/templates/default",
+    "/fr/express/templates/": "/fr/express/templates/default",
+    "/in/express/templates/": "/in/express/templates/default",
+    "/it/express/templates/": "/it/express/templates/default",
+    "/id_id/express/templates/": "/id_id/express/templates/default",
+    "/jp/express/templates/": "/jp/express/templates/default",
+    "/kr/express/templates/": "/kr/express/templates/default",
+    "/nl/express/templates/": "/nl/express/templates/default",
+    "/tw/express/templates/": "/tw/express/templates/default",
+    "/uk/express/templates/": "/uk/express/templates/default",
+    "/express/colors/": "/express/colors/default",
+    "/br/express/colors/": "/br/express/colors/default",
+    "/cn/express/colors/": "/cn/express/colors/default",
+    "/de/express/colors/": "/de/express/colors/default",
+    "/dk/express/colors/": "/dk/express/colors/default",
+    "/es/express/colors/": "/es/express/colors/default",
+    "/fi/express/colors/": "/fi/express/colors/default",
+    "/fr/express/colors/": "/fr/express/colors/default",
+    "/it/express/colors/": "/it/express/colors/default",
+    "/jp/express/colors/": "/jp/express/colors/default",
+    "/kr/express/colors/": "/kr/express/colors/default",
+    "/nl/express/colors/": "/nl/express/colors/default",
+    "/no/express/colors/": "/no/express/colors/default",
+    "/se/express/colors/": "/se/express/colors/default",
+    "/tw/express/colors/": "/tw/express/colors/default",
+    "/drafts/templates/": "/drafts/templates/default",
+    "/drafts/colors/": "/drafts/colors/default"
+  },
+  "sidekick": {
+    "project": "DA Express Milo",
+    "editUrlLabel": "Document Authoring",
+    "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}",
+    "trustedHosts": [
+      "milo.adobe.com"
+    ],
+    "plugins": [
+      {
+        "id": "publish",
+        "confirm": true
+      },
+      {
+        "id": "path",
+        "title": "Path",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://milo.adobe.com/tools/path-finder",
+        "isPalette": true,
+        "passReferrer": true,
+        "passConfig": true,
+        "paletteRect": "top: 50%; left: 50%; transform: translate(-50%,-50%); height: 84px; width: 900px; overflow: hidden; border-radius: 6px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);",
+        "includePaths": [
+          "**.docx**",
+          "**.xlsx**"
+        ]
+      },
+      {
+        "id": "docs",
+        "title": "Docs",
+        "url": "https://main--express--adobecom.aem.live/docs/",
+        "environments": [
+          "edit"
+        ],
+        "excludePaths": [
+          "/**"
+        ],
+        "includePaths": [
+          "**.docx**"
+        ]
+      },
+      {
+        "id": "library",
+        "title": "Library",
+        "environments": [
+          "edit"
+        ],
+        "isPalette": true,
+        "passConfig": true,
+        "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 398px; width: 360px;",
+        "url": "https://milo.adobe.com/tools/library",
+        "includePaths": [
+          "**.docx**"
+        ]
+      },
+      {
+        "id": "tools",
+        "title": "Tools",
+        "isContainer": true
+      },
+      {
+        "containerId": "tools",
+        "id": "localize",
+        "title": "Localize",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://milo.adobe.com/tools/loc/index.html",
+        "passReferrer": true,
+        "passConfig": true,
+        "excludePaths": [
+          "/**"
+        ],
+        "includePaths": [
+          "**/:x**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "id": "localize-2",
+        "title": "Localize project (V2)",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://main--express-milo--adobecom.hlx.page/tools/loc?milolibs=locui",
+        "passReferrer": true,
+        "passConfig": true,
+        "includePaths": [
+          "**.xlsx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "title": "TaaS Configurator",
+        "id": "taas-configurator",
+        "environments": [
+          "edit",
+          "preview",
+          "dev"
+        ],
+        "url": "https://main--express-milo--adobecom.aem.live/docs/templates-as-a-service",
+        "includePaths": [
+          "**.docx**",
+          "**.xlsx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "title": "Send to CaaS",
+        "id": "sendtocaas",
+        "environments": [
+          "dev",
+          "preview",
+          "live",
+          "prod"
+        ],
+        "event": "send-to-caas",
+        "excludePaths": [
+          "https://milo.adobe.com/tools/caas**",
+          "*.json"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "title": "Check Schema",
+        "id": "checkschema",
+        "environments": [
+          "prod"
+        ],
+        "event": "check-schema",
+        "excludePaths": [
+          "/tools**",
+          "*.json"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "title": "Preflight",
+        "id": "preflight",
+        "environments": [
+          "dev",
+          "preview",
+          "live"
+        ],
+        "event": "preflight"
+      },
+      {
+        "containerId": "tools",
+        "id": "locales",
+        "title": "Locales",
+        "environments": [
+          "edit",
+          "dev",
+          "preview",
+          "live"
+        ],
+        "isPalette": true,
+        "passConfig": true,
+        "passReferrer": true,
+        "paletteRect": "top: auto; bottom: 25px; left: 75px; height: 388px; width: 360px;",
+        "url": "https://milo.adobe.com/tools/locale-nav",
+        "includePaths": [
+          "**.docx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "title": "Tag Selector",
+        "id": "tag-selector",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://milo.adobe.com/tools/tag-selector",
+        "isPalette": true,
+        "paletteRect": "top: 150px; left: 7%; height: 675px; width: 85vw;"
+      },
+      {
+        "containerId": "tools",
+        "id": "version-history",
+        "title": "Version History",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://milo.adobe.com/tools/version-history",
+        "isPalette": true,
+        "passReferrer": true,
+        "passConfig": true,
+        "paletteRect": "top: auto; bottom: 20px; left: 20px; height: 498px; width: 460px;",
+        "includePaths": [
+          "**.docx**",
+          "**.xlsx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "id": "caas-configurator",
+        "title": "CaaS Configurator",
+        "environments": [
+          "edit",
+          "preview",
+          "dev"
+        ],
+        "url": "https://milo.adobe.com/tools/caas",
+        "isPalette": false,
+        "includePaths": [
+          "**.docx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "id": "faas-configurator",
+        "title": "FaaS Configurator",
+        "environments": [
+          "edit",
+          "preview",
+          "dev"
+        ],
+        "url": "https://milo.adobe.com/tools/faas",
+        "isPalette": false,
+        "includePaths": [
+          "**.docx**"
+        ]
+      },
+      {
+        "containerId": "tools",
+        "id": "bulk",
+        "title": "Bulk operations",
+        "environments": [
+          "edit",
+          "dev",
+          "preview",
+          "live"
+        ],
+        "url": "https://milo.adobe.com/tools/bulk-publish"
+      },
+      {
+        "containerId": "tools",
+        "id": "rollout",
+        "title": "Rollout",
+        "environments": [
+          "preview"
+        ],
+        "isPalette": true,
+        "passReferrer": true,
+        "passConfig": true,
+        "url": "https://milo.adobe.com/tools/rollout",
+        "includePaths": [
+          "**.docx**",
+          "**.xlsx**"
+        ],
+        "paletteRect": "top: 40%; left: 50%; transform: translate(-50%,-50%); height: 350px; width: 500px; overflow: hidden; border-radius: 15px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);"
+      }
+    ]
+  },
+  "lastModified": "2025-11-26T10:01:38.482Z",
+  "created": "2025-05-01T17:25:52.643Z",
+  "metadata": {
+    "source": [
+      "/metadata.json",
+      "/express/floating-cta-metadata.json",
+      "/br/express/floating-cta-metadata.json",
+      "/cn/express/floating-cta-metadata.json",
+      "/de/express/floating-cta-metadata.json",
+      "/dk/express/floating-cta-metadata.json",
+      "/es/express/floating-cta-metadata.json",
+      "/fi/express/floating-cta-metadata.json",
+      "/fr/express/floating-cta-metadata.json",
+      "/id_id/express/floating-cta-metadata.json",
+      "/in/express/floating-cta-metadata.json",
+      "/it/express/floating-cta-metadata.json",
+      "/jp/express/floating-cta-metadata.json",
+      "/kr/express/floating-cta-metadata.json",
+      "/nl/express/floating-cta-metadata.json",
+      "/no/express/floating-cta-metadata.json",
+      "/se/express/floating-cta-metadata.json",
+      "/tw/express/floating-cta-metadata.json",
+      "/uk/express/floating-cta-metadata.json",
+      "/metadata-optimization.json",
+      "/ax-promotions.json"
+    ]
+  },
+  "access": {
+    "preview": {
+      "allow": [
+        "*@adobe.com"
+      ],
+      "secretId": [
+        "qEW08E84L8cLx1kVITi7DrG4gm6NNT9O0IkgCcHO2sw",
+        "3bbdht7DB1f1AEOqc_RCLRXtEbLaKnA8zViFfDTtvaM"
+      ]
+    },
+    "admin": {
+      "role": {
+        "config_admin": [
+          "bradjohn@adobe.com",
+          "jinglhua@adobe.com",
+          "yolles@adobe.com",
+          "bhagwath@adobe.com"
+        ],
+        "author": [
+          "*@adobe.com",
+          "D33A1D81672A96A90A495C3F@83ce1f62631c0c82495fa6.e"
+        ],
+        "publish": [
+          "*@adobe.com"
+        ]
+      },
+      "requireAuth": "false"
+    }
+  },
+  "cdn": {
+    "live": {
+      "host": "main--da-express-milo--adobecom.aem.live"
+    },
+    "preview": {
+      "host": "main--da-express-milo--adobecom.aem.page"
+    }
+  },
+  "headers": {
+    "/**": [
+      {
+        "key": "access-control-allow-origin",
+        "value": "*"
+      },
+      {
+        "key": "x-adobe-content",
+        "value": "AEM DA Express"
+      }
+    ]
+  },
+  "features": {
+    "html2md": {
+      "unspreadLists": true
+    },
+    "github": {
+      "psiCheck": "service"
+    }
+  }
+}
