@@ -1942,8 +1942,7 @@ export default async function decorate(block) {
   });
   block.dataset.blockName = 'template-x';
   const props = constructProps(block);
-  // eslint-disable-next-line no-console
-  if (props.taasQuery) console.log('TAAS Query:', props.taasQuery);
+
   if (getMetadata('template-experiment') && !props.experiment) {
     props.experiment = getMetadata('template-experiment');
   }
